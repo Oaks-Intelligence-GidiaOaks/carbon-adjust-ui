@@ -1,0 +1,11 @@
+export { default as FinanceDashboard } from "./Dashboard";
+export { default as FinanceApplications } from "./Applications";
+export { default as FinancePackages } from "./Packages";
+export { default as FinanceAddPackage } from "./AddPackage";
+export { default as FinanceWallet } from "./Wallet";
+export { default as FinanceInbox } from "./Inbox";
+export { default as FinanceDocumentCentre } from "./DocumentCentre";
+export { default as FinanceContact } from "./Contact";
+export { default as FinanceProfile } from "./Profile";
+export { default as FinanceStaff } from "./Staff";
+export { default as FinanceAddStaff } from "./AddStaff";

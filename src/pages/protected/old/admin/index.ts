@@ -1,0 +1,12 @@
+export { default as AdminDashboard } from "./Dashboard";
+export { default as AdminApplications } from "./Applications";
+export { default as AdminUsersRegistration } from "./UsersRegistration";
+export { default as AdminPackages } from "./Packages";
+export { default as AdminAddPackage } from "./AddPackage";
+export { default as AdminWallet } from "./Wallet";
+export { default as AdminInbox } from "./Inbox";
+export { default as AdminDocumentCentre } from "./DocumentCentre";
+export { default as AdminContact } from "./Contact";
+export { default as AdminProfile } from "./Profile";
+export { default as AdminStaff } from "./Staff";
+export { default as AdminAddStaff } from "./AddStaff";

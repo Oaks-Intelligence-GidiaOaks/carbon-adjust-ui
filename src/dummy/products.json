@@ -1,0 +1,42 @@
+[
+  {
+    "isHot": true,
+    "image": "/products/p1.svg",
+    "rating": 5,
+    "name": "Sony - WH-1000XM5 Wireless Noise Canceling",
+    "cost": "$299.99",
+    "discount": "string"
+  },
+  {
+    "isHot": true,
+    "image": "/products/p2.svg",
+    "rating": 5,
+    "name": "Sony - WH-1000XM5 Wireless Noise Canceling",
+    "cost": "$349.99",
+    "discount": "string"
+  },
+  {
+    "isHot": true,
+    "image": "/products/p3.svg",
+    "rating": 5,
+    "name": "Sony - WH-1000XM5 Wireless Noise Canceling",
+    "cost": "$349.99",
+    "discount": "string"
+  },
+  {
+    "isHot": true,
+    "image": "/products/p4.svg",
+    "rating": 5,
+    "name": "Sony - WH-1000XM5 Wireless Noise Canceling",
+    "cost": "$349.99",
+    "discount": "string"
+  },
+  {
+    "isHot": true,
+    "image": "/products/p2.svg",
+    "rating": 5,
+    "name": "Sony - WH-1000XM5 Wireless Noise Canceling",
+    "cost": "$349.99",
+    "discount": "string"
+  }
+]

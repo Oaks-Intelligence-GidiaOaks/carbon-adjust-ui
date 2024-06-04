@@ -1,0 +1,346 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+/* reusable styles  */
+.page-header {
+  @apply font-[600] text-[22px] leading-[42px] font-poppins text-[#333333];
+}
+
+.flex-center {
+  @apply flex items-center;
+}
+
+/* CSS reset */
+html {
+  overflow-y: scroll;
+  height: 100dvh;
+}
+
+* {
+  @apply box-border p-0 m-0;
+}
+
+.react-date-picker__calendar {
+  @apply z-50 !important;
+}
+
+.react-date-picker__wrapper {
+  border: none !important;
+}
+.react-calendar {
+  border: none !important;
+}
+
+.react-date-picker__inputGroup__input {
+  @apply bg-ca-blue/0 !important;
+}
+
+.react-calendar__navigation__label__labelText,
+react-calendar__navigation__label__labelText--from,
+react-calendar__month-view__weekdays__weekday,
+react-calendar__tile react-calendar__month-view__days__day {
+  @apply font-poppins;
+}
+
+.react-calendar__month-view__weekdays__weekday > abbr {
+  @apply font-poppins;
+}
+.react-calendar__tile > abbr {
+  @apply font-poppins;
+}
+.react-calendar__tile > abbr {
+  @apply text-black-main !important;
+}
+.react-calendar__tile--active > abbr {
+  @apply text-white !important;
+}
+
+.react-calendar__tile .react-calendar__decade-view__years__year {
+  @apply font-poppins text-black-main !important;
+}
+
+.react-calendar__tile {
+  @apply font-poppins text-black-main !important;
+}
+
+.react-calendar__tile--now {
+  @apply text-white !important;
+}
+
+.react-calendar__tile--now {
+  @apply bg-ca-blue !important;
+}
+
+.selected-flag:hover {
+  @apply rounded-[10px_!important];
+}
+
+.selected-flag:focus {
+  @apply rounded-l !important;
+}
+
+.flag-dropdown.open,
+.selected-flag.open {
+  @apply rounded-l !important;
+}
+
+.react-tel-input .country-list {
+  @apply shadow-xl !important;
+}
+
+@layer components {
+  .transit-2 {
+    transition: all 200ms ease-in-out;
+  }
+  .transit-3 {
+    transition: all 300ms ease-in-out;
+  }
+  .pointer-inner {
+    width: 200px;
+    height: 60px;
+    position: relative;
+    background: white;
+    clip-path: polygon(80% 5%, 90.5% 50%, 80% 95%, 2% 95%, 12% 50%, 2% 5%);
+    stroke-width: 0.25em;
+  }
+  .pointer-outer {
+    width: 200px;
+    height: 60px;
+    position: relative;
+    background: white;
+    clip-path: polygon(80% 5%, 90.5% 50%, 80% 95%, 2% 95%, 12% 50%, 2% 5%);
+    stroke-linecap: round;
+    stroke-width: 0.25em;
+    transform: translateX(-12%);
+  }
+  .pointer-inner-start {
+    width: 200px;
+    height: 60px;
+    position: relative;
+    background: white;
+    clip-path: polygon(80% 5%, 90.5% 50%, 80% 95%, 0% 95%, 0% 50%, 0% 5%);
+    stroke-width: 0.25em;
+  }
+  .pointer-outer-start {
+    width: 200px;
+    height: 60px;
+    position: relative;
+    background: white;
+    clip-path: polygon(80% 5%, 90.5% 50%, 80% 95%, 0% 95%, 0% 50%, 0% 5%);
+    stroke-width: 0.25em;
+  }
+  .invert-icon {
+    filter: invert(1) brightness(2000%);
+  }
+
+  .blue-gradient {
+    @apply bg-gradient-to-b from-[#2E599A] to-[#0B8DFF];
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-100%);
+  }
+  40.01% {
+    transform: translateY(100%);
+  }
+  60% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes card-scroll {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-100%);
+  }
+  40.01% {
+    transform: translateY(100%);
+  }
+  60% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.btn {
+  @apply shadow-md py-2 px-6 rounded-sm transition duration-300 font-medium text-xs text-ca-blue border border-ca-blue-dark cursor-pointer font-poppins;
+}
+.btn-blue {
+  @apply shadow-md py-2 px-6 rounded-sm bg-ca-blue-dark transition font-medium duration-300 text-xs border border-ca-blue-dark cursor-pointer font-poppins text-white;
+}
+.btn-blue-border {
+  @apply shadow-md py-2 px-6 rounded-sm bg-ca-blue-dark transition font-medium duration-300 text-xs border border-white cursor-pointer font-poppins text-white;
+}
+
+.rec.rec-arrow {
+  display: none;
+}
+
+.rec.rec-dot {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.rec.rec-dot_active {
+  background-color: #2196f3;
+  color: #2196f3;
+  border-color: #2196f3;
+  border: none;
+  box-shadow: none;
+  transition: none;
+  outline: none;
+}
+
+.rec.rec-arrow:hover {
+  border-radius: 0;
+}
+
+@keyframes open-men {
+  0% {
+    transform: scaleY(0);
+  }
+  80% {
+    transform: scaleY(1.2);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.animation-open-menu {
+  animation-name: open-men;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+/* LandingPage.css */
+@keyframes rotateHalfway {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+.rotate {
+  animation: rotateHalfway 0.3s ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes animate-close-menu {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.select-border-removed {
+  border-width: 0 !important;
+}
