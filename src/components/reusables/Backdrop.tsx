@@ -15,7 +15,7 @@ const Backdrop = (props: {
     <div
       className={`  ${
         props.show ? "absolute" : "hidden"
-      } top-0 left-0 w-full bg-[#00000077] bg-opacity-70 flex justify-end border z-50`}
+      } top-0 left-0 w-full bg-[#D9D9D9] bg-opacity-70 flex justify-end border z-50`}
       onClick={closeBackdrop}
     >
       <div className="bg-white">{props.children}</div>
