@@ -104,11 +104,11 @@ const Router = createBrowserRouter([
         element: <UserAppointment />,
       },
       {
-        path: "market-place",
+        path: "marketplace",
         element: <UserMarketPlace />,
       },
       {
-        path: "market-place/:category",
+        path: "marketplace/:category",
         element: <UserMarketGroup />,
       },
       {

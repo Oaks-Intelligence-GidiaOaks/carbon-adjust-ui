@@ -6,6 +6,7 @@ import SettingIcon from "../../../assets/icons/setting.svg";
 import BellIcon from "../../../assets/icons/bell.svg";
 import UserIcon from "../../../assets/icons/User.svg";
 import footerImg from "../../../assets/images/footerImg.png";
+import { Link } from "react-router-dom";
 
 // this is the landing page the home owber sees after login contaning the video  playback
 
@@ -44,9 +45,11 @@ const DashboardLanding: FC = () => {
       </div>
 
       <div className="mx-auto w-fit mt-[15px]">
-        <button className="h-[56px] w-[289px] rounded-[30px] bg-gradient-to-b from-[#139EEC] to-[#3465AF] hover:bg-gradient-to-t text-white text-sm leading-[17.5px] font-[700]">
-          <span>Start now</span>
-        </button>
+        <Link to="/dashboard">
+          <button className="h-[56px] w-[289px] rounded-[30px] bg-gradient-to-b from-[#139EEC] to-[#3465AF] hover:bg-gradient-to-t text-white text-sm leading-[17.5px] font-[700]">
+            <span>Start now</span>
+          </button>
+        </Link>
       </div>
 
       <p className="font-[500] text-base leading-[24px] text-center font-poppins mt-[35px] w-2/3 mx-auto">
