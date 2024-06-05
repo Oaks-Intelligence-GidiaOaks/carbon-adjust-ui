@@ -7,6 +7,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { Dropdown } from "../ui";
 
+import SettingIcon from "../../assets/icons/setting.svg";
+import BellIcon from "../../assets/icons/bell.svg";
+import UserIcon from "../../assets/icons/User.svg";
+
 type Props = {
   mobileMenuIsOpen: boolean;
   setMobileMenuIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -39,9 +43,10 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
   };
 
   return (
-    <div className="h-10 px-2 sm:px-4 py-6 w-full flex justify-center font-poppins">
+    <div className=" px-2 sm:px-4 py-3 w-full flex justify-center font-poppins">
       <div className="flex justify-between items-center w-full max-w-[1440px]">
-        <div className="flex items-center border">
+        <div className="flex items-center  lg:w-5/6  mx-auto">
+          {/* mobile sidebar menu icon */}
           <div className="pr-2">
             <SideBarBtn
               className="cursor-pointer sm:hidden"
@@ -49,55 +54,56 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
             />
           </div>
 
-          <img
-            src="/assets/icons/logo-main.svg"
-            alt=""
-            className="hidden md:inline-flex h-auto w-[30px]"
-          />
+          <div className="flex-center gap-[18.8px] ">
+            <img
+              src="/assets/icons/logo-main.svg"
+              alt=""
+              className="hidden md:inline-flex h-auto w-[30px]"
+            />
 
-          <h2 className="font-[400] text-sm ml-[18px]">Marketplace</h2>
-
-          <div className="bg-[#CECECE] flex w-[299px] h-[38px] rounded-[12px] px-4">
-            <select className="flex-1 bg-transparent" name="" id="">
-              {Array.from({ length: 7 }, (_, i) => (
-                <option value="" key={i}>
-                  Home Energy Plans
-                </option>
-              ))}
-            </select>
+            <h2 className="font-[400] text-sm">Marketplace</h2>
           </div>
 
-          {/* {breadcrumbs.map(({ match, breadcrumb, key }, i, arr) => (
-            <div key={key}>
-              <Link
-                key={match.pathname}
-                to={match.pathname}
-                className="capitalize font-poppins"
+          <div className="flex-center flex-1  justify-center gap-3 mx-auto">
+            <div className="bg-[#CECECE] flex w-[250px] h-[38px] rounded-[12px] px-4">
+              <select
+                className="flex-1 bg-transparent border-none outline-none"
+                name=""
+                id=""
               >
-                <span className="text-black-main text-xs sm:text-sm">
-                  {breadcrumb}
-                </span>
-              </Link>
-              {i < arr.length - 1 ? <span>/</span> : null}
+                {Array.from({ length: 7 }, (_, i) => (
+                  <option className="bg-white" value="" key={i}>
+                    Home Energy Plans
+                  </option>
+                ))}
+              </select>
             </div>
-          ))} */}
-        </div>
 
-        <div className="pr-4 border">
-          <div className="flex gap-1 items-center">
-            <div
-              className="flex justify-center items-center cursor-pointer"
-              role="button"
-              onClick={() => goToProfile()}
-            >
-              {userData?.dp ? (
-                <img
-                  className="size-8 rounded-full shadow object-cover"
-                  src={userData.dp}
-                />
-              ) : (
-                <UserCircleIcon fontSize={20} width={32} />
-              )}
+            <div className="flex-center">
+              <img
+                src="/assets/icons/clarity_search-line.svg"
+                alt=""
+                className="h-[21px] w-[21px] mr-2"
+              />
+
+              <input
+                type="text"
+                placeholder="Purchases"
+                className="flex-1 border-none outline-none active:outline-none active:border-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex-center gap-[18px] ml-auto">
+            <img src="/assets/graphics/kommunita-logo.svg" alt="" />
+
+            <div className="flex-center gap-2  ">
+              <img src={SettingIcon} alt="" className="h-4 w-4" />
+              <img src={BellIcon} alt="" className="h-4 w-4" />
+
+              <div className="h-[34px] w-[34px] border rounded-full grid place-items-center ">
+                <img src={UserIcon} alt="" className="h-4 w-4" />
+              </div>
             </div>
           </div>
         </div>

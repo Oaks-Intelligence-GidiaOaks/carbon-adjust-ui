@@ -52,6 +52,7 @@ const Input = ({
         )}
       >
         {prependIcon}
+
         <input
           tabIndex={1}
           type={type}
