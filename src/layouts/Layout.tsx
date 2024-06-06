@@ -112,13 +112,11 @@ const Layout = (props: Props) => {
         userData.data.data.data.roles[0] === "MERCHANT" &&
         userData.data.data.data.merchantType === "NON_FINANCIAL_MERCHANT"
       ) {
-        alert("1");
         if (
           userData.data.data.data.nonFinancialMerchantType ===
             "SELF_EMPLOYED" &&
           uniqueObjectsByIdType(userData.data.data.data?.doc).length < 2
         ) {
-          alert("2");
           return navigate("/account-setup");
         }
         if (
@@ -126,7 +124,6 @@ const Layout = (props: Props) => {
             "SELF_EMPLOYED_LICENSE" &&
           uniqueObjectsByIdType(userData.data.data.data?.doc).length < 3
         ) {
-          alert("3");
           return navigate("/account-setup");
         }
         if (
@@ -134,7 +131,6 @@ const Layout = (props: Props) => {
             "LIMITED_LIABILITY" &&
           uniqueObjectsByIdType(userData.data.data.data?.doc).length < 3
         ) {
-          alert("4");
           return navigate("/account-setup");
         }
         if (
@@ -142,10 +138,8 @@ const Layout = (props: Props) => {
             "LIMITED_LIABILITY_LICENSE" &&
           uniqueObjectsByIdType(userData.data.data.data?.doc).length < 4
         ) {
-          alert("5");
           return navigate("/account-setup");
         }
-        alert("6");
         return navigate("/merchant");
       }
 
