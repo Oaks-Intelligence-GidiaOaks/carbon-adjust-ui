@@ -14,21 +14,25 @@ import { VerifyPhoneNumber } from "@/components/dialogs";
 import { Oval } from "react-loader-spinner";
 import { OrgDocInfoForm } from "@/types/general";
 import OrganizationSetupForm from "./OrganizationSetUpForm";
-import { uniqueObjectsByIdType } from "@/utils";
+import { cn, uniqueObjectsByIdType } from "@/utils";
 import { setUser } from "@/features/userSlice";
 import { getMe } from "@/services/homeOccupant";
-// import { accountTypes } from "@/constants";
 
 type Props = {};
 
-const AggregatorAccountSetup = (_: Props) => {
+const MerchantAccountSetup = (_: Props) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const userData = useSelector((state: RootState) => state.user.user);
 
+  console.log(userData?.accountType);
+
   const figureStepBasedOnAccountType = (step: number | undefined) => {
+    if (!userData?.accountType) {
+      return 0;
+    }
     if (userData?.roles[0] !== "HOME_OCCUPANT") {
       return step ?? 1;
     }
@@ -36,8 +40,15 @@ const AggregatorAccountSetup = (_: Props) => {
     step ? step + 1 : 1;
   };
   const initialStep = figureStepBasedOnAccountType(userData?.step);
+
   const [currentStep, setCurrentStep] = useState(initialStep);
   const [verifyPhoneNumber, setVerifyPhoneNumber] = useState(false);
+
+  useEffect(() => {
+    if (userData?.merchantType === "FINANCIAL_MERCHANT") {
+      setCurrentStep(userData?.step ?? 1);
+    }
+  }, [userData?.merchantType]);
 
   const logOut = async () => {
     persistor.pause();
@@ -50,6 +61,7 @@ const AggregatorAccountSetup = (_: Props) => {
   const freshUserData = useQuery({
     queryKey: ["user-data", currentStep],
     queryFn: getMe,
+    // enabled: Boolean(currentStep && currentStep > 1),
   });
 
   console.log(freshUserData.data?.data.data);
@@ -62,15 +74,20 @@ const AggregatorAccountSetup = (_: Props) => {
       if (data.step) {
         setCurrentStep(data.step + 1);
       } else {
-        setCurrentStep(1);
+        if (data.merchantType === "NON_FINANCIAL_MERCHANT") {
+          setCurrentStep(0);
+        } else {
+          setCurrentStep(1);
+        }
       }
     }
   }, [freshUserData.isSuccess]);
 
   queryClient.getQueryCache().find({ queryKey: ["user-data"] });
 
-  const setAggBioData = useMutation({
+  const setMerchantBioData = useMutation({
     mutationFn: (bioData: {
+      // accountType: string;
       contactEmail: string;
       dateFormed: string;
       phoneNos: string;
@@ -83,16 +100,16 @@ const AggregatorAccountSetup = (_: Props) => {
       toast.error(error.response.data.message);
     },
     onSuccess: (data) => {
-      toast.success(`${data.data.message}. Please verify your phone number`, {
+      toast.success(`${data.data.message}.`, {
         duration: 10000,
       });
       setUser(data.data.data);
-
-      setVerifyPhoneNumber(true);
+      setCurrentStep(2);
+      // setVerifyPhoneNumber(true);
     },
   });
 
-  const setAggAddress = useMutation({
+  const setMerchantAddress = useMutation({
     mutationFn: (address: {
       address: {
         country: string;
@@ -213,7 +230,7 @@ const AggregatorAccountSetup = (_: Props) => {
   };
 
   const [formState, setFormState] = useState({
-    accountType: userData?.merchantType ?? "",
+    accountType: userData?.accountType ?? "",
     entityName: userData?.name ?? "",
     contactEmail: userData?.contactEmail ?? "",
     contactName: userData?.contactName ?? "",
@@ -246,28 +263,40 @@ const AggregatorAccountSetup = (_: Props) => {
     letterOfAuth: null,
   });
 
-  const doc = uniqueObjectsByIdType(
-    useSelector((state: RootState) => state.user?.user?.doc ?? null)
-  );
+  // const doc = uniqueObjectsByIdType(
+  //   useSelector((state: RootState) => state.user?.user?.doc ?? [])
+  // );
 
-  console.log(doc);
+  //   console.log(doc);
 
   const goToNext = async () => {
     console.log(currentStep);
 
     switch (currentStep) {
+      case undefined:
+        setCurrentStep(1);
+        break;
+      case 0:
+        setCurrentStep(1);
+        break;
       case 1:
-        setAggBioData.mutate({
+        setMerchantBioData.mutate({
+          // accountType: formState.contactEmail,
           contactEmail: formState.contactEmail,
           contactName: formState.contactName,
           dateFormed: formState.dateOfFormation,
           name: formState.entityName,
           phoneNos: formState.phoneNumber,
           bio: formState.bio,
+          ...(userData?.merchantType === "NON_FINANCIAL_MERCHANT"
+            ? {
+                nonFinMerchantType: formState.accountType,
+              }
+            : {}),
         });
         break;
       case 2:
-        setAggAddress.mutate({
+        setMerchantAddress.mutate({
           address: {
             cityOrProvince: addressFormState.cityOrProvince.label,
             country: addressFormState.country.label,
@@ -279,39 +308,126 @@ const AggregatorAccountSetup = (_: Props) => {
       case 3:
         // handleDocSubmission();
         if (
-          (userData?.roles[0] === "INSURANCE" ||
-            userData?.roles[0] === "FINANCIAL_INSTITUTION") &&
-          doc.length === 4
+          userData?.roles[0] === "MERCHANT" &&
+          userData?.merchantType === "NON_FINANCIAL_MERCHANT"
         ) {
-          navigate("/pending-verification");
-        } else if (doc.length === 3) {
-          navigate("/pending-verification");
+          if (
+            userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
+            uniqueObjectsByIdType(userData?.doc).length === 2
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
+            uniqueObjectsByIdType(userData?.doc).length === 3
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
+            uniqueObjectsByIdType(userData?.doc).length === 3
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
+            uniqueObjectsByIdType(userData?.doc).length === 4
+          ) {
+            return navigate("/merchant");
+          }
+          return navigate("/merchant");
+        }
+
+        if (
+          userData?.roles[0] === "MERCHANT" &&
+          userData?.merchantType !== "NON_FINANCIAL_MERCHANT" &&
+          uniqueObjectsByIdType(userData?.doc).length === 4
+        ) {
+          navigate("/merchant");
         }
         return;
       // Same as case 3 because the data returning is not constant for organizations
       case 4:
         // handleDocSubmission();
         if (
-          (userData?.roles[0] === "INSURANCE" ||
-            userData?.roles[0] === "FINANCIAL_INSTITUTION") &&
-          doc.length === 4
+          userData?.roles[0] === "MERCHANT" &&
+          userData?.merchantType === "NON_FINANCIAL_MERCHANT"
         ) {
-          navigate("/pending-verification");
-        } else if (doc.length === 3) {
-          navigate("/pending-verification");
+          if (
+            userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
+            uniqueObjectsByIdType(userData?.doc).length === 2
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
+            uniqueObjectsByIdType(userData?.doc).length === 3
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
+            uniqueObjectsByIdType(userData?.doc).length === 3
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
+            uniqueObjectsByIdType(userData?.doc).length === 4
+          ) {
+            return navigate("/merchant");
+          }
+          return navigate("/merchant");
+        }
+
+        if (
+          userData?.roles[0] === "MERCHANT" &&
+          userData?.merchantType !== "NON_FINANCIAL_MERCHANT" &&
+          uniqueObjectsByIdType(userData?.doc).length === 4
+        ) {
+          navigate("/merchant");
         }
         return;
       // Same as case 3 and 4 because the data returning is not constant for organizations
       case 5:
         // handleDocSubmission();
         if (
-          (userData?.roles[0] === "INSURANCE" ||
-            userData?.roles[0] === "FINANCIAL_INSTITUTION") &&
-          doc.length === 4
+          userData?.roles[0] === "MERCHANT" &&
+          userData?.merchantType === "NON_FINANCIAL_MERCHANT"
         ) {
-          navigate("/pending-verification");
-        } else if (doc.length === 3) {
-          navigate("/pending-verification");
+          if (
+            userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
+            uniqueObjectsByIdType(userData?.doc).length === 2
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
+            uniqueObjectsByIdType(userData?.doc).length === 3
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
+            uniqueObjectsByIdType(userData?.doc).length === 3
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
+            uniqueObjectsByIdType(userData?.doc).length === 4
+          ) {
+            return navigate("/merchant");
+          }
+          return navigate("/merchant");
+        }
+
+        if (
+          userData?.roles[0] === "MERCHANT" &&
+          userData?.merchantType !== "NON_FINANCIAL_MERCHANT" &&
+          uniqueObjectsByIdType(userData?.doc).length === 4
+        ) {
+          navigate("/merchant");
         }
         return;
       default:
@@ -327,7 +443,7 @@ const AggregatorAccountSetup = (_: Props) => {
     <ScrollToTop dependentValue={currentStep}>
       {verifyPhoneNumber && (
         <VerifyPhoneNumber
-          phone={setAggBioData.data?.data.data.phoneNos}
+          phone={setMerchantBioData.data?.data.data.phoneNos}
           nextStep={() => setCurrentStep(2)}
           closeVerifyPhoneNumber={() => setVerifyPhoneNumber(false)}
         />
@@ -342,9 +458,15 @@ const AggregatorAccountSetup = (_: Props) => {
         currentStep={currentStep}
       />
       <div className="flex bg-gray-100 justify-center min-h-screen pb-20 bg-account-setup-image bg-cover bg-fixed">
-        <div className="max-w-[760px] w-full">
+        <div
+          className={cn(
+            "max-w-[760px] w-full",
+            currentStep === 0 && "max-w-[1080px]"
+          )}
+        >
           <OrganizationSetupForm
-            accountType={userData?.roles[0]}
+            // accountType={userData?.roles[0]}
+            accountType={"MERCHANT"}
             currentStep={currentStep}
             formState={formState}
             setFormState={setFormState}
@@ -360,33 +482,59 @@ const AggregatorAccountSetup = (_: Props) => {
             disabled={
               (() => {
                 if (currentStep && currentStep >= 3) {
-                  if (userData?.roles[0] === "SUBCONTRACTOR") {
-                    if (
-                      uniqueObjectsByIdType(userData?.doc as object[])
-                        .length === 3
-                    ) {
-                      return false;
-                    } else return true;
-                  } else if (
-                    userData?.roles[0] !== "AGGREGATOR" &&
-                    userData?.roles[0] !== "HIA"
+                  // NON_FINANCIAL MERCHANT PATH
+                  if (
+                    userData?.roles[0] === "MERCHANT" &&
+                    userData?.merchantType === "NON_FINANCIAL_MERCHANT"
                   ) {
                     if (
-                      uniqueObjectsByIdType(userData?.doc as object[]).length <
-                      4
+                      userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
+                      uniqueObjectsByIdType(userData?.doc).length < 2
                     ) {
                       return true;
-                    } else return false;
-                  } else {
+                    }
                     if (
-                      uniqueObjectsByIdType(userData?.doc as object[]).length <
-                      3
+                      userData.nonFinancialMerchantType ===
+                        "SELF_EMPLOYED_LICENSE" &&
+                      uniqueObjectsByIdType(userData?.doc).length < 3
                     ) {
                       return true;
-                    } else return false;
+                    }
+                    if (
+                      userData.nonFinancialMerchantType ===
+                        "LIMITED_LIABILITY" &&
+                      uniqueObjectsByIdType(userData?.doc).length < 3
+                    ) {
+                      return true;
+                    }
+                    if (
+                      userData.nonFinancialMerchantType ===
+                        "LIMITED_LIABILITY_LICENSE" &&
+                      uniqueObjectsByIdType(userData?.doc).length < 4
+                    ) {
+                      return true;
+                    }
+                    return false;
                   }
+                  // FINANCIAL MERCHANT PATH
+                  if (
+                    userData?.roles[0] === "MERCHANT" &&
+                    userData?.merchantType !== "NON_FINANCIAL_MERCHANT" &&
+                    uniqueObjectsByIdType(userData?.doc).length < 4
+                  ) {
+                    if (uniqueObjectsByIdType(userData?.doc).length < 4) {
+                      return true;
+                    }
+                    return false;
+                  }
+                } else if (currentStep === 0 || !currentStep) {
+                  return formState.accountType === "";
                 } else {
-                  return setAggBioData.isPending || setAggAddress.isPending;
+                  console.log(currentStep);
+                  console.log(formState);
+                  return (
+                    setMerchantBioData.isPending || setMerchantAddress.isPending
+                  );
                 }
               })()
               // setUserDoc.isPending
@@ -394,11 +542,11 @@ const AggregatorAccountSetup = (_: Props) => {
             onClick={goToNext}
             className="rounded-lg text-white mt-4 w-full h-11"
           >
-            {setAggBioData.isPending || setAggAddress.isPending ? (
+            {setMerchantBioData.isPending || setMerchantAddress.isPending ? (
               // setUserDoc.isPending ?
               <Oval
                 visible={
-                  setAggBioData.isPending || setAggAddress.isPending
+                  setMerchantBioData.isPending || setMerchantAddress.isPending
                   // setUserDoc.isPending
                 }
                 height="20"
@@ -418,4 +566,4 @@ const AggregatorAccountSetup = (_: Props) => {
   );
 };
 
-export default AggregatorAccountSetup;
+export default MerchantAccountSetup;

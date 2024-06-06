@@ -58,12 +58,7 @@ const Login = () => {
 
   const handleRedirect = (role: string) => {
     if (role === "HOME_OCCUPANT") return navigate("/dashboard");
-    if (role === "AGGREGATOR") return navigate("/aggregator");
-    if (role === "HIA") return navigate("/hia");
-    if (role === "FINANCIAL_INSTITUTION") return navigate("/finance");
-    if (role === "INSURANCE") return navigate("/insurance");
-    if (role === "SUBCONTRACTOR") return navigate("/subcontractor");
-    if (role === "ADMIN") return navigate("/admin");
+    if (role === "MERCHANT") return navigate("/merchant");
   };
 
   const onSubmit: SubmitHandler<LoginFormContext> = async (data) => {
@@ -106,9 +101,9 @@ const Login = () => {
 
   useEffect(() => {
     const userRole = userData?.roles[0];
-    const userStatus = userData?.status;
-    const userStep = userData?.step;
-    const userDocs = userData?.doc;
+    // const userStatus = userData?.status;
+    // const userStep = userData?.step;
+    // const userDocs = userData?.doc;
 
     if (userRole) {
       console.log(userRole);
@@ -116,32 +111,49 @@ const Login = () => {
       if (userRole === "ADMIN") {
         return navigate("/admin");
       }
+
+      // NON_FINANCIAL MERCHANT PATH
       if (
-        userRole !== "HOME_OCCUPANT" &&
-        uniqueObjectsByIdType(userDocs).length < 3
+        userRole === "MERCHANT" &&
+        userData?.merchantType === "NON_FINANCIAL_MERCHANT"
       ) {
-        return navigate("/account-setup");
+        if (
+          userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
+          uniqueObjectsByIdType(userData?.doc).length < 2
+        ) {
+          return navigate("/account-setup");
+        }
+        if (
+          userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
+          uniqueObjectsByIdType(userData?.doc).length < 3
+        ) {
+          return navigate("/account-setup");
+        }
+        if (
+          userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
+          uniqueObjectsByIdType(userData?.doc).length < 3
+        ) {
+          return navigate("/account-setup");
+        }
+        if (
+          userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
+          uniqueObjectsByIdType(userData?.doc).length < 4
+        ) {
+          return navigate("/account-setup");
+        }
+        return navigate("/merchant");
       }
-      if (userStatus === "pending" && ((userStep || 0) < 4 || !userStep)) {
-        return navigate("/account-setup");
-      }
-      if (userStatus === "pending") {
-        return navigate("/pending-verification");
-      }
-      if (userRole === "AGGREGATOR") {
-        return navigate("/aggregator");
-      }
-      if (userRole === "HIA") {
-        return navigate("/hia");
-      }
-      if (userRole === "FINANCIAL_INSTITUTION") {
-        return navigate("/finance");
-      }
-      if (userRole === "INSURANCE") {
-        return navigate("/insurance");
-      }
-      if (userRole === "SUBCONTRACTOR") {
-        return navigate("/subcontractor");
+
+      // FINANCIAL MERCHANT PATH
+      if (
+        userData.roles[0] === "MERCHANT" &&
+        userData.merchantType !== "NON_FINANCIAL_MERCHANT" &&
+        uniqueObjectsByIdType(userData?.doc).length < 4
+      ) {
+        if (uniqueObjectsByIdType(userData?.doc).length < 4) {
+          return navigate("/account-setup");
+        }
+        return navigate("/merchant");
       }
       return navigate("/dashboard");
     }

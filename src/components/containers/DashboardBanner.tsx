@@ -1,10 +1,9 @@
-import React from "react";
 import { FaStar } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
 
 type Props = {};
 
-const DashboardBanner = (props: Props) => {
+const DashboardBanner = (_: Props) => {
   return (
     <div
       style={{

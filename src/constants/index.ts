@@ -57,12 +57,15 @@ export const userRegistrationAccountTypes = [
 ];
 
 export const accountTypes = [
-  { id: 1, label: "Home occupant", value: "HOME_OCCUPANT" },
-  { id: 2, label: "Aggregator", value: "AGGREGATOR" },
-  { id: 3, label: "Home Improvement Agency", value: "HIA" },
-  { id: 4, label: "Financial Institution", value: "FINANCIAL_INSTITUTION" },
-  { id: 5, label: "Insurance", value: "INSURANCE" },
+  { id: 1, label: "Home Occupant", value: "HOME_OCCUPANT" },
+  { id: 2, label: "Merchant", value: "Merchant" },
 ];
+
+export const merchantTypes = [
+  { id: 1, label: "Financial Merchant", value: "FINANCIAL_MERCHANT" },
+  { id: 2, label: "Non-Financial Merchant", value: "NON_FINANCIAL_MERCHANT" },
+];
+
 export const aggregatorTypes = [
   { id: 1, label: "Local Authority", value: "LOCAL_AUTHORITY" },
   { id: 2, label: "Housing Association", value: "HOUSING_ASSOCIATION" },

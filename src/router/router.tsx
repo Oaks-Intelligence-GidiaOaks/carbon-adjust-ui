@@ -1,28 +1,28 @@
 import {
   createBrowserRouter,
-  Navigate,
-  ScrollRestoration,
+  // Navigate,
+  // ScrollRestoration,
 } from "react-router-dom";
-import { Home, Login, Register } from "@/pages/public";
+import { Calendar, Home, Login, Register } from "@/pages/public";
 import AccountSetup from "@/pages/protected/shared/account-setup/AccountSetup";
 import Layout from "@/layouts/Layout";
 
 import PendingVerification from "@/pages/protected/shared/PendingVerification";
-import Registration from "@/pages/protected/old/hia/Registration";
-import Specializations from "@/pages/protected/old/hia/Specialization";
-import {
-  HOAggregatorApplications,
-  HOFinanceApplications,
-  HOHIAApplications,
-  HOInsuranceApplications,
-} from "@/components/sub-pages/applications";
-import {
-  FinanceMorePage,
-  HIAMorePage,
-  InsuranceMorePage,
-  SubContractorMorePage,
-} from "@/components/sub-pages/dashboard/home-occupant";
-import ApplyToInsurance from "@/pages/protected/old/home-occupant/ApplyToInsurance";
+// import Registration from "@/pages/protected/old/hia/Registration";
+// import Specializations from "@/pages/protected/old/hia/Specialization";
+// import {
+//   HOAggregatorApplications,
+//   HOFinanceApplications,
+//   HOHIAApplications,
+//   HOInsuranceApplications,
+// } from "@/components/sub-pages/applications";
+// import {
+//   FinanceMorePage,
+//   HIAMorePage,
+//   InsuranceMorePage,
+//   SubContractorMorePage,
+// } from "@/components/sub-pages/dashboard/home-occupant";
+// import ApplyToInsurance from "@/pages/protected/old/home-occupant/ApplyToInsurance";
 import DashboardLanding from "@/pages/protected/shared/DashboardLanding";
 import Market from "@/pages/protected/home-occupant/Market";
 import {
@@ -37,7 +37,7 @@ import {
   AdminWallet,
   AdmnLog,
 } from "@/pages/protected/admin";
-import { elements } from "chart.js";
+// import { elements } from "chart.js";
 import {
   MerchantApplications,
   MerchantBookings,
@@ -55,11 +55,16 @@ import {
   UserOrderList,
 } from "@/pages/protected/home-occupant";
 import { Profile } from "@/pages/protected/old/home-occupant";
+import MerchantRegister from "@/pages/public/MerchantRegister";
 
 const Router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/calendar",
+    element: <Calendar />,
   },
   {
     path: "/home",
@@ -72,6 +77,10 @@ const Router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/merchant/register",
+    element: <MerchantRegister />,
   },
   {
     path: "/account-setup",

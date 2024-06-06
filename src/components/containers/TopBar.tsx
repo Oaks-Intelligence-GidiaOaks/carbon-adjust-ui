@@ -1,11 +1,11 @@
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import useBreadcrumbs from "use-react-router-breadcrumbs";
+import { useNavigate } from "react-router-dom";
+// import useBreadcrumbs from "use-react-router-breadcrumbs";
 import { SideBarBtn } from "@/assets/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { Dropdown } from "../ui";
+// import { Dropdown } from "../ui";
 
 type Props = {
   mobileMenuIsOpen: boolean;
@@ -13,7 +13,7 @@ type Props = {
 };
 
 const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
-  const breadcrumbs = useBreadcrumbs();
+  // const breadcrumbs = useBreadcrumbs();
   const userData = useSelector((state: RootState) => state.user.user);
   const navigate = useNavigate();
 

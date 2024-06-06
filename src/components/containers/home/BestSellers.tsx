@@ -1,4 +1,4 @@
-import { Product } from "@/types/product";
+// import { Product } from "@/types/product";
 import ProductsCategory from "../../reusables/ProductsCategory";
 import products from "../../../dummy/products.json";
 import { FC } from "react";

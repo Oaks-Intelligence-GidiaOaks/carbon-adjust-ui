@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import { RootState } from "@/app/store";
 import { useSelector } from "react-redux";
 import { BiUser } from "react-icons/bi";
+import SignupButton from "@/components/contextual/SignupButton";
 
 // let easeing = [0.6,-0.05,0.01,0.99];
 
@@ -200,15 +201,7 @@ const LandingPage = () => {
           </ul> */}
 
             <div className="hidden sm:flex gap-6">
-              <NavLink
-                to="https://kommunita-web.netlify.app/login"
-                className="btn"
-              >
-                Kommunita
-              </NavLink>
-              <NavLink to="/register" className="btn">
-                Sign up
-              </NavLink>
+              <SignupButton />
               {user ? (
                 <NavLink to="/login" className="">
                   {user.dp ? (
