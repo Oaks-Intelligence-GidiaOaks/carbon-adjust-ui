@@ -125,7 +125,7 @@ DropdownProps) => {
               portal
               anchor={{ to: "bottom start" }}
               className={cn(
-                "border-none max-h-[240px] mt-10 overflow-scroll text-sm z-[10000000000000000000] bg-white rounded-lg absolute top-11 shadow-lg w-[var(--button-width)]",
+                "border-none max-h-[240px] mt-2 overflow-scroll text-sm z-[10000000000000000000] bg-white rounded-lg absolute top-11 shadow-lg w-[var(--button-width)]",
                 optionsContainerClassName
               )}
             >

@@ -1,3 +1,4 @@
+import { accountTypes } from "./../constants/index";
 import { ICountry } from "country-state-city";
 import { Control } from "react-hook-form";
 
@@ -61,7 +62,12 @@ export type AccountSetupForm = {
   phoneNumber?: string;
   dateOfBirth?: string;
 };
+
+export type OrgMerchantTypeForm = {
+  accountType: string;
+};
 export type OrgAccountSetupForm = {
+  accountType: string;
   entityName: string;
   contactEmail: string;
   contactName: string;
@@ -189,6 +195,7 @@ export type IComponentMap = {
 };
 
 export type AuthUserProfile = {
+  accountType: string;
   activationCode: string;
   activationExpiry: string;
   address: {
@@ -211,12 +218,18 @@ export type AuthUserProfile = {
   hasEmailVerified: boolean;
   name: string;
   dp?: string;
+  nonFinancialMerchantType:
+    | "SELF_EMPLOYED"
+    | "SELF_EMPLOYED_LICENSE"
+    | "LIMITED_LIABILITY"
+    | "LIMITED_LIABILITY_LICENSE";
   password: string;
   phoneNos: string;
   roles: string[];
   status: string;
   updatedAt: string;
   phoneNos: string;
+  merchantType: string;
   dob: string;
   step: number;
   __v: number;

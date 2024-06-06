@@ -8,7 +8,7 @@ export type RegisterFormContext = {
     label: string;
     value: string;
   };
-  aggregatorType?: {
+  merchantType?: {
     id?: any;
     label: string;
     value: string;

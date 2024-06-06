@@ -47,17 +47,21 @@ const AccountSetupInfo = ({
             <p className="text-blue-main font-poppins font-medium">
               Account Set-up
             </p>
-            <p className="text-scheme-white text-xs mt-2 font-poppins">
-              {figureStepBasedOnAccountType(currentStep ?? 1)} out of{" "}
-              {accountType !== "home-occupant" ? 3 : 4}
-            </p>
+            {currentStep !== 0 && (
+              <p className="text-scheme-white text-xs mt-2 font-poppins">
+                {figureStepBasedOnAccountType(currentStep ?? 1)} out of{" "}
+                {accountType !== "home-occupant" ? 3 : 4}
+              </p>
+            )}
           </div>
         </div>
         <div className="mt-14 mb-4">
-          <AccountSetupProgressIndicator
-            accountType={userData?.roles[0]}
-            currentStep={currentStep}
-          />
+          {currentStep !== 0 && (
+            <AccountSetupProgressIndicator
+              accountType={userData?.roles[0] ?? "MERCHANT"}
+              currentStep={currentStep}
+            />
+          )}
         </div>
       </div>
     </div>
