@@ -93,7 +93,7 @@ export const homeOwnerSideBarItems = [
   {
     icon: DashboardIcon,
     title: "",
-    href: "/dashboard/market-place",
+    href: "/dashboard/marketplace",
   },
   {
     icon: ApplicationsIcon,
@@ -136,38 +136,37 @@ export const merchantSideBarItems = [
   {
     icon: DashboardIcon,
     title: "Dashboard",
-    href: "/dashboard",
+    href: "/merchant",
   },
   {
     icon: ApplicationsIcon,
     title: "Packages",
-    href: "/dashboard/applications",
+    href: "/merchant/packages",
   },
   {
-    icon: DevicesIcon,
+    icon: ApplicationsIcon,
     title: "Applications",
-    href: "/dashboard/devices",
+    href: "/merchant/applications",
   },
+  // {
+  //   icon: DevicesIcon,
+  //   title: "Wallet",
+  //   href: "/merchant/bookings",
+  // },
   {
     icon: CarbonCreditIcon,
-    title: "Customers",
-    href: "/dashboard/carbon-credit",
-  },
-  {
-    icon: InboxIcon,
-    title: "Inbox",
-    href: "/dashboard/inbox",
-  },
-  {
-    icon: DocumentCentreIcon,
     title: "Wallet",
-    href: "/dashboard/document-centre",
+    href: "/merchant/wallet",
   },
-
+  // {
+  //   icon: InboxIcon,
+  //   title: "Inbox",
+  //   href: "/merchant/inbox",
+  // },
   {
     icon: ProfileIcon,
     title: "Profile",
-    href: "/dashboard/profile",
+    href: "/merchant/profile",
   },
   {
     icon: LogoutIcon,
