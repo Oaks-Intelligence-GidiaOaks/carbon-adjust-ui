@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -81,6 +84,10 @@
 
 .flex-center {
   @apply flex items-center;
+}
+
+.flex-start {
+  @apply flex items-start;
 }
 
 /* CSS reset */
@@ -343,4 +350,33 @@ input[type="number"] {
 
 .select-border-removed {
   border-width: 0 !important;
+}
+
+/* select -input styling */
+#Form-Select .css-1u9des2-indicatorSeparator {
+  background-color: transparent !important;
+}
+
+.css-894a34-indicatorSeparator {
+  background-color: transparent !important;
+}
+
+#Form-Select .css-1fdsijx-ValueContainer {
+  padding: 2px 0px !important;
+}
+
+#Form-Select .css-hlgwow {
+  padding: 2px 0px !important;
+}
+
+#Form-Select .css-t3ipsp-control {
+  box-shadow: none !important;
+  border-color: transparent !important;
+  border: 1px solid #8a8a8a !important;
+  min-height: 30px !important;
+  border-radius: 8px !important;
+}
+
+#Form-Select .css-13cymwt-control {
+  background-color: transparent !important;
 }

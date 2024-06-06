@@ -23,6 +23,7 @@ import PendingVerification from "@/pages/protected/shared/PendingVerification";
 //   SubContractorMorePage,
 // } from "@/components/sub-pages/dashboard/home-occupant";
 // import ApplyToInsurance from "@/pages/protected/old/home-occupant/ApplyToInsurance";
+
 import DashboardLanding from "@/pages/protected/shared/DashboardLanding";
 import Market from "@/pages/protected/home-occupant/Market";
 import {
@@ -39,10 +40,12 @@ import {
 } from "@/pages/protected/admin";
 // import { elements } from "chart.js";
 import {
+  MerchantAllPackages,
   MerchantApplications,
   MerchantBookings,
   MerchantDashboard,
   MerchantNewPackage,
+  MerchantOrderDetails,
   MerchantPackageDetails,
   MerchantPackages,
   MerchantProfile,
@@ -113,11 +116,11 @@ const Router = createBrowserRouter([
         element: <UserAppointment />,
       },
       {
-        path: "market-place",
+        path: "marketplace",
         element: <UserMarketPlace />,
       },
       {
-        path: "market-place/:category",
+        path: "marketplace/:category",
         element: <UserMarketGroup />,
       },
       {
@@ -167,7 +170,17 @@ const Router = createBrowserRouter([
       },
       {
         path: "applications",
-        element: <MerchantApplications />,
+        children: [
+          {
+            path: "",
+            element: <MerchantApplications />,
+          },
+
+          {
+            path: ":orderId",
+            element: <MerchantOrderDetails />,
+          },
+        ],
       },
       {
         path: "bookings",
@@ -185,6 +198,10 @@ const Router = createBrowserRouter([
             element: <MerchantNewPackage />,
           },
           {
+            path: "all",
+            element: <MerchantAllPackages />,
+          },
+          {
             path: ":packageId",
             element: <MerchantPackageDetails />,
           },
@@ -196,6 +213,10 @@ const Router = createBrowserRouter([
       },
       {
         path: "wallet",
+        element: <MerchantWallet />,
+      },
+      {
+        path: "inbox",
         element: <MerchantWallet />,
       },
     ],

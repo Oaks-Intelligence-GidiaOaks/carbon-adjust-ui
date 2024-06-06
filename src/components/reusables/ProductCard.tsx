@@ -1,5 +1,6 @@
 import { Product } from "@/types/product";
 import { FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const ProductCard = (props: Product) => {
   return (
@@ -12,9 +13,11 @@ const ProductCard = (props: Product) => {
         <div className="relative">
           <div className="hidden group-hover:flex flex-col  absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 ">
             <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
-              <button className=" blue-gradient  w-5/6 rounded-[24px] h-[40px] text-center text-white text-base font-[500]">
-                Apply
-              </button>
+              <Link className="w-5/6" to={"/dashboard/marketplace/group"}>
+                <button className=" blue-gradient w-full rounded-[24px] h-[40px] text-center text-white text-base font-[500]">
+                  Apply
+                </button>
+              </Link>
             </div>
           </div>
 
