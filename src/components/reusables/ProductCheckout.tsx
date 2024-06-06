@@ -1,18 +1,18 @@
 import { GrClose } from "react-icons/gr";
 import { IoIosArrowRoundBack } from "react-icons/io";
-// import ProductCard from "./ProductCard";
 import products from "../../dummy/products.json";
 import Backdrop from "./Backdrop";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import EnergyPackage from "./EnergyPackage";
 import { Input } from "../ui";
 import SelectInput from "../ui/SelectInput";
 import { SelectItem } from "@/types/formSelect";
 import { SingleValue } from "react-select";
+import { IComponentMap } from "@/types/general";
 
-type Props = {};
-
-const DescriptionSection = (props: {}) => (
+const DescriptionSection = (props: {
+  setStage: Dispatch<SetStateAction<number>>;
+}) => (
   <div>
     <div className="flex-center justify-between w-full  border-b py-4 px-7">
       <h2 className="font-[600] text-lg">Home Energy Package</h2>
@@ -26,7 +26,7 @@ const DescriptionSection = (props: {}) => (
       <h2 className="text-center font-[600] text-lg ">Checkout</h2>
 
       <div className="w-[262px] mx-auto">
-        <EnergyPackage {...products[0]} />
+        <EnergyPackage orderPackage={() => {}} {...products[0]} />
       </div>
 
       <div className="space-y-3 px-5 font-inter">
@@ -42,7 +42,10 @@ const DescriptionSection = (props: {}) => (
           risus massa porta. A.
         </p>
 
-        <button className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px]">
+        <button
+          onClick={() => props.setStage(2)}
+          className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px]"
+        >
           <span>Proceed</span>
         </button>
       </div>
@@ -50,14 +53,13 @@ const DescriptionSection = (props: {}) => (
   </div>
 );
 
-const ProductForm = () => {
+const ProductForm = (props: { setStage: Dispatch<SetStateAction<number>> }) => {
   let formProps = {
     label: "Package",
+    className: "",
     labelClassName: "pb-[10px]",
     wrapperClassName: "",
     name: "",
-    // register: "",
-    required: "",
     error: "",
     inputClassName: "border p-3 bg-[#E4E7E8]",
     placeholder: "Window Retrofitting",
@@ -69,7 +71,7 @@ const ProductForm = () => {
     value: { label: "value", value: "value" },
     label:
       "How much are you willing to spend on your retrofit journey in the next year?",
-    onChange: (newValue: SingleValue<SelectItem>) => {},
+    onChange: (_: SingleValue<SelectItem>) => {},
     placeholder: "",
   };
 
@@ -129,7 +131,10 @@ const ProductForm = () => {
               <SelectInput {...dropdownProps} />
             </div>
 
-            <button className="rounded-[12px] mt-[40px] font-poppins w-full blue-gradient hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]">
+            <button
+              onClick={() => props.setStage(3)}
+              className="rounded-[12px] mt-[40px] font-poppins w-full blue-gradient hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]"
+            >
               <span>Proceed</span>
             </button>
           </div>
@@ -139,7 +144,9 @@ const ProductForm = () => {
   );
 };
 
-const OrderSummary = () => {
+const OrderSummary = (props: {
+  setStage: Dispatch<SetStateAction<number>>;
+}) => {
   return (
     <div>
       <div className="flex-center font-poppins justify-between w-full  border-b py-4 px-7">
@@ -206,7 +213,10 @@ const OrderSummary = () => {
           <span className="font-[400] text-base w-1/2 pl-2"> $25 </span>
         </div>
 
-        <button className="rounded-[12px] mt-[40px] font-poppins w-full blue-gradient hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]">
+        <button
+          onClick={() => props.setStage(4)}
+          className="rounded-[12px] mt-[40px] font-poppins w-full blue-gradient hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]"
+        >
           <span>Proceed to pay</span>
         </button>
       </div>
@@ -214,7 +224,9 @@ const OrderSummary = () => {
   );
 };
 
-const PaymentSuccessful = () => {
+const PaymentSuccessful = (props: {
+  setStage: Dispatch<SetStateAction<number>>;
+}) => {
   return (
     <div className="flex flex-col items-center h-[80vh]">
       <div className="flex-center font-poppins justify-end w-full  border-b py-4 px-7">
@@ -233,23 +245,33 @@ const PaymentSuccessful = () => {
         />
       </div>
 
-      <button className="rounded-[12px] mt-[40px] font-poppins w-4/5 mx-auto blue-gradient hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]">
+      <button
+        onClick={() => props.setStage(1)}
+        className="rounded-[12px] mt-[40px] font-poppins w-4/5 mx-auto blue-gradient hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]"
+      >
         <span>Continue</span>
       </button>
     </div>
   );
 };
 
-const ProductCheckout = (props: Props) => {
-  const [show, setShow] = useState<boolean>(true);
+const ProductCheckout = (props: {
+  setShowcheckout: (v: boolean) => void;
+  showCheckout: boolean;
+}) => {
+  const [stage, setStage] = useState<number>(1);
+
+  const stageMap: IComponentMap = {
+    1: <DescriptionSection setStage={setStage} />,
+    2: <ProductForm setStage={setStage} />,
+    3: <OrderSummary setStage={setStage} />,
+    4: <PaymentSuccessful setStage={setStage} />,
+  };
 
   return (
-    <Backdrop setShow={setShow} show={show}>
+    <Backdrop setShow={props.setShowcheckout} show={props.showCheckout}>
       <div className="max-w-[480px] max-h-[92vh] overflow-y-scroll pb-[30px]">
-        <DescriptionSection />
-        <ProductForm />
-        <OrderSummary />
-        <PaymentSuccessful />
+        {stageMap[stage]}
       </div>
     </Backdrop>
   );

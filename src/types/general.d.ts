@@ -185,7 +185,7 @@ export type ProfileTabProps = {
 };
 
 export type IComponentMap = {
-  [key: string]: JSX.Element | [];
+  [key: string | number]: JSX.Element | [];
 };
 
 export type AuthUserProfile = {

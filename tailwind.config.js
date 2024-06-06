@@ -23,6 +23,7 @@ module.exports = {
         manrope: ['"Manrope"', "sans-serif"],
         poppins: ['"Poppins"', "sans-serif"],
         inter: ["Inter", "sans-serif"],
+        "dm-sans": ["DM Sans", "sans-serif"],
       },
       backgroundImage: {
         "register-image": "url('/assets/graphics/register-graphic.svg')",

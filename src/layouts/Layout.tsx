@@ -1,37 +1,37 @@
-import userService from "@/api/services/user";
-import { persistor, RootState } from "@/app/store";
+// import userService from "@/api/services/user";
+// import { RootState } from "@/app/store";
 import Footer from "@/components/containers/Footer";
 import SideMenu from "@/components/containers/SideMenu";
 // import { RootState } from "@/app/store";
 import Sidebar from "@/components/containers/Sidebar";
 import TopBar from "@/components/containers/TopBar";
-import InactivityWrapper from "@/components/hoc/InactivityWrapper";
-import { setUser } from "@/features/userSlice";
-import ProtectedRoute from "@/guards/ProtectedRoute";
-import { cn, uniqueObjectsByIdType } from "@/utils";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+// import InactivityWrapper from "@/components/hoc/InactivityWrapper";
+// import { setUser } from "@/features/userSlice";
+// import ProtectedRoute from "@/guards/ProtectedRoute";
+import { cn } from "@/utils";
+// import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 // import toast from "react-hot-toast";
-import { Oval } from "react-loader-spinner";
-import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+// import { Oval } from "react-loader-spinner";
+// import { useSelector } from "react-redux";
+import { Outlet, useLocation } from "react-router-dom";
 
 type Props = {
   sidebarType: string;
 };
 
 const Layout = (props: Props) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
 
   const { pathname } = useLocation();
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState<boolean>(false);
-  const user = useSelector((state: RootState) => state.user.user);
+  // const user = useSelector((state: RootState) => state.user.user);
 
-  const userData = useQuery({
-    queryKey: ["fetch-user-info"],
-    queryFn: userService().fetchUserInfo,
-  });
+  // const userData = useQuery({
+  //   queryKey: ["fetch-user-info"],
+  //   queryFn: userService().fetchUserInfo,
+  // });
 
   // ---------------------UNCOMMENT THIS CODE WHEN ADMIN STARTS VERIFYING USERS
   // useEffect(() => {
@@ -141,13 +141,13 @@ const Layout = (props: Props) => {
   //   // error encountered
   // }, [userData.isSuccess]);
 
-  const handleLogout = () => {
-    persistor.pause();
-    persistor.flush().then(() => {
-      return persistor.purge();
-    });
-    window.location.assign("/login?ie=true");
-  };
+  // const handleLogout = () => {
+  //   persistor.pause();
+  //   persistor.flush().then(() => {
+  //     return persistor.purge();
+  //   });
+  //   window.location.assign("/login?ie=true");
+  // };
 
   return (
     // <ProtectedRoute role={user?.roles[0]}>

@@ -1,13 +1,29 @@
 import { Product } from "@/types/product";
-import { FaStar } from "react-icons/fa";
 import { IoStar } from "react-icons/io5";
 import { MdFavoriteBorder } from "react-icons/md";
 // type Props = {};
 
-const EnergyPackage = (props: Product) => {
+interface Props extends Product {
+  orderPackage: () => void;
+}
+
+const EnergyPackage = (props: Props) => {
   return (
-    <div className="font-inter min-w-[200px] group flex flex-col gap-2">
+    <div className="group font-inter min-w-[200px] max-w-[262px] group flex flex-col gap-2">
+      {/* top container */}
       <div className="h-[340px] relative flex flex-col  bg-[#F3F5F7]">
+        <div
+          className={`absolute bg-[#000000] bg-opacity-20 top-0 left-0 h-full w-full group-hover:flex hidden flex-col `}
+        >
+          <div className="mt-auto mb-4 w-full px-4 grid place-items-center">
+            <button
+              onClick={() => props.orderPackage()}
+              className="font-inter rounded-[24px] w-full h-[46px] text-white blue-gradient"
+            >
+              <span>Apply</span>
+            </button>
+          </div>
+        </div>
         <div className="flex-center justify-between p-4">
           <div className="w-fit space-y-2 flex flex-col">
             <span className="bg-white rounded-[4px] p-1 text-xs uppercase font-[600] text-center px-[14px]">
@@ -31,6 +47,7 @@ const EnergyPackage = (props: Product) => {
         />
       </div>
 
+      {/* down part */}
       <div className="gap-[5px] mt-1 flex flex-col">
         <div className="flex-center gap-1">
           {Array.from({ length: props.rating }, (_, i) => (

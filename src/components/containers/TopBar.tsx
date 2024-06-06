@@ -1,11 +1,11 @@
-import { UserCircleIcon } from "@heroicons/react/24/outline";
+// import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import useBreadcrumbs from "use-react-router-breadcrumbs";
+// import { useNavigate } from "react-router-dom";
+// import useBreadcrumbs from "use-react-router-breadcrumbs";
 import { SideBarBtn } from "@/assets/icons";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store";
-import { Dropdown } from "../ui";
+// import { useSelector } from "react-redux";
+// import { RootState } from "@/app/store";
+// import { Dropdown } from "../ui";
 
 import SettingIcon from "../../assets/icons/setting.svg";
 import BellIcon from "../../assets/icons/bell.svg";
@@ -17,30 +17,30 @@ type Props = {
 };
 
 const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
-  const breadcrumbs = useBreadcrumbs();
-  const userData = useSelector((state: RootState) => state.user.user);
-  const navigate = useNavigate();
+  // const breadcrumbs = useBreadcrumbs();
+  // const userData = useSelector((state: RootState) => state.user.user);
+  // const navigate = useNavigate();
 
-  const goToProfile = () => {
-    if (userData?.roles[0] === "HOME_OCCUPANT") {
-      return navigate("/dashboard/profile");
-    }
-    if (userData?.roles[0] === "AGGREGATOR") {
-      return navigate("/aggregator/profile");
-    }
-    if (userData?.roles[0] === "HIA") {
-      return navigate("/hia/profile");
-    }
-    if (userData?.roles[0] === "FINANCE") {
-      return navigate("/finance/profile");
-    }
-    if (userData?.roles[0] === "INSURANCE") {
-      return navigate("/insurance/profile");
-    }
-    if (userData?.roles[0] === "SUBCONTRACTOR") {
-      return navigate("/subcontractor/profile");
-    }
-  };
+  // const goToProfile = () => {
+  //   if (userData?.roles[0] === "HOME_OCCUPANT") {
+  //     return navigate("/dashboard/profile");
+  //   }
+  //   if (userData?.roles[0] === "AGGREGATOR") {
+  //     return navigate("/aggregator/profile");
+  //   }
+  //   if (userData?.roles[0] === "HIA") {
+  //     return navigate("/hia/profile");
+  //   }
+  //   if (userData?.roles[0] === "FINANCE") {
+  //     return navigate("/finance/profile");
+  //   }
+  //   if (userData?.roles[0] === "INSURANCE") {
+  //     return navigate("/insurance/profile");
+  //   }
+  //   if (userData?.roles[0] === "SUBCONTRACTOR") {
+  //     return navigate("/subcontractor/profile");
+  //   }
+  // };
 
   return (
     <div className=" px-2 sm:px-4 py-3 w-full flex justify-center font-poppins">

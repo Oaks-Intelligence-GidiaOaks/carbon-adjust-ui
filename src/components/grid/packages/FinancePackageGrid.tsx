@@ -98,7 +98,7 @@ const FinancePackageGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     },
   });
 
-  console.log(data);
+  // console.log(data);
 
   const columns = [
     columnHelper.accessor((_, rowIndex) => ({ serialNumber: rowIndex + 1 }), {

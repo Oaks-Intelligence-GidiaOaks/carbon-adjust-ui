@@ -6,3 +6,5 @@ export { default as MerchantPackageDetails } from "./PackageDetails";
 export { default as MerchantPackages } from "./Packages";
 export { default as MerchantProfile } from "./Profile";
 export { default as MerchantWallet } from "./Wallet";
+export { default as MerchantAllPackages } from "./AllPackages";
+export { default as MerchantOrderDetails } from "./OrderDetails";
