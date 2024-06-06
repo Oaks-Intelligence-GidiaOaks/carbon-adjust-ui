@@ -1,5 +1,8 @@
 import { OrgAccountSetupProps } from "@/types/general";
 import { AggAddress, AggBioData, AggDocumentation } from "./forms/aggregator";
+import SelectMerchantType from "./forms/aggregator/SelectMerchantType";
+// import { useSelector } from "react-redux";
+// import { RootState } from "@/app/store";
 
 const OrganizationSetupForm = ({
   currentStep = 1,
@@ -12,7 +15,10 @@ const OrganizationSetupForm = ({
   setDocInfoState,
 }: OrgAccountSetupProps) => {
   if (accountType !== "HOME_OCCUPANT") {
+    // const step = currentStep >= 4 ? 3 : currentStep;
+    // const userData = useSelector((state: RootState) => state.user.user);
     const step = currentStep >= 4 ? 3 : currentStep;
+
     switch (step) {
       case 1:
         return <AggBioData formState={formState} setFormState={setFormState} />;
@@ -31,7 +37,14 @@ const OrganizationSetupForm = ({
           />
         );
       default:
-        break;
+        return (
+          <>
+            <SelectMerchantType
+              formState={formState}
+              setFormState={setFormState}
+            />
+          </>
+        );
     }
   }
 };

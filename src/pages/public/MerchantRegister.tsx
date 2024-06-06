@@ -1,5 +1,5 @@
 import { LogoAndBrandVertical, RegisterGraphic } from "@/assets/icons";
-import { Input } from "../../components/ui";
+import { Dropdown, Input } from "../../components/ui";
 import { Button } from "@/components/ui/Button";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -10,21 +10,26 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import CheckBox from "@/components/ui/CheckBox";
 import { useNavigate } from "react-router-dom";
 import AccountActionHeader from "@/components/reusables/account-setup/AccountActionHeader";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/api/axiosInstance";
 import toast from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
 import { VerifyEmail } from "@/components/dialogs";
+import { getAccountTypes } from "@/services/homeOccupant";
+import { merchantTypes } from "@/constants";
 
 type RegisterObject = {
   email: string;
   name: string;
   password: string;
   confirmPassword: string;
+  accountType: string;
+  merchantType: string;
   acceptTerms: boolean;
+  aggregatorType?: string;
 };
 
-const Register = () => {
+const MerchantRegister = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -38,14 +43,17 @@ const Register = () => {
     setShowConfirmPassword((prevState) => !prevState);
 
   const {
+    control,
     register,
     handleSubmit,
+    // watch,
     formState: { errors },
   } = useForm<RegisterFormContext>({
     resolver: yupResolver<any>(FormSchemas().RegisterSchema),
   });
 
   // Watch a specific field
+  //   const accountTypeValue = watch("accountType");
 
   const registerUser = useMutation({
     mutationFn: (userData: RegisterObject) =>
@@ -62,6 +70,11 @@ const Register = () => {
     },
   });
 
+  const accountTypes = useQuery({
+    queryKey: ["account-types"],
+    queryFn: () => getAccountTypes(),
+  });
+
   const onSubmit: SubmitHandler<RegisterFormContext> = async (value) => {
     try {
       const response = await registerUser.mutateAsync({
@@ -69,6 +82,8 @@ const Register = () => {
         name: value.name,
         password: value.password,
         confirmPassword: value.confirmPassword,
+        accountType: "MERCHANT",
+        merchantType: value.accountType.value,
         acceptTerms: true,
         // aggregatorType: "",
       });
@@ -188,6 +203,51 @@ const Register = () => {
                   error={errors.confirmPassword?.message}
                   placeholder="Confirm password"
                 />
+                <div className="">
+                  <Dropdown
+                    placeholder="Account type"
+                    wrapperClassName="w-full mt-4"
+                    name="accountType"
+                    register={register}
+                    isLoading={accountTypes.isLoading}
+                    loadingText="Fetching account types"
+                    options={merchantTypes}
+                    control={control}
+                  />
+                  {errors.accountType && (
+                    <p className="mt-[2px] text-[10px] text-[#E31B23]">
+                      {errors?.accountType?.message}
+                    </p>
+                  )}
+                </div>
+                {/* {accountTypeValue?.value == "AGGREGATOR" && (
+                  <div>
+                    <Dropdown
+                      placeholder="Aggregator type"
+                      wrapperClassName="w-full mt-4"
+                      name="aggregatorType"
+                      register={register}
+                      isLoading={accountTypes.isLoading}
+                      loadingText="Fetching Aggregator types"
+                      options={
+                        accountTypes.isSuccess && accountTypes.data
+                          ? Object.entries(
+                              accountTypes.data?.data.data.aggregatorTypes
+                            ).map((accType) => ({
+                              label: accType[0],
+                              value: String(accType[1]),
+                            }))
+                          : []
+                      }
+                      control={control}
+                    />
+                    {errors.accountType && (
+                      <p className="mt-[2px] text-[10px] text-[#E31B23]">
+                        {errors?.accountType?.message}
+                      </p>
+                    )}
+                  </div>
+                )} */}
                 <div className="flex gap-x-2 items-start mt-4">
                   <CheckBox
                     className="border-2 border-grey-swatch-700"
@@ -249,4 +309,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default MerchantRegister;
