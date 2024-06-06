@@ -45,7 +45,7 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
   return (
     <div className=" px-2 sm:px-4 py-3 w-full flex justify-center font-poppins">
       <div className="flex justify-between items-center w-full max-w-[1440px]">
-        <div className="flex items-center  lg:w-5/6  mx-auto">
+        <div className="flex items-center w-full  xl:w-5/6  mx-auto">
           {/* mobile sidebar menu icon */}
           <div className="pr-2">
             <SideBarBtn
@@ -65,7 +65,7 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
           </div>
 
           <div className="flex-center flex-1  justify-center gap-3 mx-auto">
-            <div className="bg-[#CECECE] flex w-[250px] h-[38px] rounded-[12px] px-4">
+            <div className="bg-[#CECECE] flex h-[38px] rounded-[12px] px-3 text-xs">
               <select
                 className="flex-1 bg-transparent border-none outline-none"
                 name=""
@@ -89,7 +89,7 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
               <input
                 type="text"
                 placeholder="Purchases"
-                className="flex-1 border-none outline-none active:outline-none active:border-none"
+                className="flex-1 text-sm outline-none active:outline-none active:border-none "
               />
             </div>
           </div>
