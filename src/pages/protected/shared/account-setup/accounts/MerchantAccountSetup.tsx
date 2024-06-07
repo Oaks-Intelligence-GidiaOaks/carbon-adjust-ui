@@ -61,7 +61,7 @@ const MerchantAccountSetup = (_: Props) => {
   const freshUserData = useQuery({
     queryKey: ["user-data", currentStep],
     queryFn: getMe,
-    // enabled: Boolean(currentStep && currentStep > 1),
+    enabled: !currentStep || Boolean(currentStep && currentStep > 1),
   });
 
   console.log(freshUserData.data?.data.data);
@@ -273,9 +273,9 @@ const MerchantAccountSetup = (_: Props) => {
     console.log(currentStep);
 
     switch (currentStep) {
-      case undefined:
-        setCurrentStep(1);
-        break;
+      // case undefined:
+      //   setCurrentStep(1);
+      //   break;
       case 0:
         setCurrentStep(1);
         break;
@@ -340,7 +340,7 @@ const MerchantAccountSetup = (_: Props) => {
 
         if (
           userData?.roles[0] === "MERCHANT" &&
-          userData?.merchantType !== "NON_FINANCIAL_MERCHANT" &&
+          userData?.merchantType === "FINANCIAL_MERCHANT" &&
           uniqueObjectsByIdType(userData?.doc).length === 4
         ) {
           navigate("/merchant");
@@ -382,7 +382,7 @@ const MerchantAccountSetup = (_: Props) => {
 
         if (
           userData?.roles[0] === "MERCHANT" &&
-          userData?.merchantType !== "NON_FINANCIAL_MERCHANT" &&
+          userData?.merchantType === "FINANCIAL_MERCHANT" &&
           uniqueObjectsByIdType(userData?.doc).length === 4
         ) {
           navigate("/merchant");
@@ -424,13 +424,51 @@ const MerchantAccountSetup = (_: Props) => {
 
         if (
           userData?.roles[0] === "MERCHANT" &&
-          userData?.merchantType !== "NON_FINANCIAL_MERCHANT" &&
+          userData?.merchantType === "FINANCIAL_MERCHANT" &&
           uniqueObjectsByIdType(userData?.doc).length === 4
         ) {
           navigate("/merchant");
         }
         return;
       default:
+        if (
+          userData?.roles[0] === "MERCHANT" &&
+          userData?.merchantType === "NON_FINANCIAL_MERCHANT"
+        ) {
+          if (
+            userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
+            uniqueObjectsByIdType(userData?.doc).length === 2
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
+            uniqueObjectsByIdType(userData?.doc).length === 3
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
+            uniqueObjectsByIdType(userData?.doc).length === 3
+          ) {
+            return navigate("/merchant");
+          }
+          if (
+            userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
+            uniqueObjectsByIdType(userData?.doc).length === 4
+          ) {
+            return navigate("/merchant");
+          }
+          return navigate("/merchant");
+        }
+
+        if (
+          userData?.roles[0] === "MERCHANT" &&
+          userData?.merchantType === "FINANCIAL_MERCHANT" &&
+          uniqueObjectsByIdType(userData?.doc).length === 4
+        ) {
+          navigate("/merchant");
+        }
         break;
     }
   };

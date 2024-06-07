@@ -135,7 +135,7 @@ const Documentation = ({ formState, setFormState }: Props) => {
       formData.append("idType", "Letter of Authorization");
       formData.append("file", formState.letterOfAuth[0]);
     }
-    setCertOfAuth.mutate(formData);
+    setLetterOfAuth.mutate(formData);
   };
 
   // Certificate of Inc
