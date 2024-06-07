@@ -13,7 +13,7 @@ const NewPackageCard = (props: Props) => {
     <div className="min-w-[200px] max-w-[262px] flex flex-col bg-white shrink-0">
       <div className="bg-[#F3F5F7] grid place-items-center h-[300px]  ">
         <img
-          //   src="/assets/graphics/pkg-1.svg"
+          src="/assets/graphics/pkg-1.png"
           alt=""
           className="w-full h-full "
         />

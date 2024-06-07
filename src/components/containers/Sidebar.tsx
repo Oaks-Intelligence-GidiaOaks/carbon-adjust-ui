@@ -120,6 +120,7 @@ const Sidebar = ({
           })}
         </div>
       </div>
+
       {/* mobile sidebar */}
       <div
         className={cn(
@@ -130,6 +131,7 @@ const Sidebar = ({
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-x-2">
             <Logo />
+
             <p className="font-poppins text-black">Carbon-Adjust</p>
           </div>
           <button className="w-5">

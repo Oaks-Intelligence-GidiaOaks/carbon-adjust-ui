@@ -1,10 +1,11 @@
 import { Product } from "@/types/product";
+import { Dispatch, SetStateAction } from "react";
 import { IoStar } from "react-icons/io5";
 import { MdFavoriteBorder } from "react-icons/md";
 // type Props = {};
 
 interface Props extends Product {
-  orderPackage: () => void;
+  orderPackage: Dispatch<SetStateAction<boolean>>;
 }
 
 const EnergyPackage = (props: Props) => {
@@ -17,7 +18,7 @@ const EnergyPackage = (props: Props) => {
         >
           <div className="mt-auto mb-4 w-full px-4 grid place-items-center">
             <button
-              onClick={() => props.orderPackage()}
+              onClick={() => props.orderPackage(true)}
               className="font-inter rounded-[24px] w-full h-[46px] text-white blue-gradient"
             >
               <span>Apply</span>

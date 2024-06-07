@@ -1,0 +1,74 @@
+[
+  {
+    "_id": "1",
+    "odrer_id": "#0008",
+    "customer_details": "Matthew Daniel",
+    "service_rendered": "Retrofit mgt Service",
+    "booking_date": "26-04-23",
+    "amount": "$100",
+    "status": "pending"
+  },
+  {
+    "_id": "2",
+    "odrer_id": "#0008",
+    "customer_details": "Matthew Daniel",
+    "service_rendered": "Retrofit mgt Service",
+    "booking_date": "26-04-23",
+    "amount": "$100",
+    "status": "pending"
+  },
+  {
+    "_id": "3",
+    "odrer_id": "#0008",
+    "customer_details": "Matthew Daniel",
+    "service_rendered": "Retrofit mgt Service",
+    "booking_date": "26-04-23",
+    "amount": "$100",
+    "status": "pending"
+  },
+  {
+    "_id": "4",
+    "odrer_id": "#0008",
+    "customer_details": "Matthew Daniel",
+    "service_rendered": "Retrofit mgt Service",
+    "booking_date": "26-04-23",
+    "amount": "$100",
+    "status": "pending"
+  },
+  {
+    "_id": "5",
+    "odrer_id": "#0008",
+    "customer_details": "Matthew Daniel",
+    "service_rendered": "Retrofit mgt Service",
+    "booking_date": "26-04-23",
+    "amount": "$100",
+    "status": "pending"
+  },
+  {
+    "_id": "6",
+    "odrer_id": "#0008",
+    "customer_details": "Matthew Daniel",
+    "service_rendered": "Retrofit mgt Service",
+    "booking_date": "26-04-23",
+    "amount": "$100",
+    "status": "pending"
+  },
+  {
+    "_id": "7",
+    "odrer_id": "#0008",
+    "customer_details": "Matthew Daniel",
+    "service_rendered": "Retrofit mgt Service",
+    "booking_date": "26-04-23",
+    "amount": "$100",
+    "status": "pending"
+  },
+  {
+    "_id": "8",
+    "odrer_id": "#0008",
+    "customer_details": "Matthew Daniel",
+    "service_rendered": "Retrofit mgt Service",
+    "booking_date": "26-04-23",
+    "amount": "$100",
+    "status": "pending"
+  }
+]

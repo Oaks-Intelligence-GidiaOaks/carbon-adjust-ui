@@ -60,7 +60,7 @@ const AggregatorDatabaseGrid = ({
     appId: "",
   });
 
-  console.log(data);
+  // console.log(data);
   //   const [expandedRows, setExpandedRows] = useState([]);
 
   // const [file, setFile] = useState<File | null>();
