@@ -1,5 +1,4 @@
 import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
-import { DataTable } from "@/components/tables/DataTable";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import packagesDummy from "@/dummy/packages.json";

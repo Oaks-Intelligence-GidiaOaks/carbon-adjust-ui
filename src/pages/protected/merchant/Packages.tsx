@@ -1,7 +1,6 @@
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { FiPlus } from "react-icons/fi";
 import NewPackageCard from "@/components/reusables/NewPackageCard";
-import { DataTable } from "@/components/tables/DataTable";
 import { Link } from "react-router-dom";
 import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
 import packagesDummy from "../../../dummy/packages.json";

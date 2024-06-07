@@ -35,7 +35,6 @@ const Applications = (_: Props) => {
 
       {/* table */}
       <div className="-mt-3">
-        {/* <DataTable columns={[]} data={[]} /> */}
         <ApplicationsGrid isUpdating data={applicationsDummy} />
       </div>
     </div>

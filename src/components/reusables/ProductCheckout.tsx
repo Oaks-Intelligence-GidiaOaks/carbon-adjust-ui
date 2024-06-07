@@ -259,7 +259,7 @@ const PaymentSuccessful = (props: {
 };
 
 const ProductCheckout = (props: {
-  setShowcheckout: (v: boolean) => void;
+  setShowcheckout: Dispatch<SetStateAction<boolean>>;
   showCheckout: boolean;
 }) => {
   const [stage, setStage] = useState<number>(1);
@@ -275,9 +275,6 @@ const ProductCheckout = (props: {
     3: <OrderSummary setStage={setStage} />,
     4: <PaymentSuccessful setStage={setStage} />,
   };
-
-  const modalStyles =
-    "my-20 mx-2 px-3 lg:my-16 fold:mx-1 sm:mx-auto fold:px-1 fold:py-3 py-7 rounded-2xl xl:mx-auto md:w-[749px] xl:w-[1189px] xl:px-7 bg-white z-50 xl:h-[90vh]";
 
   return (
     <Backdrop setShow={props.setShowcheckout} show={props.showCheckout}>
