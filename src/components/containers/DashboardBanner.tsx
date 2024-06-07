@@ -12,8 +12,8 @@ const DashboardBanner: FC = () => {
       }}
       className="h-[80vh] grid place-items-center font-poppins"
     >
-      <div className="lg:min-h-[406px] justify-around text-white flex items-stretch border py-[31px] bg-[#1C3D6D] bg-opacity-[0.85] rounded-[10px] mx-auto w-5/6 xl:gap-[60px] xl:justify-center">
-        <div className="flex-[0.45] flex-col flex gap-y-[15px] my-auto ">
+      <div className=" lg:min-h-[406px] justify-around text-white flex flex-col-reverse lg:flex-row items-stretch py-[31px] bg-[#1C3D6D] bg-opacity-[0.85] rounded-[10px] mx-auto  w-[95%] lg:w-5/6 xl:gap-[60px] xl:justify-center ">
+        <div className="hidden flex-1 lg:flex-[0.45] flex-col lg:flex gap-y-[15px] my-auto ">
           <h2 className="font-[700] text-[20px] ">
             ARE YOU SPENDING TOO MUCH ON YOUR HOME ENERGY BILLS ?
           </h2>
@@ -29,11 +29,11 @@ const DashboardBanner: FC = () => {
           </button>
         </div>
 
-        <div className="flex-[0.45] grid place-items-center border-l border-[#A5A5A5] rounded-[10px] pl-[32px]">
+        <div className="  flex-[0.45] grid place-items-center border-l border-[#A5A5A5] rounded-[10px] pl-[32px] gap-y-3">
           <div className="flex items-end">
             <img src="/assets/graphics/bannerImg.svg" alt="" />
 
-            <div className="flex flex-col gap-1 pl-[5px]">
+            <div className="flex flex-col gap-1 pl-[5px] text-sm lg:text-base">
               <div className="flex-center text-[7px] font-[600]">
                 <FaStar color="#E99C1B" />
                 <FaStar color="#E99C1B" />

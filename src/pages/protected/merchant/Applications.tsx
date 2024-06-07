@@ -1,6 +1,7 @@
 // import React from 'react'
 
-import { DataTable } from "@/components/tables/DataTable";
+import ApplicationsGrid from "@/components/grid/merchant/ApplicationsGrid";
+import applicationsDummy from "@/dummy/applications.json";
 
 type Props = {};
 
@@ -29,12 +30,12 @@ const Applications = (_: Props) => {
   }
 
   return (
-    <div>
-      <h2 className="font-[600] text-lg ">Applications</h2>
+    <div className="px-3 lg:px-4">
+      <h2 className="font-[600] text-lg pt-2 ">Applications</h2>
 
       {/* table */}
-      <div className="mt-6">
-        <DataTable columns={[]} data={[]} />
+      <div className="-mt-3">
+        <ApplicationsGrid isUpdating data={applicationsDummy} />
       </div>
     </div>
   );

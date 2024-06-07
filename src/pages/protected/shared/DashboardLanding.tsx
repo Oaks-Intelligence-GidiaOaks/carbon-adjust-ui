@@ -7,8 +7,9 @@ import BellIcon from "../../../assets/icons/bell.svg";
 import UserIcon from "../../../assets/icons/User.svg";
 import footerImg from "../../../assets/images/footerImg.png";
 import { Link } from "react-router-dom";
+import VideoContainer from "@/components/containers/home/VideoContainer";
 
-// this is the landing page the home owber sees after login contaning the video  playback
+// this is the landing page the home owner and merchant sees after login contaning the video  playback
 
 const DashboardLanding: FC = () => {
   return (
@@ -22,27 +23,28 @@ const DashboardLanding: FC = () => {
           <IoIosArrowDown size={15} color="#0B8DFF" />
         </div>
 
-        <div className="flex-center gap-2 border ml-auto">
-          <img src={SettingIcon} alt="" className="h-4 w-4" />
-          <img src={BellIcon} alt="" className="h-4 w-4" />
+        <div className="flex-center md:flex-[0.4] ml-auto">
+          <img
+            className="hidden md:inline-flex"
+            src="/assets/graphics/kommunita-logo.svg"
+            alt=""
+          />
 
-          <div className="h-[34px] w-[34px] border rounded-full grid place-items-center ">
-            <img src={UserIcon} alt="" className="h-4 w-4" />
+          <div className="flex-center gap-2  ml-auto">
+            <img src={SettingIcon} alt="" className="h-4 w-4" />
+            <img src={BellIcon} alt="" className="h-4 w-4" />
+
+            <div className="h-[34px] w-[34px] border rounded-full grid place-items-center ">
+              <img src={UserIcon} alt="" className="h-4 w-4" />
+            </div>
           </div>
         </div>
       </div>
 
-      <div
-        style={{
-          backgroundPosition: "center center",
-          backgroundImage:
-            "url('https://s3-alpha-sig.figma.com/img/221b/5f82/6ab7ac92b8ea3ba9d528aa57407216cd?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kDQacdpe5EXjeMEOvIUV7KHgeXTZ6dMFABYGkxrwxaM7J-uxg76jB4wlVUIaYYBfP9pSngwEi~T5zEaUsgf-hOC0YYxXVHQvUkLn5F916biKcTbKEbnGMM382KdnaAjgwhbubJ5NyOl~SMnsFVZHOIRL~zogsLTluMvi--aXNzQSAB1CxQ9mSE1-Ru34953XEMRPBLn5eAMPQU2BDxkxuf8cdj9YZtr9PiI2vjJ~xJ02-NCLFnGIasTvFUaTL7QtIZR3u-UWUUPuQFtW6OQt6AATR3hl3mUfV9on-JitsbgNUq9fHB9MURdqmwSTG44lqjGeUYigZRzPds80FTWXIA__')",
-        }}
-        className="h-[448px] bg-cover"
-      >
-        {/*  */}
-        {/*  */}
-      </div>
+      <VideoContainer
+        videoSrc="https://www.w3schools.com/html/mov_bbb.mp4"
+        coverImage="https://s3-alpha-sig.figma.com/img/221b/5f82/6ab7ac92b8ea3ba9d528aa57407216cd?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kDQacdpe5EXjeMEOvIUV7KHgeXTZ6dMFABYGkxrwxaM7J-uxg76jB4wlVUIaYYBfP9pSngwEi~T5zEaUsgf-hOC0YYxXVHQvUkLn5F916biKcTbKEbnGMM382KdnaAjgwhbubJ5NyOl~SMnsFVZHOIRL~zogsLTluMvi--aXNzQSAB1CxQ9mSE1-Ru34953XEMRPBLn5eAMPQU2BDxkxuf8cdj9YZtr9PiI2vjJ~xJ02-NCLFnGIasTvFUaTL7QtIZR3u-UWUUPuQFtW6OQt6AATR3hl3mUfV9on-JitsbgNUq9fHB9MURdqmwSTG44lqjGeUYigZRzPds80FTWXIA__"
+      />
 
       <div className="mx-auto w-fit mt-[15px]">
         <Link to="/dashboard">

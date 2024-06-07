@@ -90,17 +90,17 @@ export const retrofittingServices = [
 export const homeOwnerSideBarItems = [
   {
     icon: HomeIcon,
-    title: "",
+    title: "Home",
     href: "/home",
   },
   {
     icon: DashboardIcon,
-    title: "",
+    title: "Dashboard",
     href: "/dashboard/marketplace",
   },
   {
     icon: ApplicationsIcon,
-    title: "",
+    title: "Appointment",
     href: "/dashboard/appointment",
   },
   {

@@ -15,13 +15,18 @@ const MarketGroup = (_: Props) => {
 
   return (
     <div className="relative ">
-      <div className="h-[150px] bg-[#F5FAFF] flex items-center lg:pl-[50px]">
+      <div className="h-[150px] bg-[#F5FAFF] flex items-center pl-5 md:pl-[50px]">
         <h2 className="font-[500] text-xl">Home Energy Plans</h2>
       </div>
 
-      <div className="mt-[40px] flex items-stretch gap-[48px]">
+      <div
+        className="mt-[40px] flex items-stretch overflow-x-scroll pb-5 
+      
+      gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[850px] lg:mx-0  xl:max-w-[1100px] md:!ml-auto
+      "
+      >
         {Array.from(product.slice(0, 3), (item, i) => (
-          <EnergyPackage orderPackage={() => {}} {...item} key={i} />
+          <EnergyPackage orderPackage={setShowcheckout} {...item} key={i} />
         ))}
       </div>
 
@@ -29,7 +34,12 @@ const MarketGroup = (_: Props) => {
         <Promotion />
       </div>
 
-      <div className="flex items-stretch gap-[48px] mt-[48px]">
+      <div
+        className="mt-[40px] flex items-stretch overflow-x-scroll pb-5 
+      
+      gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[850px] lg:mx-0  xl:max-w-[1100px] md:!ml-auto
+      "
+      >
         {Array.from(product.slice(0, 1), (item, i) => (
           <EnergyPackage
             orderPackage={() => console.log("clciked")}

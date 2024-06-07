@@ -3,14 +3,17 @@ import { IoArrowBack } from "react-icons/io5";
 import ProductCard from "@/components/reusables/ProductCard";
 import { Input } from "@/components/ui";
 import SelectInput from "@/components/ui/SelectInput";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
 const NewPackage = (_: Props) => {
   return (
-    <div>
+    <div className="px-2 xl:px-8">
       <div className="flex-center gap-2">
-        <IoArrowBack color="#333333" />
+        <Link to={`/merchant/packages`}>
+          <IoArrowBack color="#333333" />
+        </Link>
 
         <h2 className="text-[#333333] font-[600] text-lg">
           Create new package
@@ -161,7 +164,7 @@ const NewPackage = (_: Props) => {
           <h2 className="text-sm font-[600] ">Previously created packages</h2>
 
           <div className="mt-[19px] flex flex-col gap-[20px]">
-            {Array.from({ length: 3 }, (_) => (
+            {Array.from({ length: 2 }, (_) => (
               <ProductCard
                 cost="$24.99
         $400.00"

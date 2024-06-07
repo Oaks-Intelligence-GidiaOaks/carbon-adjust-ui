@@ -34,11 +34,12 @@ const SideMenu = ({
       {/* desktop sidebar */}
       <div
         className={cn(
-          "w-[20%] lg:w-fit max-w-[302px] min-w-[80px] max-h-screen px-4 sm:sticky bg-white overflow-y-scroll pb-10 z-20 border-r border-[hsla(110,49%,88%,1)] top-0 hidden sm:block"
+          "w-auto lg:w-fit max-w-[302px] min-w-[50px] max-h-screen px-4 sm:sticky bg-white overflow-y-scroll pb-10 z-20 border-r border-[hsla(110,49%,88%,1)] top-0 hidden md:block"
         )}
       >
         <div className="flex justify-between items-center sticky top-0 pt-10 pb-2 z-10 bg-white">
-          <div className="flex items-center sticky top-0 border border-red-500 ">
+          {/* logo */}
+          <div className="flex items-center sticky top-0 pl-2 ">
             <Logo />
           </div>
 
@@ -112,6 +113,7 @@ const SideMenu = ({
           })}
         </div>
       </div>
+
       {/* mobile sidebar */}
       <div
         className={cn(
@@ -121,7 +123,8 @@ const SideMenu = ({
       >
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-x-2">
-            <Logo />
+            {/* <Logo /> */}
+            <img src="/assets/icons/logo-main.svg" alt="" className="w-7" />
             <p className="font-poppins text-black">Carbon-Adjust</p>
           </div>
           <button className="w-5">

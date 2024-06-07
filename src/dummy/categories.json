@@ -1,0 +1,30 @@
+[
+  {
+    "label": "All",
+    "value": "All"
+  },
+  {
+    "label": "Home Energy Plans",
+    "value": "Home Energy Plans"
+  },
+  {
+    "label": "Home Improvement Service",
+    "value": "Home Improvement Service"
+  },
+  {
+    "label": "Energy-Saving Advisory",
+    "value": "Energy-Saving Advisory"
+  },
+  {
+    "label": "Retrofit Specialist Service",
+    "value": "Retrofit Specialist Service"
+  },
+  {
+    "label": "Energy-Efficient Products",
+    "value": "Energy-Efficient Products"
+  },
+  {
+    "label": "Free Energy Health Check",
+    "value": "Free Energy Health Check"
+  }
+]
