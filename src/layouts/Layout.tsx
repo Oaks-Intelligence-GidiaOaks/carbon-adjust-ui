@@ -191,7 +191,7 @@ const Layout = (props: Props) => {
             />
             <div
               className={cn(
-                "font-poppins w-full max-w-[1440px] pb-16 px-4 mx-auto h-full overflow-y-scroll",
+                "font-poppins w-full max-w-[1440px] pb-16 mx-auto h-full overflow-y-scroll",
                 pathname.includes("dashboard/applications") && "px-0",
                 pathname === "/dashboard/devices" && "px-0",
                 pathname === "/dashboard/profile" && "px-0"

@@ -5,20 +5,20 @@ const Backdrop = (props: {
   show: boolean;
   setShow: (v: boolean) => void;
 }) => {
-  const closeBackdrop = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (e.target === e.currentTarget) {
-      props.setShow(false);
-    }
-  };
+  // const closeBackdrop = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  //   if (e.target === e.currentTarget) {
+  //     props.setShow(false);
+  //   }rder
+  // };
 
   return (
     <div
       className={`  ${
-        props.show ? "absolute" : "hidden"
-      } top-0 left-0 w-full bg-[#D9D9D9] bg-opacity-70 flex justify-end border z-50`}
-      onClick={closeBackdrop}
+        props.show ? "fixed" : "hidden"
+      } top-0 left-0 w-full h-full bg-[#D9D9D9] bg-opacity-70 flex justify-center md:justify-end z-50`}
+      // onClick={closeBackdrop}
     >
-      <div className="bg-white">{props.children}</div>
+      <div className="">{props.children}</div>
     </div>
   );
 };

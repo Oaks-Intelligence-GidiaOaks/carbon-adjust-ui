@@ -12,17 +12,21 @@ import { IComponentMap } from "@/types/general";
 
 const DescriptionSection = (props: {
   setStage: Dispatch<SetStateAction<number>>;
+  setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => (
-  <div>
-    <div className="flex-center justify-between w-full  border-b py-4 px-7">
+  <div className="">
+    <div className="flex-center justify-between w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
       <h2 className="font-[600] text-lg">Home Energy Package</h2>
 
-      <span>
+      <span
+        className="cursor-pointer"
+        onClick={() => props.setShowcheckout(false)}
+      >
         <GrClose />
       </span>
     </div>
 
-    <div className="py-[15px] flex flex-col gap-[15px]">
+    <div className="py-[15px] flex flex-col gap-[15px] z-10">
       <h2 className="text-center font-[600] text-lg ">Checkout</h2>
 
       <div className="w-[262px] mx-auto">
@@ -77,7 +81,7 @@ const ProductForm = (props: { setStage: Dispatch<SetStateAction<number>> }) => {
 
   return (
     <div>
-      <div className="flex-center font-poppins justify-between w-full  border-b py-4 px-7">
+      <div className="flex-center font-poppins justify-between w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
         <h2 className="font-[600] text-lg">Home Energy Package</h2>
 
         <span>
@@ -149,7 +153,7 @@ const OrderSummary = (props: {
 }) => {
   return (
     <div>
-      <div className="flex-center font-poppins justify-between w-full  border-b py-4 px-7">
+      <div className="flex-center font-poppins justify-between w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
         <div className="flex-center gap-[13px]">
           <IoIosArrowRoundBack />
           <h2 className="font-[600] text-lg">Check Out</h2>
@@ -160,57 +164,56 @@ const OrderSummary = (props: {
         </span>
       </div>
 
-      <div className="flex flex-col gap-[32px] w-5/6 mx-auto">
-        <h2 className="font-[600] text-lg">Order Summary</h2>
+      <div className="flex flex-col gap-[22px] border px-5 mx-auto">
+        <h2 className="font-[600] text-lg mt-3">Order Summary</h2>
 
         <div className="flex-start">
-          <span className="font-[600] text-base w-1/2"> Price $: </span>
-          <span className="font-[400] text-base w-1/2 pl-2"> 199 </span>
+          <span className="font-[600] text-sm w-1/2"> Price $: </span>
+          <span className="font-[400] text-sm w-1/2 pl-2"> 199 </span>
         </div>
 
         <div className="flex-start">
-          <span className="font-[600] text-base w-1/2 "> Package : </span>
-          <span className="font-[400] text-base w-1/2 pl-2">
+          <span className="font-[600] text-sm w-1/2 "> Package : </span>
+          <span className="font-[400] text-sm w-1/2 pl-2">
             Window Retrofitting{" "}
           </span>
         </div>
 
         <div className="flex-start">
-          <span className="font-[600] text-base w-1/2"> Address: </span>
-          <span className="font-[400] text-base w-1/2 pl-2">
+          <span className="font-[600] text-sm w-1/2"> Address: </span>
+          <span className="font-[400] text-sm w-1/2 pl-2">
             45 Forth Avenue, Bristol, United Kingdom
           </span>
         </div>
 
         <div className="flex-start">
-          <span className="font-[600] text-base w-1/2"> Email Address: </span>
-          <span className="font-[400] text-base w-1/2 pl-2">
-            {" "}
-            demoperson@gmail.com{" "}
+          <span className="font-[600] text-sm w-1/2"> Email Address: </span>
+          <span className="font-[400] text-sm  truncate w-1/2 pl-2">
+            demoperson@gmail.com
           </span>
         </div>
 
         <div className="flex-start">
-          <span className="font-[600] text-base w-1/2"> Phone Number: </span>
-          <span className="font-[400] text-base w-1/2 pl-2">
+          <span className="font-[600] text-sm w-1/2"> Phone Number: </span>
+          <span className="font-[400] text-sm w-1/2 pl-2">
             {" "}
             +44 4576 87*****{" "}
           </span>
         </div>
 
         <div className="flex-start">
-          <span className="font-[600] text-base w-1/2">
+          <span className="font-[600] text-sm w-1/2">
             Will you need any other product?:
           </span>
-          <span className="font-[400] text-base w-1/2 pl-2"> Yes </span>
+          <span className="font-[400] text-sm w-1/2 pl-2"> Yes </span>
         </div>
 
         <div className="flex-start">
-          <span className="font-[600] text-base w-1/2">
+          <span className="font-[600] text-sm w-1/2">
             How much are you willing to spend on your retrofit journey in the
             next year?:
           </span>
-          <span className="font-[400] text-base w-1/2 pl-2"> $25 </span>
+          <span className="font-[400] text-sm w-1/2 pl-2"> $25 </span>
         </div>
 
         <button
@@ -229,7 +232,7 @@ const PaymentSuccessful = (props: {
 }) => {
   return (
     <div className="flex flex-col items-center h-[80vh]">
-      <div className="flex-center font-poppins justify-end w-full  border-b py-4 px-7">
+      <div className="flex-center font-poppins justify-end w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
         <span>
           <GrClose />
         </span>
@@ -262,15 +265,27 @@ const ProductCheckout = (props: {
   const [stage, setStage] = useState<number>(1);
 
   const stageMap: IComponentMap = {
-    1: <DescriptionSection setStage={setStage} />,
+    1: (
+      <DescriptionSection
+        setStage={setStage}
+        setShowcheckout={props.setShowcheckout}
+      />
+    ),
     2: <ProductForm setStage={setStage} />,
     3: <OrderSummary setStage={setStage} />,
     4: <PaymentSuccessful setStage={setStage} />,
   };
 
+  const modalStyles =
+    "my-20 mx-2 px-3 lg:my-16 fold:mx-1 sm:mx-auto fold:px-1 fold:py-3 py-7 rounded-2xl xl:mx-auto md:w-[749px] xl:w-[1189px] xl:px-7 bg-white z-50 xl:h-[90vh]";
+
   return (
     <Backdrop setShow={props.setShowcheckout} show={props.showCheckout}>
-      <div className="max-w-[480px] max-h-[92vh] overflow-y-scroll pb-[30px]">
+      <div
+        className={`bg-white
+        mt-10 mx-auto w-[90vw] 
+       md:w-[380px] border h-[90vh] md:mt-0 md:h-[100vh] overflow-y-scroll pb-[30px]`}
+      >
         {stageMap[stage]}
       </div>
     </Backdrop>

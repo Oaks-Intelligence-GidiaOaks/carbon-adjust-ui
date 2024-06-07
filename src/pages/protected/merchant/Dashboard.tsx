@@ -1,8 +1,9 @@
 // import React from "react";
 
 import { StackedLineChart } from "@/components/charts/StackedLineChart";
+import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
 import OrgDashboardDetailsCard from "@/components/reusables/OrgDashboardDetailsCard";
-import { DataTable } from "@/components/tables/DataTable";
+import packagesDummy from "../../../dummy/packages.json";
 
 type Props = {};
 
@@ -38,17 +39,17 @@ const Dashboard = (_: Props) => {
   ];
 
   return (
-    <div>
-      <div className="flex-center gap-[20px] mt-[50px] ">
+    <div className="px-2 xl:px-8">
+      <div className="flex items-strectch gap-[20px] mt-[50px] max-w-[93vw] md:max-w-[64vw] lg:max-w-[70vw] pr-3 overflow-x-scroll pb-5 xl:max-w-full ">
         {Array.from(cardItems, (item) => (
-          <div className="border flex-1 ">
-            <OrgDashboardDetailsCard {...item} viewAllUrl="" />
-          </div>
+          // <div className="border flex-1 ">
+          <OrgDashboardDetailsCard {...item} viewAllUrl="" />
+          // </div>
         ))}
       </div>
 
       {/* chart - Applications */}
-      <div className="my-10">
+      <div className="my-4">
         <div className="flex justify-between">
           <p className="font-poppins font-bold pb-8 text-main text-xl">
             Applications
@@ -72,12 +73,17 @@ const Dashboard = (_: Props) => {
         >
           <StackedLineChart approved={[]} rejected={[]} received={[]} />
         </div>
+
         <div className="mt-6 flex justify-center gap-x-3 items-center"></div>
       </div>
 
       {/* Packages Grid */}
-      <div>
-        <DataTable columns={[]} data={[]} />
+      <div className=" p-3 rounded-md bg-white">
+        <h2 className="font-[600] text-lg">Packages Created </h2>
+
+        <div className="-mt-3">
+          <PackagesGrid isUpdating={false} data={packagesDummy.slice(0, 3)} />
+        </div>
       </div>
     </div>
   );

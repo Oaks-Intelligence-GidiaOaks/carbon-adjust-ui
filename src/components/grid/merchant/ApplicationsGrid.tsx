@@ -46,7 +46,7 @@ import {
 import { PDFIcon } from "@/assets/icons";
 import { GrClose } from "react-icons/gr";
 
-const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
+const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
@@ -239,8 +239,8 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     //   header: () => <div className="w-36 text-left">Application ID</div>,
     // }),
 
-    columnHelper.accessor((row: any) => row?.created_at, {
-      id: "created_at",
+    columnHelper.accessor((row: any) => row?.odrer_id, {
+      id: "odrer_id",
       cell: (info) => (
         <div className="w-24 mx-auto text-left">
           {
@@ -255,8 +255,8 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       header: () => <div className="w-36 text-left">Date</div>,
     }),
 
-    columnHelper.accessor((row: any) => row?.created_at, {
-      id: "package_id",
+    columnHelper.accessor((row: any) => row?.customer_details, {
+      id: "customer_details",
       cell: (info) => (
         <div className="w-24 mx-auto text-left">
           {
@@ -278,8 +278,8 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       header: () => <div className="w-36 text-left">Service Rendered</div>,
     }),
 
-    columnHelper.accessor((row: any) => row?.category, {
-      id: "category",
+    columnHelper.accessor((row: any) => row?.booking_date, {
+      id: "booking_date",
       cell: (info) => (
         <div className="w-24 mx-auto text-left">{info.getValue()}</div>
       ),
@@ -294,8 +294,8 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       header: () => <div className="w-36 text-left">Amount</div>,
     }),
 
-    columnHelper.accessor((row: any) => row?.views, {
-      id: "views",
+    columnHelper.accessor((row: any) => row?.amount, {
+      id: "amount",
       cell: (info: any) => (
         <div className="w-44 relative text-center grid place-items-center items-center text-sm">
           <span>{info.getValue()}</span>
@@ -645,4 +645,4 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   );
 };
 
-export default PackagesGrid;
+export default ApplicationsGrid;

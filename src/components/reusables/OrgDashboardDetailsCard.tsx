@@ -20,7 +20,7 @@ const OrgDashboardDetailsCard = ({
   percentageValue = 0,
 }: Props) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 font-poppins">
+    <div className="bg-white rounded-lg shadow-md p-4 font-poppins min-w-[200px] shrink-0 flex-1">
       <div className="flex justify-between items-center">
         <p className="text-sm font-semibold text-main">{title}</p>
         <p>{icon}</p>

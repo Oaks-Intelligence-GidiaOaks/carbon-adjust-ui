@@ -3,6 +3,8 @@ import { FiPlus } from "react-icons/fi";
 import NewPackageCard from "@/components/reusables/NewPackageCard";
 import { DataTable } from "@/components/tables/DataTable";
 import { Link } from "react-router-dom";
+import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
+import packagesDummy from "../../../dummy/packages.json";
 
 type Props = {};
 
@@ -26,7 +28,7 @@ const Packages = (_: Props) => {
         </p>
 
         <Link to="/merchant/packages/new">
-          <button className="blue-gradient w-[130px] rounded-[12px] text-white text-sm font-[500] h-[46px]">
+          <button className="blue-gradient w-[130px] rounded-[12px] text-white text-sm font-[500] h-[46px] min-w-[300px]">
             Create Package
           </button>
         </Link>
@@ -39,9 +41,9 @@ const Packages = (_: Props) => {
   }
 
   return (
-    <div>
+    <div className="px-3 lg:px-4">
       <div className="flex-center justify-between">
-        <div className="flex flex-col gap-[6px]">
+        <div className="flex flex-col gap-[6px] my-4">
           <h2 className="font-[600] text-lg ">Packages</h2>
 
           <h6 className="font-[400] text-sm text-[#575757]">
@@ -50,10 +52,10 @@ const Packages = (_: Props) => {
         </div>
 
         <Link to="/merchant/packages/new">
-          <button className=" flex-center gap-3 h-[46px] bg-[#2196F3] rounded-[10px] text-white px-4">
+          <button className=" flex-center gap-3 h-[46px] text-sm bg-[#2196F3] rounded-[10px] text-white px-4">
             <span>Create package</span>
 
-            <span className="rounded-full bg-white bg-opacity-15 grid place-items-center h-[30px] w-[30px]">
+            <span className="rounded-full hidden md:grid bg-white bg-opacity-15  place-items-center h-[30px] w-[30px]">
               <FiPlus color="#FFFFFF" />
             </span>
           </button>
@@ -61,7 +63,7 @@ const Packages = (_: Props) => {
       </div>
 
       {/* Flat Lists */}
-      <div className="flex items-stretch gap-[20px] mt-[24px]">
+      <div className="flex items-stretch gap-[20px] mt-[24px] w-[93vw] overflow-x-scroll pb-5 md:w-full">
         {Array.from({ length: 3 }, (_) => (
           <NewPackageCard name="string" cost="string" rating={5} />
         ))}
@@ -80,8 +82,9 @@ const Packages = (_: Props) => {
         </div>
 
         {/* table */}
-        <div className="mt-6">
-          <DataTable columns={[]} data={[]} />
+        <div className="-mt-3">
+          <PackagesGrid data={packagesDummy.slice(0, 4)} isUpdating />
+          {/* <DataTable columns={[]} data={[]} /> */}
         </div>
       </div>
     </div>

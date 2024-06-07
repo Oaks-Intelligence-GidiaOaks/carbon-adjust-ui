@@ -16,7 +16,7 @@ const Promotion = (_: Props) => {
   return (
     <div className="flex items-stretch border #121212 bg-[#EDF6FD]">
       <div
-        className="w-1/2 h-auto "
+        className="w-1/2 h-auto  hidden md:inline-flex"
         style={{
           backgroundImage: "url('/assets/graphics/promote.png')",
           backgroundPosition: "center center",
@@ -30,10 +30,10 @@ const Promotion = (_: Props) => {
         /> */}
       </div>
 
-      <div className="w-1/2 py-[60px] lg:pl-[50px] h-fit space-y-3">
+      <div className=" w-full  md:w-1/2 py-[60px] px-3 lg:pl-[50px] h-fit space-y-3 text-center md:text-left">
         <h5 className="text-[#377DFF] text-xs font-[600]">PROMOTION</h5>
 
-        <div className="flex-center text-[#121212] gap-1">
+        <div className="flex-center text-[#121212] gap-1 flex-col md:flex-row items-center">
           <span>Hurry up!</span>{" "}
           <span className="text-[#FA2222]"> 40% OFF</span>
         </div>
@@ -44,14 +44,14 @@ const Promotion = (_: Props) => {
 
         <h6 className="text-xs font-[400]">Offer expires in:</h6>
 
-        <div className="flex-center gap-3">
+        <div className="flex-center gap-3 mx-auto md:mx-0 w-fit">
           <TimeCard text="Days" time="02" />
           <TimeCard text="Hours" time="12" />
           <TimeCard text="Minutes" time="45" />
           <TimeCard text="Seconds" time="05" />
         </div>
 
-        <button className="blue-gradient cursor-pointer uppercase text-white grid place-items-center text-base font-[700] rounded-[24px] w-[194px] h-[50px]">
+        <button className=" mx-auto md:mx-0 blue-gradient cursor-pointer uppercase text-white grid place-items-center text-base font-[700] rounded-[24px] w-[194px] h-[50px]">
           <span>Shop Now</span>
         </button>
       </div>

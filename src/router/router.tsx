@@ -56,6 +56,7 @@ import {
   UserMarketGroup,
   UserMarketPlace,
   UserOrderList,
+  UserProfile,
 } from "@/pages/protected/home-occupant";
 import { Profile } from "@/pages/protected/old/home-occupant";
 import MerchantRegister from "@/pages/public/MerchantRegister";
@@ -154,7 +155,7 @@ const Router = createBrowserRouter([
       // },
       {
         path: "profile",
-        element: <Profile accountType="home-occupant" />,
+        element: <UserProfile />,
       },
     ],
   },

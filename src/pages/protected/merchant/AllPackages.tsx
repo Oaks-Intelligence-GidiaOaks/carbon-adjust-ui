@@ -1,12 +1,14 @@
+import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
 import { DataTable } from "@/components/tables/DataTable";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import packagesDummy from "@/dummy/packages.json";
 
 type Props = {};
 
 const AllPackages = (_: Props) => {
   return (
-    <div>
+    <div className="px-2 xl:px-8 pt-2">
       <div className="flex-center justify-between">
         <div className="flex flex-col gap-[6px]">
           <h2 className="font-[600] text-lg ">Packages</h2>
@@ -28,8 +30,9 @@ const AllPackages = (_: Props) => {
       </div>
 
       {/* table */}
-      <div className="mt-6">
-        <DataTable columns={[]} data={[]} />
+      <div className="-mt-3">
+        <PackagesGrid data={packagesDummy} isUpdating />
+        {/* <DataTable columns={[]} data={[]} /> */}
       </div>
     </div>
   );
