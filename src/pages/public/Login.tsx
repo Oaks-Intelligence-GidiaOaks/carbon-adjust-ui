@@ -141,6 +141,10 @@ const Login = () => {
         ) {
           return navigate("/account-setup");
         }
+        if (!userData.nonFinancialMerchantType) {
+          return navigate("/account-setup");
+        }
+
         return navigate("/merchant");
       }
 

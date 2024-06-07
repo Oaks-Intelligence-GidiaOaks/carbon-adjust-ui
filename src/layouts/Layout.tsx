@@ -32,7 +32,7 @@ const Layout = (props: Props) => {
     queryKey: ["fetch-user-info"],
     queryFn: userService().fetchUserInfo,
   });
-  console.log(userData.data?.data);
+  console.log(userData);
 
   // ---------------------UNCOMMENT THIS CODE WHEN ADMIN STARTS VERIFYING USERS
   useEffect(() => {
@@ -44,6 +44,9 @@ const Layout = (props: Props) => {
 
       if (userData.data.data.data.roles[0] === "ADMIN") {
         return navigate("/admin");
+      }
+      if (userData.data.data.data.roles[0] === "HOME_OCCUPANT") {
+        return navigate("/dashboard");
       }
       // NON_FINANCIAL MERCHANT PATH
       if (
@@ -154,6 +157,8 @@ const Layout = (props: Props) => {
         }
         return navigate("/merchant");
       }
+
+      return navigate("/dashboard");
     }
     // error encountered
   }, [userData.isSuccess]);
