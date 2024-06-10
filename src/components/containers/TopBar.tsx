@@ -11,7 +11,7 @@ import categories from "../../dummy/categories.json";
 import SettingIcon from "../../assets/icons/setting.svg";
 import BellIcon from "../../assets/icons/bell.svg";
 import UserIcon from "../../assets/icons/User.svg";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SelectInput from "../ui/SelectInput";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
@@ -23,7 +23,6 @@ type Props = {
 };
 
 const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
-  const navigate = useNavigate();
   // const breadcrumbs = useBreadcrumbs();
   const location = useLocation();
   const role = useSelector((state: RootState) => state.user.user?.roles[0]);
