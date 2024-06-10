@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface UserState {
   user: AuthUserProfile | null;
   token: string | null;
+  kommunitaToken?: string | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -21,6 +22,9 @@ const userSlice = createSlice({
   reducers: {
     setToken(state, action: PayloadAction<string>) {
       state.token = action.payload;
+    },
+    setKommunitaToken(state, action: PayloadAction<string>) {
+      state.kommunitaToken = action.payload;
     },
     setUser(state, action: PayloadAction<UserState["user"]>) {
       state.user = action.payload;
@@ -48,6 +52,7 @@ export const {
   setError,
   setToken,
   setUserDocs,
+  setKommunitaToken,
   // logOutUser,
 } = userSlice.actions;
 

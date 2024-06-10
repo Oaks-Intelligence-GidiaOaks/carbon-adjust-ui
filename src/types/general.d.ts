@@ -169,6 +169,7 @@ export type DropBoxProps = {
   docName?: string;
   setFile?: React.Dispatch<React.SetStateAction<DocInfoForm>>;
   setFiles?: React.Dispatch<React.SetStateAction<OrgDocInfoForm>>;
+  setSelectedFiles?: React.Dispatch<React.SetStateAction<File[] | null>>;
   children?: ReactNode;
 };
 

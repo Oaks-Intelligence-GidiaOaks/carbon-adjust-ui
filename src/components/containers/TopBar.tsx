@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import SelectInput from "../ui/SelectInput";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
+import { cn } from "@/utils";
 
 type Props = {
   mobileMenuIsOpen: boolean;
@@ -24,6 +25,10 @@ type Props = {
 const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
   // const breadcrumbs = useBreadcrumbs();
   const location = useLocation();
+  const role = useSelector((state: RootState) => state.user.user?.roles[0]);
+  const kommunitaToken = useSelector(
+    (state: RootState) => state.user.kommunitaToken
+  );
   const user = useSelector((state: RootState) => state.user.user);
 
   const merchant = "MERCHANT";
@@ -129,11 +134,21 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
           )}
 
           <div className="flex-center gap-[18px] ml-auto ">
-            <img
-              className="hidden md:inline-flex "
-              src="/assets/graphics/kommunita-logo.svg"
-              alt=""
-            />
+            {role === "HOME_OCCUPANT" && (
+              <img
+                className={cn(
+                  "hidden md:inline-flex cursor-pointer hover:scale-105 transition-all",
+                  kommunitaToken ? "block" : "hidden"
+                )}
+                src="/assets/graphics/kommunita-logo.svg"
+                alt=""
+                onClick={() =>
+                  window.location.assign(
+                    `https://kommunita-web.netlify.app/home?token=${kommunitaToken}`
+                  )
+                }
+              />
+            )}
 
             <div className="flex-center gap-2  ">
               {!isMerchant && (

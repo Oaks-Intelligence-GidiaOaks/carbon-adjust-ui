@@ -10,6 +10,7 @@ const DropBox = ({
   value,
   setFile: setStateFile,
   setFiles: setStateOrgFiles,
+  setSelectedFiles,
   docName,
 }: DropBoxProps) => {
   // interface HTMLInputEvent extends Event {
@@ -64,6 +65,9 @@ const DropBox = ({
         if (setStateFile) {
           setStateFile((prev) => ({ ...prev, doc: updatedList }));
         }
+        if (setSelectedFiles) {
+          setSelectedFiles(updatedList);
+        }
         if (setStateOrgFiles) {
           setStateOrgFiles((prev) => ({
             ...prev,
@@ -83,6 +87,9 @@ const DropBox = ({
     setFileList(updatedList);
     if (setStateFile) {
       setStateFile((prev) => ({ ...prev, doc: updatedList }));
+    }
+    if (setSelectedFiles) {
+      setSelectedFiles(updatedList);
     }
     if (setStateOrgFiles) {
       setStateOrgFiles((prev) => ({

@@ -4,9 +4,7 @@ import { FaStar } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-const ProductCard = (props: Product) => {
-  const dispatch = useDispatch();
-
+const ProductCard = ({ isMerchant = false, ...props }: Product) => {
   return (
     <div className="min-w-[228px] group">
       <div className="relative ">
@@ -16,19 +14,15 @@ const ProductCard = (props: Product) => {
 
         <div className="relative">
           <div className="hidden group-hover:flex flex-col  absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 ">
-            <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
-              <Link
-                onClick={() => {
-                  dispatch(addProduct({ ...props }));
-                }}
-                to={`/dashboard/marketplace/${props.slug}?pid=${props._id}`}
-                className="w-5/6"
-              >
-                <button className=" blue-gradient w-full rounded-[24px] h-[40px] text-center text-white text-base font-[500]">
-                  Apply
-                </button>
-              </Link>
-            </div>
+            {!isMerchant && (
+              <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
+                <Link className="w-5/6" to={"/dashboard/marketplace/group"}>
+                  <button className=" blue-gradient w-full rounded-[24px] h-[40px] text-center text-white text-base font-[500]">
+                    Apply
+                  </button>
+                </Link>
+              </div>
+            )}
           </div>
 
           <img

@@ -40,16 +40,17 @@ const SelectInput: FC<SelectInputProps> = (props) => {
           styles={{
             placeholder: (provided, _) => ({
               ...provided,
-              fontSize: "12px",
+              fontSize: "14px",
               fontFamily: "Plus Jakarta Sans', sans-serif",
             }),
           }}
           classNames={{
-            container: (state) => (state.isFocused ? "" : ""),
+            container: (state) =>
+              state.isFocused ? "" : "bg-[#E4E7E8] rounded-lg border-none",
             control: (state) =>
               state.isFocused
-                ? " !py-[1px] rounded-lg px-3"
-                : " !py-[1px]  rounded-lg px-3 ",
+                ? " !py-[1px] border-none rounded-lg pr-3 bg-[#E4E7E8] shadow-none"
+                : " !py-[1px] border-[0_!important] rounded-lg pr-3 shadow-none",
             option: (state) =>
               state.isFocused || state.isSelected
                 ? " custom-option-gradient !rounded-[10px] !font-[600] !py-[11px] !text-sm !leading-[21px] !text-white !w-[98.5%] !mx-auto"
@@ -57,7 +58,7 @@ const SelectInput: FC<SelectInputProps> = (props) => {
             valueContainer: (state) =>
               state.hasValue
                 ? " !border-none !outline-none !text-[#8a8a8a]"
-                : "",
+                : "bg-[#E4E7E8] border-none",
             menuList: (state) => (state.hasValue ? " !bg-transparent" : ""),
           }}
           name={props.label}

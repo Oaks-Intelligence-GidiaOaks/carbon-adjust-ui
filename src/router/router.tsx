@@ -40,6 +40,7 @@ import {
 } from "@/pages/protected/admin";
 // import { elements } from "chart.js";
 import {
+  CreatePackageSchedule,
   MerchantAllPackages,
   MerchantApplications,
   MerchantBookings,
@@ -193,6 +194,10 @@ const Router = createBrowserRouter([
           {
             path: "",
             element: <MerchantPackages />,
+          },
+          {
+            path: "schedule/:packageId",
+            element: <CreatePackageSchedule />,
           },
           {
             path: "new",

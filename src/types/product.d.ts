@@ -10,6 +10,7 @@ export type Product = {
   slug: string;
   discount?: string | number;
   discount?: string;
+  isMerchant?: boolean;
   questions: IQuestion[];
   // checkout?: (it: Product) => void;
 };

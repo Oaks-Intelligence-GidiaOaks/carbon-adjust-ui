@@ -91,6 +91,10 @@ const Layout = (props: Props) => {
           uniqueObjectsByIdType(userData.data.data.data?.doc).length < 4
         ) {
           console.log("here");
+          if (pathname.includes("merchant")) {
+            console.log("Here");
+            return;
+          }
           return navigate("/merchant");
         }
         console.log("here");
@@ -156,6 +160,10 @@ const Layout = (props: Props) => {
           return navigate("/account-setup");
         }
         console.log("Here");
+        if (pathname.includes("merchant")) {
+          console.log("Here");
+          return;
+        }
         return navigate("/merchant");
       }
       // FINANCIAL MERCHANT PATH
