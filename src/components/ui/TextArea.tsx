@@ -53,7 +53,7 @@ const TextArea = ({
           tabIndex={1}
           placeholder={placeholder ? placeholder : ""}
           className={cn(
-            "placeholder:text-grey-swatch-600 flex w-full flex-1 bg-transparent py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+            "placeholder:text-grey-swatch-600 resize-none flex w-full flex-1 bg-transparent py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
             prependIcon ? "pl-3" : "",
             className
           )}

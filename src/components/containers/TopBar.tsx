@@ -11,8 +11,11 @@ import categories from "../../dummy/categories.json";
 import SettingIcon from "../../assets/icons/setting.svg";
 import BellIcon from "../../assets/icons/bell.svg";
 import UserIcon from "../../assets/icons/User.svg";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SelectInput from "../ui/SelectInput";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { cn } from "@/utils";
 
 type Props = {
   mobileMenuIsOpen: boolean;
@@ -20,8 +23,13 @@ type Props = {
 };
 
 const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
+  const navigate = useNavigate();
   // const breadcrumbs = useBreadcrumbs();
   const location = useLocation();
+  const role = useSelector((state: RootState) => state.user.user?.roles[0]);
+  const kommunitaToken = useSelector(
+    (state: RootState) => state.user.kommunitaToken
+  );
 
   const getActiveTab = () => {
     const currentPath = location.pathname;
@@ -136,11 +144,21 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
           </div>
 
           <div className="flex-center gap-[18px] ml-auto ">
-            <img
-              className="hidden md:inline-flex "
-              src="/assets/graphics/kommunita-logo.svg"
-              alt=""
-            />
+            {role === "HOME_OCCUPANT" && (
+              <img
+                className={cn(
+                  "hidden md:inline-flex cursor-pointer hover:scale-105 transition-all",
+                  kommunitaToken ? "block" : "hidden"
+                )}
+                src="/assets/graphics/kommunita-logo.svg"
+                alt=""
+                onClick={() =>
+                  window.location.assign(
+                    `https://kommunita-web.netlify.app/home?token=${kommunitaToken}`
+                  )
+                }
+              />
+            )}
 
             <div className="flex-center gap-2  ">
               <img src={SettingIcon} alt="" className="h-4 w-4" />
