@@ -7,10 +7,11 @@ import Sidebar from "@/components/containers/Sidebar";
 import TopBar from "@/components/containers/TopBar";
 // import InactivityWrapper from "@/components/hoc/InactivityWrapper";
 import { setUser } from "@/features/userSlice";
+import UseScrollToTop from "@/hooks/useScrollToTop";
 // import ProtectedRoute from "@/guards/ProtectedRoute";
 import { cn, uniqueObjectsByIdType } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import toast from "react-hot-toast";
 // import { Oval } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +24,7 @@ type Props = {
 const Layout = (props: Props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const contentRef = useRef(null);
 
   const { pathname } = useLocation();
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState<boolean>(false);
@@ -32,7 +34,7 @@ const Layout = (props: Props) => {
     queryKey: ["fetch-user-info"],
     queryFn: userService().fetchUserInfo,
   });
-  console.log(userData);
+  // console.log(userData);
 
   // ---------------------UNCOMMENT THIS CODE WHEN ADMIN STARTS VERIFYING USERS
   useEffect(() => {
@@ -181,6 +183,8 @@ const Layout = (props: Props) => {
   //   window.location.assign("/login?ie=true");
   // };
 
+  UseScrollToTop(contentRef);
+
   return (
     // <ProtectedRoute role={user?.roles[0]}>
     //   <InactivityWrapper onLogout={() => handleLogout()}>
@@ -205,6 +209,7 @@ const Layout = (props: Props) => {
           setMobileMenuIsOpen={setMobileMenuIsOpen}
         />
         <div
+          ref={contentRef}
           className={cn(
             "font-poppins w-full max-w-[1440px] pb-16 px-4 mx-auto h-full overflow-y-scroll",
             pathname.includes("dashboard/applications") && "px-0",

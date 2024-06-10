@@ -12,9 +12,9 @@ const EnergyPackage = (props: Props) => {
   return (
     <div className="group font-inter min-w-[200px] max-w-[262px] group flex flex-col gap-2">
       {/* top container */}
-      <div className="h-[340px] relative flex flex-col  bg-[#F3F5F7]">
+      <div className="h-[340px] relative flex flex-col  bg-[#F3F5F7] rounded-lg">
         <div
-          className={`absolute bg-[#000000] bg-opacity-20 top-0 left-0 h-full w-full group-hover:flex hidden flex-col `}
+          className={`absolute bg-[#000000] rounded-lg bg-opacity-20 top-0 left-0 h-full w-full group-hover:flex hidden flex-col `}
         >
           <div className="mt-auto mb-4 w-full px-4 grid place-items-center">
             <button
@@ -43,7 +43,7 @@ const EnergyPackage = (props: Props) => {
 
         <img
           src="/assets/graphics/user1.svg"
-          className="h-[140px] w-[[140px] mt-[28px]"
+          className="h-[140px] w-[[140px] mt-[28px] rounded-lg"
           alt="image "
         />
       </div>

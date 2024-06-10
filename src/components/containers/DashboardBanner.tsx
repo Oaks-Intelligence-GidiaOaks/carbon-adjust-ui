@@ -1,8 +1,39 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
 
 const DashboardBanner: FC = () => {
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % 3);
+    }, 3600);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const freebies = [
+    {
+      id: 1,
+      image: "/assets/graphics/bannerImg.svg",
+      name: "Skullcandy - Rail True Wireless Earbuds",
+      cost: "$79.99",
+    },
+    {
+      id: 2,
+      image: "/assets/graphics/bannerImg.svg",
+      name: "Second carousel element",
+      cost: "$79.99",
+    },
+    {
+      id: 3,
+      image: "/assets/graphics/bannerImg.svg",
+      name: "Third carousel element",
+      cost: "$79.99",
+    },
+  ];
+
   return (
     <div
       style={{
@@ -30,32 +61,47 @@ const DashboardBanner: FC = () => {
         </div>
 
         <div className="  flex-[0.45] grid place-items-center border-l border-[#A5A5A5] rounded-[10px] pl-[32px] gap-y-3">
-          <div className="flex items-end">
-            <img src="/assets/graphics/bannerImg.svg" alt="" />
+          {/* carousel container */}
+          <div className="flex ">
+            {Array.from(freebies, (item, i) => (
+              <div
+                className={`${
+                  i !== currentIndex ? "hidden" : "flex"
+                } " flex-1 items-end`}
+              >
+                <img src={item.image} alt="" />
 
-            <div className="flex flex-col gap-1 pl-[5px] text-sm lg:text-base">
-              <div className="flex-center text-[7px] font-[600]">
-                <FaStar color="#E99C1B" />
-                <FaStar color="#E99C1B" />
-                <FaStar color="#E99C1B" />
-                <FaStar color="#E99C1B" />
-                <FaStar color="#575757" />
+                <div className="flex flex-col gap-1 pl-[5px] text-sm lg:text-base">
+                  <div className="flex-center text-[7px] font-[600]">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <FaStar color={i === 4 ? "#575757" : "#E99C1B"} />
+                    ))}
+                  </div>
+
+                  <h4>{item.name}</h4>
+                  <h4>{item.cost}</h4>
+
+                  <button className="grid place-items-center w-[70px] h-[21px] text-[6px] rounded-[9px] blue-gradient">
+                    <span>Apply</span>
+                  </button>
+                </div>
               </div>
-
-              <h4>Skullcandy - Rail True Wireless Earbuds</h4>
-              <h4>$79.99</h4>
-
-              <button className="grid place-items-center w-[70px] h-[21px] text-[6px] rounded-[9px] blue-gradient">
-                <span>Apply</span>
-              </button>
-            </div>
+            ))}
           </div>
 
+          {/* carousel indicators */}
           <div className="flex-center w-fit mx-auto gap-2">
-            {/* dots */}
-            <div className={`bg-[#3D3D3D] w-[8px] h-[8px] rounded-full`} />
-            <div className={`bg-[#D9D9D9] w-[8px] h-[8px] rounded-full`} />
-            <div className={`bg-[#3D3D3D] w-[8px] h-[8px] rounded-full`} />
+            {Array.from({ length: 3 }, (_, i) => (
+              <div
+                className={` ${
+                  i === currentIndex ? "bg-[#D9D9D9]" : "bg-[#3D3D3D]"
+                }  w-[8px] h-[8px] rounded-full`}
+              />
+            ))}
+
+            {/* <div className={`bg-[#D9D9D9] w-[8px] h-[8px] rounded-full`} />
+
+            <div className={`bg-[#3D3D3D] w-[8px] h-[8px] rounded-full`} /> */}
           </div>
 
           <div className="hover:border-b hover:border-white">

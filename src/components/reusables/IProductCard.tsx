@@ -1,12 +1,13 @@
-import { addProduct } from "@/features/productSlice";
-import { Product } from "@/types/product";
+import { IProduct } from "@/interfaces/product.interface";
+import React from "react";
 import { FaStar } from "react-icons/fa";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-const ProductCard = (props: Product) => {
-  const dispatch = useDispatch();
+interface Props extends IProduct {
+  slug: string;
+}
 
+const IProductCard = (props: Props) => {
   return (
     <div className="min-w-[228px] group">
       <div className="relative ">
@@ -18,9 +19,6 @@ const ProductCard = (props: Product) => {
           <div className="hidden group-hover:flex flex-col  absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 ">
             <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
               <Link
-                onClick={() => {
-                  dispatch(addProduct({ ...props }));
-                }}
                 to={`/dashboard/marketplace/${props.slug}?pid=${props._id}`}
                 className="w-5/6"
               >
@@ -54,4 +52,4 @@ const ProductCard = (props: Product) => {
   );
 };
 
-export default ProductCard;
+export default IProductCard;

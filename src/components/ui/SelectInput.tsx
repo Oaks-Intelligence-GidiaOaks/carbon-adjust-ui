@@ -34,7 +34,7 @@ const SelectInput: FC<SelectInputProps> = (props) => {
         </label>
       )}
 
-      <div className="bg-[#E4E7E8]">
+      <div className="">
         <Select
           id="Form-Select"
           styles={{
@@ -48,8 +48,8 @@ const SelectInput: FC<SelectInputProps> = (props) => {
             container: (state) => (state.isFocused ? "" : ""),
             control: (state) =>
               state.isFocused
-                ? " !py-[1px] rounded-lg px-3 bg-[#E4E7E8]"
-                : " !py-[1px]  rounded-lg px-3 bg-[#E4E7E8]",
+                ? " !py-[1px] rounded-lg px-3"
+                : " !py-[1px]  rounded-lg px-3 ",
             option: (state) =>
               state.isFocused || state.isSelected
                 ? " custom-option-gradient !rounded-[10px] !font-[600] !py-[11px] !text-sm !leading-[21px] !text-white !w-[98.5%] !mx-auto"
@@ -57,7 +57,7 @@ const SelectInput: FC<SelectInputProps> = (props) => {
             valueContainer: (state) =>
               state.hasValue
                 ? " !border-none !outline-none !text-[#8a8a8a]"
-                : "bg-[#E4E7E8]",
+                : "",
             menuList: (state) => (state.hasValue ? " !bg-transparent" : ""),
           }}
           name={props.label}

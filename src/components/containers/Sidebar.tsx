@@ -1,4 +1,4 @@
-import { persistor } from "@/app/store";
+import { RootState, persistor } from "@/app/store";
 import { Logo } from "@/assets/icons";
 import {
   adminSideBarItems,
@@ -8,6 +8,7 @@ import {
 import { SideBarItem, SideBarProps } from "@/types/general";
 import { cn } from "@/utils";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = ({
@@ -16,6 +17,11 @@ const Sidebar = ({
   setMobileMenuIsOpen,
 }: SideBarProps) => {
   const { pathname } = useLocation();
+
+  const user = useSelector((state: RootState) => state.user.user);
+
+  const merchant = "MERCHANT";
+  const isMerchant = user?.roles.includes(merchant);
 
   const identifyUserSideBar = (accountType: string): SideBarItem[] => {
     switch (accountType) {
@@ -29,12 +35,13 @@ const Sidebar = ({
         return homeOwnerSideBarItems;
     }
   };
+
   return (
     <>
       {/* desktop sidebar */}
       <div
         className={cn(
-          "w-[20%] min-w-[260px] max-w-[302px] max-h-screen px-4 sm:sticky bg-white overflow-y-scroll pb-10 z-20 border-r border-[hsla(110,49%,88%,1)] top-0 hidden sm:block"
+          "w-[20%] min-w-[260px] max-w-[302px] max-h-screen px-4 sm:sticky bg-white overflow-y-scroll pb-10 z-20 border-r border-[hsla(110,49%,88%,1)] top-0 hidden sm:block "
         )}
       >
         <div className="flex justify-between items-center sticky top-0 pt-10 pb-2 z-10 bg-white">
@@ -42,6 +49,7 @@ const Sidebar = ({
             <Logo />
             <p className="font-poppins text-black">Carbon-Adjust</p>
           </div>
+
           <button className="w-5">
             <ChevronLeftIcon
               color="#139EEC"
@@ -56,7 +64,7 @@ const Sidebar = ({
           </button>
         </div>
 
-        <div className="flex flex-col gap-y-4 mt-8">
+        <div className="flex flex-col gap-y-4 mt-8 h-[80vh]">
           {identifyUserSideBar(accountType).map((item, i) => {
             const Icon = item.icon;
             return item.title !== "Logout" ? (
@@ -118,6 +126,28 @@ const Sidebar = ({
               </div>
             );
           })}
+
+          {isMerchant && (
+            <div className="flex-center gap-4 mt-auto">
+              <img
+                src="/assets/graphics/user-img.svg"
+                alt=""
+                className="h-10 w-10 rounded-full"
+              />
+
+              <div
+                className="flex flex-col gap-1 font-poppins
+            "
+              >
+                <h2 className="font-[500] text-base truncate max-w-[170px]">
+                  {user?.contactName}
+                </h2>
+                <h2 className="text-xs text-[#7A8699] truncate max-w-[180px] font-[400]">
+                  {user?.merchantType}
+                </h2>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

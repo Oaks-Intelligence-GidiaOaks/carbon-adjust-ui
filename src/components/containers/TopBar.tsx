@@ -13,6 +13,8 @@ import BellIcon from "../../assets/icons/bell.svg";
 import UserIcon from "../../assets/icons/User.svg";
 import { useLocation } from "react-router-dom";
 import SelectInput from "../ui/SelectInput";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 type Props = {
   mobileMenuIsOpen: boolean;
@@ -22,10 +24,13 @@ type Props = {
 const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
   // const breadcrumbs = useBreadcrumbs();
   const location = useLocation();
+  const user = useSelector((state: RootState) => state.user.user);
+
+  const merchant = "MERCHANT";
+  const isMerchant = user?.roles.includes(merchant);
 
   const getActiveTab = () => {
     const currentPath = location.pathname;
-    console.log(currentPath);
 
     if (currentPath.includes("appointment")) {
       return "Appointment";
@@ -96,44 +101,32 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
             <h2 className="font-[400] text-sm">{getActiveTab()}</h2>
           </div>
 
-          <div className="hidden lg:flex items-center flex-1  justify-center gap-3 mx-auto">
-            {/* dropdown */}
-            <div className="w-[180px] ">
-              <SelectInput
-                options={categories}
-                placeholder=""
-                className="text-xs"
-              />
-            </div>
-            {/* 
-            <div className="bg-[#CECECE] flex h-[38px] rounded-[12px] px-3 text-xs">
-              <select
-                className="flex-1 bg-transparent border-none outline-none"
-                name=""
-                id=""
-              >
-                {Array.from({ length: 7 }, (_, i) => (
-                  <option className="bg-white" value="" key={i}>
-                    Home Energy Plans
-                  </option>
-                ))}
-              </select>
-            </div> */}
+          {!isMerchant && (
+            <div className="hidden lg:flex items-center flex-1  justify-center gap-3 mx-auto">
+              {/* dropdown */}
+              <div className="w-[180px] ">
+                <SelectInput
+                  options={categories}
+                  placeholder=""
+                  className="text-xs"
+                />
+              </div>
 
-            <div className="flex-center">
-              <img
-                src="/assets/icons/clarity_search-line.svg"
-                alt=""
-                className="h-[21px] w-[21px] mr-2"
-              />
+              <div className="flex-center">
+                <img
+                  src="/assets/icons/clarity_search-line.svg"
+                  alt=""
+                  className="h-[21px] w-[21px] mr-2"
+                />
 
-              <input
-                type="text"
-                placeholder="Purchases"
-                className="flex-1 text-sm outline-none active:outline-none active:border-none "
-              />
+                <input
+                  type="text"
+                  placeholder="Purchases"
+                  className="flex-1 text-sm outline-none active:outline-none active:border-none "
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="flex-center gap-[18px] ml-auto ">
             <img
@@ -143,12 +136,17 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
             />
 
             <div className="flex-center gap-2  ">
-              <img src={SettingIcon} alt="" className="h-4 w-4" />
+              {!isMerchant && (
+                <img src={SettingIcon} alt="" className="h-4 w-4" />
+              )}
+
               <img src={BellIcon} alt="" className="h-4 w-4" />
 
-              <div className="h-[34px] w-[34px] border rounded-full grid place-items-center ">
-                <img src={UserIcon} alt="" className="h-4 w-4" />
-              </div>
+              {!isMerchant && (
+                <div className="h-[34px] w-[34px] border rounded-full grid place-items-center ">
+                  <img src={UserIcon} alt="" className="h-4 w-4" />
+                </div>
+              )}
             </div>
           </div>
         </div>

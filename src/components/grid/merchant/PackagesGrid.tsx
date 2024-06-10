@@ -9,102 +9,30 @@ import {
   getSortedRowModel,
   SortingState,
 } from "@tanstack/react-table";
-// import Modal from "../../reuseable/RegistrationRejectionModal";
-// import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-// import {
-//   Loading,
-// //   PaginationButton,
-// //   TableActionButtonHia,
-// } from "../reusables/Loading";
-// import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-// import { formatDate } from "../../../lib/utils";
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import axios from "axios";
-// import { FaDownload, FaList } from "react-icons/fa";
+
 import TablePagination from "../../reusables/TablePagination";
 import LoadingModal from "../../reusables/LoadingModal";
-// import { CiWarning } from "react-icons/ci";
-import { useNavigate } from "react-router-dom";
-// import file_icon from "../../../assets/icons/file_icon.png";
-// import DeleteAccount from "../../modals/DeleteAccount";
-// import ResponseAlert from "../../reuseable/ResponseAlert";
+
 import { useOutsideCloser } from "../../../hooks/useOutsideCloser";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
-// import { IoDownloadOutline } from "react-icons/io5";
-// import { cn } from "@/utils";
-import axiosInstance from "@/api/axiosInstance";
+
 import toast from "react-hot-toast";
 import { BsPeople, BsThreeDotsVertical } from "react-icons/bs";
-import {
-  //   MdCancel,
-  MdDone,
-  //   MdDownloadDone,
-  //   MdOutlineDeleteOutline,
-} from "react-icons/md";
-// import { PiWarningBold } from "react-icons/pi";
-// import { BiMessage } from "react-icons/bi";
-// import { PDFIcon } from "@/assets/icons";
-import { GrClose } from "react-icons/gr";
+import { publishPackage, unPublishPackage } from "@/services/merchantService";
 
 const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
-  const navigate = useNavigate();
-
   const [showModal, setShowModal] = useState(false);
-  const [currentRowId, setCurrentRowId] = useState(null);
-  const [currentRowData, setCurrentRowData] = useState({
-    packageId: "",
-    appId: "",
-  });
+  const [currentRowId, setCurrentRowId] = useState<string>("");
 
-  //   console.log(data);
-  //   const [expandedRows, setExpandedRows] = useState([]);
-
-  // const [file, setFile] = useState<File | null>();
   const queryClient = useQueryClient();
-
-  // const [declineRowId, setDeclineRowId] = useState(null);
-  // const [showDeclineModal, setShowDeclineModal] = useState(false);
-  //   const [, setShowDeleteModal] = useState(false);
-  // const [showResponseAlert, setShowResponseAlert] = useState(false);
-  // const [responseStatus, setResponseStatus] = useState(false);
-  // const [responseMessage, setResponseMessage] = useState(null);
-  //   const [, setUserToDelete] = useState(null);
 
   const actionButtonsRef = useRef<HTMLDivElement>(null);
 
-  //   const mutation = useMutation({
-  //     mutationFn: updateVerificationStatus,
-  //     onSuccess: () => {
-  //       // Manually update the data state to reflect the updated status
-  //       //   setData((prevData) =>
-  //       //     prevData.map((item) =>
-  //       //       item._id === variables.id
-  //       //         ? { ...item, verified: variables.verified }
-  //       //         : item
-  //       //     )
-  //       //   );
-  //     },
-  //   });
-
-  //   const getTextColor = (value: null | string) => {
-  //     if (value === null) {
-  //       return "#139EEC";
-  //     } else if (value === "completed") {
-  //       return "#8AC926";
-  //     } else if (value === "suspended") {
-  //       return "#C9C126";
-  //     } else {
-  //       return "#FF595E";
-  //     }
-  //   };
-
   const handleActionClick = (id: any, rowData: any) => {
-    console.log(rowData._id);
+    setCurrentRowId(id);
 
-    setCurrentRowData({
-      appId: rowData._id,
-      packageId: rowData._id,
-    });
     if (currentRowId === id) {
       setShowModal((prevState) => !prevState);
     } else {
@@ -115,105 +43,42 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
 
   const columnHelper = createColumnHelper();
 
-  const approvalInputRef = useRef<HTMLInputElement>(null);
-  const declineInputRef = useRef<HTMLInputElement>(null);
-
-  const declineMutation = useMutation({
-    mutationKey: ["decline application"],
-    mutationFn: (ids: { appId: string; file: File }) => {
-      const formData = new FormData();
-
-      if (!ids.file) {
-        toast.error("Attach document");
-      }
-
-      if (ids.file) {
-        formData.append("file", ids.file);
-      }
-
-      formData.append("status", "false");
-
-      return axiosInstance.patch(
-        `applications/${ids.appId}/aggregator/review`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-    },
+  const publishMutation = useMutation({
+    mutationKey: ["publish-package"],
+    mutationFn: (packageId: string) => publishPackage(packageId),
     onSuccess: () => {
-      toast.success("Application declined");
+      toast.success("Package published  successfully");
       queryClient.invalidateQueries({
-        queryKey: ["get-applications"],
+        queryKey: ["get-packages"],
       });
-      setCurrentRowId(null);
+      setCurrentRowId("");
     },
     onError: () => {
-      toast.error("Error approving contractor");
+      toast.error("Error publishing package");
     },
   });
 
-  const approvedMutation = useMutation({
-    mutationKey: ["approve application"],
-    mutationFn: (ids: { appId: string; file: File }) => {
-      const formData = new FormData();
-
-      if (!ids.file) {
-        toast.error("Attach document");
-      }
-      if (ids.file) {
-        formData.append("file", ids.file);
-      }
-      formData.append("status", "true");
-
-      return axiosInstance.patch(
-        `applications/${ids.appId}/aggregator/review`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-    },
+  const unPublishMutation = useMutation({
+    mutationKey: ["unpublish-package"],
+    mutationFn: (packageId: string) => unPublishPackage(packageId),
     onSuccess: () => {
-      toast.success("Application approved");
-      setCurrentRowId(null);
+      toast.success(" package unpublished successfully");
+      setCurrentRowId("");
       queryClient.invalidateQueries({
-        queryKey: ["get-applications"],
+        queryKey: ["get-packages"],
       });
     },
     onError: () => {
-      toast.error("Error approving application");
+      toast.error("Error unpublishing package");
     },
   });
 
-  const handleApprovalMutation = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newFile = event.target.files?.[0]; // Get the selected file
-    if (newFile) {
-      // Perform your request here
-      approvedMutation.mutate({
-        appId: currentRowData.appId,
-        file: newFile,
-      });
-    }
+  const handlePublushPackage = (packageId: string) => {
+    publishMutation.mutate(packageId);
   };
 
-  const handleDeclineMutation = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newFile = event.target.files?.[0]; // Get the selected file
-    if (newFile) {
-      // Perform your request here
-      declineMutation.mutate({
-        appId: currentRowData.appId,
-        file: newFile,
-      });
-    }
+  const handleUnPublushPackage = (packageId: string) => {
+    unPublishMutation.mutate(packageId);
   };
 
   const columns = [
@@ -228,83 +93,46 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       header: () => <div className="w-14 px-1 text-center">S/N</div>,
     }),
 
-    // columnHelper.accessor((row: any) => row?.appRef, {
-    //   id: "appRef",
-    //   cell: (info) => (
-    //     <div className="w-30 mx-auto text-left">
-    //       {" "}
-    //       {(info.row.original as any).appRef}
-    //     </div>
-    //   ),
-    //   header: () => <div className="w-36 text-left">Application ID</div>,
-    // }),
-
-    columnHelper.accessor((row: any) => row?.created_at, {
-      id: "created_at",
-      cell: (info) => (
-        <div className="w-24 mx-auto text-left">
-          {
-            //   formatDate(
-
-            info.getValue()
-
-            // )
-          }
-        </div>
-      ),
-      header: () => <div className="w-36 text-left">Date</div>,
-    }),
-
-    columnHelper.accessor((row: any) => row?.created_at, {
-      id: "package_id",
-      cell: (info) => (
-        <div className="w-24 mx-auto text-left">
-          {
-            //   formatDate(
-            info.getValue()
-
-            // )
-          }
-        </div>
-      ),
-      header: () => <div className="w-36 text-left">Package ID</div>,
-    }),
-
-    columnHelper.accessor((row: any) => row?.service_rendered, {
-      id: "service_rendered",
+    columnHelper.accessor((row: any) => row?.title, {
+      id: "title",
       cell: (info) => (
         <div className="w-24 mx-auto text-left">{info.getValue()}</div>
       ),
-      header: () => <div className="w-36 text-left">Service Rendered</div>,
+      header: () => <div className="w-36 text-left">Title</div>,
     }),
 
     columnHelper.accessor((row: any) => row?.category, {
-      id: "category",
+      id: "catgeory",
       cell: (info) => (
         <div className="w-24 mx-auto text-left">{info.getValue()}</div>
       ),
       header: () => <div className="w-36 text-left">Category</div>,
     }),
 
-    columnHelper.accessor((row: any) => row?.amount, {
-      id: "amount",
+    columnHelper.accessor((row: any) => row?.status, {
+      id: "status",
+      cell: (info) => (
+        <div className="w-24 mx-auto text-left">{info.getValue()}</div>
+      ),
+      header: () => <div className="w-36 text-left">Status</div>,
+    }),
+
+    columnHelper.accessor((row: any) => row?.packageType, {
+      id: "packageType",
+      cell: (info) => (
+        <div className="w-24 mx-auto text-left">{info.getValue()}</div>
+      ),
+      header: () => <div className="w-36 text-left">Package type</div>,
+    }),
+
+    columnHelper.accessor((row: any) => row?.price, {
+      id: "price",
       cell: (info) => (
         <div className="w-24 mx-auto text-left">{info.getValue()}</div>
       ),
       header: () => <div className="w-36 text-left">Amount</div>,
     }),
 
-    columnHelper.accessor((row: any) => row?.views, {
-      id: "views",
-      cell: (info: any) => (
-        <div className="w-44 relative text-center grid place-items-center items-center text-sm">
-          <span>{info.getValue()}</span>
-        </div>
-      ),
-      header: () => <div className="w-32 whitespace-nowrap">Views</div>,
-    }),
-
-    //
     columnHelper.accessor((row: any) => row._id, {
       id: "_id",
       cell: (info: any) => {
@@ -320,30 +148,8 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
             >
               <BsThreeDotsVertical size={20} className="" />
             </div>
-            <input
-              ref={approvalInputRef}
-              type="file"
-              name="image"
-              id="approval-file"
-              className="hidden"
-              onChange={(e) => {
-                if (e.target.files) {
-                  handleApprovalMutation(e);
-                }
-              }}
-            />
-            <input
-              ref={declineInputRef}
-              type="file"
-              name="image"
-              id="rejection-file"
-              className="hidden"
-              onChange={(e) => {
-                handleDeclineMutation(e);
-              }}
-            />
-            {/* Modal */}
 
+            {/* Modal */}
             {showModal && currentRowId === info.getValue() && (
               <div
                 key={info.getValue()}
@@ -352,59 +158,23 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
                 className="absolute top-[-30px] flex flex-col gap-y-2 z-10 right-[40px] bg-white border border-gray-300  rounded p-2"
               >
                 <div
-                  className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs hover:text-ca-red px-1"
-                  // onClick={() => {
-                  //   setUserToDelete(info.row.original);
-                  //   setShowDeleteModal(true);
-                  // }}
+                  className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs hover:text-ca-blue  px-1"
+                  onClick={() => handlePublushPackage(currentRowId)}
                 >
                   <div className="rounded-full bg-ca-blue p-1">
                     <BsPeople className="text-white text-base size-3" />
                   </div>
-                  <span>Assign</span>
+                  <span>Publish</span>
                 </div>
-                {info.row.original.currentState === "Initiated" && (
-                  <>
-                    <label
-                      // htmlFor="approval-file"
-                      className="cursor-pointer flex items-center gap-1 font-poppins hover:text-yellow-400  text-xs whitespace-nowrap px-1"
-                      onClick={() => {
-                        if (approvalInputRef.current) {
-                          approvalInputRef.current.click();
-                        }
-                      }}
-                    >
-                      <div className="rounded-full bg-green-500 p-1">
-                        <MdDone className="text-white text-base size-3" />
-                      </div>
-                      <span>Approve </span>
-                    </label>
-                    <label
-                      // htmlFor="rejection-file"
-                      className="cursor-pointer flex items-center gap-1 font-poppins hover:text-[#8AC926] text-xs whitespace-nowrap px-1"
-                      onClick={() => {
-                        if (declineInputRef.current) {
-                          declineInputRef.current.click();
-                        }
-                      }}
-                    >
-                      <div className="rounded-full bg-red-500 p-1">
-                        <GrClose className="text-white text-base size-3" />
-                      </div>
-                      <span>Decline </span>
-                    </label>
-                  </>
-                )}
+
                 <div
-                  className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
-                  onClick={() =>
-                    navigate(`/admin/inbox?uid=${info.row.original.user._id}`)
-                  }
+                  className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-red text-xs whitespace-nowrap px-1"
+                  onClick={() => handleUnPublushPackage(currentRowId)}
                 >
                   <div className="rounded-full bg-yellow-500 p-1">
                     <EnvelopeIcon className="text-white text-base size-3" />
                   </div>
-                  <span> Send a message</span>
+                  <span> Unpublish</span>
                 </div>
               </div>
             )}
@@ -435,23 +205,10 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     onGlobalFilterChange: setFilterQuery,
   });
 
-  //   const getFileFormat = (url: any) => {
-  //     const path = new URL(url).pathname;
-  //     const filename = path.split("/").pop();
-  //     const parts = filename.split(".");
-  //     if (parts.length > 1) {
-  //       return "." + parts.pop().toLowerCase();
-  //     }
-  //     return "";
-  //   };
-
   useOutsideCloser(actionButtonsRef, showModal, setShowModal);
 
   return (
     <div className="">
-      {/* <TableFilter setFilterQuery={setFilterQuery} /> */}
-      {/* main table */}
-
       <div className="mb-4 flex overflow-x-auto">
         <div className="w-auto flex-1 overflow-visible">
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 flex-wrap gap-4 mt-10">
@@ -623,21 +380,12 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
           </div>
         </div>
       </div>
-      {(declineMutation.isPending || approvedMutation.isPending) && (
+      {(publishMutation.isPending || unPublishMutation.isPending) && (
         <LoadingModal
           key={Math.random() * 354546576}
-          text={"Updating application status"}
+          text={"Updating package status"}
         />
       )}
-      {/* {showDeclineModal && (
-        <Modal
-          isOpen={showDeclineModal}
-          onClose={() => setShowDeclineModal(false)}
-          onReject={handleModalReject}
-          label={"Click to Reject"}
-          rowId={declineRowId}
-        />
-      )} */}
 
       {/* pagination */}
       <TablePagination table={table} />

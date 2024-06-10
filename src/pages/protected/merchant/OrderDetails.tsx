@@ -6,6 +6,7 @@ import { MdKeyboardArrowLeft } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 import { FaRegFileAlt } from "react-icons/fa";
 import { MdOutlineFileDownload } from "react-icons/md";
+import ProcessApplicationModal from "@/components/reusables/ProcessApplicationModal";
 
 const OrderDetails: FC = () => {
   const dummy = [
@@ -126,6 +127,8 @@ const OrderDetails: FC = () => {
           </button>
         </div>
       </div>
+
+      <ProcessApplicationModal />
     </div>
   );
 };
