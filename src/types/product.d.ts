@@ -5,4 +5,5 @@ export type Product = {
   name: string;
   cost: string;
   discount?: string;
+  isMerchant?: boolean;
 };
