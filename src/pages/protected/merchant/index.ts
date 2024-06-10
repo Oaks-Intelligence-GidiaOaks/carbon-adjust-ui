@@ -8,3 +8,4 @@ export { default as MerchantProfile } from "./Profile";
 export { default as MerchantWallet } from "./Wallet";
 export { default as MerchantAllPackages } from "./AllPackages";
 export { default as MerchantOrderDetails } from "./OrderDetails";
+export { default as CreatePackageSchedule } from "./CreatePackageSchedule";
