@@ -56,9 +56,9 @@ const EnergyPackage = (props: Props) => {
           ))}
         </div>
 
-        <h2 className="text-base font-[600] font-inter ">{props.name}</h2>
+        <h2 className="text-base font-[600] font-inter ">{props.title}</h2>
 
-        <h2 className="text-base font-[600] ">{props.cost}</h2>
+        <h2 className="text-base font-[600] ">{props.price}</h2>
       </div>
     </div>
   );

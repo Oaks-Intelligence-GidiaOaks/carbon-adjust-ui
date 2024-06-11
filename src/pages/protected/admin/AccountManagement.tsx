@@ -7,7 +7,7 @@ import TabToggler from "@/components/containers/TabToggler";
 import { fetchUsersRegistration } from "@/services/adminService";
 import { IComponentMap } from "@/types/general";
 import { transformAdminUserRegistrations } from "@/utils/reshape";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 type Props = {};
@@ -16,13 +16,13 @@ const AccountManagement = (_: Props) => {
   const tabs = ["All", "Home owners", "Merchants"];
   const [activeTab, setActiveTab] = useState<string>(tabs[0]);
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const {
     data: allUsers,
     isSuccess: userSuccess,
-    isLoading: usersLoading,
-    isError,
+    // isLoading:,
+    // isError,
   } = useQuery({
     queryKey: ["users-registration", activeTab],
     queryFn: () => fetchUsersRegistration(""),

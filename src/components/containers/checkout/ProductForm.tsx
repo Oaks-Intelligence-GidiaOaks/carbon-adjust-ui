@@ -2,10 +2,10 @@ import { RootState } from "@/app/store";
 import { Input } from "@/components/ui";
 // import SelectInput from "@/components/ui/SelectInput";
 import {
-  clearOrder,
+  // clearOrder,
   updateAddress,
   updateEmail,
-  updateOrderDetails,
+  // updateOrderDetails,
   updatePhone,
   updateResponses,
 } from "@/features/orderSlice";
@@ -35,16 +35,7 @@ const ProductForm = (props: {
     mutationFn: (dt) => createNewOrder(dt),
   });
 
-  const handleChange = (e: any, key: any) => {
-    dispatch(
-      updateOrderDetails({
-        ...order,
-        [key]: e.target.value,
-      })
-    );
-  };
-
-  const RenderQuestions = product?.questions?.map((item) => {
+  const RenderQuestions = product?.questions?.map((item: any) => {
     const [response, setResponse] = useState<string>("");
 
     const handleAnswerQuestion = (val: string) => {
@@ -64,7 +55,9 @@ const ProductForm = (props: {
         <div className="flex flex-col gap-2">
           <div className="flex-center gap-[6px]">
             <input
-              onChange={(e) => handleAnswerQuestion("yes")}
+              onChange={(_: React.ChangeEvent<HTMLInputElement>) =>
+                handleAnswerQuestion("yes")
+              }
               value={response}
               type="radio"
               name=""
@@ -92,12 +85,8 @@ const ProductForm = (props: {
   });
 
   const handleProceed = () => {
-    orderProduct.mutate({ ...order, package: product._id, responses: [] });
-
-    if (orderProduct.isSuccess) {
-      dispatch(clearOrder({}));
-      props.setStage(3);
-    }
+    orderProduct.mutate();
+    props.setStage(3);
   };
 
   return (
@@ -201,3 +190,4 @@ const ProductForm = (props: {
 };
 
 export default ProductForm;
+//

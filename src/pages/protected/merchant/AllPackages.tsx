@@ -2,8 +2,8 @@ import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import packagesDummy from "@/dummy/packages.json";
-import TableModal from "@/components/reusables/TableModal";
-import { GoVerified } from "react-icons/go";
+// import TableModal from "@/components/reusables/TableModal";
+// import { GoVerified } from "react-icons/go";
 
 type Props = {};
 

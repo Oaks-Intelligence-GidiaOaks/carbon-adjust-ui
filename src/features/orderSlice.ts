@@ -1,5 +1,5 @@
 import { IOrder } from "@/interfaces/orderData.interface";
-import { IQuestion } from "@/interfaces/product.interface";
+// import { IQuestion } from "@/interfaces/product.interface";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface Props extends IOrder {
@@ -20,9 +20,9 @@ const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    updateOrderDetails: (state, action) => {
-      state = action.payload;
-    },
+    // updateOrderDetails: (state, action) => {
+    //   state = action.payload;
+    // },
     updateAddress: (state, action) => {
       state.customerAddress = action.payload;
     },
@@ -35,15 +35,15 @@ const orderSlice = createSlice({
     updateResponses: (state, action) => {
       state.responses.push(action.payload);
     },
-    clearOrder: (state, action) => {
-      state = initialState;
-    },
+    // clearOrder: (state, _) => {
+    //   state = initialState;
+    // },
   },
 });
 
 export const {
-  updateOrderDetails,
-  clearOrder,
+  // updateOrderDetails,
+  // clearOrder,
   updateAddress,
   updatePhone,
   updateEmail,

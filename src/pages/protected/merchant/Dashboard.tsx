@@ -3,11 +3,10 @@
 import { StackedLineChart } from "@/components/charts/StackedLineChart";
 import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
 import OrgDashboardDetailsCard from "@/components/reusables/OrgDashboardDetailsCard";
-import packagesDummy from "../../../dummy/packages.json";
 import { IComponentMap } from "@/types/general";
 import MainActionSubHeader from "@/components/reusables/MainActionSubHeader";
-import ProcessApplicationModal from "@/components/reusables/ProcessApplicationModal";
-import RejectApplicationModal from "@/components/reusables/RejectApplicationModal";
+// import ProcessApplicationModal from "@/components/reusables/ProcessApplicationModal";
+// import RejectApplicationModal from "@/components/reusables/RejectApplicationModal";
 import { useQuery } from "@tanstack/react-query";
 import { getAllPackages } from "@/services/merchantService";
 import { transformPackagesGridData } from "@/utils/reshape";
@@ -16,7 +15,7 @@ type Props = {};
 
 const Dashboard = (_: Props) => {
   // integration
-  const { data, isLoading, isSuccess } = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ["get-packages"],
     queryFn: () => getAllPackages(),
   });

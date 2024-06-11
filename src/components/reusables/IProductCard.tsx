@@ -1,5 +1,4 @@
 import { IProduct } from "@/interfaces/product.interface";
-import React from "react";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -30,7 +29,7 @@ const IProductCard = (props: Props) => {
           </div>
 
           <img
-            src={props.image}
+            src={props.attachments[0]}
             alt=""
             className="w-[228px] h-[304px] rounded-lg"
           />

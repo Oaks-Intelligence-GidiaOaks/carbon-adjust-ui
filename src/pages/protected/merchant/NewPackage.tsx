@@ -532,11 +532,14 @@ const NewPackage = (_: Props) => {
             {Boolean(recentPackages.data?.data.data.packages.length) &&
               recentPackages.data?.data.data.packages.map((p: any) => (
                 <ProductCard
-                  cost={
+                  _id={p._id}
+                  questions={p.question}
+                  slug=""
+                  price={
                     p.price ? `${p.currency}${formatLargeNumber(p.price)}` : ""
                   }
                   image={p.attachments[0]}
-                  name={p.title}
+                  title={p.title}
                   rating={0}
                   discount={p.discount}
                   isHot={false}

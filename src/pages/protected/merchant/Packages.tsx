@@ -3,7 +3,6 @@ import { FiPlus } from "react-icons/fi";
 import NewPackageCard from "@/components/reusables/NewPackageCard";
 import { Link } from "react-router-dom";
 import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
-import packagesDummy from "../../../dummy/packages.json";
 import { useQuery } from "@tanstack/react-query";
 import { getAllPackages } from "@/services/merchantService";
 import {
@@ -17,7 +16,7 @@ const Packages = (_: Props) => {
   const {
     data: packages,
     isSuccess,
-    isLoading,
+    // isLoading,
   } = useQuery({
     queryKey: ["get-packages"],
     queryFn: () => getAllPackages(),

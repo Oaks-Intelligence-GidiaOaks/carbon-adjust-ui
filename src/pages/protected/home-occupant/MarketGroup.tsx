@@ -2,9 +2,9 @@ import Promotion from "@/components/containers/Promotion";
 
 import ProductCheckout from "@/components/reusables/ProductCheckout";
 import EnergyPackage from "@/components/reusables/EnergyPackage";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  useLocation,
+  // useLocation,
   useNavigate,
   useParams,
   useSearchParams,
@@ -14,14 +14,16 @@ import { getPackagesByCategorySlug } from "@/services/homeOwner";
 import { transformCategoryPackages } from "@/utils/reshape";
 import ProductCard from "@/components/reusables/ProductCard";
 import { formatSlug } from "@/lib/utils";
-import { useDispatch } from "react-redux";
-import { addProduct } from "@/features/productSlice";
+// import { useDispatch } from "react-redux";
+// import { addProduct } from "@/features/productSlice";
 
 type Props = {};
 
 const MarketGroup = (_: Props) => {
-  const [showCheckout, setShowcheckout] = useState<boolean>(false);
+  // const [showCheckout, setShowcheckout] = useState<boolean>(false);
   const [productDetails, setProductDetails] = useState<any>(null);
+
+  console.log(productDetails);
 
   const param: any = useParams();
   const [searchParams] = useSearchParams();
@@ -40,7 +42,7 @@ const MarketGroup = (_: Props) => {
   };
 
   // get category specific products
-  const { data, isSuccess, isLoading } = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ["get-category-products"],
     queryFn: () => getPackagesByCategorySlug(param.category),
   });
@@ -63,7 +65,7 @@ const MarketGroup = (_: Props) => {
       gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[850px] lg:mx-0  xl:max-w-[1100px] md:!ml-auto
       "
       >
-        {Array.from(catProducts?.slice(0, 3), (item, i) => (
+        {Array.from(catProducts?.slice(0, 3), (item) => (
           <ProductCard {...item} />
         ))}
       </div>

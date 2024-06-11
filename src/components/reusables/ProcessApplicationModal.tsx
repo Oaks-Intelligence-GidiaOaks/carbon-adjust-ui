@@ -1,4 +1,3 @@
-import React from "react";
 import { GrClose } from "react-icons/gr";
 import SelectInput from "../ui/SelectInput";
 import Backdrop from "./Backdrop";

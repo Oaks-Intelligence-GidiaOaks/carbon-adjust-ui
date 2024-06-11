@@ -1,16 +1,11 @@
-import { AuthUserProfile } from "@/types/general";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-// interface UserState {
-//   user: AuthUserProfile | null;
-//   token: string | null;
-//   isLoading: boolean;
-//   error: string | null;
-// }
+interface IProduct {
+  product: any;
+}
 
-const initialState = {
+const initialState: IProduct = {
   product: null,
-  //   step: 0,
 };
 
 const productSlice = createSlice({

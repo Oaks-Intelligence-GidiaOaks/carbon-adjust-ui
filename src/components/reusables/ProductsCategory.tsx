@@ -1,14 +1,14 @@
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import ProductCard from "./ProductCard";
 import { Product } from "@/types/product";
-import { addProduct } from "@/features/productSlice";
+// import { addProduct } from "@/features/productSlice";
 
 const ProductsCategory = (props: { category: string; products: Product[] }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const checkout = (item: Product) => {
-    dispatch(addProduct(item));
-  };
+  // const checkout = (item: Product) => {
+  //   dispatch(addProduct(item));
+  // };
 
   return (
     <div className="flex flex-col w-full gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[850px] xl:max-w-[1100px] md:ml-auto">

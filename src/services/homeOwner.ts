@@ -61,6 +61,8 @@ export const createNewOrder = async (iData: any) => {
 };
 
 export const updateOrderPaymentStatus = async (iData: any) => {
+  console.log(iData);
+
   const { data } = await axiosInstance.patch(
     `application/order/6664e947e25a812616aa74de/payment/confirm`
   );

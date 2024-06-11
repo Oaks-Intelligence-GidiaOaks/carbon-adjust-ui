@@ -1,7 +1,6 @@
 import ProductCard from "@/components/reusables/ProductCard";
 import { Dispatch, SetStateAction } from "react";
 import { GrClose } from "react-icons/gr";
-import products from "../../../dummy/products.json";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { Product } from "@/types/product";
@@ -11,14 +10,14 @@ const DescriptionSection = (props: {
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const prod: Product = useSelector(
+  const prod: Product | null = useSelector(
     (state: RootState) => state.product.product
   );
 
   return (
     <div className="">
       <div className="flex-center justify-between w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
-        <h2 className="font-[600] text-lg"> {formatSlug(prod.slug)} </h2>
+        <h2 className="font-[600] text-lg"> {formatSlug(prod!.slug)} </h2>
 
         <span
           className="cursor-pointer"
@@ -32,7 +31,7 @@ const DescriptionSection = (props: {
         <h2 className="text-center font-[600] text-lg ">Checkout</h2>
 
         <div className="w-[262px] mx-auto">
-          <ProductCard {...prod} />
+          <ProductCard {...prod!} />
         </div>
 
         <div className="space-y-3 px-5 font-inter">

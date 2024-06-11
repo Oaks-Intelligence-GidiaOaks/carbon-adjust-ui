@@ -1,12 +1,10 @@
 import ProductsCategory from "../../reusables/ProductsCategory";
-import products from "../../../dummy/products.json";
-import { FC } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getBestSellerPackages } from "@/services/homeOwner";
 import { transformCategoryPackages } from "@/utils/reshape";
 
 const BestSellers = () => {
-  const { data, isSuccess, isLoading } = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ["get-best-sellers"],
     queryFn: () => getBestSellerPackages(),
   });

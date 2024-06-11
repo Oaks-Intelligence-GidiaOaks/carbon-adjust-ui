@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
 
 //   util functions
-import { cn, formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
 
 // child   components
@@ -36,7 +36,7 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
   const queryClient = useQueryClient();
   const actionButtonsRef = useRef<HTMLDivElement>(null);
 
-  const handleActionClick = (id: any, rowData: any) => {
+  const handleActionClick = (id: any) => {
     setCurrentRowId(id);
 
     if (currentRowId === id) {
@@ -48,7 +48,7 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
   };
 
   const handleApprovalMutation = (userId: string) => {
-    handleActionClick(userId, null);
+    handleActionClick(userId);
     approvedMutation.mutate(userId);
   };
 
@@ -56,8 +56,8 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     declineMutation.mutate(userId);
   };
 
-  const approvalInputRef = useRef<HTMLInputElement>(null);
-  const declineInputRef = useRef<HTMLInputElement>(null);
+  // const approvalInputRef = useRef<HTMLInputElement>(null);
+  // const declineInputRef = useRef<HTMLInputElement>(null);
 
   const columnHelper = createColumnHelper();
 
@@ -178,9 +178,7 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
             <div
               key={info.getValue()}
               className="rounded-full px-3 p-1 text-xs cursor-pointer mx-auto hover:bg-gray-300"
-              onClick={() =>
-                handleActionClick(info.getValue(), info.row.original)
-              }
+              onClick={() => handleActionClick(info.getValue())}
             >
               <BsThreeDotsVertical size={20} className="" />
             </div>
