@@ -36,3 +36,7 @@ export const truncateWithEllipsis = (text: string, maxLength: number) => {
   }
   return stringValue;
 };
+
+export const formatSlug = (slug: string) => {
+  return slug.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+};

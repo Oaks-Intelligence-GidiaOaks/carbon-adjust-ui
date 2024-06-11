@@ -1,12 +1,12 @@
 import {
   ApplicationsIcon,
   CarbonCreditIcon,
-  ContactIcon,
+  // ContactIcon,
   DashboardIcon,
   HomeIcon,
-  DevicesIcon,
-  DocumentCentreIcon,
-  InboxIcon,
+  // DevicesIcon,
+  // DocumentCentreIcon,
+  // InboxIcon,
   JPGIcon,
   LogoutIcon,
   PDFIcon,
@@ -98,11 +98,11 @@ export const homeOwnerSideBarItems = [
     title: "Dashboard",
     href: "/dashboard/marketplace",
   },
-  {
-    icon: ApplicationsIcon,
-    title: "Appointment",
-    href: "/dashboard/appointment",
-  },
+  // {
+  //   icon: ApplicationsIcon,
+  //   title: "Appointment",
+  //   href: "/dashboard/appointment",
+  // },
   {
     icon: ApplicationsIcon,
     title: "Orders",
@@ -123,11 +123,11 @@ export const homeOwnerSideBarItems = [
   //   title: "Contact Us",
   //   href: "/dashboard/contact",
   // },
-  {
-    icon: ProfileIcon,
-    title: "Profile",
-    href: "/dashboard/profile",
-  },
+  // {
+  //   icon: ProfileIcon,
+  //   title: "Profile",
+  //   href: "/dashboard/profile",
+  // },
   {
     icon: LogoutIcon,
     title: "Logout",
@@ -576,43 +576,43 @@ export const adminSideBarItems = [
   {
     icon: UsersIcon,
     title: "Users Registration",
-    href: "/admin/users-registration",
+    href: "/admin/users",
   },
-  {
-    icon: ApplicationsIcon,
-    title: "Applications",
-    href: "/admin/applications",
-  },
-  {
-    icon: ProfileIcon,
-    title: "Projects",
-    href: "/admin/projects",
-  },
-  {
-    icon: DevicesIcon,
-    title: "Staff",
-    href: "/admin/staff",
-  },
-  {
-    icon: CarbonCreditIcon,
-    title: "Carbon Credit Account",
-    href: "/admin/carbon-credit",
-  },
-  {
-    icon: InboxIcon,
-    title: "Inbox",
-    href: "/admin/inbox",
-  },
-  {
-    icon: DocumentCentreIcon,
-    title: "Document Centre",
-    href: "/admin/document-centre",
-  },
-  {
-    icon: ContactIcon,
-    title: "Contact Us",
-    href: "/admin/contact",
-  },
+  // {
+  //   icon: ApplicationsIcon,
+  //   title: "Applications",
+  //   href: "/admin/applications",
+  // },
+  // {
+  //   icon: ProfileIcon,
+  //   title: "Projects",
+  //   href: "/admin/projects",
+  // },
+  // {
+  //   icon: DevicesIcon,
+  //   title: "Staff",
+  //   href: "/admin/staff",
+  // },
+  // {
+  //   icon: CarbonCreditIcon,
+  //   title: "Carbon Credit Account",
+  //   href: "/admin/carbon-credit",
+  // },
+  // {
+  //   icon: InboxIcon,
+  //   title: "Inbox",
+  //   href: "/admin/inbox",
+  // },
+  // {
+  //   icon: DocumentCentreIcon,
+  //   title: "Document Centre",
+  //   href: "/admin/document-centre",
+  // },
+  // {
+  //   icon: ContactIcon,
+  //   title: "Contact Us",
+  //   href: "/admin/contact",
+  // },
   // {
   //   icon: ProfileIcon,
   //   title: "Profile",

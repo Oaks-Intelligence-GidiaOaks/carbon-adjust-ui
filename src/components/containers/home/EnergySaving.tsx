@@ -1,17 +1,7 @@
-import ProductsCategory from "@/components/reusables/ProductsCategory";
 import { FC } from "react";
-import products from "../../../dummy/products.json";
 
 const EnergySaving: FC = () => {
-  return (
-    <div>
-      <ProductsCategory
-        category="Energy-Saving 
-        Advisory"
-        products={products}
-      />
-    </div>
-  );
+  return <div>test</div>;
 };
 
 export default EnergySaving;

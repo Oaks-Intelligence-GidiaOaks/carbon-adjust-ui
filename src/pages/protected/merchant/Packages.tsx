@@ -3,11 +3,30 @@ import { FiPlus } from "react-icons/fi";
 import NewPackageCard from "@/components/reusables/NewPackageCard";
 import { Link } from "react-router-dom";
 import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
-import packagesDummy from "../../../dummy/packages.json";
+import { useQuery } from "@tanstack/react-query";
+import { getAllPackages } from "@/services/merchantService";
+import {
+  transformPackageCards,
+  transformPackagesGridData,
+} from "@/utils/reshape";
 
 type Props = {};
 
 const Packages = (_: Props) => {
+  const {
+    data: packages,
+    isSuccess,
+    // isLoading,
+  } = useQuery({
+    queryKey: ["get-packages"],
+    queryFn: () => getAllPackages(),
+  });
+
+  const pkgs = isSuccess ? transformPackageCards(packages.data.packages) : [];
+  const tablePkgs = isSuccess
+    ? transformPackagesGridData(packages.data.packages)
+    : [];
+
   const NoPackages = () => (
     <div className="h-[80vh] grid place-items-center">
       <h2 className="text-lg font-[600] mr-auto text-[#333333]">Packages</h2>
@@ -52,9 +71,9 @@ const Packages = (_: Props) => {
 
         <Link to="/merchant/packages/new">
           <button className=" flex-center gap-3 h-[46px] text-sm bg-[#2196F3] rounded-[10px] text-white px-4">
-            <span>Create package</span>
+            <span className="hidden md:inline-flex">Create package</span>
 
-            <span className="rounded-full hidden md:grid bg-white bg-opacity-15  place-items-center h-[30px] w-[30px]">
+            <span className="rounded-full grid bg-white bg-opacity-15  place-items-center h-[30px] w-[30px]">
               <FiPlus color="#FFFFFF" />
             </span>
           </button>
@@ -63,8 +82,8 @@ const Packages = (_: Props) => {
 
       {/* Flat Lists */}
       <div className="flex items-stretch gap-[20px] mt-[24px] w-[93vw] overflow-x-scroll pb-5 md:w-full">
-        {Array.from({ length: 3 }, (_) => (
-          <NewPackageCard name="string" cost="string" rating={5} />
+        {Array.from(pkgs, (item) => (
+          <NewPackageCard {...item} />
         ))}
       </div>
 
@@ -82,8 +101,7 @@ const Packages = (_: Props) => {
 
         {/* table */}
         <div className="-mt-3">
-          <PackagesGrid data={packagesDummy.slice(0, 4)} isUpdating />
-          {/* <DataTable columns={[]} data={[]} /> */}
+          <PackagesGrid data={tablePkgs} isUpdating />
         </div>
       </div>
     </div>

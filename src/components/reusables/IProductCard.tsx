@@ -1,10 +1,12 @@
-// import { addProduct } from "@/features/productSlice";
-import { Product } from "@/types/product";
+import { IProduct } from "@/interfaces/product.interface";
 import { FaStar } from "react-icons/fa";
-// import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-const ProductCard = ({ isMerchant = false, ...props }: Product) => {
+interface Props extends IProduct {
+  slug: string;
+}
+
+const IProductCard = (props: Props) => {
   return (
     <div className="min-w-[228px] group">
       <div className="relative ">
@@ -14,19 +16,20 @@ const ProductCard = ({ isMerchant = false, ...props }: Product) => {
 
         <div className="relative">
           <div className="hidden group-hover:flex flex-col  absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 ">
-            {!isMerchant && (
-              <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
-                <Link className="w-5/6" to={"/dashboard/marketplace/group"}>
-                  <button className=" blue-gradient w-full rounded-[24px] h-[40px] text-center text-white text-base font-[500]">
-                    Apply
-                  </button>
-                </Link>
-              </div>
-            )}
+            <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
+              <Link
+                to={`/dashboard/marketplace/${props.slug}?pid=${props._id}`}
+                className="w-5/6"
+              >
+                <button className=" blue-gradient w-full rounded-[24px] h-[40px] text-center text-white text-base font-[500]">
+                  Apply
+                </button>
+              </Link>
+            </div>
           </div>
 
           <img
-            src={props.image}
+            src={props.attachments[0]}
             alt=""
             className="w-[228px] h-[304px] rounded-lg"
           />
@@ -48,4 +51,4 @@ const ProductCard = ({ isMerchant = false, ...props }: Product) => {
   );
 };
 
-export default ProductCard;
+export default IProductCard;

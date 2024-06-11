@@ -1,22 +1,62 @@
-// import React from "react";
 import Promotion from "@/components/containers/Promotion";
-import product from "../../../dummy/products.json";
 
 import ProductCheckout from "@/components/reusables/ProductCheckout";
 import EnergyPackage from "@/components/reusables/EnergyPackage";
 import { useState } from "react";
-
-// this page is for a group of related products e.g Home energy Plans
+import {
+  // useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getPackagesByCategorySlug } from "@/services/homeOwner";
+import { transformCategoryPackages } from "@/utils/reshape";
+import ProductCard from "@/components/reusables/ProductCard";
+import { formatSlug } from "@/lib/utils";
+// import { useDispatch } from "react-redux";
+// import { addProduct } from "@/features/productSlice";
 
 type Props = {};
 
 const MarketGroup = (_: Props) => {
-  const [showCheckout, setShowcheckout] = useState<boolean>(false);
+  // const [showCheckout, setShowcheckout] = useState<boolean>(false);
+  const [productDetails, setProductDetails] = useState<any>(null);
+
+  console.log(productDetails);
+
+  const param: any = useParams();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const activeUrl = new URL(window.location.href);
+  activeUrl.search = "";
+
+  // product id from params
+  const pid = searchParams.get("pid");
+  const categoryName = formatSlug(param.category);
+
+  const closeModal = () => {
+    setProductDetails(null);
+    navigate(activeUrl.pathname, { replace: true });
+  };
+
+  // get category specific products
+  const { data, isSuccess } = useQuery({
+    queryKey: ["get-category-products"],
+    queryFn: () => getPackagesByCategorySlug(param.category),
+  });
+
+  const catProducts = isSuccess
+    ? transformCategoryPackages(data.data.packages)
+    : [];
+
+  console.log(catProducts, "cat products");
 
   return (
     <div className="relative ">
       <div className="h-[150px] bg-[#F5FAFF] flex items-center pl-5 md:pl-[50px]">
-        <h2 className="font-[500] text-xl">Home Energy Plans</h2>
+        <h2 className="font-[500] text-xl">{categoryName}</h2>
       </div>
 
       <div
@@ -25,8 +65,8 @@ const MarketGroup = (_: Props) => {
       gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[850px] lg:mx-0  xl:max-w-[1100px] md:!ml-auto
       "
       >
-        {Array.from(product.slice(0, 3), (item, i) => (
-          <EnergyPackage orderPackage={setShowcheckout} {...item} key={i} />
+        {Array.from(catProducts?.slice(0, 3), (item) => (
+          <ProductCard {...item} />
         ))}
       </div>
 
@@ -40,7 +80,7 @@ const MarketGroup = (_: Props) => {
       gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[850px] lg:mx-0  xl:max-w-[1100px] md:!ml-auto
       "
       >
-        {Array.from(product.slice(0, 1), (item, i) => (
+        {Array.from(catProducts.slice(3), (item, i) => (
           <EnergyPackage
             orderPackage={() => console.log("clciked")}
             {...item}
@@ -49,10 +89,13 @@ const MarketGroup = (_: Props) => {
         ))}
       </div>
 
-      <ProductCheckout
-        setShowcheckout={setShowcheckout}
-        showCheckout={showCheckout}
-      />
+      {pid && (
+        <ProductCheckout
+          categoryName={categoryName}
+          setShowcheckout={closeModal}
+          showCheckout={true}
+        />
+      )}
     </div>
   );
 };

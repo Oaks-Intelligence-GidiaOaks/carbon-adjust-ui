@@ -2,6 +2,8 @@ import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import packagesDummy from "@/dummy/packages.json";
+// import TableModal from "@/components/reusables/TableModal";
+// import { GoVerified } from "react-icons/go";
 
 type Props = {};
 
@@ -28,10 +30,32 @@ const AllPackages = (_: Props) => {
         </Link>
       </div>
 
+      {/* <TableModal
+        iconColor="#FF3E3E"
+        btnTextOneAction={() => {}}
+        btnTextTwoAction={() => {}}
+        Icon={RiDeleteBin6Line}
+        btnTextOne="Cancel"
+        btnTextTwo="Delete"
+         btnTextOneStyle="text-[#4A4848]"
+        textOne="Delete Package?"
+        textTwo="Are you sure you want to delete this package?"
+      /> */}
+
+      {/* <TableModal
+        iconColor="#05CD99"
+        btnTextOneAction={() => {}}
+        btnTextTwoAction={() => {}}
+        Icon={GoVerified}
+        btnTextOne="Close"
+        btnTextOneStyle=" blue-gradient text-white hover:bg-gradient-to-t"
+        textOne="Application deleted successfuly"
+        textTwo="You have successfully removed the package. It will no longer appear in Users’ MarketPlace."
+      /> */}
+
       {/* table */}
       <div className="-mt-3">
         <PackagesGrid data={packagesDummy} isUpdating />
-        {/* <DataTable columns={[]} data={[]} /> */}
       </div>
     </div>
   );
