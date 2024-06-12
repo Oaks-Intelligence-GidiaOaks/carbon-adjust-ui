@@ -65,6 +65,7 @@ const DashboardBanner: FC = () => {
           <div className="flex ">
             {Array.from(freebies, (item, i) => (
               <div
+                key={i}
                 className={`${
                   i !== currentIndex ? "hidden" : "flex"
                 } " flex-1 items-end`}
@@ -74,7 +75,7 @@ const DashboardBanner: FC = () => {
                 <div className="flex flex-col gap-1 pl-[5px] text-sm lg:text-base">
                   <div className="flex-center text-[7px] font-[600]">
                     {Array.from({ length: 5 }, (_, i) => (
-                      <FaStar color={i === 4 ? "#575757" : "#E99C1B"} />
+                      <FaStar key={i} color={i === 4 ? "#575757" : "#E99C1B"} />
                     ))}
                   </div>
 
@@ -93,6 +94,7 @@ const DashboardBanner: FC = () => {
           <div className="flex-center w-fit mx-auto gap-2">
             {Array.from({ length: 3 }, (_, i) => (
               <div
+                key={i}
                 className={` ${
                   i === currentIndex ? "bg-[#D9D9D9]" : "bg-[#3D3D3D]"
                 }  w-[8px] h-[8px] rounded-full`}

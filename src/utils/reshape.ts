@@ -82,8 +82,6 @@ export const transformHomePagePackages = (data: any) => {
     const category = item.category.name;
     const packages = item.packages;
 
-    // console.log(packages, "packages");
-
     let newPkgs = packages?.map((pkg: any) => {
       const {
         _id,
@@ -113,8 +111,6 @@ export const transformHomePagePackages = (data: any) => {
 
     return newPkgs;
   });
-
-  // console.log("new data", newData);
 
   return newData;
 };

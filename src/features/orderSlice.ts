@@ -33,17 +33,17 @@ const orderSlice = createSlice({
       state.customerPhone = action.payload;
     },
     updateResponses: (state, action) => {
-      state.responses.push(action.payload);
+      state.responses = action.payload;
     },
-    // clearOrder: (state, _) => {
-    //   state = initialState;
-    // },
+    clearOrder: () => {
+      return initialState;
+    },
   },
 });
 
 export const {
   // updateOrderDetails,
-  // clearOrder,
+  clearOrder,
   updateAddress,
   updatePhone,
   updateEmail,

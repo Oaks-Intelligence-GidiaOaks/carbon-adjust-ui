@@ -532,17 +532,18 @@ const NewPackage = (_: Props) => {
             {Boolean(recentPackages.data?.data.data.packages.length) &&
               recentPackages.data?.data.data.packages.map((p: any) => (
                 <ProductCard
+                  {...p}
                   _id={p._id}
                   questions={p.question}
-                  slug=""
+                  // slug=""
                   price={
-                    p.price ? `${p.currency}${formatLargeNumber(p.price)}` : ""
+                    p.price ? `${p.currency}${formatLargeNumber(p.price)}` : 0
                   }
-                  image={p.attachments[0]}
+                  attachments={p.attachments}
                   title={p.title}
-                  rating={0}
+                  // rating={0}
                   discount={p.discount}
-                  isHot={false}
+                  // isHot={false}
                   isMerchant={true}
                 />
               ))}
@@ -550,7 +551,7 @@ const NewPackage = (_: Props) => {
             {/* {Array.from(recentPackages.data?.data.) => (
               <ProductCard
                 cost="$24.99
-        $400.00"
+                $400.00"
                 image="/assets/graphics/paste-img.svg"
                 name="Solar installation"
                 rating={2}

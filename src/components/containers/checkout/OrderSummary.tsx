@@ -1,20 +1,29 @@
+import { clearProduct } from "@/features/productSlice";
 import { Dispatch, SetStateAction } from "react";
 import { GrClose } from "react-icons/gr";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { useDispatch } from "react-redux";
 
 const OrderSummary = (props: {
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <div>
       <div className="flex-center font-poppins justify-between w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
         <div className="flex-center gap-[13px]">
-          <IoIosArrowRoundBack />
+          <IoIosArrowRoundBack onClick={() => props.setStage(1)} />
           <h2 className="font-[600] text-lg">Check Out</h2>
         </div>
 
-        <span onClick={() => props.setShowcheckout(false)}>
+        <span
+          onClick={() => {
+            dispatch(clearProduct());
+            props.setShowcheckout(false);
+          }}
+        >
           <GrClose />
         </span>
       </div>

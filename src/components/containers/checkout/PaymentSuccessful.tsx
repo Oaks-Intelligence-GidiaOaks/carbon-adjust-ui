@@ -1,14 +1,25 @@
+import { clearOrder } from "@/features/orderSlice";
+import { clearProduct } from "@/features/productSlice";
 import { Dispatch, SetStateAction } from "react";
 import { GrClose } from "react-icons/gr";
+import { useDispatch } from "react-redux";
 
 const PaymentSuccessful = (props: {
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <div className="flex flex-col items-center h-[80vh]">
       <div className="flex-center font-poppins justify-end w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
-        <span onClick={() => props.setShowcheckout(false)}>
+        <span
+          onClick={() => {
+            dispatch(clearProduct());
+            dispatch(clearOrder());
+            props.setShowcheckout(false);
+          }}
+        >
           <GrClose />
         </span>
       </div>

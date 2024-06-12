@@ -1,0 +1,29 @@
+[
+  {
+    "_id": "66648f3a9619f2263c4e4d63",
+    "title": "Are u happy with your choice of questions?",
+    "questionType": "yes_no"
+  },
+  {
+    "_id": "66648f3a9619f2263c4e4d64",
+    "title": "What is the reason you are doing this?",
+    "questionType": "named_text"
+  },
+  {
+    "_id": "66648f3a9619f2263c4e4d63",
+    "title": "Just select more than one option",
+    "questionType": "multi_choice",
+    "options": ["money", "food", "sex", "happiness", "anger"]
+  },
+  {
+    "_id": "66648f3a9619f2263c4e4d62",
+    "title": "which african country are you from?",
+    "questionType": "single_choice",
+    "options": ["Nigeria", "Ghana", "Burkina Faso", "Liberia"]
+  },
+  {
+    "_id": "66648f3a9619f2263c4e4d61",
+    "title": "provide a document for your national passport?",
+    "questionType": "upload_file"
+  }
+]
