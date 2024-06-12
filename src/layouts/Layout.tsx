@@ -41,7 +41,7 @@ const Layout = (props: Props) => {
     // User data loaded successfully and there's user data in state
     if (userData.isSuccess && user) {
       dispatch(setUser(userData.data.data.data));
-      console.log(userData.data.data.data);
+      // console.log(userData.data.data.data);
       if (userData.data.data.data.roles[0] === "ADMIN") {
         return navigate("/admin");
       }

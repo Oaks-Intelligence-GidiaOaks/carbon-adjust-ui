@@ -1,7 +1,9 @@
 import ProductsCategory from "../../reusables/ProductsCategory";
+// import products from "../../../dummy/products.json";
 import { useQuery } from "@tanstack/react-query";
 import { getBestSellerPackages } from "@/services/homeOwner";
-import { transformCategoryPackages } from "@/utils/reshape";
+// import { transformCategoryPackages } from "@/utils/reshape";
+import { IProduct } from "@/interfaces/product.interface";
 
 const BestSellers = () => {
   const { data, isSuccess } = useQuery({
@@ -9,11 +11,16 @@ const BestSellers = () => {
     queryFn: () => getBestSellerPackages(),
   });
 
-  const pkgs = isSuccess ? transformCategoryPackages(data.data.packages) : [];
+  const pkgs: IProduct[] = isSuccess ? data.data.packages : [];
+
+  const category = {
+    name: "Best Sellers",
+    slug: "best-sellers",
+  };
 
   return (
     <div className="pb-[70px] pt-[37px]">
-      <ProductsCategory category="Best Sellers" products={pkgs} />
+      <ProductsCategory category={category} packages={pkgs} />
     </div>
   );
 };

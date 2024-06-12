@@ -1,23 +1,47 @@
+import { IProduct } from "@/interfaces/product.interface";
 import { createSlice } from "@reduxjs/toolkit";
 
-interface IProduct {
-  product: any;
-}
-
+// interface IProduct {}
 const initialState: IProduct = {
-  product: null,
+  _id: "",
+  title: "",
+  attachments: [],
+  owner: "",
+  category: {
+    name: "",
+    slug: "",
+  },
+  regions: [],
+  country: "",
+  status: "",
+  packageType: "",
+  price: 0,
+  discount: 0,
+  hasQuestion: false,
+  hasSchedule: false,
+  allowPartPayment: false,
+  currency: "",
+  description: "",
+  questions: [],
+  createdAt: "",
+  updatedAt: "",
+  isMerchant: false,
+  __v: 0,
 };
 
 const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    addProduct: (state, action) => {
-      state.product = action.payload;
+    addProduct: (_, action) => {
+      return action.payload;
+    },
+    clearProduct: () => {
+      return initialState;
     },
   },
 });
 
-export const { addProduct } = productSlice.actions;
+export const { addProduct, clearProduct } = productSlice.actions;
 
 export default productSlice.reducer;
