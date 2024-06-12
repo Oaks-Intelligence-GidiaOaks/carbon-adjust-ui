@@ -22,11 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { IComponentMap } from "@/types/general";
 import SelectInput from "@/components/ui/SelectInput";
-import {
-  fileToBase64,
-  formatSelectOptions,
-  // revertSelectOptions,
-} from "@/lib/utils";
+import { fileToBase64, formatSelectOptions, stringToArray } from "@/lib/utils";
 import { IResponse } from "@/interfaces/orderData.interface";
 import { SelectItem } from "@/types/formSelect";
 
@@ -38,20 +34,66 @@ const ProductForm = (props: {
     (state: RootState) => state
   );
 
+  const {
+    // customerAddress,
+    // customerEmail,
+    // customerPhone,
+    // package: pkg,
+    // price,
+    // requiredExtraProd,
+    responses,
+    _id,
+    ...rest
+  } = order;
+
+  const isFormValues = Boolean(
+    Object.values({ ...rest }).filter((it) => it.toString().length < 1).length >
+      0
+  );
+
+  console.log(isFormValues, "form values length");
+
+  const isDisabled: boolean = Boolean(
+    // product.questions.length !== responses.length
+    //  &&
+    isFormValues
+  );
+
+  console.log(product.questions, order.responses);
+
+  console.log(isDisabled, "can proeed value");
+
   // console.log(questions, "my questions");
   // console.log(product.questions, "state questions");
 
   const dispatch = useDispatch();
 
-  const RenderQuestions = product.questions?.map((item: any) => {
-    const [response, setResponse] = useState<string>("");
-    const [selectResponse, setSelectResponse] = useState<SelectItem>({
-      label: "",
-      value: "",
-    });
-    // const [fileResponse, setFileResponse] = useState<string>("");
+  const RenderQuestions = product.questions?.map((item) => {
+    const responseIndex = responses.findIndex((it) => it.question === item._id);
+
+    let getResponse =
+      responseIndex === -1 ? "" : responses[responseIndex].response;
+
+    let getSelectResponse =
+      responseIndex === -1
+        ? {
+            label: "",
+            value: "",
+          }
+        : formatSelectOptions([responses[responseIndex].response])[0];
+
+    let getmultiChoiceResponse =
+      responseIndex === -1
+        ? []
+        : stringToArray(responses[responseIndex].response);
+
+    console.log(getmultiChoiceResponse, "multi -choice response");
+
+    const [response, setResponse] = useState<string>(getResponse);
+    const [selectResponse, setSelectResponse] =
+      useState<SelectItem>(getSelectResponse);
     const [multiChoiceResponse, setMultiChoiceResponse] = useState<string[]>(
-      []
+      getmultiChoiceResponse
     );
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -83,7 +125,7 @@ const ProductForm = (props: {
       file?: File,
       isChecked?: boolean
     ) => {
-      if (type === "yes_no") {
+      if (type === "Binary Response Question") {
         setResponse(val);
 
         let newObj = {
@@ -96,7 +138,7 @@ const ProductForm = (props: {
         dispatch(updateResponses(newArr));
       }
 
-      if (type === "named_text") {
+      if (type === "Open-Ended Question") {
         setResponse(val);
 
         let newObj = {
@@ -109,7 +151,7 @@ const ProductForm = (props: {
         dispatch(updateResponses(newArr));
       }
 
-      if (type === "single_choice") {
+      if (type === "Single-Choice Question") {
         setSelectResponse(formatSelectOptions([val])[0]);
         let newObj = {
           question: item._id,
@@ -121,10 +163,14 @@ const ProductForm = (props: {
         dispatch(updateResponses(newArr));
       }
 
-      if (type === "multi_choice" && isChecked !== undefined) {
+      if (type === "Multiple-Choice Question" && isChecked !== undefined) {
         let updatedMultiChoiceResponse;
+
         if (isChecked) {
-          updatedMultiChoiceResponse = [...multiChoiceResponse, val];
+          console.log(multiChoiceResponse, "mutli resonse");
+          updatedMultiChoiceResponse = [
+            ...new Set([...multiChoiceResponse, val]),
+          ];
         } else {
           updatedMultiChoiceResponse = multiChoiceResponse.filter(
             (option) => option !== val
@@ -141,7 +187,7 @@ const ProductForm = (props: {
         dispatch(updateResponses(newArr));
       }
 
-      if (type === "upload_file" && file) {
+      if (type === "File Upload Response Question" && file) {
         if (file!.size > 1048576 * 2) {
           alert("file size exceeds 2MB, please choose another file.");
           fileInputRef!.current!.value = "";
@@ -149,8 +195,6 @@ const ProductForm = (props: {
         } else {
           console.log(file, "on change file");
           const fileString = await fileToBase64(file);
-
-          // console.log(fileString, "file string");
 
           const newObj: IResponse = {
             question: item._id,
@@ -164,7 +208,7 @@ const ProductForm = (props: {
     };
 
     const getQuestionInput: IComponentMap = {
-      yes_no: (
+      "Binary Response Question": (
         <div className="flex flex-col gap-2">
           <div className="flex-center gap-[6px]">
             <input
@@ -196,7 +240,7 @@ const ProductForm = (props: {
           </div>
         </div>
       ),
-      named_text: (
+      "Open-Ended Question": (
         <div>
           <Input
             key={5}
@@ -208,14 +252,14 @@ const ProductForm = (props: {
           />
         </div>
       ),
-      multi_choice: (
+      "Multiple-Choice Question": (
         <div className="flex flex-col gap-1 text-sm" key={9}>
           {item?.options?.map((it: string, i: number) => (
             <div key={i} className="flex-center gap-2 ">
               <input
                 type="checkbox"
                 name=""
-                id=""
+                id={`multi_choice_${item._id}_${i}`}
                 checked={multiChoiceResponse.includes(it)}
                 onChange={(e) =>
                   handleAnswerQuestion(
@@ -226,12 +270,12 @@ const ProductForm = (props: {
                   )
                 }
               />
-              <label htmlFor="">{it}</label>
+              <label htmlFor={`multi_choice_${item._id}_${i}`}>{it}</label>
             </div>
           ))}
         </div>
       ),
-      single_choice: (
+      "Single-Choice Question": (
         <div key={7}>
           <SelectInput
             options={formatSelectOptions(item?.options || [])}
@@ -240,7 +284,7 @@ const ProductForm = (props: {
           />
         </div>
       ),
-      upload_file: (
+      "File Upload Response Question": (
         <div key={10}>
           <input
             type="file"
@@ -259,7 +303,7 @@ const ProductForm = (props: {
       <div className="flex flex-col gap-[8px]">
         <p className="font-[400] text-sm text-[#333333]">{item?.title}</p>
 
-        {getQuestionInput[item?.questionType]}
+        {getQuestionInput[item?.questionType!]}
       </div>
     );
   });
@@ -368,7 +412,10 @@ const ProductForm = (props: {
 
           {/* proceed */}
           <button
-            className="rounded-[12px] mt-[40px] font-poppins w-full blue-gradient hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]"
+            className={` ${
+              isDisabled ? "bg-gray-300" : "blue-gradient"
+            } rounded-[12px] mt-[40px] font-poppins w-full  hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]`}
+            disabled={isDisabled}
             onClick={handleProceed}
           >
             <span>Proceed</span>

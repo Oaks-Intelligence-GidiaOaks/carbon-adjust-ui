@@ -4,11 +4,12 @@ export interface IResponse {
 }
 
 export interface IOrder {
-  package: string;
+  package?: string;
   customerAddress: string;
-  price: number;
+  price?: number | string;
   customerEmail: string;
   customerPhone: string;
-  requiredExtraProd: boolean;
+  requiredExtraProd?: boolean;
   responses: IResponse[];
+  _id?: string;
 }

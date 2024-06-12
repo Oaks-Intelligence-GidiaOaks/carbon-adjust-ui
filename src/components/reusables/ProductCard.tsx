@@ -3,7 +3,7 @@ import { IProduct } from "@/interfaces/product.interface";
 import { FaStar } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import questions from "../../dummy/questions.json";
+// import questions from "../../dummy/questions.json";
 
 const ProductCard = ({ isMerchant = false, ...props }: IProduct) => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const ProductCard = ({ isMerchant = false, ...props }: IProduct) => {
   // console.log(questions, "my questions");
 
   const handleInitiateCheckout = () => {
-    dispatch(addProduct({ ...props, questions }));
+    dispatch(addProduct({ ...props }));
   };
 
   // console.log(props.category, "prod category");

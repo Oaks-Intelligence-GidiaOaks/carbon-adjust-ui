@@ -1,25 +1,42 @@
+import { RootState } from "@/app/store";
 import { clearOrder } from "@/features/orderSlice";
 import { clearProduct } from "@/features/productSlice";
 import { Dispatch, SetStateAction } from "react";
 import { GrClose } from "react-icons/gr";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const PaymentSuccessful = (props: {
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const { product, order } = useSelector((state: RootState) => state);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleContinueOrder = () => {
+    // check if package has a schedule
+    if (product.hasSchedule) {
+      // naviagte to booking calendar page for an order
+      navigate(`/dashboard/order-booking/${order._id}`);
+    } else {
+      navigate(`/dashboard/orders`);
+    }
+
+    dispatch(clearOrder());
+  };
+
+  const handleCloseModal = () => {
+    dispatch(clearProduct());
+    dispatch(clearOrder());
+    props.setShowcheckout(false);
+  };
 
   return (
     <div className="flex flex-col items-center h-[80vh]">
       <div className="flex-center font-poppins justify-end w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
-        <span
-          onClick={() => {
-            dispatch(clearProduct());
-            dispatch(clearOrder());
-            props.setShowcheckout(false);
-          }}
-        >
+        <span onClick={() => handleCloseModal()}>
           <GrClose />
         </span>
       </div>
@@ -35,7 +52,7 @@ const PaymentSuccessful = (props: {
       </div>
 
       <button
-        onClick={() => props.setStage(1)}
+        onClick={() => handleContinueOrder()}
         className="rounded-[12px] mt-[40px] font-poppins w-4/5 mx-auto blue-gradient hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]"
       >
         <span>Continue</span>

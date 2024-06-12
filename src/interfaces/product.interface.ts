@@ -1,6 +1,8 @@
 export interface IQuestion {
   title: string;
   _id: string;
+  questionType?: string;
+  options?: string[];
 }
 
 // for energy efficient products

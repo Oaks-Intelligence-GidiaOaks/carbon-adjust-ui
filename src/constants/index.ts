@@ -98,11 +98,11 @@ export const homeOwnerSideBarItems = [
     title: "Dashboard",
     href: "/dashboard/marketplace",
   },
-  // {
-  //   icon: ApplicationsIcon,
-  //   title: "Appointment",
-  //   href: "/dashboard/appointment",
-  // },
+  {
+    icon: ApplicationsIcon,
+    title: "Bookings",
+    href: "/dashboard/order-booking/orderId",
+  },
   {
     icon: ApplicationsIcon,
     title: "Orders",
