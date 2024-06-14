@@ -17,6 +17,7 @@ import OrganizationSetupForm from "./OrganizationSetUpForm";
 import { cn, uniqueObjectsByIdType } from "@/utils";
 import { setUser } from "@/features/userSlice";
 import { getMe } from "@/services/homeOccupant";
+import Loading from "@/components/reusables/Loading";
 
 type Props = {};
 
@@ -26,8 +27,6 @@ const MerchantAccountSetup = (_: Props) => {
   const dispatch = useDispatch();
 
   const userData = useSelector((state: RootState) => state.user.user);
-
-  console.log(userData?.accountType);
 
   const figureStepBasedOnAccountType = (step: number | undefined) => {
     if (!userData?.accountType) {
@@ -59,29 +58,97 @@ const MerchantAccountSetup = (_: Props) => {
   };
 
   const freshUserData = useQuery({
-    queryKey: ["user-data", currentStep],
+    queryKey: ["user-data-1", currentStep],
     queryFn: getMe,
-    enabled: !currentStep || Boolean(currentStep && currentStep > 1),
+    // enabled: !currentStep || Boolean(currentStep && currentStep > 1),
   });
 
-  console.log(freshUserData.data?.data.data);
+  const isFileComplete = (fData: any) => {
+    console.log(fData);
+    console.log(fData.nonFinMerchantType);
+
+    if (
+      fData?.roles[0] === "MERCHANT" &&
+      fData?.merchantType === "NON_FINANCIAL_MERCHANT"
+    ) {
+      if (
+        fData.nonFinMerchantType === "SELF_EMPLOYED" &&
+        uniqueObjectsByIdType(fData?.doc).length === 2
+      ) {
+        return true;
+      }
+      if (
+        fData.nonFinMerchantType === "SELF_EMPLOYED_LICENSE" &&
+        uniqueObjectsByIdType(fData?.doc).length === 3
+      ) {
+        return true;
+      }
+      if (
+        fData.nonFinMerchantType === "LIMITED_LIABILITY" &&
+        uniqueObjectsByIdType(fData?.doc).length === 3
+      ) {
+        return true;
+      }
+      if (
+        fData.nonFinMerchantType === "LIMITED_LIABILITY_LICENSE" &&
+        uniqueObjectsByIdType(fData?.doc).length === 4
+      ) {
+        return true;
+      }
+      return false;
+    }
+  };
+
+  console.log(freshUserData);
+
   useEffect(() => {
-    if (freshUserData.isSuccess) {
-      const data = freshUserData.data.data.data;
+    if (freshUserData.isSuccess && freshUserData.data?.data.data) {
+      const data = freshUserData.data?.data.data;
+      console.log(data.step);
+      console.log(isFileComplete(data));
+      console.log(data);
 
       dispatch(setUser(data));
 
+      setFormState((prev) => ({ ...prev, entityName: data.name }));
+
       if (data.step) {
+        if (
+          data.step >= 3 &&
+          data.status === "pending" &&
+          isFileComplete(data)
+        ) {
+          console.log("Here");
+          return navigate("/pending-verification");
+        }
+        if (
+          data.step >= 3 &&
+          data.status === "completed" &&
+          isFileComplete(data)
+        ) {
+          console.log("Here");
+          return navigate("/merchant");
+        }
+        console.log("Here");
         setCurrentStep(data.step + 1);
       } else {
         if (data.merchantType === "NON_FINANCIAL_MERCHANT") {
-          setCurrentStep(0);
+          if (formState.accountType !== "") {
+            console.log("Here");
+            console.log(formState.accountType);
+            return setCurrentStep(1);
+          }
+          console.log("Here");
+          return setCurrentStep(0);
         } else {
-          setCurrentStep(1);
+          console.log("Here");
+          return setCurrentStep(1);
         }
       }
     }
-  }, [freshUserData.isSuccess]);
+  }, [freshUserData.isSuccess, freshUserData.data?.data.data]);
+
+  console.log(userData);
 
   queryClient.getQueryCache().find({ queryKey: ["user-data"] });
 
@@ -229,8 +296,9 @@ const MerchantAccountSetup = (_: Props) => {
     setCertOfAuth.mutate(formData);
   };
 
+  console.log(userData?.name);
   const [formState, setFormState] = useState({
-    accountType: userData?.accountType ?? "",
+    accountType: userData?.merchantType ?? "",
     entityName: userData?.name ?? "",
     contactEmail: userData?.contactEmail ?? "",
     contactName: userData?.contactName ?? "",
@@ -238,6 +306,8 @@ const MerchantAccountSetup = (_: Props) => {
     phoneNumber: userData?.phoneNos ?? "",
     bio: userData?.bio ?? "",
   });
+
+  console.log(formState);
 
   const [addressFormState, setAddressFormState] = useState({
     country: {
@@ -312,30 +382,30 @@ const MerchantAccountSetup = (_: Props) => {
           userData?.merchantType === "NON_FINANCIAL_MERCHANT"
         ) {
           if (
-            userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
+            userData.nonFinMerchantType === "SELF_EMPLOYED" &&
             uniqueObjectsByIdType(userData?.doc).length === 2
           ) {
-            return navigate("/merchant");
+            return navigate("/pending-verification");
           }
           if (
-            userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
+            userData.nonFinMerchantType === "SELF_EMPLOYED_LICENSE" &&
             uniqueObjectsByIdType(userData?.doc).length === 3
           ) {
-            return navigate("/merchant");
+            return navigate("/pending-verification");
           }
           if (
-            userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
+            userData.nonFinMerchantType === "LIMITED_LIABILITY" &&
             uniqueObjectsByIdType(userData?.doc).length === 3
           ) {
-            return navigate("/merchant");
+            return navigate("/pending-verification");
           }
           if (
-            userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
+            userData.nonFinMerchantType === "LIMITED_LIABILITY_LICENSE" &&
             uniqueObjectsByIdType(userData?.doc).length === 4
           ) {
-            return navigate("/merchant");
+            return navigate("/pending-verification");
           }
-          return navigate("/merchant");
+          return navigate("/pending-verification");
         }
 
         if (
@@ -343,7 +413,7 @@ const MerchantAccountSetup = (_: Props) => {
           userData?.merchantType === "FINANCIAL_MERCHANT" &&
           uniqueObjectsByIdType(userData?.doc).length === 4
         ) {
-          navigate("/merchant");
+          navigate("/pending-verification");
         }
         return;
       // Same as case 3 because the data returning is not constant for organizations
@@ -354,25 +424,25 @@ const MerchantAccountSetup = (_: Props) => {
           userData?.merchantType === "NON_FINANCIAL_MERCHANT"
         ) {
           if (
-            userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
+            userData.nonFinMerchantType === "SELF_EMPLOYED" &&
             uniqueObjectsByIdType(userData?.doc).length === 2
           ) {
             return navigate("/merchant");
           }
           if (
-            userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
+            userData.nonFinMerchantType === "SELF_EMPLOYED_LICENSE" &&
             uniqueObjectsByIdType(userData?.doc).length === 3
           ) {
             return navigate("/merchant");
           }
           if (
-            userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
+            userData.nonFinMerchantType === "LIMITED_LIABILITY" &&
             uniqueObjectsByIdType(userData?.doc).length === 3
           ) {
             return navigate("/merchant");
           }
           if (
-            userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
+            userData.nonFinMerchantType === "LIMITED_LIABILITY_LICENSE" &&
             uniqueObjectsByIdType(userData?.doc).length === 4
           ) {
             return navigate("/merchant");
@@ -396,25 +466,25 @@ const MerchantAccountSetup = (_: Props) => {
           userData?.merchantType === "NON_FINANCIAL_MERCHANT"
         ) {
           if (
-            userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
+            userData.nonFinMerchantType === "SELF_EMPLOYED" &&
             uniqueObjectsByIdType(userData?.doc).length === 2
           ) {
             return navigate("/merchant");
           }
           if (
-            userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
+            userData.nonFinMerchantType === "SELF_EMPLOYED_LICENSE" &&
             uniqueObjectsByIdType(userData?.doc).length === 3
           ) {
             return navigate("/merchant");
           }
           if (
-            userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
+            userData.nonFinMerchantType === "LIMITED_LIABILITY" &&
             uniqueObjectsByIdType(userData?.doc).length === 3
           ) {
             return navigate("/merchant");
           }
           if (
-            userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
+            userData.nonFinMerchantType === "LIMITED_LIABILITY_LICENSE" &&
             uniqueObjectsByIdType(userData?.doc).length === 4
           ) {
             return navigate("/merchant");
@@ -436,25 +506,25 @@ const MerchantAccountSetup = (_: Props) => {
           userData?.merchantType === "NON_FINANCIAL_MERCHANT"
         ) {
           if (
-            userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
+            userData.nonFinMerchantType === "SELF_EMPLOYED" &&
             uniqueObjectsByIdType(userData?.doc).length === 2
           ) {
             return navigate("/merchant");
           }
           if (
-            userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
+            userData.nonFinMerchantType === "SELF_EMPLOYED_LICENSE" &&
             uniqueObjectsByIdType(userData?.doc).length === 3
           ) {
             return navigate("/merchant");
           }
           if (
-            userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
+            userData.nonFinMerchantType === "LIMITED_LIABILITY" &&
             uniqueObjectsByIdType(userData?.doc).length === 3
           ) {
             return navigate("/merchant");
           }
           if (
-            userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
+            userData.nonFinMerchantType === "LIMITED_LIABILITY_LICENSE" &&
             uniqueObjectsByIdType(userData?.doc).length === 4
           ) {
             return navigate("/merchant");
@@ -478,129 +548,139 @@ const MerchantAccountSetup = (_: Props) => {
   }, [addressFormState]);
 
   return (
-    <ScrollToTop dependentValue={currentStep}>
-      {verifyPhoneNumber && (
-        <VerifyPhoneNumber
-          phone={setMerchantBioData.data?.data.data.phoneNos}
-          nextStep={() => setCurrentStep(2)}
-          closeVerifyPhoneNumber={() => setVerifyPhoneNumber(false)}
-        />
-      )}
-      <AccountActionHeader
-        actionTitle="Log out"
-        action={logOut}
-        className={"bg-white"}
-      />
-      <AccountSetupInfo
-        accountType={userData?.roles[0]}
-        currentStep={currentStep}
-      />
-      <div className="flex bg-gray-100 justify-center min-h-screen pb-20 bg-account-setup-image bg-cover bg-fixed">
-        <div
-          className={cn(
-            "max-w-[760px] w-full",
-            currentStep === 0 && "max-w-[1080px]"
+    <>
+      {freshUserData.isLoading ? (
+        <div className="pt-20">
+          <Loading message="" />
+        </div>
+      ) : (
+        <ScrollToTop dependentValue={currentStep}>
+          {verifyPhoneNumber && (
+            <VerifyPhoneNumber
+              phone={setMerchantBioData.data?.data.data.phoneNos}
+              nextStep={() => setCurrentStep(2)}
+              closeVerifyPhoneNumber={() => setVerifyPhoneNumber(false)}
+            />
           )}
-        >
-          <OrganizationSetupForm
-            // accountType={userData?.roles[0]}
-            accountType={"MERCHANT"}
-            currentStep={currentStep}
-            formState={formState}
-            setFormState={setFormState}
-            addressFormState={addressFormState}
-            setAddressFormState={setAddressFormState}
-            DocInfoState={DocInfoState}
-            setDocInfoState={setDocInfoState}
-            handleDocSubmission={handleDocSubmission}
-            handleCertOfIncSubmission={handleCertOfIncSubmission}
-            handleCertOfAuthSubmission={handleCertOfAuthSubmission}
+          <AccountActionHeader
+            actionTitle="Log out"
+            action={logOut}
+            className={"bg-white"}
           />
-          <Button
-            disabled={
-              (() => {
-                if (currentStep && currentStep >= 3) {
-                  // NON_FINANCIAL MERCHANT PATH
-                  if (
-                    userData?.roles[0] === "MERCHANT" &&
-                    userData?.merchantType === "NON_FINANCIAL_MERCHANT"
-                  ) {
-                    if (
-                      userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
-                      uniqueObjectsByIdType(userData?.doc).length < 2
-                    ) {
-                      return true;
+          <AccountSetupInfo
+            accountType={userData?.roles[0]}
+            currentStep={currentStep}
+          />
+          <div className="flex bg-gray-100 justify-center min-h-screen pb-20 bg-account-setup-image bg-cover bg-fixed">
+            <div
+              className={cn(
+                "max-w-[760px] w-full",
+                currentStep === 0 && "max-w-[1080px]"
+              )}
+            >
+              <OrganizationSetupForm
+                // accountType={userData?.roles[0]}
+                accountType={"MERCHANT"}
+                currentStep={currentStep}
+                formState={formState}
+                setFormState={setFormState}
+                addressFormState={addressFormState}
+                setAddressFormState={setAddressFormState}
+                DocInfoState={DocInfoState}
+                setDocInfoState={setDocInfoState}
+                handleDocSubmission={handleDocSubmission}
+                handleCertOfIncSubmission={handleCertOfIncSubmission}
+                handleCertOfAuthSubmission={handleCertOfAuthSubmission}
+              />
+              <Button
+                disabled={
+                  (() => {
+                    if (currentStep && currentStep >= 3) {
+                      // NON_FINANCIAL MERCHANT PATH
+                      if (
+                        userData?.roles[0] === "MERCHANT" &&
+                        userData?.merchantType === "NON_FINANCIAL_MERCHANT"
+                      ) {
+                        if (
+                          userData.nonFinMerchantType === "SELF_EMPLOYED" &&
+                          uniqueObjectsByIdType(userData?.doc).length < 2
+                        ) {
+                          return true;
+                        }
+                        if (
+                          userData.nonFinMerchantType ===
+                            "SELF_EMPLOYED_LICENSE" &&
+                          uniqueObjectsByIdType(userData?.doc).length < 3
+                        ) {
+                          return true;
+                        }
+                        if (
+                          userData.nonFinMerchantType === "LIMITED_LIABILITY" &&
+                          uniqueObjectsByIdType(userData?.doc).length < 3
+                        ) {
+                          return true;
+                        }
+                        if (
+                          userData.nonFinMerchantType ===
+                            "LIMITED_LIABILITY_LICENSE" &&
+                          uniqueObjectsByIdType(userData?.doc).length < 4
+                        ) {
+                          return true;
+                        }
+                        return false;
+                      }
+                      // FINANCIAL MERCHANT PATH
+                      if (
+                        userData?.roles[0] === "MERCHANT" &&
+                        userData?.merchantType !== "NON_FINANCIAL_MERCHANT" &&
+                        uniqueObjectsByIdType(userData?.doc).length < 4
+                      ) {
+                        if (uniqueObjectsByIdType(userData?.doc).length < 4) {
+                          return true;
+                        }
+                        return false;
+                      }
+                    } else if (currentStep === 0 || !currentStep) {
+                      return formState.accountType === "";
+                    } else {
+                      console.log(currentStep);
+                      console.log(formState);
+                      return (
+                        setMerchantBioData.isPending ||
+                        setMerchantAddress.isPending
+                      );
                     }
-                    if (
-                      userData.nonFinancialMerchantType ===
-                        "SELF_EMPLOYED_LICENSE" &&
-                      uniqueObjectsByIdType(userData?.doc).length < 3
-                    ) {
-                      return true;
-                    }
-                    if (
-                      userData.nonFinancialMerchantType ===
-                        "LIMITED_LIABILITY" &&
-                      uniqueObjectsByIdType(userData?.doc).length < 3
-                    ) {
-                      return true;
-                    }
-                    if (
-                      userData.nonFinancialMerchantType ===
-                        "LIMITED_LIABILITY_LICENSE" &&
-                      uniqueObjectsByIdType(userData?.doc).length < 4
-                    ) {
-                      return true;
-                    }
-                    return false;
-                  }
-                  // FINANCIAL MERCHANT PATH
-                  if (
-                    userData?.roles[0] === "MERCHANT" &&
-                    userData?.merchantType !== "NON_FINANCIAL_MERCHANT" &&
-                    uniqueObjectsByIdType(userData?.doc).length < 4
-                  ) {
-                    if (uniqueObjectsByIdType(userData?.doc).length < 4) {
-                      return true;
-                    }
-                    return false;
-                  }
-                } else if (currentStep === 0 || !currentStep) {
-                  return formState.accountType === "";
-                } else {
-                  console.log(currentStep);
-                  console.log(formState);
-                  return (
-                    setMerchantBioData.isPending || setMerchantAddress.isPending
-                  );
-                }
-              })()
-              // setUserDoc.isPending
-            }
-            onClick={goToNext}
-            className="rounded-lg text-white mt-4 w-full h-11"
-          >
-            {setMerchantBioData.isPending || setMerchantAddress.isPending ? (
-              // setUserDoc.isPending ?
-              <Oval
-                visible={
-                  setMerchantBioData.isPending || setMerchantAddress.isPending
+                  })()
                   // setUserDoc.isPending
                 }
-                height="20"
-                width="20"
-                color="#ffffff"
-                ariaLabel="oval-loading"
-                wrapperStyle={{}}
-                wrapperClass=""
-              />
-            ) : (
-              <span>Next</span>
-            )}
-          </Button>
-        </div>
-      </div>
-    </ScrollToTop>
+                onClick={goToNext}
+                className="rounded-lg text-white mt-4 w-full h-11"
+              >
+                {setMerchantBioData.isPending ||
+                setMerchantAddress.isPending ? (
+                  // setUserDoc.isPending ?
+                  <Oval
+                    visible={
+                      setMerchantBioData.isPending ||
+                      setMerchantAddress.isPending
+                      // setUserDoc.isPending
+                    }
+                    height="20"
+                    width="20"
+                    color="#ffffff"
+                    ariaLabel="oval-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                  />
+                ) : (
+                  <span>Next</span>
+                )}
+              </Button>
+            </div>
+          </div>
+        </ScrollToTop>
+      )}
+    </>
   );
 };
 

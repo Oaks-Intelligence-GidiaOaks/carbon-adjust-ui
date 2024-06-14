@@ -8,9 +8,9 @@ import { persistor, RootState } from "@/app/store";
 import AccountActionHeader from "@/components/reusables/account-setup/AccountActionHeader";
 import { Button } from "@/components/ui";
 import { setUser } from "@/features/userSlice";
-import { cn, uniqueObjectsByIdType } from "@/utils";
+import { cn } from "@/utils";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
-import { useIsFetching, useQuery } from "@tanstack/react-query";
+import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { LuRefreshCcw } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 type Props = {};
 
 const PendingVerification = (_: Props) => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userData = useSelector((state: RootState) => state.user.user);
@@ -48,41 +48,17 @@ const PendingVerification = (_: Props) => {
     if (verifyApp.isSuccess) {
       dispatch(setUser(verifyApp.data.data.data));
 
-      console.log(verifyApp.data.data.data);
+      console.log(verifyApp.data.data.data.status);
 
-      if (verifyApp.data.data.data.roles[0] === "ADMIN") {
-        return navigate("/admin");
-      }
       if (
-        verifyApp.data.data.data.roles[0] !== "HOME_OCCUPANT" &&
-        uniqueObjectsByIdType(verifyApp.data.data.data?.doc).length < 3
+        verifyApp.data.data.data.roles[0] === "MERCHANT" &&
+        verifyApp.data.data.data.status === "completed"
       ) {
-        return navigate("/account-setup");
+        return navigate("/merchant");
       }
-      if (
-        verifyApp.data.data.data.status === "pending" &&
-        (verifyApp.data.data.data?.step < 4 || !verifyApp.data.data.data?.step)
-      ) {
-        return navigate("/account-setup");
-      }
-      if (verifyApp.data.data.data.status === "pending") {
-        return navigate("/pending-verification");
-      }
-      if (verifyApp.data.data.data.roles[0] === "AGGREGATOR") {
-        return navigate("/aggregator");
-      }
-      if (verifyApp.data.data.data.roles[0] === "HIA") {
-        return navigate("/hia");
-      }
-      if (verifyApp.data.data.data.roles[0] === "FINANCE") {
-        return navigate("/finance");
-      }
-      if (verifyApp.data.data.data.roles[0] === "INSURANCE") {
-        return navigate("/insurance");
-      }
-      return navigate("/dashboard");
+      // return navigate("/dashboard");
     }
-  }, [verifyApp.isSuccess]);
+  }, [verifyApp]);
 
   return (
     <div className="min-h-screen relative">
@@ -121,16 +97,17 @@ const PendingVerification = (_: Props) => {
             // disabled
             className="bg-white h-10 shadow px-8 flex gap-2 justify-center items-center font-poppins mt-6"
             // onClick={() => navigate("/dashboard")}
-            onClick={() =>
-              // navigate({
-              //   pathname: "",
-              //   search: createSearchParams({
-              //     state: "application-approved",
-              //   }).toString(),
-              // })
-              // setVerify(true)
-              // queryClient.invalidateQueries({ queryKey: ["fetch-user-info-2"] })
-              window.location.reload()
+            onClick={
+              () =>
+                // navigate({
+                //   pathname: "",
+                //   search: createSearchParams({
+                //     state: "application-approved",
+                //   }).toString(),
+                // })
+                // setVerify(true)
+                queryClient.refetchQueries({ queryKey: ["fetch-user-info-2"] })
+              // window.location.reload()
             }
           >
             <span className="text-white">Refresh</span>

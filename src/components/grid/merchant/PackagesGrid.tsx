@@ -16,13 +16,16 @@ import TablePagination from "../../reusables/TablePagination";
 import LoadingModal from "../../reusables/LoadingModal";
 
 import { useOutsideCloser } from "../../../hooks/useOutsideCloser";
-import { EnvelopeIcon } from "@heroicons/react/24/outline";
+import { EnvelopeIcon, EyeIcon } from "@heroicons/react/24/outline";
 
 import toast from "react-hot-toast";
 import { BsPeople, BsThreeDotsVertical } from "react-icons/bs";
 import { publishPackage, unPublishPackage } from "@/services/merchantService";
+import { useNavigate } from "react-router-dom";
 
 const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
+  const navigate = useNavigate();
+
   const [showModal, setShowModal] = useState(false);
   const [currentRowId, setCurrentRowId] = useState<string>("");
 
@@ -96,7 +99,7 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.title, {
       id: "title",
       cell: (info) => (
-        <div className="w-24 mx-auto text-left">{info.getValue()}</div>
+        <div className="w-60 mx-auto text-left">{info.getValue()}</div>
       ),
       header: () => <div className="w-36 text-left">Title</div>,
     }),
@@ -104,7 +107,7 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.category, {
       id: "catgeory",
       cell: (info) => (
-        <div className="w-24 mx-auto text-left">{info.getValue()}</div>
+        <div className="w-60 mx-auto text-left">{info.getValue()}</div>
       ),
       header: () => <div className="w-36 text-left">Category</div>,
     }),
@@ -112,7 +115,9 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.status, {
       id: "status",
       cell: (info) => (
-        <div className="w-24 mx-auto text-left">{info.getValue()}</div>
+        <div className="w-24 mx-auto text-left capitalize">
+          {info.getValue()}ed
+        </div>
       ),
       header: () => <div className="w-36 text-left">Status</div>,
     }),
@@ -128,7 +133,10 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.price, {
       id: "price",
       cell: (info) => (
-        <div className="w-24 mx-auto text-left">{info.getValue()}</div>
+        <>
+          {/* {console.log("gbfhwrjgflahrfg", info.getValue())} */}
+          <div className="w-24 mx-auto text-left">{info.getValue()}</div>
+        </>
       ),
       header: () => <div className="w-36 text-left">Amount</div>,
     }),
@@ -155,24 +163,36 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
                 onClick={() => setShowModal(true)}
                 className="absolute top-[-30px] flex flex-col gap-y-2 z-10 right-[40px] bg-white border border-gray-300  rounded p-2"
               >
-                <div
-                  className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs hover:text-ca-blue  px-1"
-                  onClick={() => handlePublushPackage(currentRowId)}
-                >
-                  <div className="rounded-full bg-ca-blue p-1">
-                    <BsPeople className="text-white text-base size-3" />
+                {info?.row?.original?.status === "unpublish" ? (
+                  <div
+                    className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs hover:text-ca-blue  px-1"
+                    onClick={() => handlePublushPackage(currentRowId)}
+                  >
+                    <div className="rounded-full bg-ca-blue p-1">
+                      <BsPeople className="text-white text-base size-3" />
+                    </div>
+                    <span>Publish</span>
                   </div>
-                  <span>Publish</span>
-                </div>
+                ) : (
+                  <div
+                    className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-blue text-xs whitespace-nowrap px-1"
+                    onClick={() => handleUnPublushPackage(currentRowId)}
+                  >
+                    <div className="rounded-full bg-yellow-500 p-1">
+                      <EnvelopeIcon className="text-white text-base size-3" />
+                    </div>
+                    <span> Unpublish</span>
+                  </div>
+                )}
 
                 <div
-                  className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-red text-xs whitespace-nowrap px-1"
-                  onClick={() => handleUnPublushPackage(currentRowId)}
+                  className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
+                  onClick={() => navigate(`/merchant/packages/${currentRowId}`)}
                 >
-                  <div className="rounded-full bg-yellow-500 p-1">
-                    <EnvelopeIcon className="text-white text-base size-3" />
+                  <div className="rounded-full bg-violet-500 p-1">
+                    <EyeIcon className="text-white text-base size-3" />
                   </div>
-                  <span> Unpublish</span>
+                  <span> View details</span>
                 </div>
               </div>
             )}

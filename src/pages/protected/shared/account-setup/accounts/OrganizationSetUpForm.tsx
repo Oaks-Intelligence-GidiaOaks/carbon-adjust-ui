@@ -14,6 +14,8 @@ const OrganizationSetupForm = ({
   DocInfoState,
   setDocInfoState,
 }: OrgAccountSetupProps) => {
+  console.log(formState);
+
   if (accountType !== "HOME_OCCUPANT") {
     // const step = currentStep >= 4 ? 3 : currentStep;
     // const userData = useSelector((state: RootState) => state.user.user);

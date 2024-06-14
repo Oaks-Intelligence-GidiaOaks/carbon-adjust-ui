@@ -280,3 +280,31 @@ export const convertFormattedStringToNumber = (
 
   return numberValue;
 };
+
+export function formatDateString(dateString: string): string {
+  const date = new Date(dateString);
+
+  const day = date.getUTCDate().toString().padStart(2, "0");
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, "0"); // getUTCMonth() is zero-based
+  const year = date.getUTCFullYear();
+
+  let hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+  const period = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12; // Convert to 12-hour format
+
+  return `${day}-${month}-${year} ${hours}:${minutes}${period}`;
+}
+
+export function formatAccountType(accountType: string) {
+  // Convert the string to lower case and split it by underscores
+  const words = accountType.toLowerCase().split("_");
+
+  // Capitalize the first letter of each word
+  const formattedWords = words.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1)
+  );
+
+  // Join the words with a space and return the result
+  return formattedWords.join(" ");
+}

@@ -197,6 +197,7 @@ export type IComponentMap = {
 
 export type AuthUserProfile = {
   accountType: string;
+  merchantType: string;
   activationCode: string;
   activationExpiry: string;
   address: {
@@ -219,7 +220,7 @@ export type AuthUserProfile = {
   hasEmailVerified: boolean;
   name: string;
   dp?: string;
-  nonFinancialMerchantType:
+  nonFinMerchantType:
     | "SELF_EMPLOYED"
     | "SELF_EMPLOYED_LICENSE"
     | "LIMITED_LIABILITY"
@@ -257,3 +258,31 @@ export interface YearData {
   label: string;
   value: number;
 }
+
+export type Package = {
+  _id: string;
+  title: string;
+  description: string;
+  attachments: string[];
+  media: string[];
+  owner: string;
+  category: Category;
+  regions: string[];
+  country: string;
+  status: "publish";
+  packageType: "Product";
+  hasQuestion: boolean;
+  allowPartPayment?: boolean;
+  percentPayment?: string;
+  hasSchedule: boolean;
+  askPurchaserQuote: boolean;
+  hasDownloadedableFile: boolean;
+  currency: string;
+  price?: string;
+  discount?: string;
+  questions: Question[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  publishedAt: string;
+};

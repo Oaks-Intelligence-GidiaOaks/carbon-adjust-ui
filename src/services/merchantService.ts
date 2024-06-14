@@ -1,7 +1,7 @@
 import axiosInstance from "@/api/axiosInstance";
 
 export const getAllCategories = async () => {
-  const { data } = await axiosInstance.get(`packages/categories`);
+  const { data } = await axiosInstance.get(`/packages/categories`);
 
   return data;
 };
@@ -12,21 +12,21 @@ export const addPackageCategory = async (iData: any) => {
   //     "name":"Home Energy plans"
   // }
 
-  const { data } = await axiosInstance.post(`packages/category`, iData);
+  const { data } = await axiosInstance.post(`/packages/category`, iData);
 
   return data;
 };
 
 // Package Schedule
 export const getScheduleMetaData = async () => {
-  const { data } = await axiosInstance.get(`booking/schedule-metadata`);
+  const { data } = await axiosInstance.get(`/booking/schedule-metadata`);
 
   return data;
 };
 
 export const createScheduleSlot = async (iData: any) => {
   const { data } = await axiosInstance.post(
-    `booking/schedule/generate-slot`,
+    `/booking/schedule/generate-slot`,
     iData
   );
 
@@ -35,7 +35,7 @@ export const createScheduleSlot = async (iData: any) => {
 
 export const activateScheduleSlots = async (iData: any) => {
   const { data } = await axiosInstance.patch(
-    `booking/schedule/activate-slot`,
+    `/booking/schedule/activate-slot`,
     iData
   );
 
@@ -43,37 +43,50 @@ export const activateScheduleSlots = async (iData: any) => {
 };
 
 export const getRecentPackages = async () => {
-  const { data } = await axiosInstance.get(`packages/recent`);
+  const { data } = await axiosInstance.get(`/packages/recent`);
 
   return data;
 };
 
 export const getAllPackages = async () => {
-  const { data } = await axiosInstance.get(`packages`);
+  const { data } = await axiosInstance.get(`/packages`);
+
+  return data;
+};
+
+export const getAllApplications = async () => {
+  const { data } = await axiosInstance.get(`/packages`);
 
   return data;
 };
 
 export const getPackageDetails = async (packageId: string) => {
-  const { data } = await axiosInstance.get(`packages/${packageId}`);
+  const { data } = await axiosInstance.get(`/packages/${packageId}`);
 
   return data;
 };
 
+export const getPackageSchedules = async (packageId: string) => {
+  const { data } = await axiosInstance.get(`/packages/${packageId}/schedules`);
+  return data;
+};
+
 export const createPackage = async (iData: any) => {
-  const { data } = await axiosInstance.post(`packages`, iData);
+  const { data } = await axiosInstance.post(`/packages`, iData);
 
   return data;
 };
 
 export const publishPackage = async (packageId: string) => {
-  const { data } = await axiosInstance.patch(`packages/${packageId}/publish`);
+  const { data } = await axiosInstance.patch(`/packages/${packageId}/publish`);
 
   return data;
 };
 
 export const unPublishPackage = async (packageId: string) => {
-  const { data } = await axiosInstance.patch(`packages/${packageId}/unpublish`);
+  const { data } = await axiosInstance.patch(
+    `/packages/${packageId}/unpublish`
+  );
 
   return data;
 };

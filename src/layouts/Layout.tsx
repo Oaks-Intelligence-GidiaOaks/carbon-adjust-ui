@@ -238,8 +238,12 @@ const Layout = (props: Props) => {
               />
             </div>
           ) : ( */}
-          <Outlet />
-          <Footer />
+          <div className="relative bg-white">
+            <div className="relative z-10">
+              <Outlet />
+            </div>
+            <Footer />
+          </div>
 
           {/* )} */}
         </div>

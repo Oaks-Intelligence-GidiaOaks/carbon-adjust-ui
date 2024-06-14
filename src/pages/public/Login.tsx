@@ -16,6 +16,7 @@ import { Oval } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { setKommunitaToken, setToken } from "@/features/userSlice";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { AuthUserProfile } from "@/types/general";
 // import { RootState } from "@/app/store";
 // import { uniqueObjectsByIdType } from "@/utils";
 
@@ -52,15 +53,21 @@ const Login = () => {
       dispatch(setKommunitaToken(data.data.data.kommunita_access_token));
       toast.success(`${"Login successful"}`, { duration: 4000 });
 
-      handleRedirect(data.data.data.user.roles[0]);
+      handleRedirect(data.data.data.user, data.data.data.user.roles[0]);
     },
   });
 
   // const userData = useSelector((state: RootState) => state.user.user);
 
-  const handleRedirect = (role: string) => {
+  const handleRedirect = (user: AuthUserProfile, role: string) => {
     if (role === "HOME_OCCUPANT") return navigate("/dashboard");
-    if (role === "MERCHANT") return navigate("/merchant");
+    if (role === "ADMIN") return navigate("/admin");
+    if (role === "MERCHANT") {
+      if (user.status === "pending") {
+        return navigate("/account-setup");
+      }
+      return navigate("/merchant");
+    }
   };
 
   const onSubmit: SubmitHandler<LoginFormContext> = async (data) => {

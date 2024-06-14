@@ -151,6 +151,11 @@ export const merchantSideBarItems = [
     title: "Applications",
     href: "/merchant/applications",
   },
+  {
+    icon: ApplicationsIcon,
+    title: "Bookings",
+    href: "/merchant/bookings",
+  },
   // {
   //   icon: DevicesIcon,
   //   title: "Wallet",
@@ -1009,4 +1014,12 @@ export const currencies: DropdownOption[] = [
   { label: "Uzbekistani Som", value: "soʻm" },
   { label: "Kyrgyzstani Som", value: "лв" },
   { label: "Tajikistani Somoni", value: "ЅМ" },
+];
+
+export const questionTypes = [
+  { label: "Binary Response Question", value: "Binary Response Question" },
+  { label: "Open-Ended Question", value: "Open-Ended Question" },
+  { label: "Single-Choice Question", value: "Single-Choice Question" },
+  { label: "Multiple-Choice Question", value: "Multiple-Choice Question" },
+  { label: "File Upload Response", value: "File Upload Response" },
 ];
