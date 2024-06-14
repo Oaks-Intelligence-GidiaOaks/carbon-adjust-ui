@@ -1,9 +1,8 @@
-// import React from 'react'
+import OrganizationProfile from "@/components/sub-pages/organizations/OrganizationProfile";
+import { FC } from "react";
 
-type Props = {};
-
-const Profile = (_: Props) => {
-  return <div>Profile</div>;
+const Profile: FC = () => {
+  return <OrganizationProfile />;
 };
 
 export default Profile;

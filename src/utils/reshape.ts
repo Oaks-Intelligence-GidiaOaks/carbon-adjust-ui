@@ -1,3 +1,5 @@
+import { formatNumberWithCommas } from ".";
+
 export const transformAdminUserRegistrations = (data: any) => {
   let newData: any[] = [];
 
@@ -33,7 +35,10 @@ export const transformPackagesGridData = (data: any) => {
 
     newData.push({
       ...rest,
-      price: `${currency}  ${price}`,
+      price:
+        price === undefined
+          ? `${currency} 0`
+          : `${currency} ${formatNumberWithCommas(price)}`,
       category: category.name,
     });
   });
@@ -43,6 +48,8 @@ export const transformPackagesGridData = (data: any) => {
 
 export const transformPackageCards = (data: any) => {
   let newData: any[] = [];
+
+  console.log(data);
 
   Array.from(data, (item: any) => {
     const { category, ...rest } = item;

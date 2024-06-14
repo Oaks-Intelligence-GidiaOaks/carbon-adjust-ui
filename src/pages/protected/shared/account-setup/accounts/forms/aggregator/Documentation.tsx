@@ -324,10 +324,9 @@ const Documentation = ({ formState, setFormState }: Props) => {
           </div>
 
           {/* Cert of Inc */}
-          {(userData?.nonFinancialMerchantType ===
-            "LIMITED_LIABILITY_LICENSE" ||
-            userData?.nonFinancialMerchantType === "LIMITED_LIABILITY" ||
-            userData?.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE") && (
+          {(userData?.nonFinMerchantType === "LIMITED_LIABILITY_LICENSE" ||
+            userData?.nonFinMerchantType === "LIMITED_LIABILITY" ||
+            userData?.nonFinMerchantType === "SELF_EMPLOYED_LICENSE") && (
             <div>
               <p className="text-black">Certificate of Incorporation *</p>
               {!Boolean(
@@ -384,8 +383,7 @@ const Documentation = ({ formState, setFormState }: Props) => {
           )}
 
           {/* Professional Certificate or License */}
-          {userData?.nonFinancialMerchantType ===
-            "LIMITED_LIABILITY_LICENSE" && (
+          {userData?.nonFinMerchantType === "LIMITED_LIABILITY_LICENSE" && (
             <div>
               <p className="text-black">
                 Professional Certificate or License *
