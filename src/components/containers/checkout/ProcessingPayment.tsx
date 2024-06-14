@@ -9,7 +9,7 @@ import { GrClose } from "react-icons/gr";
 import { Oval } from "react-loader-spinner";
 // import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const ProcessingPayment = (props: {
   setStage: Dispatch<SetStateAction<number>>;
@@ -18,23 +18,29 @@ const ProcessingPayment = (props: {
   const { order } = useSelector((state: RootState) => state);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+
+  const loadingToastId = toast.loading("Processing payment...", {
+    duration: 1500, // Display for 3 seconds
+  });
 
   const updateOrderStatus = useMutation({
     mutationKey: ["update-order-status"],
     mutationFn: (orderId: string) => updateOrderPaymentStatus(orderId),
-    onSuccess: (sx: any) => {
-      console.log(sx, "success ");
-      toast.success("order successful...");
+    onSuccess: (_: any) => {
+      // console.log(sx, "success ");
+      toast.dismiss(loadingToastId);
+      props.setStage(5);
     },
-    onError: (ex: any) => {
-      toast.error(ex.message);
+    onError: (_: any) => {
+      toast.error("Updating order failed. Please try again.");
+      toast.dismiss(loadingToastId);
     },
   });
 
-  const handleContinue = () => {
-    navigate(`/dashboard/order-booking/${order._id}`);
-  };
+  // const handleContinue = () => {
+  //   navigate(`/dashboard/order-booking/${order._id}`);
+  // };
 
   const retryOrderUpdate = () => {
     updateOrderStatus.mutate(order._id!);
@@ -75,30 +81,32 @@ const ProcessingPayment = (props: {
           Your payment is being processed, once recieved you will be notified
         </h2>
 
-        {!updateOrderStatus.isError ? (
-          <button
-            disabled={updateOrderStatus.isPending}
-            onClick={retryOrderUpdate}
-            className={`${
-              updateOrderStatus.isPending ? "bg-gray-300" : "blue-gradient"
-            } rounded-[12px] mt-[40px] font-poppins mx-auto hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px] grid place-items-center w-full`}
-          >
-            {updateOrderStatus.isPending ? (
-              <Oval
-                visible={true}
-                height="20"
-                width="20"
-                color="#ffffff"
-                ariaLabel="oval-loading"
-                wrapperStyle={{}}
-                wrapperClass=""
-              />
-            ) : (
-              <span>Retry</span>
-            )}
-          </button>
-        ) : (
-          <button
+        {/* {!updateOrderStatus.isError ? ( */}
+        <button
+          disabled={updateOrderStatus.isPending}
+          onClick={retryOrderUpdate}
+          className={`${
+            updateOrderStatus.isPending ? "bg-gray-300" : "blue-gradient"
+          } rounded-[12px] mt-[40px] font-poppins mx-auto hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px] grid place-items-center w-full`}
+        >
+          {updateOrderStatus.isPending ? (
+            <Oval
+              visible={true}
+              height="20"
+              width="20"
+              color="#ffffff"
+              ariaLabel="oval-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          ) : (
+            <span>Retry</span>
+          )}
+        </button>
+        {/* ) :  */}
+
+        {/* // ( */}
+        {/* <button
             disabled={updateOrderStatus.isPending}
             onClick={handleContinue}
             className={`${
@@ -118,8 +126,7 @@ const ProcessingPayment = (props: {
             ) : (
               <span>Continue</span>
             )}
-          </button>
-        )}
+          </button> */}
       </div>
     </div>
   );

@@ -25,7 +25,7 @@ const ProductCard = ({ isMerchant = false, ...props }: IProduct) => {
         </span>
 
         <div className="relative">
-          <div className="hidden group-hover:flex flex-col  absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 ">
+          <div className="hidden group-hover:flex flex-col  absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 rounded-lg">
             {!isMerchant && (
               <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
                 <Link

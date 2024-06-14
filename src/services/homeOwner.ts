@@ -31,6 +31,12 @@ export const getPackagesByCategorySlug = async (slug: string) => {
 };
 
 // ORDER
+export const getHoOrders = async () => {
+  const { data } = await axiosInstance.get(`application/orders`);
+
+  return data;
+};
+
 export const createNewOrder = async (iData: any) => {
   // {
   //     "package": "66648f3a9619f2263c4e4d60",
@@ -64,7 +70,7 @@ export const updateOrderPaymentStatus = async (orderId: string) => {
   // console.log(iData);
 
   const { data } = await axiosInstance.patch(
-    `application/order/${orderId}/payment/confirm`
+    `application/${orderId}/payment/confirm`
   );
 
   return data;
@@ -94,13 +100,18 @@ export const createOrderBookingSlot = async ({
   orderId,
   schedule,
   slot,
-  appointmentData,
+  appointmentDate,
+}: {
+  orderId: string;
+  schedule: string;
+  slot: string;
+  appointmentDate: string;
 }) => {
   const { data } = await axiosInstance.post(`application/${orderId}/bookings`, {
     orderId,
     schedule,
     slot,
-    appointmentData,
+    appointmentDate,
   });
 
   return data;

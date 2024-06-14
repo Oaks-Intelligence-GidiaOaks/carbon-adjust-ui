@@ -55,7 +55,11 @@ const PaymentSuccessful = (props: {
         onClick={() => handleContinueOrder()}
         className="rounded-[12px] mt-[40px] font-poppins w-4/5 mx-auto blue-gradient hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]"
       >
-        <span>Continue</span>
+        {product.hasSchedule ? (
+          <span>Proceed to schedule booking</span>
+        ) : (
+          <span>Continue to orders</span>
+        )}
       </button>
     </div>
   );

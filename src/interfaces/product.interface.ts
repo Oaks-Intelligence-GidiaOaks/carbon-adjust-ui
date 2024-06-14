@@ -10,6 +10,8 @@ export interface IProduct {
   _id: string;
   title: string;
   attachments: string[];
+  media?: string[];
+  hasDownloadedableFile?: boolean;
   owner: string;
   category?: {
     name: string;

@@ -70,3 +70,13 @@ export const fileToBase64 = (file: File): Promise<string> => {
 export const stringToArray = (str: string) => {
   return str.split(",");
 };
+
+export const getFormattedMonthFromIndex = (monthIndex: number): string => {
+  if (monthIndex < 0 || monthIndex > 11) {
+    throw new Error("Invalid month index. Must be between 0 and 11.");
+  }
+
+  // Format the month with leading zero if necessary
+  const month = monthIndex + 1;
+  return month < 10 ? `0${month}` : `${month}`;
+};

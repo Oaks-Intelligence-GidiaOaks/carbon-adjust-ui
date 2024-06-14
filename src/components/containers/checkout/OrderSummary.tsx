@@ -9,7 +9,7 @@ import { GrClose } from "react-icons/gr";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Oval } from "react-loader-spinner";
-import { updateOrderId } from "@/features/orderSlice";
+import { clearOrder, updateOrderId } from "@/features/orderSlice";
 
 const OrderSummary = (props: {
   setStage: Dispatch<SetStateAction<number>>;
@@ -26,7 +26,9 @@ const OrderSummary = (props: {
       dispatch(updateOrderId(sx.data._id));
 
       props.setStage(4);
-      toast.loading("order processing");
+      // toast.loading("order processing", {
+      //   duration: 1000,
+      // });
     },
     onError: (ex: any) => {
       console.log(ex);
@@ -40,8 +42,8 @@ const OrderSummary = (props: {
     const newOrder: IOrder = {
       ...order,
       package: product._id,
-      price: product.price,
-      requiredExtraProd: true,
+      price: product.price || 0,
+      // requiredExtraProd: true,
     };
 
     console.log(newOrder, "new  order");
@@ -60,6 +62,7 @@ const OrderSummary = (props: {
         <span
           onClick={() => {
             dispatch(clearProduct());
+            dispatch(clearOrder());
             props.setShowcheckout(false);
           }}
         >

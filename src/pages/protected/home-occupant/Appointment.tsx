@@ -10,54 +10,92 @@ import {
   getCurrentDayOrderBookingSlots,
 } from "@/services/homeOwner";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { ISlot } from "@/interfaces/slots.interface";
+// import { useSelector } from "react-redux";
+// import { RootState } from "@/app/store";
+import { Oval } from "react-loader-spinner";
+import { Dayjs } from "dayjs";
+import { getFormattedMonthFromIndex } from "@/lib/utils";
 
 type Props = {};
 
 const Appointment = (_: Props) => {
   const { orderId } = useParams();
-  const [dt, setDt] = useState<string>("");
+  const [dt, setDt] = useState<Dayjs>();
+  const [activeSlot, setActiveSlot] = useState<ISlot>();
 
-  // console.log(orderId, "order id");
   const orderData = {
     orderId: orderId!.toString(),
+    // @ts-ignore
+    dt: dt && `${dt.$y}-${getFormattedMonthFromIndex(dt.$M)}-${dt.$y}`,
   };
 
-  const { data, error, isLoading, isSuccess, refetch } = useQuery({
+  const {
+    data,
+    isLoading: slotsLoading,
+    isSuccess,
+    refetch,
+  } = useQuery({
     queryKey: ["get-current-day-bookings"],
     queryFn: () => getCurrentDayOrderBookingSlots(orderData),
     enabled: true,
   });
 
+  const slots = isSuccess ? data.data.slots : [];
+
+  // console.log(slots, "slots");
+  // console.log(schedule, "schedule");
+
   const createOrderBooking = useMutation({
     mutationKey: ["create-order-booking"],
-    mutationFn: (orderData) => createOrderBookingSlot(orderData),
+    mutationFn: (orderData: {
+      orderId: string;
+      schedule: string;
+      slot: string;
+      appointmentDate: string;
+    }) => createOrderBookingSlot(orderData),
 
-    onSuccess: (sx: any) => {
+    onSuccess: (_: any) => {
       toast.success(`slot booked successfully`);
     },
-    onError: (ex: any) => {
+    onError: (_: any) => {
       toast.error(`error occurred booking slot`);
     },
   });
 
-  const getSpecificDateSlots = () => {
+  useEffect(() => {
     refetch();
+  }, [dt]);
+
+  // const getSpecificDateSlots = () => {
+  //   refetch();
+  // };
+
+  // const slots = isSuccess ? data.slots : [];
+
+  const handleSlotClick = (slot: ISlot) => {
+    setActiveSlot(slot);
   };
 
-  const handleBooking = (slotData) => {
-    const orderData = {
-      orderId,
-      schedule: slotData.schedule,
-      slot: slotData._id,
-      appointmentData: dt,
+  // console.log(order);
+
+  const handleBookSlot = () => {
+    const bookingData = {
+      orderId: orderId!,
+      schedule: activeSlot?.schedule!,
+      slot: activeSlot?._id!,
+      appointmentDate: activeSlot?.createdAt!,
     };
 
-    createOrderBooking.mutate(orderData);
+    createOrderBooking.mutate(bookingData);
   };
 
-  const slots = isSuccess ? data.slots : [];
+  const proceedDisabled =
+    activeSlot === undefined || createOrderBooking.isPending;
+
+  const scheduledDates = ["2024-06-25", "2024-06-15", "2024-06-20"];
 
   return (
     <div>
@@ -83,7 +121,11 @@ const Appointment = (_: Props) => {
               <h2 className="mb-6">Choose a Date</h2>
 
               <div>
-                <Calendar key={1} scheduledDates={[]} />
+                <Calendar
+                  key={1}
+                  scheduledDates={[]}
+                  setDate={(d: Dayjs) => setDt(d)}
+                />
               </div>
             </div>
 
@@ -91,25 +133,58 @@ const Appointment = (_: Props) => {
             <div className="">
               <h2 className="pyb-6 pt-10">Pick a time</h2>
 
-              <div className="grid grid-cols-3 gap-3 mt-10">
-                {Array.from(slots, (item) => (
-                  <div
-                    onClick={() => handleBooking(item)}
-                    key={item?._id}
-                    className="border p-3 grid place-items-center rounded-lg"
-                  >
-                    <span>9:30 - 10:30 </span>
-                  </div>
-                ))}
-              </div>
+              {slotsLoading ? (
+                <div>
+                  <p>Loading availalble slots...</p>
+                </div>
+              ) : slots?.length > 0 ? (
+                <div className="grid grid-cols-3 gap-3 mt-10">
+                  {Array.from(slots, (item: ISlot) => (
+                    <div
+                      onClick={() => handleSlotClick(item)}
+                      key={item._id}
+                      className={`${
+                        activeSlot?._id === item._id &&
+                        "blue-gradient text-white"
+                      } border p-3 grid place-items-center rounded-lg text-sm font-[500] cursor-pointer`}
+                    >
+                      <span>{item.desc}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid place-items-center w-fit mx-auto my-8">
+                  <p>No available slots for this date</p>
+                </div>
+              )}
 
               <div className="flex-center w-4/5 mx-auto mt-8 gap-4">
                 <button className="bg-[#CCCAD1] flex-1 py-3 rounded-lg">
                   Back
                 </button>
 
-                <button className="blue-gradient text-white hover:bg-gradient-to-t flex-1 py-3 rounded-lg">
-                  Proceed
+                <button
+                  disabled={proceedDisabled}
+                  onClick={handleBookSlot}
+                  className={`${
+                    proceedDisabled
+                      ? "bg-gray-300 cursor-not-allowed"
+                      : "blue-gradient"
+                  }  text-white hover:bg-gradient-to-t flex-1 py-3 rounded-lg grid place-items-center`}
+                >
+                  {createOrderBooking.isPending ? (
+                    <Oval
+                      visible={true}
+                      height="20"
+                      width="20"
+                      color="#ffffff"
+                      ariaLabel="oval-loading"
+                      wrapperStyle={{}}
+                      wrapperClass=""
+                    />
+                  ) : (
+                    <span>Proceed</span>
+                  )}
                 </button>
               </div>
             </div>
