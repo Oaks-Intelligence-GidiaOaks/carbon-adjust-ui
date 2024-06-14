@@ -24,6 +24,7 @@ const OrderSummary = (props: {
     mutationFn: (orderData: IOrder) => createNewOrder(orderData),
     onSuccess: (sx: any) => {
       dispatch(updateOrderId(sx.data._id));
+      console.log(sx.data, "order data");
 
       props.setStage(4);
       // toast.loading("order processing", {
@@ -76,8 +77,7 @@ const OrderSummary = (props: {
         <div className="flex-start">
           <span className="font-[600] text-sm w-1/2"> Price $: </span>
           <span className="font-[400] text-sm w-1/2 pl-2">
-            {" "}
-            {product.price}{" "}
+            {product.price || 0}
           </span>
         </div>
 

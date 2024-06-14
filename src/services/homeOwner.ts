@@ -85,7 +85,7 @@ export const getCurrentDayOrderBookingSlots = async ({
   dt?: string;
 }) => {
   // Construct the base URL
-  let url = `application/${orderId}/bookings`;
+  let url = `application/${orderId}/schedules`;
 
   if (dt) {
     url += `?dt=${encodeURIComponent(dt)}`;
@@ -107,12 +107,15 @@ export const createOrderBookingSlot = async ({
   slot: string;
   appointmentDate: string;
 }) => {
-  const { data } = await axiosInstance.post(`application/${orderId}/bookings`, {
-    orderId,
-    schedule,
-    slot,
-    appointmentDate,
-  });
+  const { data } = await axiosInstance.post(
+    `application/${orderId}/schedules`,
+    {
+      orderId,
+      schedule,
+      slot,
+      appointmentDate,
+    }
+  );
 
   return data;
 };
