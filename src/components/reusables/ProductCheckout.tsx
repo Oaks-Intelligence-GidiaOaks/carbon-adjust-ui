@@ -6,6 +6,7 @@ import DescriptionSection from "../containers/checkout/DescriptionSection";
 import ProductForm from "../containers/checkout/ProductForm";
 import OrderSummary from "../containers/checkout/OrderSummary";
 import PaymentSuccessful from "../containers/checkout/PaymentSuccessful";
+import ProcessingPayment from "../containers/checkout/ProcessingPayment";
 
 const ProductCheckout = (props: {
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
@@ -34,6 +35,12 @@ const ProductCheckout = (props: {
       />
     ),
     4: (
+      <ProcessingPayment
+        setStage={setStage}
+        setShowcheckout={props.setShowcheckout}
+      />
+    ),
+    5: (
       <PaymentSuccessful
         setStage={setStage}
         setShowcheckout={props.setShowcheckout}
