@@ -49,7 +49,7 @@ const Dashboard = (_: Props) => {
     },
     {
       title: "Total Earnings",
-      value: "$1500",
+      value: "£0",
       icon: (
         <div className="size-7 flex justify-center items-center bg-purple-100 rounded-lg">
           <img src="/assets/icons/org-dashboard/project.svg" />

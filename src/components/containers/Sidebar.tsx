@@ -6,7 +6,7 @@ import {
   merchantSideBarItems,
 } from "@/constants";
 import { SideBarItem, SideBarProps } from "@/types/general";
-import { cn } from "@/utils";
+import { cn, formatAccountType } from "@/utils";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
@@ -143,7 +143,7 @@ const Sidebar = ({
                   {user?.contactName}
                 </h2>
                 <h2 className="text-xs text-[#7A8699] truncate max-w-[180px] font-[400]">
-                  {user?.merchantType}
+                  {formatAccountType(user?.merchantType ?? "")}
                 </h2>
               </div>
             </div>

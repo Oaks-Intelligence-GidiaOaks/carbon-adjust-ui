@@ -4,7 +4,7 @@ import NewPackageCard from "@/components/reusables/NewPackageCard";
 import { Link } from "react-router-dom";
 import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
 import { useQuery } from "@tanstack/react-query";
-import { getAllPackages } from "@/services/merchantService";
+import { getAllPackages, getRecentPackages } from "@/services/merchantService";
 import {
   transformPackageCards,
   transformPackagesGridData,
@@ -19,12 +19,23 @@ const Packages = (_: Props) => {
     // isLoading,
   } = useQuery({
     queryKey: ["get-packages"],
+    queryFn: () => getRecentPackages(),
+  });
+
+  const {
+    data: allPackages,
+    isSuccess: isAllPackagesSuccess,
+    // isLoading,
+  } = useQuery({
+    queryKey: ["get-all-packages"],
     queryFn: () => getAllPackages(),
   });
 
+  // console.log(allPackages);
+
   const pkgs = isSuccess ? transformPackageCards(packages.data.packages) : [];
-  const tablePkgs = isSuccess
-    ? transformPackagesGridData(packages.data.packages)
+  const tablePkgs = isAllPackagesSuccess
+    ? transformPackagesGridData(allPackages.data.packages)
     : [];
 
   const NoPackages = () => (
@@ -59,7 +70,7 @@ const Packages = (_: Props) => {
   }
 
   return (
-    <div className="px-3 lg:px-4">
+    <div className="px-3 lg:px-4 sm:max-w-[calc(100vw-280px)]">
       <div className="flex-center justify-between">
         <div className="flex flex-col gap-[6px] my-4">
           <h2 className="font-[600] text-lg ">Packages</h2>
@@ -81,10 +92,12 @@ const Packages = (_: Props) => {
       </div>
 
       {/* Flat Lists */}
-      <div className="flex items-stretch gap-[20px] mt-[24px] w-[93vw] overflow-x-scroll pb-5 md:w-full">
-        {Array.from(pkgs, (item) => (
-          <NewPackageCard {...item} />
-        ))}
+      <div className="w-full overflow-x-auto">
+        <div className="flex items-stretch gap-[20px] mt-[24px] pb-5 w-full">
+          {Array.from(pkgs, (item) => (
+            <NewPackageCard {...item} isMerchant />
+          ))}
+        </div>
       </div>
 
       <div className="mt-[29px]">
@@ -92,7 +105,7 @@ const Packages = (_: Props) => {
           <h2 className="font-[600] text-base ">Package List</h2>
 
           <Link to="/merchant/packages/all" className="">
-            <button className="rounded-[8px] h-[26px] flex-center gap-1  text-[#575757] border-[#575757] border p-2 px-3 text-xs">
+            <button className="rounded-[8px] h-[26px] hover:bg-gray-100 flex-center gap-1 text-[#575757] p-2 px-3 text-xs">
               <span>View all</span>
               <MdOutlineKeyboardArrowRight />
             </button>

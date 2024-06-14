@@ -25,7 +25,7 @@ type Props = {
 const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
   // const breadcrumbs = useBreadcrumbs();
   const location = useLocation();
-  const role = useSelector((state: RootState) => state.user.user?.roles[0]);
+  // const role = useSelector((state: RootState) => state.user.user?.roles[0]);
   const kommunitaToken = useSelector(
     (state: RootState) => state.user.kommunitaToken
   );
@@ -134,21 +134,21 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
           )}
 
           <div className="flex-center gap-[18px] ml-auto ">
-            {role === "HOME_OCCUPANT" && (
-              <img
-                className={cn(
-                  "hidden md:inline-flex cursor-pointer hover:scale-105 transition-all",
-                  kommunitaToken ? "block" : "hidden"
-                )}
-                src="/assets/graphics/kommunita-logo.svg"
-                alt=""
-                onClick={() =>
-                  window.location.assign(
-                    `https://kommunita-web.netlify.app/home?token=${kommunitaToken}`
-                  )
-                }
-              />
-            )}
+            {/* {role === "HOME_OCCUPANT" && ( */}
+            <img
+              className={cn(
+                "hidden md:inline-flex cursor-pointer hover:scale-105 transition-all",
+                kommunitaToken ? "block" : "hidden"
+              )}
+              src="/assets/graphics/kommunita-logo.svg"
+              alt=""
+              onClick={() =>
+                window.location.assign(
+                  `https://kommunita-web.netlify.app/home?token=${kommunitaToken}`
+                )
+              }
+            />
+            {/* )} */}
 
             <div className="flex-center gap-2  ">
               {!isMerchant && (

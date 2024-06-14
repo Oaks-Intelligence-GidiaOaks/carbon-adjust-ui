@@ -2,10 +2,21 @@
 
 import ApplicationsGrid from "@/components/grid/merchant/ApplicationsGrid";
 import applicationsDummy from "@/dummy/applications.json";
+// import { getRecentPackages } from "@/services/merchantService";
+// import { useQuery } from "@tanstack/react-query";
 
 type Props = {};
 
 const Applications = (_: Props) => {
+  // const {
+  //   data: packages,
+  //   isSuccess,
+  //   // isLoading,
+  // } = useQuery({
+  //   queryKey: ["get-packages"],
+  //   queryFn: () => getRecentPackages(),
+  // });
+
   const NoApplications = () => (
     <div className="h-[80vh] grid place-items-center">
       <h2 className="text-lg font-[600] mr-auto text-[#333333]">
