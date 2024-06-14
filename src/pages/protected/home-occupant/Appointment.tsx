@@ -111,7 +111,7 @@ const Appointment = (_: Props) => {
 
             <div className="flex-center gap-2 font-[400]">
               <IoIosAlert color="#0E89F7" />
-              <span>This call is highly recommended!</span>
+              <span>This call is highly recommended!!</span>
             </div>
           </div>
 
