@@ -95,6 +95,7 @@ const OrderCard = (props: IPackageOrder) => {
   };
 
   // console.log(props, "order");
+  console.log(props.package, "package data");
 
   return (
     <div>
@@ -124,24 +125,21 @@ const OrderCard = (props: IPackageOrder) => {
                   isBorder={true}
                 />
 
-                <ListTile text={`Package title `} key={1} isBorder={true} />
+                <ListTile
+                  text={`${props.package.title}`}
+                  key={1}
+                  isBorder={true}
+                />
 
-                <ListTile text={`Package Region`} key={1} isBorder={true} />
-
-                {/* {Array.from(
-                  [
-                    "Applied Date: 02/05/2024",
-                    "Window Retrofitting",
-                    "United Kingdom",
-                  ],
-                  (it, i) => (
-                    <ListTile text={it} key={it} isBorder={i !== 0} />
-                  )
-                )} */}
+                <ListTile
+                  text={props.package.country}
+                  key={1}
+                  isBorder={true}
+                />
               </div>
 
               <div className="flex-center gap-6">
-                <span className="text-xs font-[400] border-r text-[#4C5563]">
+                <span className="text-xs font-[400] text-[#4C5563]">
                   4.7k Homes Retrofitted | 2022
                 </span>
 
@@ -183,6 +181,16 @@ const OrderCard = (props: IPackageOrder) => {
             </span>
 
             {paymentStatusIcon(props.paymentStatus)}
+
+            <div>
+              {/* downloadable icon */}
+
+              {props.package.media && props.package.media.length > 0 && (
+                <a target="__blank" href={props.package.media?.[0]}>
+                  <GoDownload color="#575757" size={18} />
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>

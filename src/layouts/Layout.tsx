@@ -46,7 +46,7 @@ const Layout = (props: Props) => {
         return navigate("/admin");
       }
       if (userData.data.data.data.roles[0] === "HOME_OCCUPANT") {
-        return navigate("/home");
+        return navigate("/dashboard");
       }
       // NON_FINANCIAL MERCHANT PATH
       if (

@@ -24,6 +24,7 @@ const OrderSummary = (props: {
     mutationFn: (orderData: IOrder) => createNewOrder(orderData),
     onSuccess: (sx: any) => {
       dispatch(updateOrderId(sx.data._id));
+      console.log(sx.data, "order data");
 
       props.setStage(4);
       // toast.loading("order processing", {

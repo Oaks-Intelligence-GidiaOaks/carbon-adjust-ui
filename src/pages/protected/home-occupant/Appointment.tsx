@@ -9,7 +9,7 @@ import {
   createOrderBookingSlot,
   getCurrentDayOrderBookingSlots,
 } from "@/services/homeOwner";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { ISlot } from "@/interfaces/slots.interface";
@@ -26,13 +26,15 @@ const Appointment = (_: Props) => {
   const [dt, setDt] = useState<Dayjs>();
   const [activeSlot, setActiveSlot] = useState<ISlot>();
 
+  const navigate = useNavigate();
+
   const orderData = {
     orderId: orderId!.toString(),
     // @ts-ignore
     dt: dt && `${dt.$y}-${getFormattedMonthFromIndex(dt.$M)}-${dt.$D}`,
   };
 
-  console.log(dt, "dt");
+  // console.log(dt, "dt");
 
   const {
     data,
@@ -60,10 +62,12 @@ const Appointment = (_: Props) => {
     }) => createOrderBookingSlot(orderData),
 
     onSuccess: (_: any) => {
+      navigate(`/dashboard/orders`);
       toast.success(`slot booked successfully`);
     },
-    onError: (_: any) => {
-      toast.error(`error occurred booking slot`);
+    onError: (ex: any) => {
+      console.log(ex, "error obj");
+      toast.error(ex.response.data.message);
     },
   });
 
@@ -161,9 +165,9 @@ const Appointment = (_: Props) => {
               )}
 
               <div className="flex-center w-4/5 mx-auto mt-8 gap-4">
-                <button className="bg-[#CCCAD1] flex-1 py-3 rounded-lg">
+                {/* <button className="bg-[#CCCAD1] flex-1 py-3 rounded-lg">
                   Back
-                </button>
+                </button> */}
 
                 <button
                   disabled={proceedDisabled}
