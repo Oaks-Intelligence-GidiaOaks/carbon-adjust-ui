@@ -95,7 +95,7 @@ const Appointment = (_: Props) => {
   const proceedDisabled =
     activeSlot === undefined || createOrderBooking.isPending;
 
-  const scheduledDates = ["2024-06-25", "2024-06-15", "2024-06-20"];
+  // const scheduledDates = ["2024-06-25", "2024-06-15", "2024-06-20"];
 
   return (
     <div>
