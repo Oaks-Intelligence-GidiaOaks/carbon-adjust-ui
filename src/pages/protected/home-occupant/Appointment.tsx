@@ -29,8 +29,10 @@ const Appointment = (_: Props) => {
   const orderData = {
     orderId: orderId!.toString(),
     // @ts-ignore
-    dt: dt && `${dt.$y}-${getFormattedMonthFromIndex(dt.$M)}-${dt.$y}`,
+    dt: dt && `${dt.$y}-${getFormattedMonthFromIndex(dt.$M)}-${dt.$D}`,
   };
+
+  console.log(dt, "dt");
 
   const {
     data,

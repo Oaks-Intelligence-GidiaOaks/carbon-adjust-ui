@@ -55,7 +55,9 @@ const ProductCard = ({ isMerchant = false, ...props }: IProduct) => {
             ))}
           </div>
 
-          <h2 className="text-xs font-[600] ">{props.title}</h2>
+          <h2 className="text-xs font-[600] truncate max-w-[228px] ">
+            {props.title}
+          </h2>
 
           <h2 className="text-xs font-[600] ">{props.price}</h2>
         </div>
