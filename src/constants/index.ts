@@ -3,7 +3,7 @@ import {
   CarbonCreditIcon,
   // ContactIcon,
   DashboardIcon,
-  HomeIcon,
+  // HomeIcon,
   // DevicesIcon,
   // DocumentCentreIcon,
   // InboxIcon,
@@ -88,21 +88,21 @@ export const retrofittingServices = [
 ];
 
 export const homeOwnerSideBarItems = [
-  {
-    icon: HomeIcon,
-    title: "Home",
-    href: "/home",
-  },
+  // {
+  //   icon: HomeIcon,
+  //   title: "Home",
+  //   href: "/home",
+  // },
   {
     icon: DashboardIcon,
     title: "Dashboard",
-    href: "/dashboard/marketplace",
+    href: "/dashboard",
   },
-  {
-    icon: ApplicationsIcon,
-    title: "Bookings",
-    href: "/dashboard/order-booking/orderId",
-  },
+  // {
+  //   icon: ApplicationsIcon,
+  //   title: "Bookings",
+  //   href: "/dashboard/order-booking/orderId",
+  // },
   {
     icon: ApplicationsIcon,
     title: "Orders",

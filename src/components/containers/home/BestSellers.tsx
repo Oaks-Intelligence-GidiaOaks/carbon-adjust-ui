@@ -4,9 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getBestSellerPackages } from "@/services/homeOwner";
 // import { transformCategoryPackages } from "@/utils/reshape";
 import { IProduct } from "@/interfaces/product.interface";
+import CategoriesLoading from "@/components/reusables/CategoriesLoading";
 
 const BestSellers = () => {
-  const { data, isSuccess } = useQuery({
+  const { data, isLoading, isSuccess } = useQuery({
     queryKey: ["get-best-sellers"],
     queryFn: () => getBestSellerPackages(),
   });
@@ -17,6 +18,10 @@ const BestSellers = () => {
     name: "Best Sellers",
     slug: "best-sellers",
   };
+
+  if (isLoading) {
+    return <CategoriesLoading />;
+  }
 
   return (
     <div className="pb-[70px] pt-[37px]">
