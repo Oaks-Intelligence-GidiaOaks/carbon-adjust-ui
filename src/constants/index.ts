@@ -3,7 +3,7 @@ import {
   CarbonCreditIcon,
   // ContactIcon,
   DashboardIcon,
-  HomeIcon,
+  // HomeIcon,
   // DevicesIcon,
   // DocumentCentreIcon,
   // InboxIcon,
