@@ -4,7 +4,7 @@ import { IoIosAlert } from "react-icons/io";
 // this is the calendar page for booking appointments
 import { CiClock2 } from "react-icons/ci";
 import { FaCheck } from "react-icons/fa6";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createOrderBookingSlot,
   getCurrentDayOrderBookingSlots,
@@ -18,6 +18,7 @@ import { ISlot } from "@/interfaces/slots.interface";
 import { Oval } from "react-loader-spinner";
 import { Dayjs } from "dayjs";
 import { getFormattedMonthFromIndex } from "@/lib/utils";
+import SlotsLoading from "@/components/reusables/SlotsLoading";
 
 type Props = {};
 
@@ -25,6 +26,9 @@ const Appointment = (_: Props) => {
   const { orderId } = useParams();
   const [dt, setDt] = useState<Dayjs>();
   const [activeSlot, setActiveSlot] = useState<ISlot>();
+  const [isDateLoading, setIsDateLoading] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 
@@ -45,6 +49,7 @@ const Appointment = (_: Props) => {
     queryKey: ["get-current-day-bookings"],
     queryFn: () => getCurrentDayOrderBookingSlots(orderData),
     enabled: true,
+    retry: 0,
   });
 
   const slots = isSuccess ? data.data.slots : [];
@@ -64,6 +69,9 @@ const Appointment = (_: Props) => {
     onSuccess: (_: any) => {
       navigate(`/dashboard/orders`);
       toast.success(`slot booked successfully`);
+      queryClient.invalidateQueries({
+        queryKey: ["get-current-day-bookings"],
+      });
     },
     onError: (ex: any) => {
       console.log(ex, "error obj");
@@ -72,8 +80,11 @@ const Appointment = (_: Props) => {
   });
 
   useEffect(() => {
-    refetch();
-  }, [dt]);
+    if (dt) {
+      setIsDateLoading(true);
+      refetch().then(() => setIsDateLoading(false));
+    }
+  }, [dt, refetch]);
 
   // const getSpecificDateSlots = () => {
   //   refetch();
@@ -137,11 +148,11 @@ const Appointment = (_: Props) => {
 
             {/* time slots */}
             <div className="">
-              <h2 className="pyb-6 pt-10">Pick a time</h2>
+              <h2 className="pyb-6 pt-10 font-[500]">Pick a time</h2>
 
-              {slotsLoading ? (
+              {slotsLoading || isDateLoading ? (
                 <div>
-                  <p>Loading availalble slots...</p>
+                  <SlotsLoading />
                 </div>
               ) : slots?.length > 0 ? (
                 <div className="grid grid-cols-3 gap-3 mt-10">
@@ -159,7 +170,7 @@ const Appointment = (_: Props) => {
                   ))}
                 </div>
               ) : (
-                <div className="grid place-items-center w-fit mx-auto my-8">
+                <div className="grid place-items-center w-fit mx-auto my-8 font-[600]">
                   <p>No available slots for this date</p>
                 </div>
               )}

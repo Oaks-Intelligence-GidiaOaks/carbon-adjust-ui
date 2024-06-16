@@ -38,7 +38,11 @@ const VideoContainer: React.FC<VideoContainerProps> = ({
         isPlaying ? "" : "bg-gradient-to-r"
       }`}
       onClick={!isPlaying ? handlePlayVideo : undefined}
-      style={{ backgroundImage: isPlaying ? "none" : `url(${coverImage})` }}
+      style={{
+        backgroundImage: isPlaying ? "none" : `url(${coverImage})`,
+        backgroundPosition: `center`,
+        backgroundSize: `cover`,
+      }}
     >
       {!isPlaying && (
         <div

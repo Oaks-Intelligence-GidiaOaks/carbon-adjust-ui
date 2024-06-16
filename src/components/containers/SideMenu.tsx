@@ -30,23 +30,21 @@ const SideMenu = ({
     }
   };
   return (
-    <>
+    <div>
       {/* desktop sidebar */}
       <div
         className={cn(
-          "w-auto lg:w-fit max-w-[302px] min-w-[50px] max-h-screen px-4 sm:sticky bg-white overflow-y-scroll pb-10 z-20 border-r border-[hsla(110,49%,88%,1)] top-0 hidden md:block"
+          "lg:w-fit max-w-[100px] min-w-[50px] w-fit h-screen px-4 sm:sticky  pb-10 z-10 border-r top-0 hidden md:block fixed bg-white"
         )}
       >
-        <div className="flex justify-between items-center sticky top-0 pt-10 pb-2 z-10 bg-white">
-          {/* logo */}
-          <div className="flex items-center sticky top-0 pl-2 ">
+        <div className="grid place-items-center pt-12 pb-2 z-10">
+          <Link to="/home" className="">
             <Logo />
-          </div>
+          </Link>
 
-          <button className="w-5">
+          {/* <button className="w-5">
             <ChevronLeftIcon
               color="#139EEC"
-              // fill="#139EEC"
               fontSize={20}
               width={20}
               className={cn(
@@ -54,10 +52,10 @@ const SideMenu = ({
               )}
               onClick={() => setMobileMenuIsOpen(false)}
             />
-          </button>
+          </button> */}
         </div>
 
-        <div className="flex flex-col gap-y-4 mt-8">
+        <div className="flex flex-col gap-y-5 mt-8">
           {identifyUserSideBar(accountType).map((item, i) => {
             const Icon = item.icon;
             return item.title !== "Logout" ? (
@@ -76,14 +74,6 @@ const SideMenu = ({
                     pathname === `${item.href}` ? "invert brightness-0" : ""
                   )}
                 />
-                {/* <span
-                  className={cn(
-                    "text-sm",
-                    pathname === `${item.href}` ? "text-white" : ""
-                  )}
-                >
-                  {item.title}
-                </span> */}
               </Link>
             ) : (
               <div
@@ -123,14 +113,12 @@ const SideMenu = ({
       >
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-x-2">
-            {/* <Logo /> */}
             <img src="/assets/icons/logo-main.svg" alt="" className="w-7" />
             <p className="font-poppins text-black">Carbon-Adjust</p>
           </div>
           <button className="w-5">
             <ChevronLeftIcon
               color="#139EEC"
-              // fill="#139EEC"
               fontSize={20}
               width={20}
               className={cn(
@@ -205,7 +193,7 @@ const SideMenu = ({
           })}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

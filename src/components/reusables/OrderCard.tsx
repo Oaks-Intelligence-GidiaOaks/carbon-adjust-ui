@@ -18,7 +18,7 @@ const OrderCard = (props: IPackageOrder) => {
         props.isBorder && "border-l pl-[10px] border-[#4C5563]"
       } p-0 `}
     >
-      <span className="text-xs p-0 font-[400] border-r text-[#4C5563]">
+      <span className="text-xs p-0 font-[400] text-[#4C5563]">
         {props.text}
       </span>
     </div>
@@ -36,7 +36,7 @@ const OrderCard = (props: IPackageOrder) => {
     };
 
     return (
-      <div className="text-xs">
+      <div className="text-xs flex-center gap-1 font-poppins">
         {aProps.activities.map((item) => (
           <div className="flex-center gap-2">
             <div className="flex-center gap-3">
@@ -99,7 +99,7 @@ const OrderCard = (props: IPackageOrder) => {
 
   return (
     <div>
-      <div className="flex flex-col font-inter">
+      <div className="flex flex-col text-sm">
         <div className="flex items-stretch gap-3  flex-col md:flex-row">
           <div className="flex items-stretch gap-2 ">
             <div className=" hidden md:px-4 bg-[#F3F5F7] w-[100px] h-[100px] md:grid place-items-center rounded-lg">
@@ -114,8 +114,8 @@ const OrderCard = (props: IPackageOrder) => {
 
             {/*  */}
             <div className="flex flex-col justify-between pl-4">
-              <h2 className="text-lg font-[600]">
-                {props.package.title || "Merchant name"}
+              <h2 className="text-lg font-[600] font-poppins">
+                {props.package.title}
               </h2>
 
               <div className="flex-center gap-[10px]">

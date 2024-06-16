@@ -1,6 +1,7 @@
 import DashboardBanner from "@/components/containers/DashboardBanner";
 import Promotion from "@/components/containers/Promotion";
 import BestSellers from "@/components/containers/home/BestSellers";
+import CategoriesLoading from "@/components/reusables/CategoriesLoading";
 // import EnergyEfficient from "@/components/containers/home/EnergyEfficient";
 // import EnergySaving from "@/components/containers/home/EnergySaving";
 // import HomeEnergy from "@/components/containers/home/HomeEnergy";
@@ -53,16 +54,20 @@ const Market = (_: Props) => {
   // console.log(categories, "categories");
 
   return (
-    <div>
+    <div className="">
       <DashboardBanner />
       <BestSellers />
       <Promotion />
 
       <div className="space-y-[38px] pt-[30px]">
-        {categories.length > 0 &&
+        {homePagePackages.isLoading ? (
+          <CategoriesLoading />
+        ) : (
+          categories.length > 0 &&
           categories.map((item) => (
             <ProductsCategory {...item} key={item.category.slug} />
-          ))}
+          ))
+        )}
       </div>
     </div>
   );

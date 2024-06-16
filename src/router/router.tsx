@@ -103,12 +103,6 @@ const Router = createBrowserRouter([
       {
         path: "",
         element: <Market />,
-        // children: [
-        //   {
-        //     path: "",
-        //     element: <Market />,
-        //   },
-        // ],
       },
       {
         path: "order-booking",

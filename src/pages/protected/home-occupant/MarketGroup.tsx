@@ -9,6 +9,7 @@ import { getPackagesByCategorySlug } from "@/services/homeOwner";
 import ProductCard from "@/components/reusables/ProductCard";
 import { formatSlug } from "@/lib/utils";
 import { IProduct } from "@/interfaces/product.interface";
+import CategoriesLoading from "@/components/reusables/CategoriesLoading";
 // import { useDispatch } from "react-redux";
 // import { addProduct } from "@/features/productSlice";
 
@@ -33,7 +34,7 @@ const MarketGroup = (_: Props) => {
   };
 
   // get category specific products
-  const { data, isSuccess } = useQuery({
+  const { data, isLoading, isSuccess } = useQuery({
     queryKey: ["get-category-products"],
     queryFn: () => getPackagesByCategorySlug(param.category),
   });
@@ -50,11 +51,15 @@ const MarketGroup = (_: Props) => {
         <h2 className="font-[500] text-xl">{categoryName}</h2>
       </div>
 
-      <div className="mt-[40px] flex items-stretch overflow-x-scroll pb-5 gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[850px] lg:mx-0  xl:max-w-[1100px] md:!ml-auto ">
-        {Boolean(catProducts.length) &&
-          Array.from(catProducts.slice(0, 3), (item) => (
+      <div className="mt-[40px] flex items-stretch overflow-x-scroll pb-5 gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[95%]   xl:max-w-[90%]">
+        {isLoading ? (
+          <CategoriesLoading />
+        ) : (
+          Boolean(catProducts.length) &&
+          Array.from(catProducts.slice(0, 4), (item) => (
             <ProductCard {...item} key={item._id} />
-          ))}
+          ))
+        )}
       </div>
 
       <div className="mt-[48px]">
@@ -67,10 +72,14 @@ const MarketGroup = (_: Props) => {
       gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[850px] lg:mx-0  xl:max-w-[1100px] md:!ml-auto
       "
       >
-        {Boolean(catProducts.length) &&
-          Array.from(catProducts.slice(3), (item) => (
+        {isLoading ? (
+          <CategoriesLoading />
+        ) : (
+          Boolean(catProducts.length) &&
+          Array.from(catProducts.slice(6), (item) => (
             <ProductCard {...item} key={item._id} />
-          ))}
+          ))
+        )}
       </div>
 
       {pid && (
