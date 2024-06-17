@@ -11,6 +11,7 @@ const initialState: Props = {
   customerAddress: "",
   customerEmail: "",
   customerPhone: "",
+  quantity: 1,
   // price: 0,
   responses: [],
   // requiredExtraProd: true,
@@ -35,6 +36,9 @@ const orderSlice = createSlice({
     updateOrderId: (state, action) => {
       state._id = action.payload;
     },
+    updateQuantity: (state, action) => {
+      state.quantity = action.payload;
+    },
     updateResponses: (state, action) => {
       state.responses = action.payload;
     },
@@ -51,6 +55,7 @@ export const {
   updateAddress,
   updatePhone,
   updateEmail,
+  updateQuantity,
   updateResponses,
 } = orderSlice.actions;
 

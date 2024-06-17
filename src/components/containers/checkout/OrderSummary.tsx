@@ -107,6 +107,15 @@ const OrderSummary = (props: {
           </span>
         </div>
 
+        {product.packageType === "Product" && (
+          <div className="flex-start">
+            <span className="font-[600] text-sm w-1/2"> Quantity</span>
+            <span className="font-[400] text-sm w-1/2 pl-2">
+              {order.quantity}
+            </span>
+          </div>
+        )}
+
         <div className="flex flex-col gap-3">
           {product.questions.map((it, i) => (
             <div className="flex-start">
