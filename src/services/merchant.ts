@@ -46,7 +46,7 @@ export const sendActivityQuery = async (
 };
 
 export const completeApplication = async (packageId: string) => {
-  const { data } = await axiosInstance.get(
+  const { data } = await axiosInstance.patch(
     `/application/${packageId}/complete`
   );
 
