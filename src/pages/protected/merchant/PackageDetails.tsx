@@ -241,7 +241,10 @@ const PackageDetails = (_: Props) => {
               </p>
               <div className="mt-2">
                 {Boolean(packageSchedules.data?.data.length) ? (
-                  <ScheduleTabs schedules={packageSchedules.data?.data} />
+                  <ScheduleTabs
+                    schedules={packageSchedules.data?.data}
+                    packageId={packageId!}
+                  />
                 ) : (
                   <div className="flex flex-col justify-center gap-y-6 items-center w-full mb-4 bg-gray-50 rounded-xl py-4 border border-border">
                     <TbClockQuestion className="size-20 text-gray-500" />

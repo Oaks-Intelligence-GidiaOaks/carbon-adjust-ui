@@ -46,6 +46,28 @@ export const transformPackagesGridData = (data: any) => {
   return newData;
 };
 
+export const transformApplicationsGridData = (data: any) => {
+  let newData: any[] = [];
+
+  console.log(data);
+
+  Array.from(data, (item: any) => {
+    console.log(item);
+    const { currency, price, package: pkg, category, ...rest } = item;
+
+    newData.push({
+      ...rest,
+      amount:
+        price === undefined
+          ? `${pkg.currency} 0`
+          : `${pkg.currency} ${formatNumberWithCommas(price)}`,
+      category: pkg.category.name,
+    });
+  });
+
+  return newData;
+};
+
 export const transformPackageCards = (data: any) => {
   let newData: any[] = [];
 

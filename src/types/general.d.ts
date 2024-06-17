@@ -286,3 +286,79 @@ export type Package = {
   __v: number;
   publishedAt: string;
 };
+
+export type Order = {
+  _id: string;
+  package: {
+    _id: string;
+    attachments: string[];
+    media: string[];
+    category: string;
+    country: string;
+    hasSchedule: boolean;
+  };
+  status: string;
+  customer: {
+    _id: string;
+    name: string;
+  };
+  responses: {
+    question: string;
+    response: string;
+    _id: string;
+  }[];
+  orderActivities: {
+    initiator: string;
+    initiatorRole: string;
+    activity: string;
+    status: string;
+    initatedAt: string;
+    responder: string;
+    responderRole: string;
+    respondedAt?: string;
+    response?: string;
+    _id: string;
+  }[];
+  customerEmail: string;
+  customerAddress: string;
+  customerPhone: string;
+  paymentStatus: string;
+  price: number;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  booking: {
+    _id: string;
+    schedule: {
+      _id: string;
+      day: string;
+      shortDay: string;
+      package: string;
+      createdBy: string;
+      availabilityWindow: string;
+      status: string;
+      slotDuration: string;
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+    };
+    slot: {
+      _id: string;
+      desc: string;
+      schedule: string;
+      createdBy: string;
+      status: string;
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+    };
+    status: string;
+    order: string;
+    appointmentDate: string;
+    participants: string[];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+};
