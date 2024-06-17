@@ -7,13 +7,13 @@ interface Props extends IOrder {
 }
 
 const initialState: Props = {
+  _id: "",
   customerAddress: "",
   customerEmail: "",
   customerPhone: "",
-  package: "",
-  price: 0,
+  // price: 0,
   responses: [],
-  requiredExtraProd: true,
+  // requiredExtraProd: true,
 };
 
 const orderSlice = createSlice({
@@ -32,6 +32,9 @@ const orderSlice = createSlice({
     updatePhone: (state, action) => {
       state.customerPhone = action.payload;
     },
+    updateOrderId: (state, action) => {
+      state._id = action.payload;
+    },
     updateResponses: (state, action) => {
       state.responses = action.payload;
     },
@@ -43,6 +46,7 @@ const orderSlice = createSlice({
 
 export const {
   // updateOrderDetails,
+  updateOrderId,
   clearOrder,
   updateAddress,
   updatePhone,

@@ -3,7 +3,7 @@ import { IProduct } from "@/interfaces/product.interface";
 import { FaStar } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import questions from "../../dummy/questions.json";
+// import questions from "../../dummy/questions.json";
 
 const ProductCard = ({ isMerchant = false, ...props }: IProduct) => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const ProductCard = ({ isMerchant = false, ...props }: IProduct) => {
   // console.log(questions, "my questions");
 
   const handleInitiateCheckout = () => {
-    dispatch(addProduct({ ...props, questions }));
+    dispatch(addProduct({ ...props }));
   };
 
   // console.log(props.category, "prod category");
@@ -20,12 +20,12 @@ const ProductCard = ({ isMerchant = false, ...props }: IProduct) => {
   return (
     <div className="min-w-[228px] group">
       <div className="relative ">
-        <span className="absolute top-[13px] left-[13px] w-[55px] h-[20px] grid place-items-center bg-[#BE0B0D] text-white text-[13.94px] font-[700] rounded-[3.31px]">
+        {/* <span className="absolute top-[13px] left-[13px] w-[55px] h-[20px] grid place-items-center bg-[#BE0B0D] text-white text-[13.94px] font-[700] rounded-[3.31px]">
           <span>Hot</span>
-        </span>
+        </span> */}
 
         <div className="relative">
-          <div className="hidden group-hover:flex flex-col  absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 ">
+          <div className="hidden group-hover:flex flex-col  absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 rounded-lg">
             {!isMerchant && (
               <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
                 <Link
@@ -55,7 +55,9 @@ const ProductCard = ({ isMerchant = false, ...props }: IProduct) => {
             ))}
           </div>
 
-          <h2 className="text-xs font-[600] ">{props.title}</h2>
+          <h2 className="text-xs font-[600] truncate max-w-[228px] ">
+            {props.title}
+          </h2>
 
           <h2 className="text-xs font-[600] ">{props.price}</h2>
         </div>

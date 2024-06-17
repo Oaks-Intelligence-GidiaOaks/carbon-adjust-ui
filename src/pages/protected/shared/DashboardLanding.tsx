@@ -43,7 +43,7 @@ const DashboardLanding: FC = () => {
 
       <VideoContainer
         videoSrc="https://www.w3schools.com/html/mov_bbb.mp4"
-        coverImage="https://s3-alpha-sig.figma.com/img/221b/5f82/6ab7ac92b8ea3ba9d528aa57407216cd?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kDQacdpe5EXjeMEOvIUV7KHgeXTZ6dMFABYGkxrwxaM7J-uxg76jB4wlVUIaYYBfP9pSngwEi~T5zEaUsgf-hOC0YYxXVHQvUkLn5F916biKcTbKEbnGMM382KdnaAjgwhbubJ5NyOl~SMnsFVZHOIRL~zogsLTluMvi--aXNzQSAB1CxQ9mSE1-Ru34953XEMRPBLn5eAMPQU2BDxkxuf8cdj9YZtr9PiI2vjJ~xJ02-NCLFnGIasTvFUaTL7QtIZR3u-UWUUPuQFtW6OQt6AATR3hl3mUfV9on-JitsbgNUq9fHB9MURdqmwSTG44lqjGeUYigZRzPds80FTWXIA__"
+        coverImage="/assets/graphics/energy-004.jpg"
       />
 
       <div className="mx-auto w-fit mt-[15px]">

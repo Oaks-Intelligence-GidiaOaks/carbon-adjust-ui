@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
 import { cn } from "@/utils";
 
 interface CalendarProps {
   scheduledDates?: string[];
+  setDate: (dt: Dayjs) => void;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ scheduledDates = [] }) => {
+const Calendar: React.FC<CalendarProps> = ({
+  scheduledDates = [],
+  setDate,
+}) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
   const monthOptions = Array.from({ length: 12 }, (_, i) =>
@@ -37,6 +41,8 @@ const Calendar: React.FC<CalendarProps> = ({ scheduledDates = [] }) => {
   const handleDateClick = (date: dayjs.Dayjs) => {
     if (date.isBefore(today, "day")) return;
     setSelectedDate(date);
+    console.log(date, "calendar date");
+    setDate(date);
   };
 
   const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

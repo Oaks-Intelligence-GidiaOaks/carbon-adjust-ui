@@ -219,36 +219,19 @@ const Layout = (props: Props) => {
         <div
           ref={contentRef}
           className={cn(
-            "font-poppins w-full max-w-[1440px] pb-16 px-4 mx-auto h-full overflow-y-scroll",
+            "font-poppins w-full max-w-[1440px] pb-16 mx-auto h-full overflow-y-scroll",
             pathname.includes("dashboard/applications") && "px-0",
             pathname === "/dashboard/devices" && "px-0",
             pathname === "/dashboard/profile" && "px-0"
           )}
         >
-          {/* {userData.isLoading ? (
-            <div className="w-full h-full flex justify-center pt-20">
-              <Oval
-                visible={userData.isLoading}
-                height="40"
-                width="40"
-                color="#ffffff"
-                ariaLabel="oval-loading"
-                wrapperStyle={{}}
-                wrapperClass=""
-              />
-            </div>
-          ) : ( */}
-          <div className="relative bg-white">
+          <div className="relative ">
             <div className="relative z-10">
               <Outlet />
             </div>
             <Footer />
           </div>
-
-          {/* )} */}
         </div>
-
-        {/* footer */}
       </div>
     </div>
     //   </InactivityWrapper>

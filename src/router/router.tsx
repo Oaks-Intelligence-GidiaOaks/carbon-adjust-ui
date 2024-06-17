@@ -102,21 +102,17 @@ const Router = createBrowserRouter([
     children: [
       {
         path: "",
-        children: [
-          {
-            path: "",
-            element: <Market />,
-          },
-        ],
+        element: <Market />,
       },
       {
-        path: "appointment",
+        path: "order-booking",
         element: <UserAppointment />,
       },
       {
-        path: "appointment",
+        path: "order-booking/:orderId",
         element: <UserAppointment />,
       },
+
       {
         path: "marketplace",
         element: <UserMarketPlace />,
