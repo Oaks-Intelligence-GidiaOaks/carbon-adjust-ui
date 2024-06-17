@@ -1,39 +1,91 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { CiCalendar } from "react-icons/ci";
-import { IoMdClose } from "react-icons/io";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 import { FaRegFileAlt } from "react-icons/fa";
 import { MdOutlineFileDownload } from "react-icons/md";
 import ProcessApplicationModal from "@/components/reusables/ProcessApplicationModal";
+import { useQuery } from "@tanstack/react-query";
+import { getOrderDetails } from "@/services/merchantService";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button } from "@/components/ui";
+import { cn, formatDateString } from "@/utils";
+import { Order } from "@/types/general";
+import Responses from "@/components/merchants/Responses";
 
 const OrderDetails: FC = () => {
+  const navigate = useNavigate();
+  const [showActivities, setShowActivities] = useState(false);
+  const { orderId } = useParams<{ orderId: string }>();
+
+  const orderDetails = useQuery({
+    queryKey: ["order-details"],
+    queryFn: () => getOrderDetails(orderId as string),
+  });
+
+  console.log(orderDetails);
+
   const dummy = [
-    { title: "NAME OF CUSTOMER", details: "John Murphy Doe" },
-    { title: "PHONE NUMBER", details: "+44 7709 787489" },
-    { title: "EMAIL ADDRESS", details: "johndoe92@gmail.com" },
+    {
+      title: "NAME OF CUSTOMER",
+      details:
+        (orderDetails.data?.data.order as Order)?.customer?.name ?? "N/A",
+    },
+    {
+      title: "PHONE NUMBER",
+      details: (orderDetails.data?.data.order as Order)?.customerPhone ?? "N/A",
+    },
+    {
+      title: "EMAIL ADDRESS",
+      details: (orderDetails.data?.data.order as Order)?.customerEmail ?? "N/A",
+    },
   ];
 
   const pkgDummy = [
-    { title: "PACKAGE ID", details: "#DR20904045" },
-    { title: "ORDER ID", details: "#00001" },
+    {
+      title: "PACKAGE ID",
+      details: (orderDetails.data?.data.order as Order)?.package._id ?? "N/A",
+    },
+    {
+      title: "ORDER ID",
+      details: (orderDetails.data?.data.order as Order)?._id ?? "N/A",
+    },
     {
       title: "SERVICES/PRODUCTS",
-      details: "Smart Home Energy Management System",
+      details:
+        (orderDetails.data?.data.order as Order)?.package.category ?? "N/A",
     },
-    { title: "QUANTITY", details: "2" },
+    {
+      title: "QUANTITY",
+      details:
+        (orderDetails.data?.data.order as Order)?.quantity.toString() ?? "N/A",
+    },
   ];
 
   const paymentDummy = [
-    { title: "AMOUNT PAID", details: "$96 (5%)" },
-    { title: "PAYMENT TYPE", details: "Part Payment" },
     {
-      title: "AMOUNT TO BALANCE",
-      details: "$36",
+      title: "AMOUNT PAID",
+      details: `£${(orderDetails.data?.data.order as Order)?.price}` ?? "N/A",
     },
-    { title: "PAYMENT DATE", details: "25-06-24" },
-    { title: "TRANSACTION REF", details: "#OO1FY70E" },
+    {
+      title: "PAYMENT STATUS",
+      details: (orderDetails.data?.data.order as Order)?.paymentStatus ?? "N/A",
+    },
+    // {
+    //   title: "AMOUNT TO BALANCE",
+    //   details: (orderDetails.data?.data.order as Order)?.package ?? "N/A",
+    // },
+    {
+      title: "PAYMENT DATE",
+      details: formatDateString(
+        (orderDetails.data?.data.order as Order)?.createdAt ?? ""
+      ),
+    },
+    {
+      title: "TRANSACTION REF",
+      details: (orderDetails.data?.data.order as Order)?._id,
+    },
   ];
 
   const PackageInfo = (props: { title: string; details: string }) => (
@@ -47,23 +99,50 @@ const OrderDetails: FC = () => {
   return (
     <div className=" xl:w-[90%] mx-auto rounded-[20px] bg-white drop-shadow-md pb-[34px] text-[#333333]">
       <div className="border-b py-6 px-7 flex-center ">
-        <MdKeyboardArrowLeft />
-        <h2 className="pl-4 text-base font-[600]">Order details</h2>
-
-        <span className="ml-auto">
-          <IoMdClose />
-        </span>
+        <Button
+          variant={"ghost"}
+          className="px-2"
+          onClick={() => navigate("/merchant/applications")}
+        >
+          <MdKeyboardArrowLeft />
+          <h2 className="pl-4 text-base font-[600]">Details</h2>
+        </Button>
       </div>
 
       <div className="px-9 space-y-[35px]">
         <div className="flex-center mt-[34px]">
           <CiCalendar />
-          <span className="font-[400] text-sm pl-2">17-04-2024 2:33PM</span>
+          <span className="font-[400] text-sm pl-2">
+            {formatDateString(
+              (orderDetails.data?.data.order as Order)?.createdAt ?? ""
+            )}
+          </span>
 
-          <div className="text-[#15294B] ml-2 text-xs font-[500] bg-[#F2F2F2] p-1  px-2 rounded-xl flex-center">
+          <div
+            className={cn(
+              "text-[#15294B] ml-2 text-xs font-[500] p-1  px-2 rounded-xl flex-center",
+              (orderDetails.data?.data.order as Order)?.status === "pending" &&
+                "bg-[#F2F2F2]",
+              (orderDetails.data?.data.order as Order)?.status ===
+                "cancelled" && "bg-red-100",
+              (orderDetails.data?.data.order as Order)?.status ===
+                "completed" && "bg-green-100"
+            )}
+          >
             <GoDotFill />
 
-            <span>Pending</span>
+            <span
+              className={cn(
+                (orderDetails.data?.data.order as Order)?.status ===
+                  "pending" && "text-black-main",
+                (orderDetails.data?.data.order as Order)?.status ===
+                  "cancelled" && "text-red-500",
+                (orderDetails.data?.data.order as Order)?.status ===
+                  "completed" && "text-green-500"
+              )}
+            >
+              Pending
+            </span>
           </div>
         </div>
 
@@ -111,24 +190,51 @@ const OrderDetails: FC = () => {
           </div>
         </div>
 
+        {(orderDetails.data?.data.order as Order)?.responses.length && (
+          <div className="gap-2 flex flex-col">
+            <h2 className="font-[600] uppercase">Order Responses</h2>
+            <p className="text-gray-500">
+              These are the responses for the questions you created for this
+              package.
+            </p>
+            <div className="mt-2">
+              {Boolean(
+                (orderDetails.data?.data.order as Order)?.responses.length
+              ) && (
+                <Responses
+                  responses={
+                    (orderDetails.data?.data.order as Order)?.responses
+                  }
+                />
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="ml-auto w-fit gap-3 flex-center">
           <button
-            className="text-[#F15046] h-[40px] w-[98px] border border-[#F15046] rounded-[12px]
+            className="text-ca-green h-[40px] w-fit px-3 border border-ca-green rounded-[12px]
             grid place-items-center"
           >
-            <span>Reject</span>
+            <span>Complete Application</span>
           </button>
 
           <button
             className="text-white h-[40px]  px-3 blue-gradient hover:bg-gradient-to-t rounded-[12px]
             grid place-items-center"
+            onClick={() => setShowActivities(true)}
           >
-            <span>Process application</span>
+            <span>View Activities</span>
           </button>
         </div>
       </div>
 
-      <ProcessApplicationModal />
+      {showActivities && (
+        <ProcessApplicationModal
+          setShowActivities={setShowActivities}
+          order={orderDetails.data?.data.order as Order}
+        />
+      )}
     </div>
   );
 };

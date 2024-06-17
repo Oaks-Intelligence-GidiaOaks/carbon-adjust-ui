@@ -29,7 +29,7 @@ import { useNavigate } from "react-router-dom";
 // import DeleteAccount from "../../modals/DeleteAccount";
 // import ResponseAlert from "../../reuseable/ResponseAlert";
 import { useOutsideCloser } from "../../../hooks/useOutsideCloser";
-import { EnvelopeIcon, EyeIcon } from "@heroicons/react/24/outline";
+import { EyeIcon } from "@heroicons/react/24/outline";
 // import { IoDownloadOutline } from "react-icons/io5";
 // import { cn } from "@/utils";
 import axiosInstance from "@/api/axiosInstance";
@@ -255,11 +255,11 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       header: () => <div className="w-60 text-left">Order ID</div>,
     }),
 
-    columnHelper.accessor((row: any) => row?.customerName, {
+    columnHelper.accessor((row: any) => row?.customer, {
       id: "customerName",
       cell: (info) => (
         <div className="w-44 mx-auto text-left">
-          {info.getValue() ?? "----------------"}
+          {(info.row.original as any).customer.name ?? "----------------"}
         </div>
       ),
       header: () => <div className="w-44 text-left">Customer Name</div>,
@@ -572,9 +572,9 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
                 )}
                 <div
                   className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
-                  // onClick={() =>
-                  //   navigate(`/admin/inbox?uid=${info.row.original.user._id}`)
-                  // }
+                  onClick={() =>
+                    navigate(`/merchant/applications/${info.row.original._id}`)
+                  }
                 >
                   <div className="rounded-full bg-violet-500 p-1">
                     <EyeIcon className="text-white text-base size-3" />

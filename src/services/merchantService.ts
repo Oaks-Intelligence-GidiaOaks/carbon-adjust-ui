@@ -66,6 +66,12 @@ export const getPackageDetails = async (packageId: string) => {
   return data;
 };
 
+export const getOrderDetails = async (packageId: string) => {
+  const { data } = await axiosInstance.get(`/application/${packageId}`);
+
+  return data;
+};
+
 export const getPackageSchedules = async (packageId: string) => {
   const { data } = await axiosInstance.get(`/packages/${packageId}/schedules`);
   return data;
