@@ -55,7 +55,7 @@ export const getAllPackages = async () => {
 };
 
 export const getAllApplications = async () => {
-  const { data } = await axiosInstance.get(`/packages`);
+  const { data } = await axiosInstance.get(`/application/merchant`);
 
   return data;
 };

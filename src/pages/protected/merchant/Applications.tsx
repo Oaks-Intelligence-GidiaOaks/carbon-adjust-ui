@@ -2,20 +2,25 @@
 
 import ApplicationsGrid from "@/components/grid/merchant/ApplicationsGrid";
 import applicationsDummy from "@/dummy/applications.json";
+import { getAllApplications } from "@/services/merchantService";
+import { transformApplicationsGridData } from "@/utils/reshape";
+import { useQuery } from "@tanstack/react-query";
 // import { getRecentPackages } from "@/services/merchantService";
 // import { useQuery } from "@tanstack/react-query";
 
 type Props = {};
 
 const Applications = (_: Props) => {
-  // const {
-  //   data: packages,
-  //   isSuccess,
-  //   // isLoading,
-  // } = useQuery({
-  //   queryKey: ["get-packages"],
-  //   queryFn: () => getRecentPackages(),
-  // });
+  const {
+    data,
+    isSuccess,
+    // isLoading,
+  } = useQuery({
+    queryKey: ["get-applications"],
+    queryFn: () => getAllApplications(),
+  });
+
+  console.log(data);
 
   const NoApplications = () => (
     <div className="h-[80vh] grid place-items-center">
@@ -40,13 +45,17 @@ const Applications = (_: Props) => {
     return <NoApplications />;
   }
 
+  const tableApps = isSuccess
+    ? transformApplicationsGridData(data.data.orders)
+    : [];
+
   return (
     <div className="px-3 lg:px-4">
       <h2 className="font-[600] text-lg pt-2 ">Applications</h2>
 
       {/* table */}
       <div className="-mt-3">
-        <ApplicationsGrid isUpdating data={applicationsDummy} />
+        <ApplicationsGrid isUpdating data={tableApps} />
       </div>
     </div>
   );
