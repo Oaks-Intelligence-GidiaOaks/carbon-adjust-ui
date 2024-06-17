@@ -157,10 +157,21 @@ const OrderDetails: FC = () => {
                     "completed" && "bg-green-100"
                 )}
               >
-                <GoDotFill />
+                <GoDotFill
+                  className={cn(
+                    "capitalize",
+                    (orderDetails.data?.data.order as Order)?.status ===
+                      "pending" && "text-black-main",
+                    (orderDetails.data?.data.order as Order)?.status ===
+                      "cancelled" && "text-red-500",
+                    (orderDetails.data?.data.order as Order)?.status ===
+                      "completed" && "text-green-500"
+                  )}
+                />
 
                 <span
                   className={cn(
+                    "capitalize",
                     (orderDetails.data?.data.order as Order)?.status ===
                       "pending" && "text-black-main",
                     (orderDetails.data?.data.order as Order)?.status ===
@@ -169,7 +180,7 @@ const OrderDetails: FC = () => {
                       "completed" && "text-green-500"
                   )}
                 >
-                  Pending
+                  {(orderDetails.data?.data.order as Order)?.status}
                 </span>
               </div>
             </div>

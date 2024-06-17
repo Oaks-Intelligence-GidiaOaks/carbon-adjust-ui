@@ -44,7 +44,7 @@ import {
 // import { PiWarningBold } from "react-icons/pi";
 // import { BiMessage } from "react-icons/bi";
 // import { PDFIcon } from "@/assets/icons";
-import { GrClose } from "react-icons/gr";
+// import { GrClose } from "react-icons/gr";
 import { completeApplication } from "@/services/merchant";
 
 const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
@@ -104,7 +104,7 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     mutationFn: (orderId: string) => completeApplication(orderId as string),
     onSuccess: () => {
       toast.success("Application status updated successfully");
-      queryClient.invalidateQueries({ queryKey: ["order-details"] });
+      queryClient.invalidateQueries({ queryKey: ["get-applications"] });
     },
     onError: () => {
       toast.error("Encountered error while updating application status");
@@ -538,55 +538,26 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
                 ref={actionButtonsRef}
                 className="absolute top-[-30px] flex flex-col gap-y-2 z-10 right-[40px] bg-white border border-gray-300  rounded p-2"
               >
-                <div
-                  className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs hover:text-ca-blue px-1"
-                  // onClick={() => {
-                  //   setUserToDelete(info.row.original);
-                  //   setShowDeleteModal(true);
-                  // }}
-                  onClick={() => {
-                    completeApplicationMutation.mutate(info.getValue());
-                    setCurrentRowId(null);
-                    setShowModal(false);
-                  }}
-                >
-                  <div className="rounded-full bg-ca-blue p-1">
-                    <MdDone className="text-white text-base size-3" />
+                {info.row.original.status === "pending" && (
+                  <div
+                    className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs hover:text-ca-blue px-1"
+                    // onClick={() => {
+                    //   setUserToDelete(info.row.original);
+                    //   setShowDeleteModal(true);
+                    // }}
+                    onClick={() => {
+                      completeApplicationMutation.mutate(info.getValue());
+                      setCurrentRowId(null);
+                      setShowModal(false);
+                    }}
+                  >
+                    <div className="rounded-full bg-ca-blue p-1">
+                      <MdDone className="text-white text-base size-3" />
+                    </div>
+                    <span>Complete Application</span>
                   </div>
-                  <span>Complete Application</span>
-                </div>
-                {info.row.original.currentState === "Initiated" && (
-                  <>
-                    <label
-                      // htmlFor="approval-file"
-                      className="cursor-pointer flex items-center gap-1 font-poppins hover:text-yellow-400  text-xs whitespace-nowrap px-1"
-                      onClick={() => {
-                        if (approvalInputRef.current) {
-                          approvalInputRef.current.click();
-                        }
-                      }}
-                    >
-                      <div className="rounded-full bg-green-500 p-1">
-                        <MdDone className="text-white text-base size-3" />
-                      </div>
-                      <span>Approve </span>
-                    </label>
-                    <label
-                      // htmlFor="rejection-file"
-                      className="cursor-pointer flex items-center gap-1 font-poppins hover:text-[#8AC926] text-xs whitespace-nowrap px-1"
-                      onClick={() => {
-                        if (declineInputRef.current) {
-                          declineInputRef.current.click();
-                        }
-                      }}
-                    >
-                      <div className="rounded-full bg-red-500 p-1">
-                        <GrClose className="text-white text-base size-3" />
-                      </div>
-                      <span>Decline </span>
-                    </label>
-                  </>
                 )}
+
                 <div
                   className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
                   onClick={() =>
@@ -815,7 +786,7 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
           </div>
         </div>
       </div>
-      {(declineMutation.isPending || approvedMutation.isPending) && (
+      {completeApplicationMutation.isPending && (
         <LoadingModal
           key={Math.random() * 354546576}
           text={"Updating application status"}
