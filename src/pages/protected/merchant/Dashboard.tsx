@@ -8,7 +8,7 @@ import MainActionSubHeader from "@/components/reusables/MainActionSubHeader";
 // import ProcessApplicationModal from "@/components/reusables/ProcessApplicationModal";
 // import RejectApplicationModal from "@/components/reusables/RejectApplicationModal";
 import { useQuery } from "@tanstack/react-query";
-import { getAllPackages } from "@/services/merchantService";
+import { getAllApplications, getAllPackages } from "@/services/merchantService";
 import { transformPackagesGridData } from "@/utils/reshape";
 
 type Props = {};
@@ -20,11 +20,21 @@ const Dashboard = (_: Props) => {
     queryFn: () => getAllPackages(),
   });
 
+  const { data: applicationsData, isSuccess: isApplicationsSuccess } = useQuery(
+    {
+      queryKey: ["get-all-applications"],
+      queryFn: () => getAllApplications(),
+    }
+  );
+
   const pkgData = isSuccess
     ? transformPackagesGridData(data.data.packages)
     : [];
 
   const packagesCount = isSuccess ? data.data.totalPackages : 0;
+  const applicationsCount = isApplicationsSuccess
+    ? applicationsData.data.totalOrder
+    : 0;
 
   const cardItems = [
     {
@@ -39,7 +49,7 @@ const Dashboard = (_: Props) => {
     },
     {
       title: "Applications",
-      value: "750",
+      value: applicationsCount,
       icon: (
         <div className="size-7 flex justify-center items-center bg-purple-100 rounded-lg">
           <img src="/assets/icons/org-dashboard/project.svg" />
