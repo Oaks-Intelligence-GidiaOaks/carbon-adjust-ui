@@ -1,7 +1,6 @@
 // import React from 'react'
 
 import ApplicationsGrid from "@/components/grid/merchant/ApplicationsGrid";
-import applicationsDummy from "@/dummy/applications.json";
 import { getAllApplications } from "@/services/merchantService";
 import { transformApplicationsGridData } from "@/utils/reshape";
 import { useQuery } from "@tanstack/react-query";

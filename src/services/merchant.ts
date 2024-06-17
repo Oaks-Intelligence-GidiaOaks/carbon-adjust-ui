@@ -45,6 +45,14 @@ export const sendActivityQuery = async (
   return data;
 };
 
+export const completeApplication = async (packageId: string) => {
+  const { data } = await axiosInstance.get(
+    `/application/${packageId}/complete`
+  );
+
+  return data;
+};
+
 export const generateSlotQuery = (data: {
   startTime: string;
   endTime: string;

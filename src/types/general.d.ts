@@ -315,6 +315,8 @@ export type Order = {
     initatedAt: string;
     responder: string;
     responderRole: string;
+    respondedAt?: string;
+    response?: string;
     _id: string;
   }[];
   customerEmail: string;
@@ -326,4 +328,37 @@ export type Order = {
   createdAt: string;
   updatedAt: string;
   __v: number;
+  booking: {
+    _id: string;
+    schedule: {
+      _id: string;
+      day: string;
+      shortDay: string;
+      package: string;
+      createdBy: string;
+      availabilityWindow: string;
+      status: string;
+      slotDuration: string;
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+    };
+    slot: {
+      _id: string;
+      desc: string;
+      schedule: string;
+      createdBy: string;
+      status: string;
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+    };
+    status: string;
+    order: string;
+    appointmentDate: string;
+    participants: string[];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
 };

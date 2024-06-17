@@ -45,6 +45,7 @@ import {
 // import { BiMessage } from "react-icons/bi";
 // import { PDFIcon } from "@/assets/icons";
 import { GrClose } from "react-icons/gr";
+import { completeApplication } from "@/services/merchant";
 
 const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   const navigate = useNavigate();
@@ -97,6 +98,18 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   //       return "#FF595E";
   //     }
   //   };
+
+  const completeApplicationMutation = useMutation({
+    mutationKey: ["get-applications"],
+    mutationFn: (orderId: string) => completeApplication(orderId as string),
+    onSuccess: () => {
+      toast.success("Application status updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["order-details"] });
+    },
+    onError: () => {
+      toast.error("Encountered error while updating application status");
+    },
+  });
 
   const handleActionClick = (id: any, rowData: any) => {
     console.log(rowData._id);
@@ -523,7 +536,6 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
               <div
                 key={info.getValue()}
                 ref={actionButtonsRef}
-                onClick={() => setShowModal(true)}
                 className="absolute top-[-30px] flex flex-col gap-y-2 z-10 right-[40px] bg-white border border-gray-300  rounded p-2"
               >
                 <div
@@ -532,6 +544,11 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
                   //   setUserToDelete(info.row.original);
                   //   setShowDeleteModal(true);
                   // }}
+                  onClick={() => {
+                    completeApplicationMutation.mutate(info.getValue());
+                    setCurrentRowId(null);
+                    setShowModal(false);
+                  }}
                 >
                   <div className="rounded-full bg-ca-blue p-1">
                     <MdDone className="text-white text-base size-3" />
