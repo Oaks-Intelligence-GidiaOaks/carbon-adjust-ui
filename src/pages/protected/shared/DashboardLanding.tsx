@@ -8,27 +8,42 @@ import UserIcon from "../../../assets/icons/User.svg";
 import footerImg from "../../../assets/images/footerImg.png";
 import { Link } from "react-router-dom";
 import VideoContainer from "@/components/containers/home/VideoContainer";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 // this is the landing page the home owner and merchant sees after login contaning the video  playback
 
 const DashboardLanding: FC = () => {
+  const kommunitaToken = useSelector(
+    (state: RootState) => state.user.kommunitaToken
+  );
+
   return (
     <>
       {/* header */}
       <div className="flex-center py-[13.13px] px-[50px]">
-        <div className="flex-center gap-[10px]">
-          {/* CA logo */}
-          <img src={CarbonAdjustLogo} alt="" />
+        <Link to="/dashboard">
+          <div className="flex-center gap-[10px]">
+            {/* CA logo */}
+            <img src={CarbonAdjustLogo} alt="" />
 
-          <IoIosArrowDown size={15} color="#0B8DFF" />
-        </div>
+            <IoIosArrowDown size={15} color="#0B8DFF" />
+          </div>
+        </Link>
 
         <div className="flex-center md:flex-[0.4] ml-auto">
-          <img
-            className="hidden md:inline-flex"
-            src="/assets/graphics/kommunita-logo.svg"
-            alt=""
-          />
+          <Link to={``}>
+            <img
+              className="hidden md:inline-flex"
+              src="/assets/graphics/kommunita-logo.svg"
+              alt=""
+              onClick={() =>
+                window.location.assign(
+                  `https://kommunita-web.netlify.app/home?token=${kommunitaToken}`
+                )
+              }
+            />
+          </Link>
 
           <div className="flex-center gap-2  ml-auto">
             <img src={SettingIcon} alt="" className="h-4 w-4" />
