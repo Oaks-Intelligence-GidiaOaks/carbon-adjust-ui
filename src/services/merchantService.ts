@@ -55,13 +55,19 @@ export const getAllPackages = async () => {
 };
 
 export const getAllApplications = async () => {
-  const { data } = await axiosInstance.get(`/packages`);
+  const { data } = await axiosInstance.get(`/application/merchant`);
 
   return data;
 };
 
 export const getPackageDetails = async (packageId: string) => {
   const { data } = await axiosInstance.get(`/packages/${packageId}`);
+
+  return data;
+};
+
+export const getOrderDetails = async (packageId: string) => {
+  const { data } = await axiosInstance.get(`/application/${packageId}`);
 
   return data;
 };

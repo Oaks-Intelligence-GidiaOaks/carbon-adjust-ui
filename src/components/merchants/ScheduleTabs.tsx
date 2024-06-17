@@ -1,6 +1,7 @@
 import { ClockIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { Button } from "../ui";
+import { useNavigate } from "react-router-dom";
 
 type Slot = {
   _id: string;
@@ -22,9 +23,14 @@ type DaySchedule = {
 
 type ScheduleTabsProps = {
   schedules: DaySchedule[];
+  packageId: string;
 };
 
-const ScheduleTabs: React.FC<ScheduleTabsProps> = ({ schedules }) => {
+const ScheduleTabs: React.FC<ScheduleTabsProps> = ({
+  schedules,
+  packageId,
+}) => {
+  const navigate = useNavigate();
   const [activeDay, setActiveDay] = useState(schedules[0]?.day);
 
   const handleTabClick = (day: string) => {
@@ -63,7 +69,11 @@ const ScheduleTabs: React.FC<ScheduleTabsProps> = ({ schedules }) => {
           ))}
       </div>
       <div className="flex justify-end mt-6">
-        <Button variant={"outline"} className="">
+        <Button
+          variant={"outline"}
+          className=""
+          onClick={() => navigate(`/merchant/packages/schedule/${packageId}`)}
+        >
           Manage Schedule
         </Button>
       </div>

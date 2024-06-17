@@ -97,6 +97,16 @@ const MerchantAccountSetup = (_: Props) => {
       }
       return false;
     }
+
+    if (
+      fData?.roles[0] === "MERCHANT" &&
+      fData?.merchantType === "FINANCIAL_MERCHANT"
+    ) {
+      if (uniqueObjectsByIdType(fData?.doc).length === 4) {
+        return true;
+      }
+      return false;
+    }
   };
 
   console.log(freshUserData);

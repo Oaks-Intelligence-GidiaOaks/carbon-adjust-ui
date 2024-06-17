@@ -16,6 +16,43 @@ export const createPackageQuery = (data: FormData) => {
   });
 };
 
+export const sendQuoteQuery = async (id: any, quoteData: FormData) => {
+  const { data } = await axiosInstance.patch(
+    `/application/${id}/quote`,
+    quoteData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return data;
+};
+
+export const sendActivityQuery = async (
+  id: any,
+  iData: {
+    activityId: string;
+    status: string;
+  }
+) => {
+  const { data } = await axiosInstance.patch(
+    `/application/${id}/activity`,
+    iData
+  );
+
+  return data;
+};
+
+export const completeApplication = async (packageId: string) => {
+  const { data } = await axiosInstance.get(
+    `/application/${packageId}/complete`
+  );
+
+  return data;
+};
+
 export const generateSlotQuery = (data: {
   startTime: string;
   endTime: string;
