@@ -8,6 +8,7 @@ import {
   updateEmail,
   // updateOrderDetails,
   updatePhone,
+  updateQuantity,
   updateResponses,
 } from "@/features/orderSlice";
 import { clearProduct } from "@/features/productSlice";
@@ -244,6 +245,7 @@ const ProductForm = (props: {
             onChange={(e) =>
               handleAnswerQuestion(e.target.value, "Open-Ended Question")
             }
+            inputClassName="border p-3 bg-[#E4E7E8]"
             value={response}
             name=""
             type="text"
@@ -399,6 +401,39 @@ const ProductForm = (props: {
             value={order.customerPhone}
             onChange={(e) => dispatch(updatePhone(e.target.value))}
           />
+
+          {/* quantity */}
+          {product.packageType === "Product" && (
+            <div>
+              <label
+                htmlFor=""
+                className=" block text-sm group-valid:text-[#171717] group-has-[:valid]:text-[#171717] pb-2"
+              >
+                Add Quantity
+              </label>
+
+              <div
+                className={`
+                  "gro flex h-[48px] min-w-full items-center overflow-hidden  rounded-md border-none border-input px-3 focus-within:border-[#22C55E] border p-3 bg-[#E4E7E8]`}
+              >
+                <input
+                  type="number"
+                  placeholder="Add quantity 0 to 9"
+                  value={order.quantity}
+                  onChange={(e) =>
+                    dispatch(
+                      updateQuantity(
+                        e.target.value === "" ? "" : Number(e.target.value)
+                      )
+                    )
+                  }
+                  className={`
+                    "placeholder:text-grey-swatch-600 flex h-[48px] w-full flex-1 bg-transparent py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
+                  min="0"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Questions - responses */}
           {RenderQuestions}

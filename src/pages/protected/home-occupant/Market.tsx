@@ -62,11 +62,16 @@ const Market = (_: Props) => {
       <div className="space-y-[38px] pt-[30px]">
         {homePagePackages.isLoading ? (
           <CategoriesLoading />
-        ) : (
-          categories.length > 0 &&
+        ) : categories.length > 0 ? (
           categories.map((item) => (
             <ProductsCategory {...item} key={item.category.slug} />
           ))
+        ) : (
+          <div className="grid place-items-center h-[250px]">
+            <p className="text-base font-poppins font-[600]">
+              No Packages Available....
+            </p>
+          </div>
         )}
       </div>
     </div>
