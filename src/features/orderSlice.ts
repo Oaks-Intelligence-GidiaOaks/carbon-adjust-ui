@@ -2,9 +2,9 @@ import { IOrder } from "@/interfaces/orderData.interface";
 // import { IQuestion } from "@/interfaces/product.interface";
 import { createSlice } from "@reduxjs/toolkit";
 
-interface Props extends IOrder {}
+// interface Props extends IOrder {}
 
-const initialState: Props = {
+const initialState: IOrder = {
   _id: "",
   customerAddress: {
     country: {
@@ -29,7 +29,7 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     updateAddress: (state, action) => {
-      state.customerAddress = action.payload;
+      state.customerAddress.firstLineAddress = action.payload;
     },
     updateEmail: (state, action) => {
       state.customerEmail = action.payload;

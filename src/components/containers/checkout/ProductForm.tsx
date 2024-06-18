@@ -46,24 +46,31 @@ const ProductForm = (props: {
 
   useEffect(() => {
     setStatesList(
-      State.getStatesOfCountry(order.country?.value).map((state) => ({
-        label: state.name,
-        value: state.isoCode,
-      }))
+      State.getStatesOfCountry(order.customerAddress.country?.value).map(
+        (state) => ({
+          label: state.name,
+          value: state.isoCode,
+        })
+      )
     );
 
     dispatch(updateCity({ label: "", value: "" }));
-  }, [order.country.value, dispatch]);
+  }, [order.customerAddress.country.value, dispatch]);
 
-  const { responses, _id, country, city, ...rest } = order;
+  const { responses, _id, customerAddress, ...rest } = order;
 
-  console.log(country, city, "rest");
+  console.log(customerAddress, "rest");
+  console.log(rest, "rest two");
 
   const isFormValues =
     Object.values({ ...rest }).filter((it: any) => it.toString().length < 1)
       .length > 0;
 
-  const isLocation = country.value.length > 0 && city.value.length > 0;
+  const isLocation =
+    customerAddress.country.value.length > 0 &&
+    customerAddress.cityOrProvince.value.length > 0 &&
+    customerAddress.firstLineAddress.length > 0 &&
+    customerAddress.zipcode.length > 0;
 
   const isDisabled: boolean = Boolean(
     product.questions.length !== responses.length || isFormValues || !isLocation
@@ -372,7 +379,7 @@ const ProductForm = (props: {
             onChange={(e) => {
               dispatch(updateAddress(e.target.value));
             }}
-            value={order.customerAddress}
+            value={order.customerAddress.firstLineAddress}
           />
 
           <Input
@@ -453,7 +460,7 @@ const ProductForm = (props: {
             label="Country of Residence"
             wrapperClassName="bg-gray-100 w-full"
             placeholder="Select country"
-            value={order.country}
+            value={order.customerAddress.country}
             countryChange={(value) => {
               dispatch(updateCountry(value));
             }}
@@ -483,17 +490,6 @@ const ProductForm = (props: {
           />
           {/* Questions - responses */}
           {RenderQuestions}
-
-          {/* <div>
-              <SelectInput
-                options={[]}
-                className=""
-                value={{ label: "value", value: "value" }}
-                label="How much are you willing to spend on your retrofit journey in the next year?"
-                onChange={(_: SingleValue<SelectItem>) => {}}
-                placeholder=""
-              />
-            </div> */}
 
           {/* proceed */}
           <button
