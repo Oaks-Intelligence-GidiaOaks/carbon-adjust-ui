@@ -1,23 +1,22 @@
 import { RootState } from "@/app/store";
-import { Input } from "@/components/ui";
+import { CountryRegionDropdown, Input } from "@/components/ui";
 // import SelectInput from "@/components/ui/SelectInput";
 import {
   clearOrder,
   // clearOrder,
   updateAddress,
+  updateCity,
+  updateCountry,
   updateEmail,
   // updateOrderDetails,
   updatePhone,
   updateQuantity,
   updateResponses,
+  updatepPostCode,
 } from "@/features/orderSlice";
 import { clearProduct } from "@/features/productSlice";
-// import { createNewOrder } from "@/services/homeOwner";
-// import { useMutation } from "@tanstack/react-query";
-// import { IOrder } from "@/interfaces/orderData.interface";
-// import { SelectItem } from "@/types/formSelect";
-// import { Product } from "@/types/product";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { GrClose } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -26,48 +25,54 @@ import SelectInput from "@/components/ui/SelectInput";
 import { fileToBase64, formatSelectOptions, stringToArray } from "@/lib/utils";
 import { IResponse } from "@/interfaces/orderData.interface";
 import { SelectItem } from "@/types/formSelect";
+import { Country, State } from "country-state-city";
 
 const ProductForm = (props: {
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const dispatch = useDispatch();
+
   const { product, order }: RootState = useSelector(
     (state: RootState) => state
   );
 
-  const {
-    // customerAddress,
-    // customerEmail,
-    // customerPhone,
-    // package: pkg,
-    // price,
-    // requiredExtraProd,
-    responses,
-    _id,
-    ...rest
-  } = order;
+  let countryData = Country.getAllCountries();
+  const [statesList, setStatesList] = useState<
+    { label: string; value: string }[]
+  >([]);
+
+  // console.log(statesList, "states list");
+
+  useEffect(() => {
+    setStatesList(
+      State.getStatesOfCountry(order.country?.value).map((state) => ({
+        label: state.name,
+        value: state.isoCode,
+      }))
+    );
+
+    dispatch(updateCity({ label: "", value: "" }));
+  }, [order.country.value, dispatch]);
+
+  const { responses, _id, country, city, ...rest } = order;
+
+  console.log(country, city, "rest");
 
   const isFormValues =
-    Object.values({ ...rest }).filter((it) => it.toString().length < 1).length >
-    0;
+    Object.values({ ...rest }).filter((it: any) => it.toString().length < 1)
+      .length > 0;
 
-  // console.log(isFormValues, "form values length");
+  const isLocation = country.value.length > 0 && city.value.length > 0;
 
   const isDisabled: boolean = Boolean(
-    product.questions.length !== responses.length || isFormValues
+    product.questions.length !== responses.length || isFormValues || !isLocation
   );
 
-  // console.log(product.questions.length, order.responses.length);
-
-  console.log(isDisabled, "is disabled");
-
-  // console.log(questions, "my questions");
-  // console.log(product.questions, "state questions");
-
-  const dispatch = useDispatch();
-
   const RenderQuestions = product.questions?.map((item) => {
-    const responseIndex = responses.findIndex((it) => it.question === item._id);
+    const responseIndex = responses.findIndex(
+      (it: any) => it.question === item._id
+    );
 
     let getResponse =
       responseIndex === -1 ? "" : responses[responseIndex].response;
@@ -165,7 +170,6 @@ const ProductForm = (props: {
         let updatedMultiChoiceResponse;
 
         if (isChecked) {
-          // console.log(multiChoiceResponse, "mutli resonse");
           updatedMultiChoiceResponse = [
             ...new Set([...multiChoiceResponse, val]),
           ];
@@ -191,7 +195,6 @@ const ProductForm = (props: {
           fileInputRef!.current!.value = "";
           return null;
         } else {
-          // console.log(file, "on change file");
           const fileString = await fileToBase64(file);
 
           const newObj: IResponse = {
@@ -358,7 +361,7 @@ const ProductForm = (props: {
 
           <Input
             key={2}
-            label="Enter address"
+            label="First Line of address"
             className=""
             labelClassName="pb-[10px]"
             wrapperClassName=""
@@ -374,7 +377,7 @@ const ProductForm = (props: {
 
           <Input
             key={3}
-            label="Enter email address"
+            label="Email address"
             className=""
             labelClassName="pb-[10px]"
             wrapperClassName=""
@@ -389,7 +392,7 @@ const ProductForm = (props: {
           {/* tel input */}
           <Input
             key={4}
-            label="Enter phone number"
+            label="Phone number"
             className=""
             labelClassName="pb-[10px]"
             wrapperClassName=""
@@ -435,6 +438,49 @@ const ProductForm = (props: {
             </div>
           )}
 
+          {/* new fields */}
+
+          {/* country dropdown  */}
+          <CountryRegionDropdown
+            name="countryOfResidence"
+            labelClassName="mb-4 text-[#000000_!important]"
+            options={countryData.map((country) => ({
+              label: country.name,
+              value: country.isoCode,
+              prefixIcon: country.flag,
+            }))}
+            searchable={true}
+            label="Country of Residence"
+            wrapperClassName="bg-gray-100 w-full"
+            placeholder="Select country"
+            value={order.country}
+            countryChange={(value) => {
+              dispatch(updateCountry(value));
+            }}
+          />
+
+          {/* city dropdown */}
+          <CountryRegionDropdown
+            name="city/province"
+            labelClassName="mb-4 text-[#000000_!important]"
+            options={statesList}
+            searchable={true}
+            label="City/Province"
+            wrapperClassName="bg-gray-100 w-full"
+            placeholder="Select city/province"
+            value={order.customerAddress.cityOrProvince}
+            cityChange={(value) => dispatch(updateCity(value))}
+          />
+
+          <Input
+            name="zipCode"
+            label="Zip Code"
+            labelClassName="mb-4"
+            inputClassName="bg-gray-100"
+            placeholder="Enter zip code"
+            value={order.customerAddress.zipcode}
+            onChange={(e) => dispatch(updatepPostCode(e.target.value))}
+          />
           {/* Questions - responses */}
           {RenderQuestions}
 
