@@ -1,6 +1,6 @@
 import { RootState } from "@/app/store";
 import { clearProduct } from "@/features/productSlice";
-import { IOrder } from "@/interfaces/orderData.interface";
+import { IResponse } from "@/interfaces/orderData.interface";
 import { createNewOrder } from "@/services/homeOwner";
 import { useMutation } from "@tanstack/react-query";
 import { Dispatch, SetStateAction } from "react";
@@ -10,6 +10,25 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Oval } from "react-loader-spinner";
 import { clearOrder, updateOrderId } from "@/features/orderSlice";
+
+type IAddress = {
+  country: string;
+  cityOrProvince: string;
+  firstLineAddress: string;
+  zipcode: string;
+};
+
+type IOrder = {
+  package?: string;
+  customerAddress: IAddress;
+  price?: number | string;
+  customerEmail: string;
+  customerPhone: string;
+  quantity?: number | string;
+  requiredExtraProd?: boolean;
+  responses: IResponse[];
+  _id?: string;
+};
 
 const OrderSummary = (props: {
   setStage: Dispatch<SetStateAction<number>>;
@@ -24,7 +43,7 @@ const OrderSummary = (props: {
     mutationFn: (orderData: IOrder) => createNewOrder(orderData),
     onSuccess: (sx: any) => {
       dispatch(updateOrderId(sx.data._id));
-      console.log(sx.data, "order data");
+      // console.log(sx.data, "order data");
 
       props.setStage(4);
       // toast.loading("order processing", {
@@ -44,12 +63,17 @@ const OrderSummary = (props: {
       ...order,
       package: product._id,
       price: product.price || 0,
-      // requiredExtraProd: true,
+      customerAddress: {
+        country: order.customerAddress.country.value,
+        cityOrProvince: order.customerAddress.cityOrProvince.value,
+        firstLineAddress: order.customerAddress.firstLineAddress,
+        zipcode: order.customerAddress.zipcode,
+      },
     };
 
     console.log(newOrder, "new  order");
 
-    createOrder.mutate(newOrder);
+    // createOrder.mutate(newOrder);
   };
 
   return (
@@ -87,9 +111,25 @@ const OrderSummary = (props: {
         </div>
 
         <div className="flex-start">
-          <span className="font-[600] text-sm w-1/2"> Address: </span>
+          <span className="font-[600] text-sm w-1/2">
+            First Line of Address:{" "}
+          </span>
           <span className="font-[400] text-sm w-1/2 pl-2">
-            {order.customerAddress}
+            {order.customerAddress.firstLineAddress}
+          </span>
+        </div>
+
+        <div className="flex-start">
+          <span className="font-[600] text-sm w-1/2">Country:</span>
+          <span className="font-[400] text-sm w-1/2 pl-2">
+            {order.customerAddress.country.label}
+          </span>
+        </div>
+
+        <div className="flex-start">
+          <span className="font-[600] text-sm w-1/2">City/Province: </span>
+          <span className="font-[400] text-sm w-1/2 pl-2">
+            {order.customerAddress.cityOrProvince.label}
           </span>
         </div>
 
@@ -97,6 +137,13 @@ const OrderSummary = (props: {
           <span className="font-[600] text-sm w-1/2"> Email Address: </span>
           <span className="font-[400] text-sm  truncate w-1/2 pl-2">
             {order.customerEmail}
+          </span>
+        </div>
+
+        <div className="flex-start">
+          <span className="font-[600] text-sm w-1/2">Zip code: </span>
+          <span className="font-[400] text-sm w-1/2 pl-2">
+            {order.customerAddress.zipcode}
           </span>
         </div>
 
