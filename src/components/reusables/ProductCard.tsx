@@ -5,7 +5,11 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 // import questions from "../../dummy/questions.json";
 
-const ProductCard = ({ isMerchant = false, ...props }: IProduct) => {
+interface Props extends IProduct {
+  wrapText?: boolean;
+}
+
+const ProductCard = ({ isMerchant = false, ...props }: Props) => {
   const dispatch = useDispatch();
 
   // console.log(props, "package mData");
@@ -55,7 +59,11 @@ const ProductCard = ({ isMerchant = false, ...props }: IProduct) => {
             ))}
           </div>
 
-          <h2 className="text-xs font-[600] truncate max-w-[228px] ">
+          <h2
+            className={`text-xs font-[600] ${
+              props.wrapText ? "text-wrap" : "truncate"
+            }  max-w-[228px]`}
+          >
             {props.title}
           </h2>
 
