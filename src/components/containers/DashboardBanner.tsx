@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 // import { FaStar } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa6";
+// import { FaArrowRight } from "react-icons/fa6";
 
 const DashboardBanner: FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -85,7 +85,7 @@ const DashboardBanner: FC = () => {
                 <img
                   src={item.image}
                   alt=""
-                  className="w-3/4 mx-auto rounded-lg"
+                  className="w-2/3 mx-auto rounded-lg"
                 />
 
                 {/* <div className="flex flex-col gap-1 pl-[5px] text-sm lg:text-base">
@@ -122,9 +122,9 @@ const DashboardBanner: FC = () => {
             <div className={`bg-[#3D3D3D] w-[8px] h-[8px] rounded-full`} /> */}
           </div>
 
-          <div className="hover:border-b hover:border-white">
+          {/* <div className="hover:border-b hover:border-white">
             <a
-              href="http://"
+              // href="http://"
               target="_blank"
               rel="noopener noreferrer"
               className="flex-center gap-[2.67px]"
@@ -132,7 +132,7 @@ const DashboardBanner: FC = () => {
               <span className="text-[10px]">View more</span>
               <FaArrowRight size={13} />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
