@@ -85,7 +85,7 @@ const DashboardBanner: FC = () => {
                 <img
                   src={item.image}
                   alt=""
-                  className="w-3/4 mx-auto rounded-lg"
+                  className="w-2/3 mx-auto rounded-lg"
                 />
 
                 {/* <div className="flex flex-col gap-1 pl-[5px] text-sm lg:text-base">
