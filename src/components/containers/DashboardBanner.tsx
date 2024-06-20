@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 // import { FaStar } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa6";
+// import { FaArrowRight } from "react-icons/fa6";
 
 const DashboardBanner: FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
