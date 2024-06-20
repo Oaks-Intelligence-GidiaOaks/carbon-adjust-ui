@@ -57,7 +57,7 @@ const DashboardLanding: FC = () => {
       </div>
 
       <VideoContainer
-        videoSrc="https://firebasestorage.googleapis.com/v0/b/ca-test-7062e.appspot.com/o/Oaks%20Intelligence%20Carbon-Adjust%20Prototype%20Video.mp4?alt=media&token=9eb7cb7a-c9fd-47b8-b381-301512bfe319"
+        videoSrc="https://firebasestorage.googleapis.com/v0/b/ca-test-7062e.appspot.com/o/Oaks%20Intelligence%20Carbon-Adjust%20Prototype%20Video.mp4?alt=media&token=d10efec3-7e24-4f65-8f7e-c400f0e25e09"
         coverImage="/assets/graphics/energy-004.jpg"
       />
 
