@@ -122,9 +122,9 @@ const DashboardBanner: FC = () => {
             <div className={`bg-[#3D3D3D] w-[8px] h-[8px] rounded-full`} /> */}
           </div>
 
-          <div className="hover:border-b hover:border-white">
+          {/* <div className="hover:border-b hover:border-white">
             <a
-              href="http://"
+              // href="http://"
               target="_blank"
               rel="noopener noreferrer"
               className="flex-center gap-[2.67px]"
@@ -132,7 +132,7 @@ const DashboardBanner: FC = () => {
               <span className="text-[10px]">View more</span>
               <FaArrowRight size={13} />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
