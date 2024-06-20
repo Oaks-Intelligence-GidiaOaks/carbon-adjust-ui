@@ -79,11 +79,13 @@ const PackageDetails = (_: Props) => {
       title: "AMOUNT",
       details: (packageDetails.data?.data.package as Package)?.price
         ? `${
-            (packageDetails.data?.data.package as Package)?.currency
+            (packageDetails.data?.data.package as Package)?.currency ?? "£"
           } ${formatNumberWithCommas(
             (packageDetails.data?.data.package as Package)?.price ?? "0"
           )}`
-        : `${(packageDetails.data?.data.package as Package)?.currency} 0`,
+        : `${
+            (packageDetails.data?.data.package as Package)?.currency ?? "£"
+          } 0`,
     },
     {
       title: "DISCOUNT AVAILABLE",
