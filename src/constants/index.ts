@@ -1021,5 +1021,5 @@ export const questionTypes = [
   { label: "Open-Ended Question", value: "Open-Ended Question" },
   { label: "Single-Choice Question", value: "Single-Choice Question" },
   { label: "Multiple-Choice Question", value: "Multiple-Choice Question" },
-  { label: "File Upload Response", value: "File Upload Response" },
+  { label: "File Upload Response", value: "File Upload Response Question" },
 ];
