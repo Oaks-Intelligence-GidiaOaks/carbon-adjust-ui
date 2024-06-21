@@ -61,6 +61,7 @@ import {
 } from "@/pages/protected/home-occupant";
 // import { Profile } from "@/pages/protected/old/home-occupant";
 import MerchantRegister from "@/pages/public/MerchantRegister";
+import AmazonConnect from "@/hooks/AmazonConnect";
 
 const Router = createBrowserRouter([
   {
@@ -222,6 +223,10 @@ const Router = createBrowserRouter([
         element: <MerchantWallet />,
       },
     ],
+  },
+  {
+    path: "contact-centre",
+    element: <AmazonConnect />,
   },
 
   // ADMIN ROUTES
