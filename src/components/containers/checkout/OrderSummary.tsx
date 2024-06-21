@@ -73,7 +73,7 @@ const OrderSummary = (props: {
 
     console.log(newOrder, "new  order");
 
-    // createOrder.mutate(newOrder);
+    createOrder.mutate(newOrder);
   };
 
   return (
