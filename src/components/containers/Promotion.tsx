@@ -1,37 +1,55 @@
+import { useEffect, useState } from "react";
+
 type Props = {};
 
 const Promotion = (_: Props) => {
-  const TimeCard = (props: { time: string; text: string }) => {
-    return (
-      <div className="flex flex-col justify-center">
-        <div className="h-[47px] w-[47px] bg-white text-[#141718] text-[26px] font-[500] grid place-items-center">
-          <span>{props.time}</span>
-        </div>
+  const [visibleDiv, setVisibleDiv] = useState(1);
 
-        <h5 className="text-[9.4px] font-[400] text-center">{props.text}</h5>
-      </div>
-    );
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisibleDiv((prevVisibleDiv) => (prevVisibleDiv === 1 ? 2 : 1));
+    }, 5000); // Change div every 5 seconds
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
+
+  // const TimeCard = (props: { time: string; text: string }) => {
+  //   return (
+  //     <div className="flex flex-col justify-center">
+  //       <div className="h-[47px] w-[47px] bg-white text-[#141718] text-[26px] font-[500] grid place-items-center">
+  //         <span>{props.time}</span>
+  //       </div>
+
+  //       <h5 className="text-[9.4px] font-[400] text-center">{props.text}</h5>
+  //     </div>
+  //   );
+  // };
 
   return (
-    <div className="flex items-stretch border #121212 bg-[#EDF6FD]">
+    <div className="flex overflow-hidden h-[400px] border #121212 bg-[#EDF6FD]">
       <div
-        className="w-1/2 h-auto  hidden md:inline-flex"
+        className={` flex-1 h-[400px] ${
+          visibleDiv === 1 ? "opacity-100 block" : "opacity-0 hidden"
+        }`}
         style={{
-          backgroundImage: "url('/assets/graphics/promote.png')",
+          backgroundImage: "url('/assets/banners/landscape-1.png')",
           backgroundPosition: "center center",
           backgroundSize: "cover",
         }}
-      >
-        {/* <img
-          src="/assets/graphics/promote.png"
-          alt=""
-          className=" h-ful border border-red-500"
-        /> */}
-      </div>
+      />
 
-      <div className=" w-full  md:w-1/2 py-[60px] px-3 lg:pl-[50px] h-fit space-y-3 text-center md:text-left">
-        <h5 className="text-[#377DFF] text-xs font-[600]">PROMOTION</h5>
+      <div
+        style={{
+          backgroundImage: "url('/assets/banners/landscape-2.png')",
+          backgroundPosition: "center center",
+          backgroundSize: "cover",
+        }}
+        className={`transition-opacity duration-[2500ms] ${
+          visibleDiv === 2 ? "opacity-100 block" : "opacity-0 hidden"
+        } flex-1 h-[400px]`}
+      />
+
+      {/* <h5 className="text-[#377DFF] text-xs font-[600]">PROMOTION</h5>
 
         <div className="flex-center text-[#121212] gap-1 flex-col md:flex-row items-center">
           <span>Hurry up!</span>{" "}
@@ -53,8 +71,8 @@ const Promotion = (_: Props) => {
 
         <button className=" mx-auto md:mx-0 blue-gradient cursor-pointer uppercase text-white grid place-items-center text-base font-[700] rounded-[24px] w-[194px] h-[50px]">
           <span>Shop Now</span>
-        </button>
-      </div>
+        </button> */}
+      {/* </div> */}
     </div>
   );
 };

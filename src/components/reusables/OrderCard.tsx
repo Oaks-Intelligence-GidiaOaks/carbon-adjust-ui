@@ -154,7 +154,7 @@ const OrderCard = (props: IPackageOrder) => {
 
           <div className="flex flex-col gap-[17px] md:w-auto ml-auto ">
             <h2 className="text-sm font-[600] ">{` ${
-              props.package.currency || "$"
+              props?.package?.currency ?? "£"
             } ${props.price}`}</h2>
 
             <button

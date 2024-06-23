@@ -143,7 +143,8 @@ const Sidebar = ({
                   {user?.contactName}
                 </h2>
                 <h2 className="text-xs text-[#7A8699] truncate max-w-[180px] font-[400]">
-                  {formatAccountType(user?.merchantType ?? "")}
+                  {/* {formatAccountType(user?.merchantType ?? "")} */}
+                  {formatAccountType(user?.contactName ?? "")}
                 </h2>
               </div>
             </div>
