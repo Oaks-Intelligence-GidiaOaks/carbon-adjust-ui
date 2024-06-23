@@ -1,12 +1,14 @@
 import userService from "@/api/services/user";
-import { RootState } from "@/app/store";
+import { persistor, RootState } from "@/app/store";
 import Footer from "@/components/containers/Footer";
 import SideMenu from "@/components/containers/SideMenu";
 // import { RootState } from "@/app/store";
 import Sidebar from "@/components/containers/Sidebar";
 import TopBar from "@/components/containers/TopBar";
+import InactivityWrapper from "@/components/hoc/InactivityWrapper";
 // import InactivityWrapper from "@/components/hoc/InactivityWrapper";
 import { setUser } from "@/features/userSlice";
+import ProtectedRoute from "@/guards/ProtectedRoute";
 import UseScrollToTop from "@/hooks/useScrollToTop";
 // import ProtectedRoute from "@/guards/ProtectedRoute";
 import { cn, uniqueObjectsByIdType } from "@/utils";
@@ -183,59 +185,59 @@ const Layout = (props: Props) => {
     // error encountered
   }, [userData.isSuccess]);
 
-  // const handleLogout = () => {
-  //   pause();
-  //   persistor.flush().then(() => {
-  //     return persistor.purge();
-  //   });
-  //   window.location.assign("/login?ie=true");
-  // };
+  const handleLogout = () => {
+    // pause();
+    persistor.flush().then(() => {
+      return persistor.purge();
+    });
+    window.location.assign("/login?ie=true");
+  };
 
   UseScrollToTop(contentRef);
 
   return (
-    // <ProtectedRoute role={user?.roles[0]}>
-    //   <InactivityWrapper onLogout={() => handleLogout()}>
-    <div className="flex max-h-screen max-w-screen overflow-hidden overflow-y-scroll">
-      {props.sidebarType === "home-occupant" ? (
-        <SideMenu
-          accountType={props.sidebarType}
-          mobileMenuIsOpen={mobileMenuIsOpen}
-          setMobileMenuIsOpen={setMobileMenuIsOpen}
-        />
-      ) : (
-        <Sidebar
-          accountType={props.sidebarType}
-          mobileMenuIsOpen={mobileMenuIsOpen}
-          setMobileMenuIsOpen={setMobileMenuIsOpen}
-        />
-      )}
-
-      <div className="flex-1 items-center">
-        <TopBar
-          mobileMenuIsOpen={mobileMenuIsOpen}
-          setMobileMenuIsOpen={setMobileMenuIsOpen}
-        />
-        <div
-          ref={contentRef}
-          className={cn(
-            "font-poppins w-full max-w-[1440px] pb-16 mx-auto h-full overflow-y-scroll",
-            pathname.includes("dashboard/applications") && "px-0",
-            pathname === "/dashboard/devices" && "px-0",
-            pathname === "/dashboard/profile" && "px-0"
+    <ProtectedRoute role={user?.roles[0]}>
+      <InactivityWrapper onLogout={() => handleLogout()}>
+        <div className="flex max-h-screen max-w-screen overflow-hidden overflow-y-scroll">
+          {props.sidebarType === "home-occupant" ? (
+            <SideMenu
+              accountType={props.sidebarType}
+              mobileMenuIsOpen={mobileMenuIsOpen}
+              setMobileMenuIsOpen={setMobileMenuIsOpen}
+            />
+          ) : (
+            <Sidebar
+              accountType={props.sidebarType}
+              mobileMenuIsOpen={mobileMenuIsOpen}
+              setMobileMenuIsOpen={setMobileMenuIsOpen}
+            />
           )}
-        >
-          <div className="relative ">
-            <div className="relative z-10">
-              <Outlet />
+
+          <div className="flex-1 items-center">
+            <TopBar
+              mobileMenuIsOpen={mobileMenuIsOpen}
+              setMobileMenuIsOpen={setMobileMenuIsOpen}
+            />
+            <div
+              ref={contentRef}
+              className={cn(
+                "font-poppins w-full max-w-[1440px] pb-16 mx-auto h-full overflow-y-scroll",
+                pathname.includes("dashboard/applications") && "px-0",
+                pathname === "/dashboard/devices" && "px-0",
+                pathname === "/dashboard/profile" && "px-0"
+              )}
+            >
+              <div className="relative ">
+                <div className="relative z-10">
+                  <Outlet />
+                </div>
+                <Footer />
+              </div>
             </div>
-            <Footer />
           </div>
         </div>
-      </div>
-    </div>
-    //   </InactivityWrapper>
-    // </ProtectedRoute>
+      </InactivityWrapper>
+    </ProtectedRoute>
   );
 };
 

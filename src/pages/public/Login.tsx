@@ -13,10 +13,12 @@ import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/api/axiosInstance";
 import toast from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setKommunitaToken, setToken } from "@/features/userSlice";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { AuthUserProfile } from "@/types/general";
+import { RootState } from "@/app/store";
+// import { uniqueObjectsByIdType } from "@/utils";
 // import { RootState } from "@/app/store";
 // import { uniqueObjectsByIdType } from "@/utils";
 
@@ -27,6 +29,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const tab = searchParams.get("ie");
   const [inactivityState] = useState(tab);
+  const userData = useSelector((state: RootState) => state.user.user);
 
   const togglePasswordVisibility = () =>
     setShowPassword((prevState) => !prevState);
@@ -83,7 +86,6 @@ const Login = () => {
   };
 
   useEffect(() => {
-    console.log(tab);
     if (inactivityState === "unauthorized") {
       setTimeout(() => {
         toast.error(
@@ -108,69 +110,71 @@ const Login = () => {
 
   // Redirect user when they visit the login page if user is still logged in
 
-  // useEffect(() => {
-  //   const userRole = userData?.roles[0];
-  //   // const userStatus = userData?.status;
-  //   // const userStep = userData?.step;
-  //   // const userDocs = userData?.doc;
+  useEffect(() => {
+    const userRole = userData?.roles[0];
+    // const userStatus = userData?.status;
+    // const userStep = userData?.step;
+    // const userDocs = userData?.doc;
 
-  //   if (userRole) {
-  //     console.log(userRole);
+    if (userRole) {
+      console.log(userRole);
 
-  //     if (userRole === "ADMIN") {
-  //       return navigate("/admin");
-  //     }
+      if (userRole === "ADMIN") {
+        return navigate("/admin");
+      }
 
-  //     // NON_FINANCIAL MERCHANT PATH
-  //     if (
-  //       userRole === "MERCHANT" &&
-  //       userData?.merchantType === "NON_FINANCIAL_MERCHANT"
-  //     ) {
-  //       if (
-  //         userData.nonFinancialMerchantType === "SELF_EMPLOYED" &&
-  //         uniqueObjectsByIdType(userData?.doc).length < 2
-  //       ) {
-  //         return navigate("/account-setup");
-  //       }
-  //       if (
-  //         userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
-  //         uniqueObjectsByIdType(userData?.doc).length < 3
-  //       ) {
-  //         return navigate("/account-setup");
-  //       }
-  //       if (
-  //         userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
-  //         uniqueObjectsByIdType(userData?.doc).length < 3
-  //       ) {
-  //         return navigate("/account-setup");
-  //       }
-  //       if (
-  //         userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
-  //         uniqueObjectsByIdType(userData?.doc).length < 4
-  //       ) {
-  //         return navigate("/account-setup");
-  //       }
-  //       if (!userData.nonFinancialMerchantType) {
-  //         return navigate("/account-setup");
-  //       }
+      handleRedirect(userData, userData.roles[0]);
 
-  //       return navigate("/merchant");
-  //     }
+      // // NON_FINANCIAL MERCHANT PATH
+      // if (
+      //   userRole === "MERCHANT" &&
+      //   userData?.merchantType === "NON_FINANCIAL_MERCHANT"
+      // ) {
+      //   if (
+      //     userData?.nonFinMerchantType === "SELF_EMPLOYED" &&
+      //     uniqueObjectsByIdType(userData?.doc).length < 2
+      //   ) {
+      //     return navigate("/account-setup");
+      //   }
+      //   if (
+      //     userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
+      //     uniqueObjectsByIdType(userData?.doc).length < 3
+      //   ) {
+      //     return navigate("/account-setup");
+      //   }
+      //   if (
+      //     userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
+      //     uniqueObjectsByIdType(userData?.doc).length < 3
+      //   ) {
+      //     return navigate("/account-setup");
+      //   }
+      //   if (
+      //     userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
+      //     uniqueObjectsByIdType(userData?.doc).length < 4
+      //   ) {
+      //     return navigate("/account-setup");
+      //   }
+      //   if (!userData.nonFinancialMerchantType) {
+      //     return navigate("/account-setup");
+      //   }
 
-  //     // FINANCIAL MERCHANT PATH
-  //     if (
-  //       userData.roles[0] === "MERCHANT" &&
-  //       userData.merchantType !== "NON_FINANCIAL_MERCHANT" &&
-  //       uniqueObjectsByIdType(userData?.doc).length < 4
-  //     ) {
-  //       if (uniqueObjectsByIdType(userData?.doc).length < 4) {
-  //         return navigate("/account-setup");
-  //       }
-  //       return navigate("/merchant");
-  //     }
-  //     return navigate("/dashboard");
-  //   }
-  // }, [userData?.roles[0]]);
+      //   return navigate("/merchant");
+      // }
+
+      // // FINANCIAL MERCHANT PATH
+      // if (
+      //   userData.roles[0] === "MERCHANT" &&
+      //   userData.merchantType !== "NON_FINANCIAL_MERCHANT" &&
+      //   uniqueObjectsByIdType(userData?.doc).length < 4
+      // ) {
+      //   if (uniqueObjectsByIdType(userData?.doc).length < 4) {
+      //     return navigate("/account-setup");
+      //   }
+      //   return navigate("/merchant");
+      // }
+      // return navigate("/dashboard");
+    }
+  }, [userData?.roles[0]]);
 
   return (
     <div>

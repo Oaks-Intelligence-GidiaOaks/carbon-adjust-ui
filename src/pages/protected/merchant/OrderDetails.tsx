@@ -277,22 +277,23 @@ const OrderDetails: FC = () => {
               </div>
             )}
 
-            {(orderDetails.data?.data.order as Order)?.booking && (
-              <div className="gap-2 flex flex-col">
-                <h2 className="font-[600] uppercase">Booking/Schedule</h2>
-                <p className="text-gray-500">
-                  These is the customers selected booking.
+            {/* {console.log(orderDetails.data?.data.order as Order)}
+            {(orderDetails.data?.data.order as Order)?.booking && ( */}
+            <div className="gap-2 flex flex-col">
+              <h2 className="font-[600] uppercase">Booking/Schedule</h2>
+              <p className="text-gray-500">
+                These is the customers selected booking.
+              </p>
+              <div className="mt-2">
+                <p>
+                  {
+                    (orderDetails.data?.data.order as Order)?.booking?.schedule
+                      ?.day
+                  }
                 </p>
-                <div className="mt-2">
-                  <p>
-                    {
-                      (orderDetails.data?.data.order as Order)?.booking.schedule
-                        .day
-                    }
-                  </p>
-                </div>
               </div>
-            )}
+            </div>
+            {/* )} */}
 
             <div className="ml-auto w-fit gap-3 flex-center">
               {(orderDetails.data?.data.order as Order)?.status !==
