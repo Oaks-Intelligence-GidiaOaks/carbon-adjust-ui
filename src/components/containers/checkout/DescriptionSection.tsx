@@ -1,19 +1,15 @@
 import ProductCard from "@/components/reusables/ProductCard";
 import { Dispatch, SetStateAction } from "react";
 import { GrClose } from "react-icons/gr";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-// import { formatSlug } from "@/lib/utils";
-import { clearProduct } from "@/features/productSlice";
-import { clearOrder } from "@/features/orderSlice";
 
 const DescriptionSection = (props: {
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
+  setShowCancel: Dispatch<SetStateAction<boolean>>;
 }) => {
   const prod = useSelector((state: RootState) => state.product);
-
-  const dispatch = useDispatch();
 
   return (
     <div className="">
@@ -22,11 +18,7 @@ const DescriptionSection = (props: {
 
         <span
           className="cursor-pointer"
-          onClick={() => {
-            dispatch(clearProduct());
-            dispatch(clearOrder());
-            props.setShowcheckout(false);
-          }}
+          onClick={() => props.setShowCancel(true)}
         >
           <GrClose />
         </span>
