@@ -1,6 +1,5 @@
 import { RootState } from "@/app/store";
-import { clearOrder } from "@/features/orderSlice";
-import { clearProduct } from "@/features/productSlice";
+
 import { updateOrderPaymentStatus } from "@/services/homeOwner";
 import { useMutation } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, memo, useCallback, useEffect } from "react";
@@ -8,16 +7,17 @@ import toast from "react-hot-toast";
 import { GrClose } from "react-icons/gr";
 import { Oval } from "react-loader-spinner";
 // import { IoIosArrowRoundBack } from "react-icons/io";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 
 const ProcessingPayment = (props: {
+  setShowCancel: Dispatch<SetStateAction<boolean>>;
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { order } = useSelector((state: RootState) => state);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // const navigate = useNavigate();
 
   const loadingToastId = toast.loading("Processing payment...", {
@@ -53,10 +53,8 @@ const ProcessingPayment = (props: {
   }, [order._id]);
 
   const handleCloseModal = useCallback(() => {
-    dispatch(clearProduct());
-    dispatch(clearOrder());
-    props.setShowcheckout(false);
-  }, [dispatch, props.setShowcheckout]);
+    props.setShowCancel;
+  }, [props.setShowCancel]);
 
   return (
     <div className="h-[90vh] flex flex-col items-center">

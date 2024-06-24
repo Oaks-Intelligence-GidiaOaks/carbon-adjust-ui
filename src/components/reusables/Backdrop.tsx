@@ -6,12 +6,6 @@ const Backdrop = (props: {
   setShow: (v: boolean) => void;
   classnames?: string;
 }) => {
-  // const closeBackdrop = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-  //   if (e.target === e.currentTarget) {
-  //     props.setShow(false);
-  //   }rder
-  // };
-
   return (
     <div
       className={`  ${

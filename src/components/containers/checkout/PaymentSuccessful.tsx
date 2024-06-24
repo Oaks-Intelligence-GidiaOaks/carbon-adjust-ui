@@ -1,12 +1,12 @@
 import { RootState } from "@/app/store";
 import { clearOrder } from "@/features/orderSlice";
-import { clearProduct } from "@/features/productSlice";
 import { Dispatch, SetStateAction } from "react";
 import { GrClose } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const PaymentSuccessful = (props: {
+  setShowCancel: Dispatch<SetStateAction<boolean>>;
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
@@ -28,9 +28,7 @@ const PaymentSuccessful = (props: {
   };
 
   const handleCloseModal = () => {
-    dispatch(clearProduct());
-    dispatch(clearOrder());
-    props.setShowcheckout(false);
+    props.setShowCancel(true);
   };
 
   return (
