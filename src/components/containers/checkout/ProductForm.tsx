@@ -250,7 +250,7 @@ const ProductForm = (props: {
             onChange={(e) =>
               handleAnswerQuestion(e.target.value, "Open-Ended Question")
             }
-            inputClassName="border p-3 bg-[#E4E7E8]"
+            inputClassName="border p-3 bg-gray-100"
             value={response}
             name=""
             type="text"
