@@ -34,7 +34,7 @@ const OrderSummary = (props: {
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { order, product } = useSelector((state: RootState) => state);
+  const { order, product, user } = useSelector((state: RootState) => state);
 
   const dispatch = useDispatch();
 
@@ -63,6 +63,7 @@ const OrderSummary = (props: {
       ...order,
       package: product._id,
       price: product.price || 0,
+      customerEmail: user.user!.email,
       customerAddress: {
         country: order.customerAddress.country.value,
         cityOrProvince: order.customerAddress.cityOrProvince.value,
@@ -136,7 +137,7 @@ const OrderSummary = (props: {
         <div className="flex-start">
           <span className="font-[600] text-sm w-1/2"> Email Address: </span>
           <span className="font-[400] text-sm  truncate w-1/2 pl-2">
-            {order.customerEmail}
+            {user.user?.email}
           </span>
         </div>
 

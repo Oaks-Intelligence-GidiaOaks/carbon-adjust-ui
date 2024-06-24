@@ -7,7 +7,7 @@ import {
   updateAddress,
   updateCity,
   updateCountry,
-  updateEmail,
+  // updateEmail,
   // updateOrderDetails,
   updatePhone,
   updateQuantity,
@@ -26,6 +26,7 @@ import { fileToBase64, formatSelectOptions, stringToArray } from "@/lib/utils";
 import { IResponse } from "@/interfaces/orderData.interface";
 import { SelectItem } from "@/types/formSelect";
 import { Country, State } from "country-state-city";
+import Phoneinput from "@/components/ui/PhoneInput";
 
 const ProductForm = (props: {
   setStage: Dispatch<SetStateAction<number>>;
@@ -33,7 +34,7 @@ const ProductForm = (props: {
 }) => {
   const dispatch = useDispatch();
 
-  const { product, order }: RootState = useSelector(
+  const { product, order, user }: RootState = useSelector(
     (state: RootState) => state
   );
 
@@ -59,8 +60,8 @@ const ProductForm = (props: {
 
   const { responses, _id, customerAddress, ...rest } = order;
 
-  console.log(customerAddress, "rest");
-  console.log(rest, "rest two");
+  // console.log(customerAddress, "rest");
+  // console.log(rest, "rest two");
 
   const isFormValues =
     Object.values({ ...rest }).filter((it: any) => it.toString().length < 1)
@@ -360,9 +361,24 @@ const ProductForm = (props: {
             wrapperClassName=""
             name=""
             error=""
-            inputClassName="border p-3 bg-[#E4E7E8]"
+            inputClassName="border p-3 bg-gray-100"
             placeholder="Window Retrofitting"
             value={product?.title}
+            readOnly
+          />
+
+          <Input
+            key={3}
+            label="Email address"
+            className=""
+            labelClassName="pb-[10px]"
+            wrapperClassName=""
+            name=""
+            error=""
+            inputClassName="border p-3 bg-gray-100"
+            placeholder=""
+            // onChange={(e) => dispatch(updateEmail(e.target.value))}
+            value={user.user?.email}
             readOnly
           />
 
@@ -374,7 +390,7 @@ const ProductForm = (props: {
             wrapperClassName=""
             name=""
             error=""
-            inputClassName="border p-3 bg-[#E4E7E8]"
+            inputClassName="border p-3 bg-gray-100"
             placeholder=""
             onChange={(e) => {
               dispatch(updateAddress(e.target.value));
@@ -382,22 +398,20 @@ const ProductForm = (props: {
             value={order.customerAddress.firstLineAddress}
           />
 
-          <Input
-            key={3}
-            label="Email address"
-            className=""
-            labelClassName="pb-[10px]"
-            wrapperClassName=""
-            name=""
-            error=""
-            inputClassName="border p-3 bg-[#E4E7E8]"
-            placeholder=""
-            onChange={(e) => dispatch(updateEmail(e.target.value))}
-            value={order.customerEmail}
-          />
-
           {/* tel input */}
-          <Input
+          <Phoneinput
+            name="tel"
+            label="Phone"
+            labelClassName="mb-4"
+            inputClassName="bg-gray-100 text-[#000000]"
+            placeholder="+234"
+            value={order.customerPhone}
+            onInputChange={(_, __, ___, formattedValue: string) => {
+              console.log(formattedValue);
+              dispatch(updatePhone(formattedValue));
+            }}
+          />
+          {/* <Input
             key={4}
             label="Phone number"
             className=""
@@ -410,7 +424,7 @@ const ProductForm = (props: {
             type="number"
             value={order.customerPhone}
             onChange={(e) => dispatch(updatePhone(e.target.value))}
-          />
+          /> */}
 
           {/* quantity */}
           {product.packageType === "Product" && (
