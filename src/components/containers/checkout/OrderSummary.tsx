@@ -1,5 +1,5 @@
 import { RootState } from "@/app/store";
-import { clearProduct } from "@/features/productSlice";
+// import { clearProduct } from "@/features/productSlice";
 import { IResponse } from "@/interfaces/orderData.interface";
 import { createNewOrder } from "@/services/homeOwner";
 import { useMutation } from "@tanstack/react-query";
@@ -9,7 +9,7 @@ import { GrClose } from "react-icons/gr";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Oval } from "react-loader-spinner";
-import { clearOrder, updateOrderId } from "@/features/orderSlice";
+import { updateOrderId } from "@/features/orderSlice";
 
 type IAddress = {
   country: string;
@@ -31,10 +31,11 @@ type IOrder = {
 };
 
 const OrderSummary = (props: {
+  setShowCancel: Dispatch<SetStateAction<boolean>>;
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { order, product } = useSelector((state: RootState) => state);
+  const { order, product, user } = useSelector((state: RootState) => state);
 
   const dispatch = useDispatch();
 
@@ -63,6 +64,7 @@ const OrderSummary = (props: {
       ...order,
       package: product._id,
       price: product.price || 0,
+      customerEmail: user.user!.email,
       customerAddress: {
         country: order.customerAddress.country.value,
         cityOrProvince: order.customerAddress.cityOrProvince.value,
@@ -73,7 +75,7 @@ const OrderSummary = (props: {
 
     console.log(newOrder, "new  order");
 
-    // createOrder.mutate(newOrder);
+    createOrder.mutate(newOrder);
   };
 
   return (
@@ -84,13 +86,7 @@ const OrderSummary = (props: {
           <h2 className="font-[600] text-lg">Check Out</h2>
         </div>
 
-        <span
-          onClick={() => {
-            dispatch(clearProduct());
-            dispatch(clearOrder());
-            props.setShowcheckout(false);
-          }}
-        >
+        <span onClick={() => props.setShowCancel(true)}>
           <GrClose />
         </span>
       </div>
@@ -136,7 +132,7 @@ const OrderSummary = (props: {
         <div className="flex-start">
           <span className="font-[600] text-sm w-1/2"> Email Address: </span>
           <span className="font-[400] text-sm  truncate w-1/2 pl-2">
-            {order.customerEmail}
+            {user.user?.email}
           </span>
         </div>
 

@@ -18,7 +18,7 @@ const initialState: IOrder = {
     firstLineAddress: "",
     zipcode: "",
   },
-  customerEmail: "",
+  // customerEmail: "",
   customerPhone: "",
   quantity: 1,
   responses: [],
@@ -31,9 +31,9 @@ const orderSlice = createSlice({
     updateAddress: (state, action) => {
       state.customerAddress.firstLineAddress = action.payload;
     },
-    updateEmail: (state, action) => {
-      state.customerEmail = action.payload;
-    },
+    // updateEmail: (state, action) => {
+    //   state.customerEmail = action.payload;
+    // },
     updatePhone: (state, action) => {
       state.customerPhone = action.payload;
     },
@@ -66,7 +66,7 @@ export const {
   clearOrder,
   updateAddress,
   updatePhone,
-  updateEmail,
+  // updateEmail,
   updateQuantity,
   updateCountry,
   updateCity,
