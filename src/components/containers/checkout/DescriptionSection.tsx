@@ -28,7 +28,7 @@ const DescriptionSection = (props: {
         <h2 className="text-center font-[600] text-lg ">Checkout</h2>
 
         <div className=" mx-auto">
-          <ProductCard {...prod!} isMerchant />
+          <ProductCard {...prod!} isMerchant wrapText />
         </div>
 
         <div className="space-y-3 px-5 font-inter">
