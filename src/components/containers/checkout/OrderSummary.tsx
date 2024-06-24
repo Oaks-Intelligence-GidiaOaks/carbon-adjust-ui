@@ -1,5 +1,5 @@
 import { RootState } from "@/app/store";
-import { clearProduct } from "@/features/productSlice";
+// import { clearProduct } from "@/features/productSlice";
 import { IResponse } from "@/interfaces/orderData.interface";
 import { createNewOrder } from "@/services/homeOwner";
 import { useMutation } from "@tanstack/react-query";
@@ -9,7 +9,7 @@ import { GrClose } from "react-icons/gr";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Oval } from "react-loader-spinner";
-import { clearOrder, updateOrderId } from "@/features/orderSlice";
+import { updateOrderId } from "@/features/orderSlice";
 
 type IAddress = {
   country: string;
@@ -31,6 +31,7 @@ type IOrder = {
 };
 
 const OrderSummary = (props: {
+  setShowCancel: Dispatch<SetStateAction<boolean>>;
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
@@ -85,13 +86,7 @@ const OrderSummary = (props: {
           <h2 className="font-[600] text-lg">Check Out</h2>
         </div>
 
-        <span
-          onClick={() => {
-            dispatch(clearProduct());
-            dispatch(clearOrder());
-            props.setShowcheckout(false);
-          }}
-        >
+        <span onClick={() => props.setShowCancel(true)}>
           <GrClose />
         </span>
       </div>

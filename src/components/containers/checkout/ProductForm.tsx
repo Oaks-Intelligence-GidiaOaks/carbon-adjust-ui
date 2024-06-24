@@ -2,8 +2,6 @@ import { RootState } from "@/app/store";
 import { CountryRegionDropdown, Input } from "@/components/ui";
 // import SelectInput from "@/components/ui/SelectInput";
 import {
-  clearOrder,
-  // clearOrder,
   updateAddress,
   updateCity,
   updateCountry,
@@ -14,7 +12,7 @@ import {
   updateResponses,
   updatepPostCode,
 } from "@/features/orderSlice";
-import { clearProduct } from "@/features/productSlice";
+// import { clearProduct } from "@/features/productSlice";
 
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { GrClose } from "react-icons/gr";
@@ -31,6 +29,7 @@ import Phoneinput from "@/components/ui/PhoneInput";
 const ProductForm = (props: {
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
+  setShowCancel: Dispatch<SetStateAction<boolean>>;
 }) => {
   const dispatch = useDispatch();
 
@@ -42,8 +41,6 @@ const ProductForm = (props: {
   const [statesList, setStatesList] = useState<
     { label: string; value: string }[]
   >([]);
-
-  // console.log(statesList, "states list");
 
   useEffect(() => {
     setStatesList(
@@ -59,9 +56,6 @@ const ProductForm = (props: {
   }, [order.customerAddress.country.value, dispatch]);
 
   const { responses, _id, customerAddress, ...rest } = order;
-
-  // console.log(customerAddress, "rest");
-  // console.log(rest, "rest two");
 
   const isFormValues =
     Object.values({ ...rest }).filter((it: any) => it.toString().length < 1)
@@ -335,13 +329,7 @@ const ProductForm = (props: {
       <div className="flex-center font-poppins justify-between w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
         <h2 className="font-[600] text-lg">Home Energy Package</h2>
 
-        <span
-          onClick={() => {
-            dispatch(clearProduct());
-            dispatch(clearOrder());
-            props.setShowcheckout(false);
-          }}
-        >
+        <span onClick={() => props.setShowCancel(true)}>
           <GrClose />
         </span>
       </div>
