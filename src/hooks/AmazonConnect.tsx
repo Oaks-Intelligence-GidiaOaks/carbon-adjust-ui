@@ -4,7 +4,7 @@ import "amazon-connect-streams";
 const AmazonConnect = () => {
   useEffect(() => {
     const containerDiv = document.getElementById("container-div")!;
-    const instanceURL = "https://carbon-adjust.my.connect.aws";
+    const instanceURL = "https://carbon-adjust.my.connect.aws/ccp-v2/";
 
     connect.core.initCCP(containerDiv, {
       ccpUrl: instanceURL,
