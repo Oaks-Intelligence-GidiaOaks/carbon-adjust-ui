@@ -10,6 +10,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "typeRoots": ["./types", "./node_modules/@types"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
