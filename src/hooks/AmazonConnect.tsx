@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import "amazon-connect-streams";
 
 const AmazonConnect = () => {
   useEffect(() => {
-    const containerDiv = document.getElementById("container-div");
+    const containerDiv = document.getElementById("container-div")!;
     const instanceURL = "https://carbon-adjust.my.connect.aws";
 
     connect.core.initCCP(containerDiv, {
