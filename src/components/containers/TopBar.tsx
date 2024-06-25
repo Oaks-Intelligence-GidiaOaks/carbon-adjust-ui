@@ -11,7 +11,7 @@ import categories from "../../dummy/categories.json";
 import SettingIcon from "../../assets/icons/setting.svg";
 import BellIcon from "../../assets/icons/bell.svg";
 import UserIcon from "../../assets/icons/User.svg";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SelectInput from "../ui/SelectInput";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
@@ -96,7 +96,10 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
             />
           </div>
 
-          <div className="flex-center gap-[18.8px] ">
+          <Link
+            to={isMerchant ? "/merchant/" : "/dashboard"}
+            className="flex-center gap-[18.8px] cursor-pointer"
+          >
             <img
               src="/assets/icons/logo-main.svg"
               alt=""
@@ -104,7 +107,7 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
             />
 
             <h2 className="font-[400] text-sm">{getActiveTab()}</h2>
-          </div>
+          </Link>
 
           {!isMerchant && (
             <div className="hidden lg:flex items-center flex-1  justify-center gap-3 mx-auto">
