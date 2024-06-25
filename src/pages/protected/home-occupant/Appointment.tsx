@@ -17,14 +17,17 @@ import { ISlot } from "@/interfaces/slots.interface";
 // import { RootState } from "@/app/store";
 import { Oval } from "react-loader-spinner";
 import { Dayjs } from "dayjs";
-import { getFormattedMonthFromIndex } from "@/lib/utils";
+import {
+  getFormattedDayFromIndex,
+  getFormattedMonthFromIndex,
+} from "@/lib/utils";
 import SlotsLoading from "@/components/reusables/SlotsLoading";
 
 type Props = {};
 
 const Appointment = (_: Props) => {
   const { orderId } = useParams();
-  const [dt, setDt] = useState<Dayjs>();
+  const [dt, setDt] = useState<any>();
   const [activeSlot, setActiveSlot] = useState<ISlot>();
   const [isDateLoading, setIsDateLoading] = useState(false);
 
@@ -34,8 +37,11 @@ const Appointment = (_: Props) => {
 
   const orderData = {
     orderId: orderId!.toString(),
-    // @ts-ignore
-    dt: dt && `${dt.$y}-${getFormattedMonthFromIndex(dt.$M)}-${dt.$D}`,
+    dt:
+      dt &&
+      `${dt.$y}-${getFormattedMonthFromIndex(dt.$M)}-${getFormattedDayFromIndex(
+        dt.$D
+      )}`,
   };
 
   // console.log(dt, "dt");
