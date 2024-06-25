@@ -12,6 +12,7 @@ const DropBox = ({
   setFiles: setStateOrgFiles,
   setSelectedFiles,
   docName,
+  disabled,
 }: DropBoxProps) => {
   // interface HTMLInputEvent extends Event {
   //   target: HTMLInputElement & EventTarget;
@@ -133,6 +134,7 @@ const DropBox = ({
             className="opacity-0 absolute inset-0 h-full w-full cursor-pointer"
             onChange={onFileDrop}
             id="file"
+            disabled={disabled}
           />
         </div>
         {/* {children} */}

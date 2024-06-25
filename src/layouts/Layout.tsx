@@ -10,6 +10,7 @@ import InactivityWrapper from "@/components/hoc/InactivityWrapper";
 import { setUser } from "@/features/userSlice";
 import ProtectedRoute from "@/guards/ProtectedRoute";
 import UseScrollToTop from "@/hooks/useScrollToTop";
+import { AuthUserProfile } from "@/types/general";
 // import ProtectedRoute from "@/guards/ProtectedRoute";
 import { cn, uniqueObjectsByIdType } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -38,6 +39,16 @@ const Layout = (props: Props) => {
   });
   // console.log(userData);
 
+  const handleRedirect = (user: AuthUserProfile, role: string) => {
+    if (role === "HOME_OCCUPANT") return navigate("/dashboard");
+    if (role === "ADMIN") return navigate("/admin");
+    if (role === "MERCHANT") {
+      if (user.status === "pending") {
+        return navigate("/account-setup");
+      }
+      return navigate("/merchant");
+    }
+  };
   // ---------------------UNCOMMENT THIS CODE WHEN ADMIN STARTS VERIFYING USERS
   useEffect(() => {
     // User data loaded successfully and there's user data in state
@@ -45,9 +56,11 @@ const Layout = (props: Props) => {
       dispatch(setUser(userData.data.data.data));
       // console.log(userData.data.data.data);
       if (userData.data.data.data.roles[0] === "ADMIN") {
+        if (pathname.includes("admin")) return;
         return navigate("/admin");
       }
       if (userData.data.data.data.roles[0] === "HOME_OCCUPANT") {
+        if (pathname.includes("dashboard")) return;
         return navigate("/dashboard");
       }
       // NON_FINANCIAL MERCHANT PATH
@@ -55,64 +68,74 @@ const Layout = (props: Props) => {
         userData.data.data.data.roles[0] === "MERCHANT" &&
         userData.data.data.data.merchantType === "NON_FINANCIAL_MERCHANT"
       ) {
-        console.log("Here");
-        if (
-          userData.data.data.data.nonFinancialMerchantType ===
-            "SELF_EMPLOYED" &&
-          uniqueObjectsByIdType(userData.data.data.data?.doc).length < 2
-        ) {
-          console.log("here");
-          return navigate("/account-setup");
-        }
-        if (
-          userData.data.data.data.nonFinancialMerchantType ===
-            "SELF_EMPLOYED_LICENSE" &&
-          uniqueObjectsByIdType(userData.data.data.data?.doc).length < 3
-        ) {
-          console.log("here");
-          return navigate("/account-setup");
-        }
-        if (
-          userData.data.data.data.nonFinancialMerchantType ===
-            "LIMITED_LIABILITY" &&
-          uniqueObjectsByIdType(userData.data.data.data?.doc).length < 3
-        ) {
-          console.log("here");
-          return navigate("/account-setup");
-        }
-        if (
-          userData.data.data.data.nonFinancialMerchantType ===
-            "LIMITED_LIABILITY_LICENSE" &&
-          uniqueObjectsByIdType(userData.data.data.data?.doc).length < 4
-        ) {
-          console.log("here");
-          return navigate("/account-setup");
-        }
-        if (
-          !userData.data.data.data.nonFinancialMerchantType &&
-          uniqueObjectsByIdType(userData.data.data.data?.doc).length < 4
-        ) {
-          console.log("here");
-          if (pathname.includes("merchant")) {
-            console.log("Here");
-            return;
-          }
-          return navigate("/merchant");
-        }
-        console.log("here");
-        return navigate("/merchant");
+        if (pathname.includes("merchant")) return;
+
+        handleRedirect(
+          userData.data.data.data,
+          userData.data.data.data.roles[0]
+        );
+
+        // if (
+        //   userData.data.data.data.nonFinancialMerchantType ===
+        //     "SELF_EMPLOYED" &&
+        //   uniqueObjectsByIdType(userData.data.data.data?.doc).length < 2
+        // ) {
+        //   console.log("here");
+        //   return navigate("/account-setup");
+        // }
+        // if (
+        //   userData.data.data.data.nonFinancialMerchantType ===
+        //     "SELF_EMPLOYED_LICENSE" &&
+        //   uniqueObjectsByIdType(userData.data.data.data?.doc).length < 3
+        // ) {
+        //   console.log("here");
+        //   return navigate("/account-setup");
+        // }
+        // if (
+        //   userData.data.data.data.nonFinancialMerchantType ===
+        //     "LIMITED_LIABILITY" &&
+        //   uniqueObjectsByIdType(userData.data.data.data?.doc).length < 3
+        // ) {
+        //   console.log("here");
+        //   return navigate("/account-setup");
+        // }
+        // if (
+        //   userData.data.data.data.nonFinancialMerchantType ===
+        //     "LIMITED_LIABILITY_LICENSE" &&
+        //   uniqueObjectsByIdType(userData.data.data.data?.doc).length < 4
+        // ) {
+        //   console.log("here");
+        //   return navigate("/account-setup");
+        // }
+        // if (
+        //   !userData.data.data.data.nonFinancialMerchantType &&
+        //   uniqueObjectsByIdType(userData.data.data.data?.doc).length < 4
+        // ) {
+        //   console.log("here");
+        //   if (pathname.includes("merchant")) {
+        //     console.log("Here");
+        //     return;
+        //   }
+        //   return navigate("/merchant");
+        // }
+        // console.log("here");
+        // return navigate("/merchant");
       }
       // FINANCIAL MERCHANT PATH
       if (
         userData.data.data.data.roles[0] === "MERCHANT" &&
         userData.data.data.data.merchantType === "FINANCIAL_MERCHANT"
       ) {
-        console.log(uniqueObjectsByIdType(userData.data.data.data?.doc).length);
-        console.log(uniqueObjectsByIdType(userData.data.data.data?.doc));
-        if (uniqueObjectsByIdType(userData.data.data.data?.doc).length < 4) {
-          return navigate("/account-setup");
-        }
-        return navigate("/merchant");
+        handleRedirect(
+          userData.data.data.data,
+          userData.data.data.data.roles[0]
+        );
+        // console.log(uniqueObjectsByIdType(userData.data.data.data?.doc).length);
+        // console.log(uniqueObjectsByIdType(userData.data.data.data?.doc));
+        // if (uniqueObjectsByIdType(userData.data.data.data?.doc).length < 4) {
+        //   return navigate("/account-setup");
+        // }
+        // return navigate("/merchant");
       }
     }
     // User data loaded successfully and no user data in state

@@ -29,7 +29,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
         </span> */}
 
         <div className="relative">
-          <div className="hidden group-hover:flex flex-col  absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 rounded-lg">
+          <div className="hidden group-hover:flex flex-col absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 rounded-lg">
             {!isMerchant && (
               <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
                 <Link
@@ -48,7 +48,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
           <img
             src={props?.attachments?.[0]}
             alt=""
-            className="w-[228px] h-[304px] rounded-lg"
+            className="w-[228px] h-[304px] rounded-lg object-cover"
           />
         </div>
 

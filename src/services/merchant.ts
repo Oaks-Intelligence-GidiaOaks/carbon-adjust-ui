@@ -8,12 +8,28 @@ export const getRecentPackagesQuery = () => {
   return axiosInstance.get("/packages/recent");
 };
 
+export const getScheduleSlots = (id: string) => {
+  return axiosInstance.get(`/packages/${id}/schedules`);
+};
+
 export const createPackageQuery = (data: FormData) => {
   return axiosInstance.post("/packages", data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
+};
+
+export const updatePackageQuery = (data: FormData, packageId: string) => {
+  return axiosInstance.patch(
+    `/packages/${packageId}`,
+    data
+    // , {
+    //   headers: {
+    //     "Content-Type": "multipart/form-data",
+    //   },
+    // }
+  );
 };
 
 export const sendQuoteQuery = async (id: any, quoteData: FormData) => {
@@ -54,18 +70,32 @@ export const completeApplication = async (packageId: string) => {
 };
 
 export const generateSlotQuery = (data: {
-  startTime: string;
-  endTime: string;
-  slotDuration: string;
+  schedules: {
+    startTime: string;
+    endTime: string;
+    slotDuration: string;
+    day: string;
+  }[];
   packageId: string;
-  day: string;
 }) => {
-  return axiosInstance.post("/booking/schedule/generate-slot", data);
+  return axiosInstance.post("/booking/schedule/generate-slot", {
+    schedules: data.schedules,
+    packageId: data.packageId,
+  });
 };
 
-export const activateSlotQuery = (data: {
-  schedule: string;
-  slots: string[];
-}) => {
-  return axiosInstance.patch("/booking/schedule/activate-slot", data);
+export const updatePackageImage = (data: FormData, packageId: string) => {
+  return axiosInstance.post(`/package/avatar/${packageId}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+export const activateSlotQuery = (
+  data: { schedule: string; slots: string[] }[]
+) => {
+  return axiosInstance.patch("/booking/schedule/activate-slot", {
+    schedules: data,
+  });
 };

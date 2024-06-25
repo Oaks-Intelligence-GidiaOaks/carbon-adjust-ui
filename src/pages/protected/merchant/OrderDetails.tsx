@@ -282,14 +282,21 @@ const OrderDetails: FC = () => {
             <div className="gap-2 flex flex-col">
               <h2 className="font-[600] uppercase">Booking/Schedule</h2>
               <p className="text-gray-500">
-                These is the customers selected booking.
+                This is the customers selected booking.
               </p>
-              <div className="mt-2">
+              <div className="mt-2 text-sm">
+                {/* {console.log(orderDetails.data?.data.booking as Order)} */}
                 <p>
+                  <span className="font-semibold">Day: </span>
+                  {(orderDetails.data?.data.booking[0] as any)?.schedule.day}
+                </p>
+                <p>
+                  <span className="font-semibold">Call Duration: </span>
                   {
-                    (orderDetails.data?.data.order as Order)?.booking?.schedule
-                      ?.day
-                  }
+                    (orderDetails.data?.data.booking[0] as any)?.schedule
+                      .slotDuration
+                  }{" "}
+                  mins
                 </p>
               </div>
             </div>

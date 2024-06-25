@@ -278,6 +278,14 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       header: () => <div className="w-44 text-left">Customer Name</div>,
     }),
 
+    columnHelper.accessor((row: any) => row?.name, {
+      id: "name",
+      cell: (info) => (
+        <div className="w-60 mx-auto text-left">{info.getValue()}</div>
+      ),
+      header: () => <div className="w-60 text-left">Package Name</div>,
+    }),
+
     columnHelper.accessor((row: any) => row?.category, {
       id: "category",
       cell: (info) => (

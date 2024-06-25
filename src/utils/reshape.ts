@@ -53,7 +53,7 @@ export const transformApplicationsGridData = (data: any) => {
 
   Array.from(data, (item: any) => {
     console.log(item);
-    const { currency, price, package: pkg, category, ...rest } = item;
+    const { currency, title, price, package: pkg, category, ...rest } = item;
 
     newData.push({
       ...rest,
@@ -62,6 +62,7 @@ export const transformApplicationsGridData = (data: any) => {
           ? `${pkg.currency} 0`
           : `${pkg.currency} ${formatNumberWithCommas(price)}`,
       category: pkg.category.name,
+      name: pkg.title,
     });
   });
 
