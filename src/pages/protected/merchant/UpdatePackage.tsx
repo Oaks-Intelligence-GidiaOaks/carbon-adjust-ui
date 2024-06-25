@@ -227,6 +227,7 @@ const UpdatePackage = (_: Props) => {
         title: q.title,
         questionType: q.questionType.value,
         ...(q.options ? { options: q.options } : {}),
+        ...(q._id ? { _id: q._id } : {}),
       }));
       submissionObject.questions = formattedQuestions;
       // formData.append("questions", JSON.stringify(formattedQuestions));
@@ -306,6 +307,7 @@ const UpdatePackage = (_: Props) => {
                   q.questionType.value === "Multiple-Choice Question"
                     ? { options: q.options }
                     : {}),
+                  ...(q._id ? { _id: q._id } : {}),
                 })
               )
             : [],

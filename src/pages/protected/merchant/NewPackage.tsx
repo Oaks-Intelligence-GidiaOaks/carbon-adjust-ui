@@ -57,6 +57,7 @@ export type Question = {
   title: string;
   questionType: QuestionType;
   options?: string[];
+  _id?: string;
 };
 export type PackageState = {
   title: string;

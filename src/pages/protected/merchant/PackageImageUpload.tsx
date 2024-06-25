@@ -1,8 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
-import axios from "axios";
 import { Button, Label } from "@/components/ui";
 import { BiEdit } from "react-icons/bi";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updatePackageImage } from "@/services/merchant";
 import toast from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
@@ -13,9 +12,9 @@ interface ImageUploadProps {
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ defaultUrl, packageId }) => {
+  const queryClient = useQueryClient();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>(defaultUrl);
-  const [uploading, setUploading] = useState<boolean>(false);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -29,38 +28,44 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ defaultUrl, packageId }) => {
     }
   };
 
+  const updateImageMutation = useMutation({
+    mutationKey: ["update-packageImage"],
+    mutationFn: (data: FormData) => updatePackageImage(data, packageId),
+    onSuccess: () => {
+      toast.success("Package image updated successfully");
+      queryClient.invalidateQueries({
+        queryKey: [packageId],
+      });
+    },
+    onError: (err) => {
+      console.log(err);
+
+      toast.error("Couldn't upload package image successfully");
+    },
+  });
+
   const handleUpload = async () => {
     if (!selectedFile) return;
 
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    setUploading(true);
+    updateImageMutation.mutate(formData);
+    // setUploading(true);
 
-    try {
-      const response = await axios.post("/your-endpoint-url", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log("File uploaded successfully:", response.data);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    } finally {
-      setUploading(false);
-    }
+    // try {
+    //   const response = await axios.post("/your-endpoint-url", formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   });
+    //   console.log("File uploaded successfully:", response.data);
+    // } catch (error) {
+    //   console.error("Error uploading file:", error);
+    // } finally {
+    //   setUploading(false);
+    // }
   };
-
-  const updateImageMutation = useMutation({
-    mutationKey: ["update-packageImage"],
-    mutationFn: (data: FormData) => updatePackageImage(data, packageId),
-    onSuccess: () => {
-      toast.success("Package image updated successfully");
-    },
-    onError: () => {
-      toast.success("Couldn't upload package image successfully");
-    },
-  });
 
   return (
     <div className="min-w-[200px] max-w-[240px] flex flex-col bg-white shrink-0 mt-2 relative">
@@ -91,9 +96,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ defaultUrl, packageId }) => {
         {selectedFile && (
           <Button
             onClick={handleUpload}
-            disabled={!selectedFile || uploading}
+            disabled={!selectedFile || updateImageMutation.isPending}
             className={`mt-2 text-white w-full h-8 text-sm ${
-              uploading ? "bg-gray-300" : "bg-blue-500"
+              updateImageMutation.isPending ? "bg-gray-300" : "bg-blue-500"
             }`}
           >
             {updateImageMutation.isPending ? (

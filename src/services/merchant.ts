@@ -85,7 +85,7 @@ export const generateSlotQuery = (data: {
 };
 
 export const updatePackageImage = (data: FormData, packageId: string) => {
-  return axiosInstance.post(`/package/avatar/${packageId}`, data, {
+  return axiosInstance.post(`/packages/${packageId}/file/edit`, data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
