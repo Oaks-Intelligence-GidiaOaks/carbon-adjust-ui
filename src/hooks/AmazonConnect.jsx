@@ -4,8 +4,7 @@ import "amazon-connect-streams";
 const AmazonConnect = () => {
   useEffect(() => {
     const containerDiv = document.getElementById("container-div");
-    const instanceURL =
-      "https://idysman-test-call-center.my.connect.aws/ccp-v2";
+    const instanceURL = "https://carbon-adjust.my.connect.aws";
 
     connect.core.initCCP(containerDiv, {
       ccpUrl: instanceURL,
@@ -18,12 +17,20 @@ const AmazonConnect = () => {
         top: 0,
         left: 0,
       },
-      region: "us-west-2", // replace with the region where your Amazon Connect instance is hosted
+      region: "eu-west-2", // replace with the region where your Amazon Connect instance is hosted
       softphone: {
         allowFramedSoftphone: true,
         disableRingtone: false,
         ringtoneUrl: "./ringtone.mp3",
       },
+      pageOptions: {
+        // Optional, allows customization of the CCP
+        enableAudioDeviceSettings: true, // Optional, default is true
+        enablePhoneTypeSettings: true, // Optional, default is true
+      },
+      ccpAckTimeout: 5000, // Optional, number of milliseconds to wait for acknowledgment
+      ccpSynTimeout: 3000, // Optional, number of milliseconds to wait for synchronization
+      ccpLoadTimeout: 10000,
     });
 
     connect.agent((agent) => {
