@@ -86,11 +86,11 @@ const ProductCheckout = (props: {
       setShow={props.setShowcheckout}
       show={props.showCheckout}
     >
-      <div className="relative w-[100vw] border border-green-500">
+      <div className="relative w-[100vw]">
         {/* checkout */}
-        <div className="flex  justify-center md:justify-end border border-red-500">
+        <div className="flex  justify-center md:justify-end ">
           <div
-            className={`bg-white mt-10 mx-auto md:mx-0 w-[90vw] md:w-[380px] border h-[90vh] md:mt-0 md:h-[100vh] overflow-y-scroll pb-[30px]`}
+            className={`bg-white mt-10 mx-auto md:mx-0 w-[90vw] md:w-[380px] h-[90vh] md:mt-0 md:h-[100vh] overflow-y-scroll pb-[30px]`}
           >
             {stageMap[stage]}
           </div>

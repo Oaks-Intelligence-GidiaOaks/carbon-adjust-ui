@@ -250,7 +250,7 @@ const ProductForm = (props: {
             onChange={(e) =>
               handleAnswerQuestion(e.target.value, "Open-Ended Question")
             }
-            inputClassName="border p-3 bg-[#E4E7E8]"
+            inputClassName="border p-3 bg-gray-100"
             value={response}
             name=""
             type="text"
@@ -356,6 +356,20 @@ const ProductForm = (props: {
           />
 
           <Input
+            key={80}
+            label="Name"
+            className=""
+            labelClassName="pb-[10px]"
+            wrapperClassName=""
+            name=""
+            error=""
+            inputClassName="border p-3 bg-gray-100"
+            placeholder="Window Retrofitting"
+            value={user.user!.name}
+            readOnly
+          />
+
+          <Input
             key={3}
             label="Email address"
             className=""
@@ -368,6 +382,20 @@ const ProductForm = (props: {
             // onChange={(e) => dispatch(updateEmail(e.target.value))}
             value={user.user?.email}
             readOnly
+          />
+
+          {/* tel input */}
+          <Phoneinput
+            name="tel"
+            label="Phone"
+            labelClassName="mb-4"
+            inputClassName="bg-gray-100 text-[#000000]"
+            placeholder="+234"
+            value={order.customerPhone}
+            onInputChange={(_, __, ___, formattedValue: string) => {
+              console.log(formattedValue);
+              dispatch(updatePhone(formattedValue));
+            }}
           />
 
           <Input
@@ -386,19 +414,6 @@ const ProductForm = (props: {
             value={order.customerAddress.firstLineAddress}
           />
 
-          {/* tel input */}
-          <Phoneinput
-            name="tel"
-            label="Phone"
-            labelClassName="mb-4"
-            inputClassName="bg-gray-100 text-[#000000]"
-            placeholder="+234"
-            value={order.customerPhone}
-            onInputChange={(_, __, ___, formattedValue: string) => {
-              console.log(formattedValue);
-              dispatch(updatePhone(formattedValue));
-            }}
-          />
           {/* <Input
             key={4}
             label="Phone number"
@@ -490,6 +505,7 @@ const ProductForm = (props: {
             value={order.customerAddress.zipcode}
             onChange={(e) => dispatch(updatepPostCode(e.target.value))}
           />
+
           {/* Questions - responses */}
           {RenderQuestions}
 
