@@ -1,23 +1,20 @@
 import { RootState } from "@/app/store";
-import { Input } from "@/components/ui";
+import { CountryRegionDropdown, Input } from "@/components/ui";
 // import SelectInput from "@/components/ui/SelectInput";
 import {
-  clearOrder,
-  // clearOrder,
   updateAddress,
-  updateEmail,
+  updateCity,
+  updateCountry,
+  // updateEmail,
   // updateOrderDetails,
   updatePhone,
   updateQuantity,
   updateResponses,
+  updatepPostCode,
 } from "@/features/orderSlice";
-import { clearProduct } from "@/features/productSlice";
-// import { createNewOrder } from "@/services/homeOwner";
-// import { useMutation } from "@tanstack/react-query";
-// import { IOrder } from "@/interfaces/orderData.interface";
-// import { SelectItem } from "@/types/formSelect";
-// import { Product } from "@/types/product";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+// import { clearProduct } from "@/features/productSlice";
+
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { GrClose } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -26,48 +23,58 @@ import SelectInput from "@/components/ui/SelectInput";
 import { fileToBase64, formatSelectOptions, stringToArray } from "@/lib/utils";
 import { IResponse } from "@/interfaces/orderData.interface";
 import { SelectItem } from "@/types/formSelect";
+import { Country, State } from "country-state-city";
+import Phoneinput from "@/components/ui/PhoneInput";
 
 const ProductForm = (props: {
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
+  setShowCancel: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { product, order }: RootState = useSelector(
+  const dispatch = useDispatch();
+
+  const { product, order, user }: RootState = useSelector(
     (state: RootState) => state
   );
 
-  const {
-    // customerAddress,
-    // customerEmail,
-    // customerPhone,
-    // package: pkg,
-    // price,
-    // requiredExtraProd,
-    responses,
-    _id,
-    ...rest
-  } = order;
+  let countryData = Country.getAllCountries();
+  const [statesList, setStatesList] = useState<
+    { label: string; value: string }[]
+  >([]);
+
+  useEffect(() => {
+    setStatesList(
+      State.getStatesOfCountry(order.customerAddress.country?.value).map(
+        (state) => ({
+          label: state.name,
+          value: state.isoCode,
+        })
+      )
+    );
+
+    dispatch(updateCity({ label: "", value: "" }));
+  }, [order.customerAddress.country.value, dispatch]);
+
+  const { responses, _id, customerAddress, ...rest } = order;
 
   const isFormValues =
-    Object.values({ ...rest }).filter((it) => it.toString().length < 1).length >
-    0;
+    Object.values({ ...rest }).filter((it: any) => it.toString().length < 1)
+      .length > 0;
 
-  // console.log(isFormValues, "form values length");
+  const isLocation =
+    customerAddress.country.value.length > 0 &&
+    customerAddress.cityOrProvince.value.length > 0 &&
+    customerAddress.firstLineAddress.length > 0 &&
+    customerAddress.zipcode.length > 0;
 
   const isDisabled: boolean = Boolean(
-    product.questions.length !== responses.length || isFormValues
+    product.questions.length !== responses.length || isFormValues || !isLocation
   );
 
-  // console.log(product.questions.length, order.responses.length);
-
-  console.log(isDisabled, "is disabled");
-
-  // console.log(questions, "my questions");
-  // console.log(product.questions, "state questions");
-
-  const dispatch = useDispatch();
-
   const RenderQuestions = product.questions?.map((item) => {
-    const responseIndex = responses.findIndex((it) => it.question === item._id);
+    const responseIndex = responses.findIndex(
+      (it: any) => it.question === item._id
+    );
 
     let getResponse =
       responseIndex === -1 ? "" : responses[responseIndex].response;
@@ -165,7 +172,6 @@ const ProductForm = (props: {
         let updatedMultiChoiceResponse;
 
         if (isChecked) {
-          // console.log(multiChoiceResponse, "mutli resonse");
           updatedMultiChoiceResponse = [
             ...new Set([...multiChoiceResponse, val]),
           ];
@@ -191,7 +197,6 @@ const ProductForm = (props: {
           fileInputRef!.current!.value = "";
           return null;
         } else {
-          // console.log(file, "on change file");
           const fileString = await fileToBase64(file);
 
           const newObj: IResponse = {
@@ -245,7 +250,7 @@ const ProductForm = (props: {
             onChange={(e) =>
               handleAnswerQuestion(e.target.value, "Open-Ended Question")
             }
-            inputClassName="border p-3 bg-[#E4E7E8]"
+            inputClassName="border p-3 bg-gray-100"
             value={response}
             name=""
             type="text"
@@ -324,13 +329,7 @@ const ProductForm = (props: {
       <div className="flex-center font-poppins justify-between w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
         <h2 className="font-[600] text-lg">Home Energy Package</h2>
 
-        <span
-          onClick={() => {
-            dispatch(clearProduct());
-            dispatch(clearOrder());
-            props.setShowcheckout(false);
-          }}
-        >
+        <span onClick={() => props.setShowCancel(true)}>
           <GrClose />
         </span>
       </div>
@@ -350,46 +349,59 @@ const ProductForm = (props: {
             wrapperClassName=""
             name=""
             error=""
-            inputClassName="border p-3 bg-[#E4E7E8]"
+            inputClassName="border p-3 bg-gray-100"
             placeholder="Window Retrofitting"
             value={product?.title}
             readOnly
           />
 
           <Input
-            key={2}
-            label="Enter address"
+            key={3}
+            label="Email address"
             className=""
             labelClassName="pb-[10px]"
             wrapperClassName=""
             name=""
             error=""
-            inputClassName="border p-3 bg-[#E4E7E8]"
+            inputClassName="border p-3 bg-gray-100"
+            placeholder=""
+            // onChange={(e) => dispatch(updateEmail(e.target.value))}
+            value={user.user?.email}
+            readOnly
+          />
+
+          <Input
+            key={2}
+            label="First Line of address"
+            className=""
+            labelClassName="pb-[10px]"
+            wrapperClassName=""
+            name=""
+            error=""
+            inputClassName="border p-3 bg-gray-100"
             placeholder=""
             onChange={(e) => {
               dispatch(updateAddress(e.target.value));
             }}
-            value={order.customerAddress}
-          />
-
-          <Input
-            key={3}
-            label="Enter email address"
-            className=""
-            labelClassName="pb-[10px]"
-            wrapperClassName=""
-            name=""
-            error=""
-            inputClassName="border p-3 bg-[#E4E7E8]"
-            placeholder=""
-            onChange={(e) => dispatch(updateEmail(e.target.value))}
-            value={order.customerEmail}
+            value={order.customerAddress.firstLineAddress}
           />
 
           {/* tel input */}
-          <Input
+          <Phoneinput
+            name="tel"
+            label="Phone"
+            labelClassName="mb-4"
+            inputClassName="bg-gray-100 text-[#000000]"
+            placeholder="+234"
+            value={order.customerPhone}
+            onInputChange={(_, __, ___, formattedValue: string) => {
+              console.log(formattedValue);
+              dispatch(updatePhone(formattedValue));
+            }}
+          />
+          {/* <Input
             key={4}
-            label="Enter phone number"
+            label="Phone number"
             className=""
             labelClassName="pb-[10px]"
             wrapperClassName=""
@@ -400,7 +412,7 @@ const ProductForm = (props: {
             type="number"
             value={order.customerPhone}
             onChange={(e) => dispatch(updatePhone(e.target.value))}
-          />
+          /> */}
 
           {/* quantity */}
           {product.packageType === "Product" && (
@@ -435,19 +447,51 @@ const ProductForm = (props: {
             </div>
           )}
 
+          {/* new fields */}
+
+          {/* country dropdown  */}
+          <CountryRegionDropdown
+            name="countryOfResidence"
+            labelClassName="mb-4 text-[#000000_!important]"
+            options={countryData.map((country) => ({
+              label: country.name,
+              value: country.isoCode,
+              prefixIcon: country.flag,
+            }))}
+            searchable={true}
+            label="Country of Residence"
+            wrapperClassName="bg-gray-100 w-full"
+            placeholder="Select country"
+            value={order.customerAddress.country}
+            countryChange={(value) => {
+              dispatch(updateCountry(value));
+            }}
+          />
+
+          {/* city dropdown */}
+          <CountryRegionDropdown
+            name="city/province"
+            labelClassName="mb-4 text-[#000000_!important]"
+            options={statesList}
+            searchable={true}
+            label="City/Province"
+            wrapperClassName="bg-gray-100 w-full"
+            placeholder="Select city/province"
+            value={order.customerAddress.cityOrProvince}
+            cityChange={(value) => dispatch(updateCity(value))}
+          />
+
+          <Input
+            name="zipCode"
+            label="Zip Code"
+            labelClassName="mb-4"
+            inputClassName="bg-gray-100"
+            placeholder="Enter zip code"
+            value={order.customerAddress.zipcode}
+            onChange={(e) => dispatch(updatepPostCode(e.target.value))}
+          />
           {/* Questions - responses */}
           {RenderQuestions}
-
-          {/* <div>
-              <SelectInput
-                options={[]}
-                className=""
-                value={{ label: "value", value: "value" }}
-                label="How much are you willing to spend on your retrofit journey in the next year?"
-                onChange={(_: SingleValue<SelectItem>) => {}}
-                placeholder=""
-              />
-            </div> */}
 
           {/* proceed */}
           <button

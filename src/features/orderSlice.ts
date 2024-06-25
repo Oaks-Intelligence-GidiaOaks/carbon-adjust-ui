@@ -2,39 +2,52 @@ import { IOrder } from "@/interfaces/orderData.interface";
 // import { IQuestion } from "@/interfaces/product.interface";
 import { createSlice } from "@reduxjs/toolkit";
 
-interface Props extends IOrder {
-  //   questions: IQuestion[];
-}
+// interface Props extends IOrder {}
 
-const initialState: Props = {
+const initialState: IOrder = {
   _id: "",
-  customerAddress: "",
-  customerEmail: "",
+  customerAddress: {
+    country: {
+      label: "",
+      value: "",
+    },
+    cityOrProvince: {
+      label: "",
+      value: "",
+    },
+    firstLineAddress: "",
+    zipcode: "",
+  },
+  // customerEmail: "",
   customerPhone: "",
   quantity: 1,
-  // price: 0,
   responses: [],
-  // requiredExtraProd: true,
 };
 
 const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    // updateOrderDetails: (state, action) => {
-    //   state = action.payload;
-    // },
     updateAddress: (state, action) => {
-      state.customerAddress = action.payload;
+      state.customerAddress.firstLineAddress = action.payload;
     },
-    updateEmail: (state, action) => {
-      state.customerEmail = action.payload;
-    },
+    // updateEmail: (state, action) => {
+    //   state.customerEmail = action.payload;
+    // },
     updatePhone: (state, action) => {
       state.customerPhone = action.payload;
     },
     updateOrderId: (state, action) => {
       state._id = action.payload;
+    },
+    updateCountry: (state, action) => {
+      state.customerAddress.country = action.payload;
+    },
+    updateCity: (state, action) => {
+      state.customerAddress.cityOrProvince = action.payload;
+    },
+    updatepPostCode: (state, action) => {
+      state.customerAddress.zipcode = action.payload;
     },
     updateQuantity: (state, action) => {
       state.quantity = action.payload;
@@ -49,13 +62,15 @@ const orderSlice = createSlice({
 });
 
 export const {
-  // updateOrderDetails,
   updateOrderId,
   clearOrder,
   updateAddress,
   updatePhone,
-  updateEmail,
+  // updateEmail,
   updateQuantity,
+  updateCountry,
+  updateCity,
+  updatepPostCode,
   updateResponses,
 } = orderSlice.actions;
 

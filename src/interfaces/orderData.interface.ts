@@ -3,11 +3,23 @@ export interface IResponse {
   response: string;
 }
 
+export interface ISelectInput {
+  label: string;
+  value: string;
+}
+
+export interface IAddress {
+  country: ISelectInput;
+  cityOrProvince: ISelectInput;
+  firstLineAddress: string;
+  zipcode: string;
+}
+
 export interface IOrder {
   package?: string;
-  customerAddress: string;
+  customerAddress: IAddress;
   price?: number | string;
-  customerEmail: string;
+  customerEmail?: string;
   customerPhone: string;
   quantity?: number | string;
   requiredExtraProd?: boolean;

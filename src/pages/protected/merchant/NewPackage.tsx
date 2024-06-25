@@ -777,16 +777,18 @@ const NewPackage = (_: Props) => {
                 .map((p: any) => (
                   <ProductCard
                     {...p}
-                    _id={p._id}
-                    questions={p.question}
+                    _id={p?._id}
+                    questions={p?.question}
                     // slug=""
                     price={
-                      p.price ? `${p.currency}${formatLargeNumber(p.price)}` : 0
+                      p?.price
+                        ? `${p?.currency ?? "£"}${formatLargeNumber(p?.price)}`
+                        : 0
                     }
-                    attachments={p.attachments}
-                    title={p.title}
+                    attachments={p?.attachments}
+                    title={p?.title}
                     // rating={0}
-                    discount={p.discount}
+                    discount={p?.discount}
                     // isHot={false}
                     isMerchant={true}
                   />
