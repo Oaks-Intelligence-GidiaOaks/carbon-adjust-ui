@@ -34,29 +34,32 @@ import { questionTypes } from "@/constants";
 import { SelectItem } from "@/types/formSelect";
 
 type Props = {};
-type QuestionType = {
+export type QuestionType = {
   label:
     | ""
     | "Binary Response Question"
     | "Open-Ended Question"
     | "Single-Choice Question"
     | "Multiple-Choice Question"
-    | "File Upload Response";
+    | "File Upload Response"
+    | string;
   value:
     | ""
     | "Binary Response Question"
     | "Open-Ended Question"
     | "Single-Choice Question"
     | "Multiple-Choice Question"
-    | "File Upload Response";
+    | "File Upload Response"
+    | string;
 };
 
-type Question = {
+export type Question = {
   title: string;
   questionType: QuestionType;
   options?: string[];
+  _id?: string;
 };
-type PackageState = {
+export type PackageState = {
   title: string;
   category: {
     label: string;
@@ -82,7 +85,7 @@ type PackageState = {
   askPurchaserQuote: boolean;
   hasDownloadedableFile: boolean;
 };
-const customStyles = {
+export const customStyles = {
   container: (provided: CSSObjectWithLabel) => ({
     ...provided,
     height: "45px",

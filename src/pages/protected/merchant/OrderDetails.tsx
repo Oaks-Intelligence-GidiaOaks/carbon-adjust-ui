@@ -17,6 +17,7 @@ import Loading from "@/components/reusables/Loading";
 import { completeApplication } from "@/services/merchant";
 import toast from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
+import { formatDate } from "@/lib/utils";
 
 const OrderDetails: FC = () => {
   const queryClient = useQueryClient();
@@ -87,7 +88,12 @@ const OrderDetails: FC = () => {
     },
     {
       title: "PAYMENT STATUS",
-      details: (orderDetails.data?.data.order as Order)?.paymentStatus ?? "N/A",
+      details: (orderDetails.data?.data.order as Order)?.paymentStatus
+        ? (
+            orderDetails.data?.data.order as Order
+          )?.paymentStatus[0].toUpperCase() +
+          (orderDetails.data?.data.order as Order)?.paymentStatus.slice(1)
+        : "N/A",
     },
     // {
     //   title: "AMOUNT TO BALANCE",
@@ -277,22 +283,31 @@ const OrderDetails: FC = () => {
               </div>
             )}
 
-            {(orderDetails.data?.data.order as Order)?.booking && (
+            {/* {console.log(orderDetails.data?.data.order as Order)}
+            {(orderDetails.data?.data.order as Order)?.booking && ( */}
+            {Boolean(orderDetails.data?.data.booking.length) && (
               <div className="gap-2 flex flex-col">
                 <h2 className="font-[600] uppercase">Booking/Schedule</h2>
                 <p className="text-gray-500">
-                  These is the customers selected booking.
+                  This is the customers selected booking.
                 </p>
-                <div className="mt-2">
+                <div className="mt-2 text-sm">
+                  {/* {console.log(orderDetails.data?.data.booking as Order)} */}
                   <p>
-                    {
-                      (orderDetails.data?.data.order as Order)?.booking.schedule
-                        .day
-                    }
+                    <span className="font-semibold">Date: </span>
+                    {formatDate(
+                      (orderDetails.data?.data.booking[0] as any)
+                        ?.appointmentDate
+                    )}
+                  </p>
+                  <p>
+                    <span className="font-semibold">Time: </span>
+                    {(orderDetails.data?.data.booking[0] as any)?.slot.desc}
                   </p>
                 </div>
               </div>
             )}
+            {/* )} */}
 
             <div className="ml-auto w-fit gap-3 flex-center">
               {(orderDetails.data?.data.order as Order)?.status !==
