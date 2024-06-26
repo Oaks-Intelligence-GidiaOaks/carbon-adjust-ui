@@ -1,5 +1,5 @@
 // import React from "react";
-import Calendar from "@/components/reusables/Calendar";
+// import Calendar from "@/components/reusables/Calendar";
 import { IoIosAlert } from "react-icons/io";
 // this is the calendar page for booking appointments
 import { CiClock2 } from "react-icons/ci";
@@ -22,6 +22,7 @@ import {
   getFormattedMonthFromIndex,
 } from "@/lib/utils";
 import SlotsLoading from "@/components/reusables/SlotsLoading";
+import CalendarDays from "@/components/reusables/CalendarDays";
 
 type Props = {};
 
@@ -59,6 +60,13 @@ const Appointment = (_: Props) => {
   });
 
   const slots = isSuccess ? data.data.slots : [];
+
+  const scheduledDays =
+    isSuccess && data.data.schedules.length > 0
+      ? data.data.schedules.map((it: any) => it.shortDay.toLowerCase())
+      : [];
+
+  console.log(scheduledDays, "scheduled days");
 
   // console.log(slots, "slots");
   // console.log(schedule, "schedule");
@@ -144,12 +152,19 @@ const Appointment = (_: Props) => {
               <h2 className="mb-6">Choose a Date</h2>
 
               <div>
+                <CalendarDays
+                  scheduledDays={scheduledDays}
+                  setDate={(d: Dayjs) => setDt(d)}
+                />
+              </div>
+
+              {/* <div>
                 <Calendar
                   key={1}
                   scheduledDates={[]}
                   setDate={(d: Dayjs) => setDt(d)}
                 />
-              </div>
+              </div> */}
             </div>
 
             {/* time slots */}
