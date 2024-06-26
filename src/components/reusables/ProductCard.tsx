@@ -14,15 +14,9 @@ interface Props extends IProduct {
 const ProductCard = ({ isMerchant = false, ...props }: Props) => {
   const dispatch = useDispatch();
 
-  // console.log(props, "package mData");
-  // console.log(questions, "my questions");
-
   const handleInitiateCheckout = () => {
     dispatch(addProduct({ ...props }));
   };
-
-  // console.log(props.category, "prod category");
-  console.log(props, "ndhh");
 
   return (
     <div className="min-w-[228px] group">
