@@ -87,6 +87,6 @@ export const getFormattedDayFromIndex = (dayIndex: number): string => {
   }
 
   // Format the day with leading zero if necessary
-  const day = dayIndex + 1;
+  const day = dayIndex;
   return day < 10 ? `0${day}` : `${day}`;
 };
