@@ -51,6 +51,7 @@ import {
   MerchantPackages,
   MerchantProfile,
   MerchantWallet,
+  UpdatePackageDetails,
 } from "@/pages/protected/merchant";
 import {
   UserAppointment,
@@ -61,6 +62,7 @@ import {
 } from "@/pages/protected/home-occupant";
 // import { Profile } from "@/pages/protected/old/home-occupant";
 import MerchantRegister from "@/pages/public/MerchantRegister";
+import ManagePackageSchedule from "@/pages/protected/merchant/ManagePackageSchedule";
 import AmazonConnect from "@/hooks/AmazonConnect";
 
 const Router = createBrowserRouter([
@@ -197,6 +199,10 @@ const Router = createBrowserRouter([
             element: <CreatePackageSchedule />,
           },
           {
+            path: "schedule/slots/:packageId",
+            element: <ManagePackageSchedule />,
+          },
+          {
             path: "new",
             element: <MerchantNewPackage />,
           },
@@ -207,6 +213,10 @@ const Router = createBrowserRouter([
           {
             path: ":packageId",
             element: <MerchantPackageDetails />,
+          },
+          {
+            path: "update/:packageId",
+            element: <UpdatePackageDetails />,
           },
         ],
       },

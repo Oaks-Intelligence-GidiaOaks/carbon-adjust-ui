@@ -1,6 +1,6 @@
 import {
   ApplicationsIcon,
-  CarbonCreditIcon,
+  // CarbonCreditIcon,
   // ContactIcon,
   DashboardIcon,
   // HomeIcon,
@@ -151,21 +151,21 @@ export const merchantSideBarItems = [
     title: "Applications",
     href: "/merchant/applications",
   },
-  {
-    icon: ApplicationsIcon,
-    title: "Bookings",
-    href: "/merchant/bookings",
-  },
+  // {
+  //   icon: ApplicationsIcon,
+  //   title: "Bookings",
+  //   href: "/merchant/bookings",
+  // },
   // {
   //   icon: DevicesIcon,
   //   title: "Wallet",
   //   href: "/merchant/bookings",
   // },
-  {
-    icon: CarbonCreditIcon,
-    title: "Wallet",
-    href: "/merchant/wallet",
-  },
+  // {
+  //   icon: CarbonCreditIcon,
+  //   title: "Wallet",
+  //   href: "/merchant/wallet",
+  // },
   // {
   //   icon: InboxIcon,
   //   title: "Inbox",

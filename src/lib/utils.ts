@@ -80,3 +80,13 @@ export const getFormattedMonthFromIndex = (monthIndex: number): string => {
   const month = monthIndex + 1;
   return month < 10 ? `0${month}` : `${month}`;
 };
+
+export const getFormattedDayFromIndex = (dayIndex: number): string => {
+  if (dayIndex < 0 || dayIndex > 30) {
+    throw new Error("Invalid day index. Must be between 0 and 30.");
+  }
+
+  // Format the day with leading zero if necessary
+  const day = dayIndex;
+  return day < 10 ? `0${day}` : `${day}`;
+};

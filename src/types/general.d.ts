@@ -171,6 +171,7 @@ export type DropBoxProps = {
   setFiles?: React.Dispatch<React.SetStateAction<OrgDocInfoForm>>;
   setSelectedFiles?: React.Dispatch<React.SetStateAction<File[] | null>>;
   children?: ReactNode;
+  disabled?: boolean;
 };
 
 export type SideBarItem = {
@@ -262,6 +263,7 @@ export interface YearData {
 export type Package = {
   _id: string;
   title: string;
+  file?: string;
   description: string;
   attachments: string[];
   media: string[];

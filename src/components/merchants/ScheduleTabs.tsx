@@ -55,24 +55,36 @@ const ScheduleTabs: React.FC<ScheduleTabsProps> = ({
         ))}
       </div>
       <div className="flex flex-wrap gap-4">
-        {schedules
-          .find((schedule) => schedule.day === activeDay)
-          ?.slots.filter((slot) => slot.status === "active")
-          .map((slot) => (
-            <div
-              key={slot._id}
-              className="p-4 border rounded-lg bg-gray-100 shadow-md w-full sm:w-auto text-sm flex items-center gap-2"
-            >
-              <ClockIcon className="text-ca-blue size-4" />
-              {slot.desc}
-            </div>
-          ))}
+        {Boolean(
+          schedules
+            .find((schedule) => schedule.day === activeDay)
+            ?.slots.filter((slot) => slot.status === "active").length
+        ) ? (
+          schedules
+            .find((schedule) => schedule.day === activeDay)
+            ?.slots.filter((slot) => slot.status === "active")
+            .map((slot) => (
+              <div
+                key={slot._id}
+                className="p-4 border rounded-lg bg-gray-100 shadow-md w-full sm:w-auto text-sm flex items-center gap-2"
+              >
+                <ClockIcon className="text-ca-blue size-4" />
+                {slot.desc}
+              </div>
+            ))
+        ) : (
+          <p className="text-sm text-gray-500">
+            No slot activated for this day
+          </p>
+        )}
       </div>
       <div className="flex justify-end mt-6">
         <Button
           variant={"outline"}
           className=""
-          onClick={() => navigate(`/merchant/packages/schedule/${packageId}`)}
+          onClick={() =>
+            navigate(`/merchant/packages/schedule/slots/${packageId}`)
+          }
         >
           Manage Schedule
         </Button>
