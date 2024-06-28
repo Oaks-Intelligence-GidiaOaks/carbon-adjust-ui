@@ -1,27 +1,36 @@
 // src/components/PaymentForm.js
 import { useState, useEffect } from "react";
-
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { baseURL } from "@/constants/api";
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { initiatePayment } from "@/services/homeOwner";
 
-const PaymentForm = (props: { amount: number }) => {
+const PaymentForm = (_: { amount: number }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const stripeApiUrl = `${baseURL}/create-payment-intent`;
+  const createPaymentIntent: any = useMutation({
+    mutationKey: ["create-payment-intent"],
+    mutationFn: (iData: { orderId: string }) => initiatePayment(iData),
+    onSuccess: (sx: any) => {
+      console.log(sx, "success");
+      // setClientSecret(sx.clientSecret)
+
+      toast.success("intent created succcesfully");
+    },
+    onError: (ex: any) => {
+      toast.error("error occurred...");
+    },
+  });
 
   useEffect(() => {
     // Create PaymentIntent when the component mounts
-    fetch(stripeApiUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: props.amount }), // Amount in cents
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, [props.amount]);
+    createPaymentIntent.mutate({
+      orderId: "667db8f44e0eb0e8e4578fc4",
+    });
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

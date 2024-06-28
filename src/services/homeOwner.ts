@@ -38,29 +38,6 @@ export const getHoOrders = async () => {
 };
 
 export const createNewOrder = async (iData: any) => {
-  // {
-  //     "package": "66648f3a9619f2263c4e4d60",
-  //     "customerAddress": "23 jenkins street Texas",
-  //     "price": 0,
-  //     "customerEmail": "idysmanetim@gmail.com",
-  //     "customerPhone": "+234703933086788",
-  //     "requiredExtraProd": true,
-  //     "responses": [
-  //         {
-  //             "question": "66648f3a9619f2263c4e4d61",
-  //             "response": "Energy shortage and power failure"
-  //         },
-  //         {
-  //             "question":"66648f3a9619f2263c4e4d62",
-  //             "response":"yes"
-  //         },
-  //         {
-  //             "question":"66648f3a9619f2263c4e4d63",
-  //             "response":"yes"
-  //         }
-  //     ]
-  // }
-
   const { data } = await axiosInstance.post(`application/initiate`, iData);
 
   return data;
@@ -116,6 +93,17 @@ export const createOrderBookingSlot = async ({
       appointmentDate,
     }
   );
+
+  return data;
+};
+
+// PAYMENT
+export const initiatePayment = async (iData: { orderId: string }) => {
+  const { data } = await axiosInstance.post(`payment/intent`, {
+    ...iData,
+  });
+
+  console.log(data);
 
   return data;
 };
