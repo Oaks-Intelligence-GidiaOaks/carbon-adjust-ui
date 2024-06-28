@@ -1,18 +1,39 @@
 import axiosInstance from "@/api/axiosInstance";
 
-export const fetchUsersRegistration = async (accountType?: string) => {
+export const fetchUsersRegistration = async ({
+  accountType,
+  page,
+  limit,
+}: {
+  accountType?: string;
+  page: number;
+  limit: number;
+}) => {
   // if(accountType === "Home Occupants/Owners") {
   //     return
   // }
 
   let route = "/users";
 
-  if (accountType) {
-    route = `/users?type=${accountType}&page&limit`;
+  const params: any = {};
+
+  if (limit) {
+    params.limit = limit;
+  }
+  if (page) {
+    params.page = page;
+  }
+
+  if (accountType && accountType !== "ALL") {
+    params.type = accountType;
+  }
+
+  const queryString = new URLSearchParams(params).toString();
+  if (queryString) {
+    route += `?${queryString}`;
   }
 
   const data = await axiosInstance.get(route);
-
   return data.data;
 };
 

@@ -119,3 +119,10 @@ export const createOrderBookingSlot = async ({
 
   return data;
 };
+
+// ADMIN
+export const getAdminPackages = async () => {
+  const { data } = await axiosInstance.get(`users/adm/home/packages`);
+
+  return data;
+};

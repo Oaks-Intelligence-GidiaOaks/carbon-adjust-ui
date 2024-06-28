@@ -1,11 +1,13 @@
+// @ts-ignore
 import { FiPlus } from "react-icons/fi";
+// @ts-ignore
 import { Link } from "react-router-dom";
 import UsersGrid from "../grid/admin/UsersGrid";
 
 const AllUserRegistrations = (props: { data: any }) => {
   return (
     <div className="pt-4">
-      <Link to="/merchant/packages/new">
+      {/* <Link to="/merchant/packages/new">
         <button className=" flex-center gap-3 h-[46px] text-sm bg-[#2196F3] rounded-[10px] text-white px-4">
           <span className="hidden md:inline-flex">Add User</span>
 
@@ -13,7 +15,7 @@ const AllUserRegistrations = (props: { data: any }) => {
             <FiPlus color="#FFFFFF" />
           </span>
         </button>
-      </Link>
+      </Link> */}
 
       <div className="w-full">
         <UsersGrid data={props.data} isUpdating={false} />
