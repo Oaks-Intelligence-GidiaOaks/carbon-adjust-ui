@@ -10,8 +10,6 @@ const useQuery = () => {
 const PaymentSuccess = () => {
   const { product, order } = useSelector((state: RootState) => state);
 
-  console.log(order._id, "order id");
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,7 +18,7 @@ const PaymentSuccess = () => {
   const schedule = query.get("schedule");
 
   const handleContinueOrder = () => {
-    if (schedule) {
+    if (schedule === "true") {
       navigate(`/dashboard/order-booking/${order._id}`);
     } else {
       navigate(`/dashboard/orders`);
