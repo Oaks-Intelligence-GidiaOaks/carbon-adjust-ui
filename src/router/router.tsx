@@ -64,6 +64,7 @@ import {
 import MerchantRegister from "@/pages/public/MerchantRegister";
 import ManagePackageSchedule from "@/pages/protected/merchant/ManagePackageSchedule";
 import Payment from "@/pages/protected/home-occupant/Payment";
+import PaymentSuccess from "@/components/containers/checkout/PaymentSuccess";
 
 const Router = createBrowserRouter([
   {
@@ -133,8 +134,12 @@ const Router = createBrowserRouter([
         element: <UserProfile />,
       },
       {
-        path: "payment",
+        path: "payment/:orderId",
         element: <Payment />,
+      },
+      {
+        path: "payment/success",
+        element: <PaymentSuccess />,
       },
     ],
   },
