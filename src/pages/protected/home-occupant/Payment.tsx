@@ -7,10 +7,12 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+// @ts-ignore
 import { loadStripe } from "@stripe/stripe-js";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { Oval } from "react-loader-spinner";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -21,7 +23,9 @@ const CheckoutForm = () => {
   const { orderId } = useParams();
   const stripe = useStripe!();
   const elements = useElements();
+  // @ts-ignore
   const [errorMessage, setErrorMessage] = useState<any>(null);
+  const [btnLoading, setBtnLoading] = useState<boolean>(false);
 
   const { product } = useSelector((state: RootState) => state);
 
@@ -40,6 +44,8 @@ const CheckoutForm = () => {
       return;
     }
 
+    setBtnLoading(true);
+
     // Trigger form validation and wallet collection
     const { error: submitError } = await elements.submit();
 
@@ -47,6 +53,7 @@ const CheckoutForm = () => {
       // Show error to your customer
       // @ts-ignore
       setErrorMessage(submitError.message);
+      setBtnLoading(false);
       return;
     }
 
@@ -71,10 +78,13 @@ const CheckoutForm = () => {
       // confirming the payment. Show error to your customer (for example, payment
       // details incomplete)
       console.log(error, "error");
+      setBtnLoading(false);
       // toast.error(error?.message);
       // setErrorMessage(error.message);
     } else {
-      toast.success("final stage reached");
+      setBtnLoading(false);
+
+      // toast.success("final stage reached");
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
@@ -87,16 +97,32 @@ const CheckoutForm = () => {
 
       <div className="mx-auto w-full my-6">
         <button
-          className="border p-2 px-6 text-sm blue-gradient text-white  rounded-md w-full"
+          className={`${
+            !stripe || !elements || btnLoading
+              ? "!bg-gray-400"
+              : "blue-gradient"
+          } border p-2 px-6 text-sm  text-white  rounded-md w-full grid place-items-center`}
           type="submit"
-          disabled={!stripe || !elements}
+          disabled={!stripe || !elements || btnLoading}
         >
-          Pay
+          {btnLoading ? (
+            <Oval
+              visible={true}
+              height="20"
+              width="20"
+              color="#ffffff"
+              ariaLabel="oval-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          ) : (
+            "Pay"
+          )}
         </button>
       </div>
 
       {/* Show error message to your customers */}
-      {errorMessage && <div>{errorMessage}</div>}
+      {/* {errorMessage && <div>{errorMessage}</div>} */}
     </form>
   );
 };
@@ -113,7 +139,7 @@ const options = {
 };
 
 const Payment = () => (
-  <div className="px-4 md:w-4/5 mx-auto">
+  <div className="px-4 md:w-[65%] mt-6 mx-auto">
     <Elements
       stripe={stripePromise}
       // @ts-ignore
