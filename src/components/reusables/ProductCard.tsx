@@ -44,7 +44,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
                   to={`/dashboard/marketplace/${props?.category?.slug}?pid=${props._id}`}
                 >
                   <button className=" blue-gradient w-full rounded-[24px] h-[40px] text-center text-white text-base font-[500]">
-                    Apply
+                    Add to basket
                   </button>
                 </Link>
               </div>
