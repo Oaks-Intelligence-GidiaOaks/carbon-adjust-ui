@@ -54,8 +54,8 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
           <img
             src={props?.attachments?.[0]}
             alt=""
-            // className="w-[228px] h-[304px] rounded-lg object-cover"
-            className="w-[100px] h-auto object-cover"
+            className="w-[228px] h-[304px] rounded-lg object-cover"
+            // className="w-[100px] h-auto object-cover"
           />
         </div>
 
