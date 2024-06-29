@@ -28,6 +28,10 @@ const CheckoutForm = () => {
   const [btnLoading, setBtnLoading] = useState<boolean>(false);
 
   const { product } = useSelector((state: RootState) => state);
+  const { protocol, hostname, port } = window.location;
+  const redirectUrl = `${protocol}//${hostname}${port ? `:${port}` : ""}`;
+
+  console.log(redirectUrl, "redirect");
 
   const createPaymentIntent: any = useMutation({
     mutationKey: ["create-payment-intent"],
@@ -69,7 +73,7 @@ const CheckoutForm = () => {
       elements,
       clientSecret: intentData.clientSecret,
       confirmParams: {
-        return_url: `http://localhost:5173/dashboard/payment/success?schedule=${!!product.hasSchedule}`,
+        return_url: `${redirectUrl}/dashboard/payment/success?schedule=${!!product.hasSchedule}`,
       },
     });
 
