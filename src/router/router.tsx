@@ -63,6 +63,8 @@ import {
 // import { Profile } from "@/pages/protected/old/home-occupant";
 import MerchantRegister from "@/pages/public/MerchantRegister";
 import ManagePackageSchedule from "@/pages/protected/merchant/ManagePackageSchedule";
+import Payment from "@/pages/protected/home-occupant/Payment";
+import PaymentSuccess from "@/components/containers/checkout/PaymentSuccess";
 
 const Router = createBrowserRouter([
   {
@@ -127,34 +129,17 @@ const Router = createBrowserRouter([
         path: "orders",
         element: <UserOrderList />,
       },
-      // {
-      //   path: "applications",
-      //   element: <Applications />,
-      //   children: [
-      //     {
-      //       path: "",
-      //       element: (
-      //         <>
-      //           <Navigate
-      //             to={"/dashboard/applications/merchant-applications"}
-      //           />
-      //           <ScrollRestoration />
-      //         </>
-      //       ),
-      //     },
-      //     {
-      //       path: "merchant",
-      //       element: <ApplyToAggregator />,
-      //     },
-      //     {
-      //       path: "merchant-applications",
-      //       element: <HOAggregatorApplications />,
-      //     },
-      //   ],
-      // },
       {
         path: "profile",
         element: <UserProfile />,
+      },
+      {
+        path: "payment/:orderId",
+        element: <Payment />,
+      },
+      {
+        path: "payment/success",
+        element: <PaymentSuccess />,
       },
     ],
   },

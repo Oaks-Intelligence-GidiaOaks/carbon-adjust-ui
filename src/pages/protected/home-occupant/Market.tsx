@@ -9,6 +9,8 @@ import CategoriesLoading from "@/components/reusables/CategoriesLoading";
 // import Retrofit from "@/components/containers/home/Retrofit";
 // import CategoryProducts from "@/components/reusables/CategoryProducts";
 import ProductsCategory from "@/components/reusables/ProductsCategory";
+import { clearOrder } from "@/features/orderSlice";
+import { clearProduct } from "@/features/productSlice";
 import { IProdCategory } from "@/interfaces/product.interface";
 import {
   // getAllPackageCategories,
@@ -20,6 +22,8 @@ import {
 // // transformHomePagePackages,
 // // "@/utils/reshape";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 type Props = {};
 
@@ -35,6 +39,12 @@ const Market = (_: Props) => {
   //   queryKey: ["get-package-categories"],
   //   queryFn: () => getAllPackageCategories(),
   // });
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearOrder());
+    dispatch(clearProduct());
+  }, []);
 
   const homePagePackages = useQuery({
     queryKey: ["get-home-packages"],

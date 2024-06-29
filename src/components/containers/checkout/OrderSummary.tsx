@@ -10,6 +10,7 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Oval } from "react-loader-spinner";
 import { updateOrderId } from "@/features/orderSlice";
+import { useNavigate } from "react-router-dom";
 
 type IAddress = {
   country: string;
@@ -38,6 +39,7 @@ const OrderSummary = (props: {
   const { order, product, user } = useSelector((state: RootState) => state);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const createOrder = useMutation({
     mutationKey: ["create-order"],
@@ -46,7 +48,10 @@ const OrderSummary = (props: {
       dispatch(updateOrderId(sx.data._id));
       // console.log(sx.data, "order data");
 
-      props.setStage(4);
+      // redirect to process payment page
+      navigate(`/dashboard/payment/${sx.data._id}`);
+
+      // props.setStage(4);
       // toast.loading("order processing", {
       //   duration: 1000,
       // });
