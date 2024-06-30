@@ -3,19 +3,32 @@ import { FiPlus } from "react-icons/fi";
 // @ts-ignore
 import { Link } from "react-router-dom";
 import UsersGrid from "../grid/admin/UsersGrid";
+import { formatDate, handleTableDownload } from "@/lib/utils";
 
-const AllUserRegistrations = (props: { data: any }) => {
+const AllUserRegistrations = (props: { data: any; tableHeader: string }) => {
+  // console.log(props.data, "data");
+
+  const tData = props.data.map(
+    // @ts-ignore
+    ({ roles, passwordLastResetAt, createdAt, ...rest }) => ({
+      roles: roles[0],
+      createdAt: formatDate(createdAt),
+      ...rest,
+    })
+  );
+
   return (
     <div className="pt-4">
-      {/* <Link to="/merchant/packages/new">
-        <button className=" flex-center gap-3 h-[46px] text-sm bg-[#2196F3] rounded-[10px] text-white px-4">
-          <span className="hidden md:inline-flex">Add User</span>
+      <div className="flex-center justify-between">
+        <h2 className="pl-4  font-[600] text-base">{props.tableHeader}</h2>
 
-          <span className="rounded-full grid bg-white bg-opacity-15  place-items-center h-[30px] w-[30px]">
-            <FiPlus color="#FFFFFF" />
-          </span>
+        <button
+          onClick={() => handleTableDownload(tData)}
+          className="border px-5 text-sm font-poppins font-[600] text-white blue-gradient py-2 rounded-md mr-8"
+        >
+          Download
         </button>
-      </Link> */}
+      </div>
 
       <div className="w-full">
         <UsersGrid data={props.data} isUpdating={false} />

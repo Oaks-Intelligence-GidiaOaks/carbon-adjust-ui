@@ -1,37 +1,46 @@
 // import React from 'react'
 
-import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
+import AdminPackagesGrid from "@/components/grid/admin/AdminPackagesGrid";
+import { handleTableDownload } from "@/lib/utils";
 import { getAdminPackages } from "@/services/homeOwner";
 import { transformPackagesGridData } from "@/utils/reshape";
 import { useQuery } from "@tanstack/react-query";
-// import { Link } from "react-router-dom";
 
 const Packages = () => {
   const { data, isSuccess } = useQuery({
-    queryKey: ["get-admin-packages"],
+    queryKey: ["get-packages"],
     queryFn: () => getAdminPackages(),
   });
 
-  const tablePkgs = isSuccess ? transformPackagesGridData(data.packages) : [];
+  const tablePkgs = isSuccess
+    ? transformPackagesGridData(data.data.packages)
+    : [];
+
+  const tData = tablePkgs.length
+    ? tablePkgs.map(({ _id, ...rest }, i) => ({
+        S_N: i + 1,
+        ...rest,
+      }))
+    : [];
 
   return (
-    <div className="w-full overflow-x-scroll">
+    <div className="w-full overflow-x-scroll px-3 md:px-5">
       {/* table */}
       <div className="mt-[29px]">
         <div className="flex-center justify-between">
-          <h2 className="font-[600] text-base ">Package List</h2>
+          <h2 className="font-[600] text-base ">All Packages</h2>
 
-          {/* <Link to="/admin/packages/all" className="">
-            <button className="rounded-[8px] h-[26px] hover:bg-gray-100 flex-center gap-1 text-[#575757] p-2 px-3 text-xs">
-              <span>View all</span>
-              <MdOutlineKeyboardArrowRight />
-            </button>
-          </Link> */}
+          <button
+            onClick={() => handleTableDownload(tData)}
+            className="border px-5 text-sm font-poppins font-[600] text-white blue-gradient py-2 rounded-md mr-8"
+          >
+            Download
+          </button>
         </div>
 
         {/* table */}
         <div className="-mt-3">
-          <PackagesGrid data={tablePkgs} isUpdating />
+          <AdminPackagesGrid data={tablePkgs} isUpdating />
         </div>
       </div>
     </div>

@@ -59,10 +59,17 @@ const AccountManagement = (_: Props) => {
   }, [params, refetch]);
 
   const activeComponent: IComponentMap = {
-    ALL: <AllUserRegistrations data={users} />,
-    HOME_OCCUPANT: <AllUserRegistrations data={users} />,
-    MERCHANT: <AllUserRegistrations data={users} />,
-    NON_FINANCIAL_MERCHANT: <AllUserRegistrations data={users} />,
+    ALL: <AllUserRegistrations data={users} tableHeader="All Users" />,
+    HOME_OCCUPANT: (
+      <AllUserRegistrations data={users} tableHeader="Home Owners" />
+    ),
+    MERCHANT: <AllUserRegistrations data={users} tableHeader="Merchants" />,
+    NON_FINANCIAL_MERCHANT: (
+      <AllUserRegistrations
+        data={users}
+        tableHeader="Non Financial Merchants"
+      />
+    ),
   };
 
   const handleChangeTab = (text: string) => {
@@ -70,7 +77,7 @@ const AccountManagement = (_: Props) => {
   };
 
   return (
-    <div>
+    <div className="px-3 md:px-5">
       <div className=" lg:min-w-[90%] xl:min-w-[78%] w-fit mt-3">
         <TabToggler
           activeTab={activeTab}
