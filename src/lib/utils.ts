@@ -1,6 +1,7 @@
 import { SelectItem } from "@/types/formSelect";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import * as XLSX from "xlsx";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -89,4 +90,16 @@ export const getFormattedDayFromIndex = (dayIndex: number): string => {
   // Format the day with leading zero if necessary
   const day = dayIndex;
   return day < 10 ? `0${day}` : `${day}`;
+};
+
+export const handleTableDownload = (tableData: any[]) => {
+  console.log(tableData, "from util func");
+
+  // Create a worksheet
+  const ws = XLSX.utils.json_to_sheet(tableData);
+
+  // Create a workbook
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+  XLSX.writeFile(wb, "table_data.xlsx");
 };

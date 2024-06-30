@@ -97,13 +97,18 @@ export const createOrderBookingSlot = async ({
   return data;
 };
 
+// ADMIN
+export const getAdminPackages = async () => {
+  const { data } = await axiosInstance.get(`packages`);
+
+  return data;
+};
+
 // PAYMENT
 export const initiatePayment = async (iData: { orderId: string }) => {
   const { data } = await axiosInstance.post(`payment/intent`, {
     ...iData,
   });
-
-  console.log(data);
 
   return data;
 };

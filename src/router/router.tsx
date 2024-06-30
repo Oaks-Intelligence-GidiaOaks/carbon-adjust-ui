@@ -30,11 +30,12 @@ import {
   AccountManagement,
   AdminAds,
   AdminDashboard,
-  AdminDisputes,
+  // AdminDisputes,
   AdminNewAd,
   AdminNewUser,
-  AdminSales,
-  AdminTransactions,
+  AdminPackages,
+  // AdminSales,
+  // AdminTransactions,
   AdminWallet,
   AdmnLog,
 } from "@/pages/protected/admin";
@@ -241,15 +242,14 @@ const Router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: "disputes",
-        element: <AdminDisputes />,
-      },
+      // {
+      //   path: "disputes",
+      //   element: <AdminDisputes />,
+      // },
       {
         path: "logs",
         element: <AdmnLog />,
       },
-
       {
         path: "users",
         children: [
@@ -263,17 +263,21 @@ const Router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: "sales",
-        element: <AdminSales />,
-      },
-      {
-        path: "transactions",
-        element: <AdminTransactions />,
-      },
+      // {
+      //   path: "sales",
+      //   element: <AdminSales />,
+      // },
+      // {
+      //   path: "transactions",
+      //   element: <AdminTransactions />,
+      // },
       {
         path: "wallet",
         element: <AdminWallet />,
+      },
+      {
+        path: "packages",
+        element: <AdminPackages />,
       },
     ],
   },
