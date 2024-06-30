@@ -8,7 +8,7 @@ import orderReducer from "../features/orderSlice";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "product"], // List of reducers to persist
+  whitelist: ["user", "product", "order"], // List of reducers to persist
 };
 
 const rootReducer = combineReducers({

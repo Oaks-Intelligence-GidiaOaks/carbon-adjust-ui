@@ -20,6 +20,8 @@ const Sidebar = ({
 
   const user = useSelector((state: RootState) => state.user.user);
 
+  console.log(user, "user state");
+
   const merchant = "MERCHANT";
   const isMerchant = user?.roles.includes(merchant);
 
@@ -140,7 +142,7 @@ const Sidebar = ({
             "
               >
                 <h2 className="font-[500] text-base truncate max-w-[170px]">
-                  {user?.contactName}
+                  {user?.name}
                 </h2>
                 <h2 className="text-xs text-[#7A8699] truncate max-w-[180px] font-[400]">
                   {/* {formatAccountType(user?.merchantType ?? "")} */}

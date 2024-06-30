@@ -7,11 +7,16 @@ import { getHoOrders } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
 // import { useEffect, useState } from "react";
 import OrdersLoading from "@/components/reusables/OrdersLoading";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { clearOrder } from "@/features/orderSlice";
+import { clearProduct } from "@/features/productSlice";
 
 type Props = {};
 
 const OrderList = (_: Props) => {
   // const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
 
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ["get-user-orders"],
@@ -19,6 +24,11 @@ const OrderList = (_: Props) => {
   });
 
   const hoOrders: IPackageOrder[] = isSuccess ? data.data.orders : [];
+
+  useEffect(() => {
+    dispatch(clearOrder());
+    dispatch(clearProduct());
+  }, []);
 
   // useEffect(() => {
   //   refetch();

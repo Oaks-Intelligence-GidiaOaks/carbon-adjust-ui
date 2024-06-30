@@ -44,7 +44,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
                   to={`/dashboard/marketplace/${props?.category?.slug}?pid=${props._id}`}
                 >
                   <button className=" blue-gradient w-full rounded-[24px] h-[40px] text-center text-white text-base font-[500]">
-                    Apply
+                    Add to basket
                   </button>
                 </Link>
               </div>
@@ -54,8 +54,8 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
           <img
             src={props?.attachments?.[0]}
             alt=""
-            // className="w-[228px] h-[304px] rounded-lg object-cover"
-            className="w-[100px] h-auto object-cover"
+            className="w-[228px] h-[304px] rounded-lg object-cover"
+            // className="w-[100px] h-auto object-cover"
           />
         </div>
 
