@@ -7,7 +7,7 @@ import { LoginFormContext } from "@/types/form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormSchemas } from "@/schemas/forms";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import AccountActionHeader from "@/components/reusables/account-setup/AccountActionHeader";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/api/axiosInstance";
