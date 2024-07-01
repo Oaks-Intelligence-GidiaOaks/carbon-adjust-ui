@@ -81,7 +81,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ src }) => {
         </div>
       )}
       {isHovered && (
-        <div className="absolute bottom-2 right-2 flex space-x-2">
+        <div className="absolute bottom-2 right-2 flex justify-end space-x-2 bg-gradient-to-b from-transparent to-gray-700 w-full pr-4">
           <button className="text-white text-xl" onClick={handleMuteToggle}>
             {isMuted ? <FaVolumeXmark /> : <FaVolumeHigh />}
             {/* {isMuted ? "🔇" : "🔊"} */}

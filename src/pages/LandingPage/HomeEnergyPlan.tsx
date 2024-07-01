@@ -39,7 +39,7 @@ const HomeEnergyPlan: React.FC = () => {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1, type: "spring" }}
         >
-          <VideoPlayer src="/placeholder-video.mp4" />
+          <VideoPlayer src="https://firebasestorage.googleapis.com/v0/b/ca-test-7062e.appspot.com/o/Oaks%20Intelligence%20Carbon-Adjust%20Prototype%20Video.mp4?alt=media&token=d10efec3-7e24-4f65-8f7e-c400f0e25e09" />
         </motion.div>
       </div>
 
