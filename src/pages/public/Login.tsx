@@ -7,7 +7,7 @@ import { LoginFormContext } from "@/types/form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormSchemas } from "@/schemas/forms";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import AccountActionHeader from "@/components/reusables/account-setup/AccountActionHeader";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/api/axiosInstance";
@@ -111,11 +111,8 @@ const Login = () => {
   // Redirect user when they visit the login page if user is still logged in
 
   useEffect(() => {
+    console.log(userData?.roles);
     const userRole = userData?.roles[0];
-    // const userStatus = userData?.status;
-    // const userStep = userData?.step;
-    // const userDocs = userData?.doc;
-
     if (userRole) {
       console.log(userRole);
 
@@ -124,55 +121,6 @@ const Login = () => {
       }
 
       handleRedirect(userData, userData.roles[0]);
-
-      // // NON_FINANCIAL MERCHANT PATH
-      // if (
-      //   userRole === "MERCHANT" &&
-      //   userData?.merchantType === "NON_FINANCIAL_MERCHANT"
-      // ) {
-      //   if (
-      //     userData?.nonFinMerchantType === "SELF_EMPLOYED" &&
-      //     uniqueObjectsByIdType(userData?.doc).length < 2
-      //   ) {
-      //     return navigate("/account-setup");
-      //   }
-      //   if (
-      //     userData.nonFinancialMerchantType === "SELF_EMPLOYED_LICENSE" &&
-      //     uniqueObjectsByIdType(userData?.doc).length < 3
-      //   ) {
-      //     return navigate("/account-setup");
-      //   }
-      //   if (
-      //     userData.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
-      //     uniqueObjectsByIdType(userData?.doc).length < 3
-      //   ) {
-      //     return navigate("/account-setup");
-      //   }
-      //   if (
-      //     userData.nonFinancialMerchantType === "LIMITED_LIABILITY_LICENSE" &&
-      //     uniqueObjectsByIdType(userData?.doc).length < 4
-      //   ) {
-      //     return navigate("/account-setup");
-      //   }
-      //   if (!userData.nonFinancialMerchantType) {
-      //     return navigate("/account-setup");
-      //   }
-
-      //   return navigate("/merchant");
-      // }
-
-      // // FINANCIAL MERCHANT PATH
-      // if (
-      //   userData.roles[0] === "MERCHANT" &&
-      //   userData.merchantType !== "NON_FINANCIAL_MERCHANT" &&
-      //   uniqueObjectsByIdType(userData?.doc).length < 4
-      // ) {
-      //   if (uniqueObjectsByIdType(userData?.doc).length < 4) {
-      //     return navigate("/account-setup");
-      //   }
-      //   return navigate("/merchant");
-      // }
-      // return navigate("/dashboard");
     }
   }, [userData?.roles[0]]);
 
@@ -234,6 +182,14 @@ const Login = () => {
                   error={errors.password?.message}
                   placeholder="Password"
                 />
+                {/* <div className="my-2 flex justify-end">
+                  <Link
+                    to={"/forgot-password"}
+                    className="text-sm hover:text-ca-blue"
+                  >
+                    Forgot password?
+                  </Link>
+                </div> */}
                 <Button
                   disabled={loginUser.isPending}
                   className="rounded-lg text-white mt-4 w-full h-11 flex justify-center items-center"

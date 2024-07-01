@@ -30,6 +30,7 @@ module.exports = {
         "register-image": "url('/assets/graphics/register-graphic.svg')",
         "account-setup-image":
           "url('/assets/graphics/account-setup-graphic.svg')",
+        "hero-bg": "url('/assets/graphics/hero-bg.svg')",
       },
       colors: {
         "light-green": "#1BAF9E",
@@ -102,7 +103,16 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-
+      backgroundImage: {
+        "gradient-text": "linear-gradient(to right, #2E599A 0%, #0B8DFF 100%)",
+        "custom-radial": "radial-gradient(at 0 0, #1944B7, #0B1E51)",
+      },
+      backgroundClip: {
+        text: "text",
+      },
+      textFillColor: {
+        transparent: "transparent",
+      },
       textColor: {
         "ca-blue": "#2196F3",
         "ca-cyan": "#139EEC",
@@ -150,6 +160,7 @@ module.exports = {
         slideUpAndFade: "slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)",
         slideRightAndFade:
           "slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "spin-slow": "spin 15s linear infinite",
       },
     },
     container: {

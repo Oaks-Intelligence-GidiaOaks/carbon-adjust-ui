@@ -77,6 +77,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+.gradient-text {
+  background-image: linear-gradient(to right, #2e599a 0%, #0b8dff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* reusable styles  */
 .page-header {
   @apply font-[600] text-[22px] leading-[42px] font-poppins text-[#333333];

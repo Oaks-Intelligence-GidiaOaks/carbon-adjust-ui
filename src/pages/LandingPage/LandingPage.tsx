@@ -1,232 +1,117 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
 import CarbonAdjustLogo from "../../assets/icons/CarbonAdjustLogo.svg";
-import BgCover from "../../assets/images/BgCover.png";
+// import BgCover from "../../assets/images/BgCover.png";
 import Hero from "./Hero";
 // import Carousel from "../../components/reuseable/CarouselComponent";
 // import CarouselComponent from "../../components/reuseable/CarouselComponent";
-import PackageSection from "./PackageSection";
+// import PackageSection from "./PackageSection";
 import ProjectSection from "./ProjectSection";
 import Faq from "./Faq";
-import GetStarted from "./GetStarted";
+// import GetStarted from "./GetStarted";
 import { AiOutlineClose } from "react-icons/ai";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import Footer from "./Footer";
-import { motion } from "framer-motion";
-import { RootState } from "@/app/store";
-import { useSelector } from "react-redux";
-import { BiUser } from "react-icons/bi";
-import SignupButton from "@/components/contextual/SignupButton";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+// import { RootState } from "@/app/store";
+// import { useSelector } from "react-redux";
+import { Button } from "@/components/ui";
+import WhatWeOffer from "./WhatWeOffer";
+import HomeEnergyPlan from "./HomeEnergyPlan";
+import MarketPlace from "./MarketPlace";
+import GetInTouch from "./GetInTouch";
 
-// let easeing = [0.6,-0.05,0.01,0.99];
+const useScrollToHash = () => {
+  const location = useLocation();
 
-// const stagger = {
-//   animate:{
-//     transition:{
-//       delayChildren:0.4,
-//       staggerChildren:0.2,
-//
-//     }
-//   }
-// }
-
-// const fadeInUp = {
-//   initial:{
-//     y:-60,
-//     opacity:0,
-//     transition:{
-//       duration:0.6, ease:easeing
-//     }
-//   },
-//   animate:{
-//     y:0,
-//     opacity:1,
-//     transition:{
-//       duration:0.6,
-//       delay:0.5,
-//       ease:easeing
-//     }
-//   }
-// };
-
-// const transition = {duration:1.4,ease:[0.6,0.01,-0.05,0.9]};
-
-// const firstName = {
-//   initial:{
-//     y:-20,
-//   },
-//   animate:{
-//     y:0,
-//     transition:{
-//       delayChildren:0.4,
-//       staggerChildren:0.04,
-//       staggerDirection:-1
-//     }
-//   }
-// }
-
-// const lastName = {
-//   initial:{
-//     y:-20,
-//   },
-//   animate:{
-//     y:0,
-//     transition:{
-//       delayChildren:0.4,
-//       staggerChildren:0.04,
-//       staggerDirection:1
-//     }
-//   }
-// }
-
-// const letter = {
-//   initial:{
-//     y:400,
-//   },
-//   animate:{
-//     y:0,
-//     transition:{duration:1, ...transition}
-//   }
-// };
-
-// const btnGroup={
-//   initial:{
-//     y:-60,
-//     opacity:0,
-//     transition:{duration:0.6, ease:easeing}
-//   },
-//   animate:{
-//     y:0,
-//     opacity:1,
-//     animation:{
-//       duration:0.6,
-//       ease:easeing
-//     }
-//   }
-// };
-// const star={
-//   initial:{
-//     y:60,
-//     opacity:0,
-//     transition:{duration:0.8, ease:easeing}
-//   },
-//   animate:{
-//     y:0,
-//     opacity:1,
-//     animation:{
-//       duration:0.6,
-//       ease:easeing
-//     }
-//   }
-// };
-
-// const header={
-//   initial:{
-//     y:-60,
-//     opacity:0,
-//     transition:{duration:0.05, ease:easeing}
-//   },
-//   animate:{
-//     y:0,
-//     opacity:1,
-//     animation:{
-//       duration:0.6,
-//       ease:easeing
-//     }
-//   }
-// };
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
+};
 
 const LandingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const user = useSelector((state: RootState) => state.user.user);
+  useScrollToHash();
+  // const user = useSelector((state: RootState) => state.user.user);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const controls = useAnimation();
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
+  }, [controls, inView]);
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, staggerChildren: 0.2 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
   return (
     <motion.div initial="initial" animate="animate" className="overflow-hidden">
       <div
-        className="font-poppins  bg-cover bg-no-repeat bg-origin-content min-h-screen"
-        style={{ backgroundImage: `url(${BgCover})` }}
+        className="font-poppins relative bg-cover bg-no-repeat bg-origin-content min-h-screen after:absolute after:inset-0 after:-z-[1px] after:bg-[url(/assets/graphics/hero-bg.svg)] after:bg-no-repeat after:bg-cover after:opacity-50"
+        // style={{ backgroundImage: `url(/assets/graphics/hero-bg.svg)` }}
       >
-        <header className="lg:container px-4 lg:px-0 ">
+        <header className="lg:container px-4 lg:px-0 !border-none relative z-10">
           <nav className="lg:container flex justify-between items-center ">
-            <div className="py-3 flex flex-start">
-              <img src={CarbonAdjustLogo} alt="" className="" />
+            <div className="py-3 flex flex-start" id="home">
+              <img src={CarbonAdjustLogo} alt="" className="xl:w-[200px]" />
             </div>
 
-            {/* <ul className=" hidden sm:flex justify-center flex-1 items-center gap-6 text-main">
-            <li
-              className={`cursor-pointer py-4 text-xs px-2 ${
-                activeNavItem === 0
-                  ? "bg-ca-blue-dark shadow-md text-white"
-                  : "bg-transparent text-main"
-              }`}
-              onClick={() => handleNavItemClick(0)}
-            >
-              Home
-            </li>
-            <li
-              className={`cursor-pointer py-4 text-xs px-2 ${
-                activeNavItem === 1
-                  ? "bg-ca-blue-dark shadow-md text-white"
-                  : "bg-transparent text-main"
-              }`}
-              onClick={() => handleNavItemClick(1)}
-            >
-              Service
-            </li>
-            <li
-              className={`cursor-pointer py-4 text-xs px-2 ${
-                activeNavItem === 2
-                  ? "bg-ca-blue-dark shadow-md text-white"
-                  : "bg-transparent text-main"
-              }`}
-              onClick={() => handleNavItemClick(2)}
-            >
-              Blog
-            </li>
-            <li
-              className={`cursor-pointer py-4 text-xs px-2 ${
-                activeNavItem === 3
-                  ? "bg-ca-blue-dark shadow-md text-white"
-                  : "bg-transparent text-main"
-              }`}
-              onClick={() => handleNavItemClick(3)}
-            >
-              Contact us
-            </li>
-          </ul> */}
+            <ul className=" hidden sm:flex justify-center flex-1 items-center gap-6">
+              <Link to={"#home"}>
+                <li className={`cursor-pointer py-4 base px-2 text-black`}>
+                  Home
+                </li>
+              </Link>
+              <Link to={"#about-us"}>
+                <li className={`cursor-pointer py-4 base px-2 text-black`}>
+                  About us
+                </li>
+              </Link>
+              <Link to={"#what-we-offer"}>
+                <li className={`cursor-pointer py-4 base px-2 text-black`}>
+                  What we offer
+                </li>
+              </Link>
+              <Link to={"#contact-us"}>
+                <li className={`cursor-pointer py-4 base px-2 text-black`}>
+                  Contact us
+                </li>
+              </Link>
+            </ul>
 
-            <div className="hidden sm:flex gap-6">
-              <SignupButton />
-              {user ? (
-                <NavLink to="/login" className="">
-                  {user.dp ? (
-                    <div className="size-8 rounded-full shadow-lg">
-                      <img
-                        className="w-full h-full rounded-full object-cover"
-                        alt="avatar"
-                        src={user.dp}
-                      />
-                    </div>
-                  ) : (
-                    <div className="size-8 shadow-lg flex items-center justify-center rounded border border-ca-blue">
-                      <BiUser
-                        fontSize={20}
-                        width={40}
-                        className="text-ca-blue text-3xl"
-                      />
-                    </div>
-                  )}
-                </NavLink>
-              ) : (
-                <NavLink to="/login" className="btn">
-                  Login
-                </NavLink>
-              )}
+            <div className="gap-6">
+              <Link to={"/login"}>
+                <Button className="h-7">Get started</Button>
+              </Link>
             </div>
 
             <div className="flex cursor-pointer sm:hidden text-2xl flex-1 justify-end">
@@ -247,7 +132,6 @@ const LandingPage = () => {
               )}
             </div>
           </nav>
-          <div className="bg-ca-blue-dark w-full h-[1px]"> </div>
         </header>
 
         {/* Harmburger menu */}
@@ -310,35 +194,80 @@ const LandingPage = () => {
         </section>
 
         {/* Hero section */}
-        <Hero />
-      </div>
-      {/* Carousel */}
-
-      <div className="bg-[#F7EEF4]">
-        <div className="lg:container">{/* <CarouselComponent /> */}</div>
+        <div className="relative z-10">
+          <Hero />
+        </div>
       </div>
 
-      {/* Packages */}
-
-      <div className="">
-        <PackageSection />
+      <div className="relative max-w-[1440px] mx-auto" id="about-us">
+        <HomeEnergyPlan />
       </div>
 
-      <div className="">
+      <div className="relative bg-[#F1F7FE]">
         <ProjectSection />
+        <img
+          src="/assets/graphics/about-us-bg.svg"
+          className="absolute bottom-0 left-0 w-full max-h-[100px] z-10"
+          // initial={{ opacity: 0, y: 50 }}
+          // animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+          // transition={{ duration: 0.6 }}
+        />
+        <img
+          src="/assets/graphics/trans-cloud.png"
+          className="absolute bottom-0 left-0 w-full h-full z-0"
+          // initial={{ opacity: 0, y: 50 }}
+          // animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+          // transition={{ duration: 0.6 }}
+        />
       </div>
-
-      <div>
-        <Faq />
+      <div className="bg-custom-radial relative" id="what-we-offer">
+        <motion.div
+          ref={ref}
+          initial="hidden"
+          animate={controls}
+          variants={containerVariants}
+          className="p-4 lg:p-8"
+        >
+          <motion.div variants={itemVariants}>
+            <WhatWeOffer />
+          </motion.div>
+        </motion.div>
+        <img
+          src={"/assets/graphics/hero-graphic.svg"}
+          alt=""
+          className="hidden lg:block max-w-full h-auto sm:max-w-full animate-spin-slow absolute top-0 left-0 !-translate-x-1/3 !translate-y-[40%]"
+        />
+        <motion.img
+          src="/assets/graphics/offer-graphic.png"
+          className="hidden min-[1330px]:block absolute bottom-0 left-0 min-[1330px]:h-[65%] lg:w-auto"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+          transition={{ duration: 0.6 }}
+        />
+        <img
+          src="/assets/graphics/account-setup-scribble-right.svg"
+          className="hidden lg:block absolute bottom-0 -right-[2%] h-fit"
+        />
       </div>
 
       <div className="">{/* <Review /> */}</div>
 
+      <div className="bg-[#F0F0F0]">
+        <MarketPlace />
+      </div>
       <div>
-        <GetStarted />
+        <Faq />
+      </div>
+      <div
+        className="bg-[url(/assets/graphics/get-in-touch-bg.jpeg)] bg-no-repeat bg-cover bg-gray-900/100"
+        id="contact-us"
+      >
+        <div className="bg-[#003584]/20">
+          <GetInTouch />
+        </div>
       </div>
 
-      <div>
+      <div className="bg-[#D7E7FF]">
         <Footer />
       </div>
     </motion.div>

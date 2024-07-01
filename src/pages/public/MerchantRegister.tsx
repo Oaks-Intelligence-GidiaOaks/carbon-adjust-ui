@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FormSchemas } from "@/schemas/forms";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import CheckBox from "@/components/ui/CheckBox";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AccountActionHeader from "@/components/reusables/account-setup/AccountActionHeader";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/api/axiosInstance";
@@ -257,12 +257,11 @@ const MerchantRegister = () => {
                   />
                   <p className="font-poppins text-xs text-grey-swatch-800">
                     By clicking create account, you agree to the{" "}
-                    <Button
-                      variant={"link"}
-                      className="inline-flex text-xs py-0 h-fit px-0 bg-transparent text-blue-main hover:underline underline-offset-1 font-normal"
-                    >
-                      terms and conditions
-                    </Button>
+                    <Link to={"/terms-and-conditions"}>
+                      <span className="inline-flex text-xs py-0 h-fit px-0 bg-transparent text-blue-main hover:underline underline-offset-1 font-normal">
+                        Terms and Conditions
+                      </span>
+                    </Link>
                   </p>
                 </div>
 
