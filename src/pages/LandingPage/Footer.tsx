@@ -53,21 +53,23 @@ const Footer = () => {
 
   // let iconStyles = { color: "white" };
   return (
-    <div className="bg-[#4688E9] px-6 lg:px-0 h-[450px] md:h-[250px] relative">
+    <div className="px-6 lg:px-0 h-[450px] md:h-[250px] relative lg:w-[80%] mx-auto">
       <div className="lg:container">
         <div className="pt-10">
           <div className="md:flex md:flex-wrap md:items-center md:justify-between">
-            <img className=" bg-cover w-36" src={footerLogo} alt="" />
-            <div className="flex flex-col gap-6 lg:gap-3 md:items-center md:justify-center mt-6 md:mt-0">
+            <NavLink to={"#home"}>
+              <img className=" bg-cover w-36" src={footerLogo} alt="" />
+            </NavLink>
+            <div className="flex flex-col gap-6 lg:gap-3 md:items-start md:justify-start mt-6 md:mt-0">
               <NavLink
                 to={"#"}
-                className="text-sm font-medium font-poppins text-white md:flex md:items-center md:justify-center"
+                className="text-sm font-medium font-poppins text-[#2E599A] md:flex md:items-center md:justify-center"
               >
                 Help
               </NavLink>
               <NavLink
-                to={"#"}
-                className="text-sm font-medium font-poppins text-white md:flex md:items-center md:justify-center"
+                to={"#contact-us"}
+                className="text-sm font-medium font-poppins text-[#2E599A] md:flex md:items-center md:justify-center"
               >
                 Contact us
               </NavLink>
@@ -75,19 +77,19 @@ const Footer = () => {
             <div className="flex flex-col gap-6 lg:gap-3 md:items-center md:justify-center mt-6  md:mt-0">
               <NavLink
                 to={"#"}
-                className="text-sm font-medium font-poppins text-white md:flex items-center md:justify-center"
+                className="text-sm font-medium font-poppins text-[#2E599A] md:flex items-center md:justify-center"
               >
                 Privacy policy
               </NavLink>
               <NavLink
-                to={"#"}
-                className="text-sm font-medium font-poppins text-white md:flex md:items-center md:justify-center"
+                to={"/terms-and-conditions"}
+                className="text-sm font-medium font-poppins text-[#2E599A] md:flex md:items-center md:justify-center"
               >
                 Terms of use
               </NavLink>
             </div>
             <div className="mt-6  md:mt-0">
-              <h2 className=" uppercase text-sm font-medium font-poppins text-white flex items-center justify-center">
+              <h2 className=" uppercase text-sm font-medium font-poppins text-[#2E599A] flex items-center justify-center">
                 Need Help getting started?
               </h2>
 
@@ -97,7 +99,7 @@ const Footer = () => {
                     <input
                       name="email"
                       type="text"
-                      className="p-2 bg-[#4688E9] text-white border-solid border h-12 border-[#FFFFFF] w-full lg:w-96 rounded outline-0 border-inherit placeholder:text-[#FFFFFF] placeholder:text-sm font-poppins"
+                      className="p-2 bg-white text-[#2E599A] border-solid border h-12 border-[#2E599A] w-full lg:w-96 rounded-xl outline-0 border-inherit placeholder:text-[#2E599A]/70 placeholder:text-sm font-poppins"
                       placeholder="Enter your email"
                       value={form.email}
                       onChange={handleChange}
@@ -106,7 +108,8 @@ const Footer = () => {
                     <button
                       onClick={handleSubmit}
                       type="submit"
-                      className="absolute right-2 rounded top-2 pl-2 bottom-2 text-sm bg-transparent border-[#FFFFFF]  border px-3 text-white flex items-center justify-center"
+                      disabled
+                      className="absolute right-2 rounded-lg top-2 pl-2 bottom-2 text-sm bg-transparent bg-gradient-text border px-3 text-white flex items-center justify-center"
                     >
                       {requestMoreMutation.isPending ? (
                         <div className="justify-center items-center">
@@ -141,7 +144,7 @@ const Footer = () => {
           </div>
 
           <div className="mt-4 md:mt-0">
-            <p className=" absolute bottom-0 left-0 z-30 w-full font-[500] p-3 text-center font-poppins text-xs sm:text-sm z-90 gap-10 text-white ">
+            <p className=" absolute bottom-0 left-0 z-30 w-full font-normal font-open-sans p-3 text-center text-xs sm:text-sm z-90 gap-10 text-[#2E599A] ">
               Copyright &copy; Escrow-Tech Limited {currentYear}. All Rights
               Reserved.
             </p>

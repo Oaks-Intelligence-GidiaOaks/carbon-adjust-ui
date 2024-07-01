@@ -66,11 +66,26 @@ import MerchantRegister from "@/pages/public/MerchantRegister";
 import ManagePackageSchedule from "@/pages/protected/merchant/ManagePackageSchedule";
 import Payment from "@/pages/protected/home-occupant/Payment";
 import PaymentSuccess from "@/components/containers/checkout/PaymentSuccess";
+import TermsAndConditions from "@/pages/TermsAndConditions";
+import ForgotPassword from "@/pages/public/ForgotPassword";
+import ResetPassword from "@/pages/public/ResetPassword";
 
 const Router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/terms-and-conditions",
+    element: <TermsAndConditions />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
   },
   {
     path: "/calendar",
