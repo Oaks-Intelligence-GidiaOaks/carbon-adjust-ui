@@ -24,14 +24,14 @@ const DescriptionSection = (props: {
         </span>
       </div>
 
-      <div className="py-[15px] flex flex-col gap-[15px] z-10">
+      <div className="py-[15px] flex flex-col gap-[15px] z-10 min-h-[85vh]">
         <h2 className="text-center font-[600] text-lg ">Checkout</h2>
 
         <div className=" mx-auto">
           <ProductCard {...prod!} isMerchant wrapText />
         </div>
 
-        <div className="space-y-3 px-5 font-inter">
+        <div className="gap-y-3 px-5 font-inter flex-1 flex flex-col">
           <h2 className="font-[600] text-base text-[#141718]">
             Product Description
           </h2>
@@ -40,7 +40,7 @@ const DescriptionSection = (props: {
 
           <button
             onClick={() => props.setStage(2)}
-            className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px]"
+            className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px] !mt-auto"
           >
             <span>Proceed</span>
           </button>

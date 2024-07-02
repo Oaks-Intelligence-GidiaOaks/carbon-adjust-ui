@@ -18,3 +18,10 @@ export type LoginFormContext = {
   email: string;
   password: string;
 };
+export type ResetPasswordFormContext = {
+  password: string;
+  confirmPassword: string;
+};
+export type ForgotPasswordFormContext = {
+  email: string;
+};

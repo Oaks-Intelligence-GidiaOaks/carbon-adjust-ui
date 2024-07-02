@@ -66,6 +66,7 @@ const UsersRegistration = () => {
 
   const userRegistrations = useQuery({
     queryKey: ["users-registration", currentTab],
+    // @ts-ignore
     queryFn: () => fetchUsersRegistration(currentTab),
   });
 

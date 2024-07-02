@@ -39,5 +39,12 @@ export const FormSchemas = () => {
       email: yup.string().email().required("Please enter a valid email"),
       password: yup.string().required("Please enter your password"),
     }),
+    ResetPasswordSchema: yup.object().shape({
+      password: yup.string().required("Please enter your password"),
+      confirmPassword: yup.string().required("Please confirm your password"),
+    }),
+    ForgotPasswordSchema: yup.object().shape({
+      email: yup.string().email().required("Please enter a valid email"),
+    }),
   };
 };

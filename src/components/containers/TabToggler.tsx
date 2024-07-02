@@ -1,9 +1,9 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 
 type Props = {
   tabs: string[];
   activeTab: string;
-  onClick: Dispatch<SetStateAction<string>>;
+  onClick: (e: string) => void;
 };
 
 type tabProps = {
@@ -22,7 +22,7 @@ const Tab: FC<tabProps> = ({ isActive, text, onClick }) => {
         isActive ? activeStyle : " text-[#667085] "
       } font-[500] text-sm  min-w-[100px] flex-1 h-full text-center grid place-items-center rounded-[6px] cursor-pointer`}
     >
-      <span>{text}</span>
+      <span className="text-[10px] px-[2px]">{text.replace(/_/g, " ")}</span>
     </div>
   );
 };

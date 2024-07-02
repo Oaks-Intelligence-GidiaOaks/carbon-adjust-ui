@@ -32,7 +32,9 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
   const user = useSelector((state: RootState) => state.user.user);
 
   const merchant = "MERCHANT";
+  const admin = "ADMIN";
   const isMerchant = user?.roles.includes(merchant);
+  const isAdmin = user?.roles.includes(admin);
 
   const getActiveTab = () => {
     const currentPath = location.pathname;
@@ -138,19 +140,22 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
 
           <div className="flex-center gap-[18px] ml-auto ">
             {/* {role === "HOME_OCCUPANT" && ( */}
-            <img
-              className={cn(
-                "hidden md:inline-flex cursor-pointer hover:scale-105 transition-all",
-                kommunitaToken ? "block" : "hidden"
-              )}
-              src="/assets/graphics/kommunita-logo.svg"
-              alt=""
-              onClick={() =>
-                window.location.assign(
-                  `https://kommunita-web.netlify.app/home?token=${kommunitaToken}`
-                )
-              }
-            />
+            {!isAdmin && (
+              <img
+                className={cn(
+                  "hidden md:inline-flex cursor-pointer hover:scale-105 transition-all",
+                  kommunitaToken ? "block" : "hidden"
+                )}
+                src="/assets/graphics/kommunita-logo.svg"
+                alt=""
+                onClick={() =>
+                  window.location.assign(
+                    `https://kommunita-web.netlify.app/home?token=${kommunitaToken}`
+                  )
+                }
+              />
+            )}
+
             {/* )} */}
 
             <div className="flex-center gap-2  ">

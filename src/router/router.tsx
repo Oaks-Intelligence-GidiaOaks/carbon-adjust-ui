@@ -30,11 +30,12 @@ import {
   AccountManagement,
   AdminAds,
   AdminDashboard,
-  AdminDisputes,
+  // AdminDisputes,
   AdminNewAd,
   AdminNewUser,
-  AdminSales,
-  AdminTransactions,
+  AdminPackages,
+  // AdminSales,
+  // AdminTransactions,
   AdminWallet,
   AdmnLog,
 } from "@/pages/protected/admin";
@@ -63,11 +64,28 @@ import {
 // import { Profile } from "@/pages/protected/old/home-occupant";
 import MerchantRegister from "@/pages/public/MerchantRegister";
 import ManagePackageSchedule from "@/pages/protected/merchant/ManagePackageSchedule";
+import Payment from "@/pages/protected/home-occupant/Payment";
+import PaymentSuccess from "@/components/containers/checkout/PaymentSuccess";
+import TermsAndConditions from "@/pages/TermsAndConditions";
+import ForgotPassword from "@/pages/public/ForgotPassword";
+import ResetPassword from "@/pages/public/ResetPassword";
 
 const Router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/terms-and-conditions",
+    element: <TermsAndConditions />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword />,
   },
   {
     path: "/calendar",
@@ -127,34 +145,17 @@ const Router = createBrowserRouter([
         path: "orders",
         element: <UserOrderList />,
       },
-      // {
-      //   path: "applications",
-      //   element: <Applications />,
-      //   children: [
-      //     {
-      //       path: "",
-      //       element: (
-      //         <>
-      //           <Navigate
-      //             to={"/dashboard/applications/merchant-applications"}
-      //           />
-      //           <ScrollRestoration />
-      //         </>
-      //       ),
-      //     },
-      //     {
-      //       path: "merchant",
-      //       element: <ApplyToAggregator />,
-      //     },
-      //     {
-      //       path: "merchant-applications",
-      //       element: <HOAggregatorApplications />,
-      //     },
-      //   ],
-      // },
       {
         path: "profile",
         element: <UserProfile />,
+      },
+      {
+        path: "payment/:orderId",
+        element: <Payment />,
+      },
+      {
+        path: "payment/success",
+        element: <PaymentSuccess />,
       },
     ],
   },
@@ -256,15 +257,14 @@ const Router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: "disputes",
-        element: <AdminDisputes />,
-      },
+      // {
+      //   path: "disputes",
+      //   element: <AdminDisputes />,
+      // },
       {
         path: "logs",
         element: <AdmnLog />,
       },
-
       {
         path: "users",
         children: [
@@ -278,17 +278,21 @@ const Router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: "sales",
-        element: <AdminSales />,
-      },
-      {
-        path: "transactions",
-        element: <AdminTransactions />,
-      },
+      // {
+      //   path: "sales",
+      //   element: <AdminSales />,
+      // },
+      // {
+      //   path: "transactions",
+      //   element: <AdminTransactions />,
+      // },
       {
         path: "wallet",
         element: <AdminWallet />,
+      },
+      {
+        path: "packages",
+        element: <AdminPackages />,
       },
     ],
   },
