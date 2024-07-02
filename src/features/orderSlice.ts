@@ -31,9 +31,9 @@ const orderSlice = createSlice({
     updateAddress: (state, action) => {
       state.customerAddress.firstLineAddress = action.payload;
     },
-    // updateEmail: (state, action) => {
-    //   state.customerEmail = action.payload;
-    // },
+    updatePrice: (state, action) => {
+      state.price = action.payload;
+    },
     updatePhone: (state, action) => {
       state.customerPhone = action.payload;
     },
@@ -66,7 +66,7 @@ export const {
   clearOrder,
   updateAddress,
   updatePhone,
-  // updateEmail,
+  updatePrice,
   updateQuantity,
   updateCountry,
   updateCity,

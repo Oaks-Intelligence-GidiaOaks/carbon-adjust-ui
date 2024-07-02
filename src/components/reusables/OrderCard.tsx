@@ -81,7 +81,7 @@ const OrderCard = (props: IPackageOrder) => {
   };
 
   // console.log(props, "order");
-  console.log(props.package, "package data");
+  // console.log(props.package, "package data");
 
   return (
     <div>
