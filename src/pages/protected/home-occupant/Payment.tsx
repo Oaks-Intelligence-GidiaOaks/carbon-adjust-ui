@@ -15,6 +15,8 @@ import toast from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { MdOutlinePayment } from "react-icons/md";
+import { CiLock } from "react-icons/ci";
 
 // Load your publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
@@ -91,11 +93,27 @@ const CheckoutForm = () => {
   };
 
   return (
-    <div className="border p-6 bg-white rounded shadow-lg">
-      <form onSubmit={handleSubmit}>
+    <div className="border px-3 py-6  md:p-6 md:px-6 bg-white shadow-lg rounded-xl bg-gradient-to-b from-[#abbaab34] to-[#ffffff]">
+      <div className="flex-center justify-between mb-8">
+        <div className="flex-center gap-x-2">
+          <MdOutlinePayment size={20} color="#1CB5E0" />
+          <h2 className=" uppercase font-[600] text-xl bg-gradient-to-r from-[#000046] to-[#1CB5E0] bg-clip-text text-transparent font-poppins ">
+            Checkout
+          </h2>
+        </div>
+
+        <div className="flex-center gap-1">
+          <CiLock />
+          <span className="font-[400] italic text-gray-400">
+            Powered by stripe
+          </span>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="">
         <PaymentElement />
 
-        <div className="mx-auto w-full my-6">
+        <div className="mx-auto w-full my-6 font-[600] font-poppins">
           <button
             className={`${
               !stripe || !elements || btnLoading
