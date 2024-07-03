@@ -1,11 +1,11 @@
 import store, { persistor } from "@/app/store";
-import { baseURL } from "./../constants/api";
+// import { baseURL } from "./../constants/api";
 import axios from "axios";
 
 const token = store.getState().user.token; // Assuming your token is stored in the user slice; // Replace with your Bearer token
 
 const axiosInstance = axios.create({
-  baseURL,
+  baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
     "Content-Type": "application/json", // Example header, customize as needed
     Authorization: `Bearer ${token}`, // Set Bearer token

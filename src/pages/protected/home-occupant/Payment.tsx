@@ -27,17 +27,16 @@ const CheckoutForm = () => {
   const [errorMessage, setErrorMessage] = useState<any>(null);
   const [btnLoading, setBtnLoading] = useState<boolean>(false);
 
-  const { product } = useSelector((state: RootState) => state);
+  const { product, order } = useSelector((state: RootState) => state);
   const { protocol, hostname, port } = window.location;
   const redirectUrl = `${protocol}//${hostname}${port ? `:${port}` : ""}`;
-
-  console.log(redirectUrl, "redirect");
 
   const createPaymentIntent: any = useMutation({
     mutationKey: ["create-payment-intent"],
     mutationFn: (iData: { orderId: string }) => initiatePayment(iData),
     onError: (_: any) => {
-      toast.error("error occurred...");
+      toast.error(`Payment could not be initiated.. Please try again`);
+      setBtnLoading(false);
     },
   });
 
@@ -64,10 +63,6 @@ const CheckoutForm = () => {
     const { data: intentData } = await createPaymentIntent.mutateAsync({
       orderId,
     });
-
-    // console.log(!!product.hasSchedule);
-
-    // return;
 
     const { error } = await stripe!.confirmPayment({
       elements,
@@ -96,38 +91,40 @@ const CheckoutForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <PaymentElement />
+    <div className="border p-6 bg-white rounded shadow-lg">
+      <form onSubmit={handleSubmit}>
+        <PaymentElement />
 
-      <div className="mx-auto w-full my-6">
-        <button
-          className={`${
-            !stripe || !elements || btnLoading
-              ? "!bg-gray-400"
-              : "blue-gradient"
-          } border p-2 px-6 text-sm  text-white  rounded-md w-full grid place-items-center`}
-          type="submit"
-          disabled={!stripe || !elements || btnLoading}
-        >
-          {btnLoading ? (
-            <Oval
-              visible={true}
-              height="20"
-              width="20"
-              color="#ffffff"
-              ariaLabel="oval-loading"
-              wrapperStyle={{}}
-              wrapperClass=""
-            />
-          ) : (
-            "Pay"
-          )}
-        </button>
-      </div>
+        <div className="mx-auto w-full my-6">
+          <button
+            className={`${
+              !stripe || !elements || btnLoading
+                ? "!bg-gray-400"
+                : "blue-gradient"
+            } border p-3 px-6 text-sm  text-white  rounded-md w-full grid place-items-center`}
+            type="submit"
+            disabled={!stripe || !elements || btnLoading}
+          >
+            {btnLoading ? (
+              <Oval
+                visible={true}
+                height="20"
+                width="20"
+                color="#ffffff"
+                ariaLabel="oval-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+              />
+            ) : (
+              `Pay ${product.currency} ${order.price}`
+            )}
+          </button>
+        </div>
 
-      {/* Show error message to your customers */}
-      {/* {errorMessage && <div>{errorMessage}</div>} */}
-    </form>
+        {/* Show error message to your customers */}
+        {/* {errorMessage && <div>{errorMessage}</div>} */}
+      </form>
+    </div>
   );
 };
 

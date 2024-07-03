@@ -9,7 +9,7 @@ import { GrClose } from "react-icons/gr";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Oval } from "react-loader-spinner";
-import { updateOrderId } from "@/features/orderSlice";
+import { updateOrderId, updatePrice } from "@/features/orderSlice";
 import { useNavigate } from "react-router-dom";
 
 type IAddress = {
@@ -46,10 +46,17 @@ const OrderSummary = (props: {
     mutationFn: (orderData: IOrder) => createNewOrder(orderData),
     onSuccess: (sx: any) => {
       dispatch(updateOrderId(sx.data._id));
+      dispatch(updatePrice(sx.data.price));
       // console.log(sx.data, "order data");
 
+      console.log(product, "product");
+
       // redirect to process payment page
-      navigate(`/dashboard/payment/${sx.data._id}`);
+      if (product.price && Number(product.price) > 0) {
+        navigate(`/dashboard/payment/${sx.data._id}`);
+      } else {
+        props.setStage(5);
+      }
 
       // props.setStage(4);
       // toast.loading("order processing", {
@@ -78,9 +85,9 @@ const OrderSummary = (props: {
       },
     };
 
-    console.log(newOrder, "new  order");
-
     createOrder.mutate(newOrder);
+
+    // console.log(newOrder, "new  order");
   };
 
   return (

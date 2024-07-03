@@ -25,16 +25,6 @@ const OrderCard = (props: IPackageOrder) => {
   );
 
   const ActivityItems = (aProps: AProps) => {
-    // console.log(aProps);
-
-    const handleDownloadQuote = (it: IOrderActivity) => {
-      // download pdf or zip file
-      if (it.response) {
-        // download function runs here
-      } else {
-      }
-    };
-
     return (
       <div className="text-xs flex-center gap-1 font-poppins">
         {aProps.activities.map((item) => (
@@ -51,11 +41,7 @@ const OrderCard = (props: IPackageOrder) => {
 
             {item.activity === "REQUEST_QUOTE" && item.response && (
               <a href={item.response}>
-                <GoDownload
-                  onClick={() => handleDownloadQuote(item)}
-                  color="#575757"
-                  size={18}
-                />
+                <GoDownload color="#575757" size={18} />
               </a>
             )}
             <div className="px-[10px] text-[#4C5563]">|</div>
@@ -95,7 +81,7 @@ const OrderCard = (props: IPackageOrder) => {
   };
 
   // console.log(props, "order");
-  console.log(props.package, "package data");
+  // console.log(props.package, "package data");
 
   return (
     <div>
