@@ -83,7 +83,7 @@ export const getFormattedMonthFromIndex = (monthIndex: number): string => {
 };
 
 export const getFormattedDayFromIndex = (dayIndex: number): string => {
-  if (dayIndex < 0 || dayIndex > 30) {
+  if (dayIndex < 0 || dayIndex > 31) {
     throw new Error("Invalid day index. Must be between 0 and 30.");
   }
 
