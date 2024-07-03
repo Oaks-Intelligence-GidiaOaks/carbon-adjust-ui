@@ -51,6 +51,10 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
       return "Profile";
     }
 
+    if (currentPath.includes("admin")) {
+      return "Dashboard";
+    }
+
     return "MarketPlace";
     // if (currentPath.startsWith('/applications')) {
     //   return 'Applications';
@@ -99,7 +103,7 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
           </div>
 
           <Link
-            to={isMerchant ? "/merchant/" : "/dashboard"}
+            to={isMerchant ? "/merchant/" : isAdmin ? "/admin" : "/dashboard"}
             className="flex-center gap-[18.8px] cursor-pointer"
           >
             <img
