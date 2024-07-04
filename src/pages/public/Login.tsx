@@ -7,7 +7,7 @@ import { LoginFormContext } from "@/types/form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormSchemas } from "@/schemas/forms";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import AccountActionHeader from "@/components/reusables/account-setup/AccountActionHeader";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/api/axiosInstance";
@@ -182,14 +182,14 @@ const Login = () => {
                   error={errors.password?.message}
                   placeholder="Password"
                 />
-                {/* <div className="my-2 flex justify-end">
+                <div className="my-2 flex justify-end">
                   <Link
                     to={"/forgot-password"}
                     className="text-sm hover:text-ca-blue"
                   >
                     Forgot password?
                   </Link>
-                </div> */}
+                </div>
                 <Button
                   disabled={loginUser.isPending}
                   className="rounded-lg text-white mt-4 w-full h-11 flex justify-center items-center"

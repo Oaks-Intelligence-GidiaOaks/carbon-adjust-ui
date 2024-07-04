@@ -6,6 +6,7 @@ import { Package } from "@/types/general";
 import {
   convertFormattedStringToNumber,
   formatNumberWithCommas,
+  isValidQuestionsArray,
 } from "@/utils";
 import { Button, DropBox, Input } from "@/components/ui";
 import Loading from "@/components/reusables/Loading";
@@ -222,7 +223,14 @@ const UpdatePackage = (_: Props) => {
       submissionObject.hasQuestion = packageState?.hasQuestion;
       // formData.append("hasQuestion", String(packageState?.hasQuestion));
     }
-    if (Boolean(packageState?.questions.length)) {
+    if (packageState?.askPurchaserQuote) {
+      submissionObject.askPurchaserQuote = packageState?.askPurchaserQuote;
+      // formData.append(
+      //   "askPurchaserQuote",
+      //   String(packageState?.askPurchaserQuote)
+      // );
+    }
+    if (isValidQuestionsArray(packageState?.questions)) {
       const formattedQuestions = packageState?.questions.map((q) => ({
         title: q.title,
         questionType: q.questionType.value,
@@ -231,13 +239,8 @@ const UpdatePackage = (_: Props) => {
       }));
       submissionObject.questions = formattedQuestions;
       // formData.append("questions", JSON.stringify(formattedQuestions));
-    }
-    if (packageState?.askPurchaserQuote) {
-      submissionObject.askPurchaserQuote = packageState?.askPurchaserQuote;
-      // formData.append(
-      //   "askPurchaserQuote",
-      //   String(packageState?.askPurchaserQuote)
-      // );
+    } else {
+      return;
     }
     console.log(submissionObject);
 

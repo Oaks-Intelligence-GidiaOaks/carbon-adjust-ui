@@ -41,6 +41,7 @@ import {
 } from "@/pages/protected/admin";
 // import { elements } from "chart.js";
 import {
+  AddStaff,
   CreatePackageSchedule,
   MerchantAllPackages,
   MerchantApplications,
@@ -51,7 +52,9 @@ import {
   MerchantPackageDetails,
   MerchantPackages,
   MerchantProfile,
+  MerchantStaff,
   MerchantWallet,
+  StaffDetails,
   UpdatePackageDetails,
 } from "@/pages/protected/merchant";
 import {
@@ -201,6 +204,39 @@ const Router = createBrowserRouter([
           {
             path: "schedule/slots/:packageId",
             element: <ManagePackageSchedule />,
+          },
+          {
+            path: "new",
+            element: <MerchantNewPackage />,
+          },
+          {
+            path: "all",
+            element: <MerchantAllPackages />,
+          },
+          {
+            path: ":packageId",
+            element: <MerchantPackageDetails />,
+          },
+          {
+            path: "update/:packageId",
+            element: <UpdatePackageDetails />,
+          },
+        ],
+      },
+      {
+        path: "staff",
+        children: [
+          {
+            path: "",
+            element: <MerchantStaff />,
+          },
+          {
+            path: "add",
+            element: <AddStaff />,
+          },
+          {
+            path: ":packageId",
+            element: <StaffDetails />,
           },
           {
             path: "new",

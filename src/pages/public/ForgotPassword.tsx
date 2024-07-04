@@ -74,7 +74,7 @@ const ForgotPassword = () => {
             <div className="bg-glass h-fit flex-1 md:flex-[0.45] py-9 px-4 md:px-12 rounded-xl max-w-[600px]">
               <p className="text-3xl font-bold">Forgot password?</p>
               <p className="pt-2">
-                Enter your email and send to receive a link for changing your
+                Enter your email and send to receive a link to change your
                 password.
               </p>
               <form className="mt-7" onSubmit={handleSubmit(onSubmit)}>
