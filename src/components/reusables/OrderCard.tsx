@@ -3,7 +3,7 @@ import { formatDate } from "@/lib/utils";
 import { IComponentMap } from "@/types/general";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 
-import { FaStar, FaTimesCircle } from "react-icons/fa";
+import { FaTimesCircle } from "react-icons/fa";
 import { GoDownload } from "react-icons/go";
 // import toast from "react-hot-toast";
 
@@ -125,15 +125,15 @@ const OrderCard = (props: IPackageOrder) => {
               </div>
 
               <div className="flex-center gap-6">
-                <span className="text-xs font-[400] text-[#4C5563]">
+                {/* <span className="text-xs font-[400] text-[#4C5563]">
                   4.7k Homes Retrofitted | 2022
-                </span>
+                </span> */}
 
-                <div className="flex-center gap-1">
+                {/* <div className="flex-center gap-1">
                   {Array.from({ length: 5 }, (_, i) => (
                     <FaStar size={13.94} key={i} color="#E99C1B" />
                   ))}
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

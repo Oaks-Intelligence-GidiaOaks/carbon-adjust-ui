@@ -6,6 +6,7 @@ import { Package } from "@/types/general";
 import {
   convertFormattedStringToNumber,
   formatNumberWithCommas,
+  isValidQuestionsArray,
 } from "@/utils";
 import { Button, DropBox, Input } from "@/components/ui";
 import Loading from "@/components/reusables/Loading";
@@ -130,8 +131,8 @@ const UpdatePackage = (_: Props) => {
         toast.success("Package updated successfully");
       }
     },
-    onError: () => {
-      toast.error("Error updating package");
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message ?? "Error updating package");
     },
   });
 
@@ -164,8 +165,8 @@ const UpdatePackage = (_: Props) => {
     }
     if (Boolean(packageState?.price)) {
       submissionObject.price = convertFormattedStringToNumber(
-        packageState?.price
-      ).toString();
+        String(packageState?.price)
+      );
       // formData.append(
       //   "price",
       //   convertFormattedStringToNumber(packageState?.price).toString()
@@ -173,8 +174,8 @@ const UpdatePackage = (_: Props) => {
     }
     if (Boolean(packageState?.discount)) {
       submissionObject.discount = convertFormattedStringToNumber(
-        packageState?.discount
-      ).toString();
+        String(packageState?.discount)
+      );
       // formData.append(
       //   "discount",
       //   convertFormattedStringToNumber(packageState?.discount).toString()
@@ -195,21 +196,21 @@ const UpdatePackage = (_: Props) => {
     // hasQuestion: false,
     // questions: [],
     // askPurchaserQuote: false,
-    if (packageState?.allowPartPayment) {
-      submissionObject.allowPartPayment = packageState?.allowPartPayment;
-      // formData.append(
-      //   "allowPartPayment",
-      //   String(packageState?.allowPartPayment)
-      // );
-    }
+    // if (packageState?.allowPartPayment) {
+    submissionObject.allowPartPayment = packageState?.allowPartPayment;
+    // formData.append(
+    //   "allowPartPayment",
+    //   String(packageState?.allowPartPayment)
+    // );
+    // }
     if (packageState?.percentPayment) {
       submissionObject.percentPayment = packageState?.percentPayment;
       // formData.append("percentPayment", String(packageState?.percentPayment));
     }
-    if (packageState?.hasSchedule) {
-      submissionObject.hasSchedule = packageState?.hasSchedule;
-      // formData.append("hasSchedule", String(packageState?.hasSchedule));
-    }
+    // if (packageState?.hasSchedule) {
+    submissionObject.hasSchedule = packageState?.hasSchedule;
+    // formData.append("hasSchedule", String(packageState?.hasSchedule));
+    // }
     if (packageState?.hasDownloadedableFile) {
       submissionObject.hasDownloadedableFile =
         packageState?.hasDownloadedableFile;
@@ -218,11 +219,18 @@ const UpdatePackage = (_: Props) => {
       //   String(packageState?.hasDownloadedableFile)
       // );
     }
-    if (packageState?.hasQuestion) {
-      submissionObject.hasQuestion = packageState?.hasQuestion;
-      // formData.append("hasQuestion", String(packageState?.hasQuestion));
-    }
-    if (Boolean(packageState?.questions.length)) {
+    // if (packageState?.hasQuestion) {
+    submissionObject.hasQuestion = packageState?.hasQuestion;
+    // formData.append("hasQuestion", String(packageState?.hasQuestion));
+    // }
+    // if (packageState?.askPurchaserQuote) {
+    submissionObject.askPurchaserQuote = packageState?.askPurchaserQuote;
+    // formData.append(
+    //   "askPurchaserQuote",
+    //   String(packageState?.askPurchaserQuote)
+    // );
+    // }
+    if (isValidQuestionsArray(packageState?.questions)) {
       const formattedQuestions = packageState?.questions.map((q) => ({
         title: q.title,
         questionType: q.questionType.value,
@@ -231,13 +239,8 @@ const UpdatePackage = (_: Props) => {
       }));
       submissionObject.questions = formattedQuestions;
       // formData.append("questions", JSON.stringify(formattedQuestions));
-    }
-    if (packageState?.askPurchaserQuote) {
-      submissionObject.askPurchaserQuote = packageState?.askPurchaserQuote;
-      // formData.append(
-      //   "askPurchaserQuote",
-      //   String(packageState?.askPurchaserQuote)
-      // );
+    } else {
+      return;
     }
     console.log(submissionObject);
 

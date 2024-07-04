@@ -1,5 +1,5 @@
 import { Package } from "@/types/product";
-import { FaStar } from "react-icons/fa";
+// import { FaStar } from "react-icons/fa";
 import { Button } from "../ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { publishPackage, unPublishPackage } from "@/services/merchantService";
@@ -75,11 +75,11 @@ const NewPackageCard = (
       </div>
 
       <div className="flex flex-col gap-1 mt-3">
-        <div className="flex-center gap-1">
+        {/* <div className="flex-center gap-1">
           {Array.from({ length: props?.rating || 0 }, (_, i) => (
             <FaStar size={13.94} key={i} color="#0E89F7" />
           ))}
-        </div>
+        </div> */}
 
         <h2 className="text-xs font-[600]">{props.title}</h2>
         <h2 className="text-xs font-[600]">{props.price}</h2>

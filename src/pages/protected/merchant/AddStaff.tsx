@@ -1,13 +1,12 @@
 import StaffForm from "@/components/containers/StaffForm";
-import { FC } from "react";
 
 type Props = {};
 
-const AddStaff: FC<Props> = ({}) => {
+const AddStaff = (_: Props) => {
   return (
-    <div className="mx-4">
+    <div className="px-4">
       <div className="">
-        <h2 className="page-header">Add Staffdd</h2>
+        <h2 className="page-header">Add Staff</h2>
       </div>
 
       <StaffForm />

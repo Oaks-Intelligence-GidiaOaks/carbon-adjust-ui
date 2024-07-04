@@ -11,3 +11,6 @@ export { default as MerchantAllPackages } from "./AllPackages";
 export { default as MerchantOrderDetails } from "./OrderDetails";
 export { default as CreatePackageSchedule } from "./CreatePackageSchedule";
 export { default as PackageImageUpload } from "./PackageImageUpload";
+export { default as MerchantStaff } from "./Staff";
+export { default as AddStaff } from "./AddStaff";
+export { default as StaffDetails } from "./StaffDetails";
