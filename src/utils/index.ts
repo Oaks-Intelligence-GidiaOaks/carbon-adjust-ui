@@ -1,3 +1,4 @@
+import { Question } from "@/pages/protected/merchant/NewPackage";
 import { DataRow } from "@/types/generics";
 import { clsx, ClassValue } from "clsx";
 import { Country } from "country-state-city";
@@ -307,4 +308,26 @@ export function formatAccountType(accountType: string) {
 
   // Join the words with a space and return the result
   return formattedWords.join(" ");
+}
+
+export function isValidQuestionsArray(questionsArray: Question[]) {
+  // Check if the array has length
+  if (questionsArray.length === 0) {
+    toast.error("Questions are invalid");
+    return false;
+  }
+
+  // Iterate through each object in the array
+  for (let i = 0; i < questionsArray.length; i++) {
+    const question = questionsArray[i];
+
+    // Check if both title and questionType have values
+    if (!question.title || !question.questionType) {
+      toast.error("Questions are invalid");
+      return false;
+    }
+  }
+
+  // If all checks passed, return true
+  return true;
 }
