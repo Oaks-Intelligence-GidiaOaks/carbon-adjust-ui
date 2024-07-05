@@ -1,10 +1,24 @@
-// import { Grid } from "@/components/grid";
+import StaffGrid from "@/components/grid/merchant/StaffGrid";
 import { Button } from "@/components/ui";
+import { getAllStaff } from "@/services/merchant";
+import { transformStaffGridData } from "@/utils/reshape";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
 type Props = {};
 
 const Staff = (_: Props) => {
+  const data = useQuery({
+    queryKey: ["get-all-staff"],
+    queryFn: () => getAllStaff(),
+  });
+
+  console.log(data);
+
+  const tableStaff = data.isSuccess
+    ? transformStaffGridData(data.data.data.data.users)
+    : [];
+
   return (
     <div className="min-h-screen">
       <div className="flex-center justify-between p-4">
@@ -22,8 +36,9 @@ const Staff = (_: Props) => {
         </Link>
       </div>
 
-      <div className="mt-4">
-        {/* <Grid data={staff} pageSize={40} tableStyles={` `} /> */}
+      {/* table */}
+      <div className="-mt-3 px-4 w-fit">
+        <StaffGrid data={tableStaff} isUpdating />
       </div>
     </div>
   );

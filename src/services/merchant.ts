@@ -12,6 +12,10 @@ export const getScheduleSlots = (id: string) => {
   return axiosInstance.get(`/packages/${id}/schedules`);
 };
 
+export const getAllStaff = () => {
+  return axiosInstance.get(`/users/staffs`);
+};
+
 export const createPackageQuery = (data: FormData) => {
   return axiosInstance.post("/packages", data, {
     headers: {
@@ -98,4 +102,13 @@ export const activateSlotQuery = (
   return axiosInstance.patch("/booking/schedule/activate-slot", {
     schedules: data,
   });
+};
+
+export const addStaff = (data: {
+  firstName: string;
+  surname: string;
+  email: string;
+  accessLevel: string;
+}) => {
+  return axiosInstance.post(`/users/staffs`, data);
 };

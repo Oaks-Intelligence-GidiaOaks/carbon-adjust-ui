@@ -171,11 +171,11 @@ export const merchantSideBarItems = [
   //   title: "Inbox",
   //   href: "/merchant/inbox",
   // },
-  // {
-  //   icon: ProfileIcon,
-  //   title: "Staff",
-  //   href: "/merchant/staff",
-  // },
+  {
+    icon: ProfileIcon,
+    title: "Staff",
+    href: "/merchant/staff",
+  },
   {
     icon: ProfileIcon,
     title: "Profile",
