@@ -11,6 +11,7 @@ import CloseModal from "./CloseModal";
 import { clearProduct } from "@/features/productSlice";
 import { useDispatch } from "react-redux";
 import { clearOrder } from "@/features/orderSlice";
+import useDisableScroll from "@/hooks/useDisableScroll";
 
 const ProductCheckout = (props: {
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
@@ -19,6 +20,8 @@ const ProductCheckout = (props: {
 }) => {
   const [stage, setStage] = useState<number>(1);
   const [showCancel, setShowCancel] = useState<boolean>(false);
+
+  useDisableScroll(props.showCheckout);
 
   const dispatch = useDispatch();
 
@@ -90,7 +93,7 @@ const ProductCheckout = (props: {
         {/* checkout */}
         <div className="flex  justify-center md:justify-end ">
           <div
-            className={`bg-white mt-10 mx-auto md:mx-0 w-[90vw] md:w-[380px] h-[90vh] md:mt-0 md:h-[100vh] overflow-y-scroll pb-[30px]`}
+            className={`bg-white mt-10 mx-auto md:mx-0 ds:w-[90vw] h-[90vh] md:mt-0 md:h-[100vh] overflow-y-scroll pb-[30px] w-fit `}
           >
             {stageMap[stage]}
           </div>

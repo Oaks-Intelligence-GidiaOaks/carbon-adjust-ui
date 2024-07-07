@@ -46,6 +46,23 @@ export const transformPackagesGridData = (data: any) => {
   return newData;
 };
 
+export const transformStaffGridData = (data: any) => {
+  let newData: any[] = [];
+
+  Array.from(data, (item: any) => {
+    const { name, email, accessLevel, ...rest } = item;
+
+    newData.push({
+      ...rest,
+      name,
+      email,
+      accessLevel,
+    });
+  });
+
+  return newData;
+};
+
 export const transformApplicationsGridData = (data: any) => {
   let newData: any[] = [];
 

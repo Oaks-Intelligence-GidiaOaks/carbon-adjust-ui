@@ -25,6 +25,7 @@ import { IResponse } from "@/interfaces/orderData.interface";
 import { SelectItem } from "@/types/formSelect";
 import { Country, State } from "country-state-city";
 import Phoneinput from "@/components/ui/PhoneInput";
+import { MdArrowBack } from "react-icons/md";
 
 const ProductForm = (props: {
   setStage: Dispatch<SetStateAction<number>>;
@@ -325,9 +326,11 @@ const ProductForm = (props: {
   };
 
   return (
-    <div>
+    <div className="md:w-[380px]">
       <div className="flex-center font-poppins justify-between w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
-        <h2 className="font-[600] text-lg">Home Energy Package</h2>
+        <MdArrowBack size={20} onClick={() => props.setStage(1)} />
+
+        <h2 className="font-[600] text-lg">{product.category?.name}</h2>
 
         <span onClick={() => props.setShowCancel(true)}>
           <GrClose />

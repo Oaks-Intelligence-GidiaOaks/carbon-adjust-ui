@@ -32,6 +32,7 @@ export interface IProduct {
   createdAt: string;
   updatedAt: string;
   isMerchant?: boolean;
+  videoUrl?: string;
   __v: number;
 }
 

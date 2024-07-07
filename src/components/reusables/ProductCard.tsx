@@ -63,7 +63,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
           <div className="flex-center gap-2">
             <span className="text-xs font-[400]">
               {/* @ts-ignore */}
-              {props.owner.name! || props.owner}
+              {props?.owner?.name! || props?.owner}
             </span>
             {Array.from({ length: 5 }, (_, i) => (
               // <FaStar size={13.94} key={i} color="#E99C1B" />
