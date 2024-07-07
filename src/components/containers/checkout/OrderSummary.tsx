@@ -107,7 +107,7 @@ const OrderSummary = (props: {
         <h2 className="font-[600] text-lg mt-3">Order Summary</h2>
 
         <div className="flex-start">
-          <span className="font-[600] text-sm w-1/2"> Price $: </span>
+          <span className="font-[600] text-sm w-1/2"> Price (£): </span>
           <span className="font-[400] text-sm w-1/2 pl-2">
             {product.price || 0}
           </span>
