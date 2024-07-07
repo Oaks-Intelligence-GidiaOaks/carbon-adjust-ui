@@ -22,7 +22,6 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    alert("Hello");
     const file = event.target.files?.[0];
     console.log(file);
     if (file) {
@@ -89,7 +88,7 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({
           <video
             src={videoUrl}
             controls
-            className="w-full h-auto mb-4 rounded-md"
+            className="w-auto mb-4 rounded-md max-h-[200px]"
           />
           {/* <Button
             onClick={() => fileInputRef.current?.click()}
