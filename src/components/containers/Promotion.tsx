@@ -40,7 +40,7 @@ const Promotion = (_: Props) => {
 
       <div
         style={{
-          backgroundImage: "url('/assets/banners/landscape-2.png')",
+          backgroundImage: "url('/assets/banners/ad-banner-02.svg')",
           backgroundPosition: "center center",
           backgroundSize: "cover",
         }}
