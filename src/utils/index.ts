@@ -313,7 +313,7 @@ export function formatAccountType(accountType: string) {
 export function isValidQuestionsArray(questionsArray: Question[]) {
   // Check if the array has length
   if (questionsArray.length === 0) {
-    toast.error("Questions are invalid");
+    toast.error("Questions are invalid, Please check your questions again.");
     return false;
   }
 
@@ -323,7 +323,7 @@ export function isValidQuestionsArray(questionsArray: Question[]) {
 
     // Check if both title and questionType have values
     if (!question.title || !question.questionType) {
-      toast.error("Questions are invalid");
+      toast.error("Questions are invalid, Please check your questions again.");
       return false;
     }
   }

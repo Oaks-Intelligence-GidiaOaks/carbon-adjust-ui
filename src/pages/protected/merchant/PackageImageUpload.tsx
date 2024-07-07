@@ -76,7 +76,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ defaultUrl, packageId }) => {
       >
         <BiEdit className="size-5" />
       </Label>
-      <div className="bg-[#F3F5F7] rounded-md grid place-items-center h-[300px]">
+      <div className="bg-[#E4E7E8] border rounded-md grid place-items-center h-[300px]">
         <div className="w-full h-full overflow-hidden relative">
           <img
             src={previewUrl}
