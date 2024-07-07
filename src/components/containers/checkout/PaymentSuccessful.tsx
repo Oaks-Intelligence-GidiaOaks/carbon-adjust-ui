@@ -32,7 +32,7 @@ const PaymentSuccessful = (props: {
   };
 
   return (
-    <div className="flex flex-col items-center h-[80vh]">
+    <div className="flex flex-col items-center h-[80vh] w-[368px]">
       <div className="flex-center font-poppins justify-end w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
         <span onClick={() => handleCloseModal()}>
           <GrClose />
