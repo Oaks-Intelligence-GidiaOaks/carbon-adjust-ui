@@ -32,6 +32,7 @@ import { PiPlus } from "react-icons/pi";
 import { Oval } from "react-loader-spinner";
 import toast from "react-hot-toast";
 import { PackageImageUpload } from ".";
+import VideoUploader from "@/components/reusables/VideoUploader";
 
 type Props = {};
 
@@ -230,17 +231,19 @@ const UpdatePackage = (_: Props) => {
     //   String(packageState?.askPurchaserQuote)
     // );
     // }
-    if (isValidQuestionsArray(packageState?.questions)) {
-      const formattedQuestions = packageState?.questions.map((q) => ({
-        title: q.title,
-        questionType: q.questionType.value,
-        ...(q.options ? { options: q.options } : {}),
-        ...(q._id ? { _id: q._id } : {}),
-      }));
-      submissionObject.questions = formattedQuestions;
-      // formData.append("questions", JSON.stringify(formattedQuestions));
-    } else {
-      return;
+    if (packageState.hasQuestion) {
+      if (isValidQuestionsArray(packageState?.questions)) {
+        const formattedQuestions = packageState?.questions.map((q) => ({
+          title: q.title,
+          questionType: q.questionType.value,
+          ...(q.options ? { options: q.options } : {}),
+          ...(q._id ? { _id: q._id } : {}),
+        }));
+        submissionObject.questions = formattedQuestions;
+        // formData.append("questions", JSON.stringify(formattedQuestions));
+      } else {
+        return;
+      }
     }
     console.log(submissionObject);
 
@@ -348,10 +351,11 @@ const UpdatePackage = (_: Props) => {
             <div className="md:flex-[0.7] flex flex-col gap-[20px] bg-white px-6 text-[#575757] text-sm font-[400] ">
               {/* image upload */}
 
-              <div className="flex flex-col">
-                <h2 className="text-black-main font-[400] ">Package Image</h2>
+              <div className="flex justify-between flex-wrap gap-4">
+                <div className="flex flex-col">
+                  <h2 className="text-black-main font-[400] ">Package Image</h2>
 
-                {/* <DropBox value={file} setSelectedFiles={setFile} />
+                  {/* <DropBox value={file} setSelectedFiles={setFile} />
                 {(packageDetails.data?.data.package as Package)
                   .attachments[0] &&
                   file?.length === 0 && (
@@ -367,18 +371,19 @@ const UpdatePackage = (_: Props) => {
                     </div>
                   )} */}
 
-                <div>
-                  <PackageImageUpload
-                    packageId={packageId!}
-                    defaultUrl={
-                      (packageDetails.data?.data.package as Package).attachments
-                        ? (packageDetails.data?.data.package as Package)
-                            .attachments[0]
-                        : "/assets/graphics/pkg-1.png}"
-                    }
-                  />
-                </div>
-                {/* <div className="h-[150px] flex  flex-col  items-center justify-center gap-[] w-full border border-dotted ">
+                  <div>
+                    <PackageImageUpload
+                      packageId={packageId!}
+                      defaultUrl={
+                        (packageDetails.data?.data.package as Package)
+                          .attachments
+                          ? (packageDetails.data?.data.package as Package)
+                              .attachments[0]
+                          : "/assets/graphics/pkg-1.png}"
+                      }
+                    />
+                  </div>
+                  {/* <div className="h-[150px] flex  flex-col  items-center justify-center gap-[] w-full border border-dotted ">
                 <div className="h-[42px] w-[42px] rounded-full bg-[#F2F4F7] grid place-items-center">
                   <img src="/assets/icons/upload-cloud.svg" alt="" />
                 </div>
@@ -391,6 +396,17 @@ const UpdatePackage = (_: Props) => {
                   or drag and drop
                 </h4>
               </div> */}
+                </div>
+                <div className="flex-1 flex flex-col justify-stretch">
+                  <h2 className="text-black-main font-normal mb-2">
+                    Video Description
+                  </h2>
+                  <VideoUploader
+                    packageId={packageId!}
+                    videoUrl={packageDetails.data?.data?.package?.videoUrl}
+                    uploadEndpoint={`packages/${packageId}/video/upload`}
+                  />
+                </div>
               </div>
 
               {/* <Input
