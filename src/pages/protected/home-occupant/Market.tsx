@@ -30,15 +30,6 @@ type Props = {};
 // this is the Main Dashboard page for showing all products in different categries
 
 const Market = (_: Props) => {
-  // const data = useQuery({
-  //   queryKey: ["get-freebies"],
-  //   queryFn: () => getHomePageFreebies(),
-  // });
-
-  // const allPkgCategories = useQuery({
-  //   queryKey: ["get-package-categories"],
-  //   queryFn: () => getAllPackageCategories(),
-  // });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,17 +42,9 @@ const Market = (_: Props) => {
     queryFn: () => getHomePagePackages(),
   });
 
-  // const totalCategories = homePagePackages.isSuccess
-  //   ? homePagePackages.data.data.totalCategories
-  //   : 0;
-
-  // console.log(homePagePackages?.data?.data);
-
   const categories: IProdCategory[] = homePagePackages.isSuccess
     ? homePagePackages.data.data
     : [];
-
-  // console.log(categories, "categories");
 
   return (
     <div className="">

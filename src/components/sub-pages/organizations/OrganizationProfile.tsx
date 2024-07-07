@@ -430,6 +430,7 @@ const OrganizationProfile = (_: Props) => {
           </div>
           <div className="sticky bottom-0 mt-20 bg-white left-0 p-4 flex justify-around gap-2 flex-wrap font-poppins border w-full border-t-black-main/50 z-50">
             <Button
+              disabled
               onClick={() => {
                 editProfileMutation.mutate();
               }}
