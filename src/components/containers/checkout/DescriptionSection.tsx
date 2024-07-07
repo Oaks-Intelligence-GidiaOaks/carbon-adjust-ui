@@ -110,7 +110,7 @@ const DescriptionSection = (props: {
           </div>
         )}
 
-        <div className="lg:flex-[0.4] w-[360px] py-[15px] flex flex-col gap-[15px] z-10 min-h-[85vh]">
+        <div className="lg:flex-[0.4] w-[300px]  md:w-[360px] py-[15px] flex flex-col gap-[15px] z-10 min-h-[85vh]">
           {/* @ts-ignore */}
           <h2 ref={scrollRef} className="text-center font-[600] text-lg ">
             Checkout
