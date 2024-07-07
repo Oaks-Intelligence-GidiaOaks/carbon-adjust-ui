@@ -47,6 +47,10 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
       return "Orders";
     }
 
+    if (currentPath.includes("merchant")) {
+      return "Dashboard";
+    }
+
     if (currentPath.includes("profile")) {
       return "Profile";
     }
