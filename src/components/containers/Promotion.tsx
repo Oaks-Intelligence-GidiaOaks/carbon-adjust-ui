@@ -32,7 +32,7 @@ const Promotion = (_: Props) => {
           visibleDiv === 1 ? "opacity-100 block" : "opacity-0 hidden"
         }`}
         style={{
-          backgroundImage: "url('/assets/banners/landscape-1.png')",
+          backgroundImage: "url('/assets/banners/ad-banner-01.png')",
           backgroundPosition: "center center",
           backgroundSize: "cover",
         }}

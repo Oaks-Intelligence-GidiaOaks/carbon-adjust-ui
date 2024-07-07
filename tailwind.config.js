@@ -16,6 +16,7 @@ module.exports = {
       lg: "1024px",
       xl: "1280px",
       max: "1440px",
+      ds: { min: "280px", max: "600px" },
     },
     extend: {
       fontFamily: {

@@ -175,6 +175,11 @@ react-calendar__tile react-calendar__month-view__days__day {
   @apply shadow-xl !important;
 }
 
+.no-scroll {
+  max-height: 99vh;
+  overflow: hidden !important;
+}
+
 @layer components {
   .transit-2 {
     transition: all 200ms ease-in-out;
