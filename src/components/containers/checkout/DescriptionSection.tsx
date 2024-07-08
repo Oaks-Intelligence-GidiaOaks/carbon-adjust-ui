@@ -73,10 +73,10 @@ const DescriptionSection = (props: {
             {/* @ts-ignore  */}
             <h2>{prod.owner.name ?? ""}</h2>
 
-            <h4>
+            {/* <h4>
               lesuada sit vitae. Velit leo vehicula viverra mauris ut eget risus
               massa porta. A.
-            </h4>
+            </h4> */}
 
             <div className="rounded-[20px] pt-2 w-full grid place-items-center relative">
               <video
