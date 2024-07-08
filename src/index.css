@@ -224,6 +224,17 @@ react-calendar__tile react-calendar__month-view__days__day {
   overflow: hidden !important;
 }
 
+.safari-only {
+}
+
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    .safari-only {
+      padding-top: 60px; /* Adjust the value as needed */
+    }
+  }
+}
+
 @layer components {
   .transit-2 {
     transition: all 200ms ease-in-out;
