@@ -4,9 +4,9 @@ import OrgDashboardDetailsCard from "@/components/reusables/OrgDashboardDetailsC
 import { IComponentMap } from "@/types/general";
 import MainActionSubHeader from "@/components/reusables/MainActionSubHeader";
 
-import { useQuery } from "@tanstack/react-query";
-import { getAllApplications, getAllPackages } from "@/services/merchantService";
-import { transformPackagesGridData } from "@/utils/reshape";
+// import { useQuery } from "@tanstack/react-query";
+// import { getAllApplications, getAllPackages } from "@/services/merchantService";
+// import { transformPackagesGridData } from "@/utils/reshape";
 
 type Props = {};
 
