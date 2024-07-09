@@ -98,6 +98,11 @@ export const staffSideBarItems = [
     title: "Orders",
     href: "/staff/orders",
   },
+  {
+    icon: LogoutIcon,
+    title: "Logout",
+    href: "/..",
+  },
   // {
   //   icon: DashboardIcon,
   //   title: "Profile",

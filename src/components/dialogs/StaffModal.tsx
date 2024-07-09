@@ -27,13 +27,13 @@ const StaffModal = (props: Props) => {
   const ref = useRef(null);
   useOutsideCloser(ref, props.showStaffModal, props.setShowStaffModal);
 
+  const [selectedStaffId, setSelectedStaffId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const staff = useQuery({
-    queryKey: ["get-all-staff"],
+    queryKey: ["get-all-staff", searchQuery],
     queryFn: () => getAllStaff(),
   });
 
-  const [selectedStaffId, setSelectedStaffId] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState<string>("");
   const [allStaff, setAllStaff] = useState<AuthUserProfile[]>(
     staff.data?.data?.data?.users ?? []
   );
@@ -64,8 +64,10 @@ const StaffModal = (props: Props) => {
       setAllStaff(
         filterByName(staff.data?.data?.data?.users ?? [], searchQuery)
       );
+    } else {
+      setAllStaff(staff.data?.data?.data?.users ?? []);
     }
-  }, [searchQuery, setAllStaff]);
+  }, [searchQuery, staff.isSuccess]);
 
   return (
     <div className="fixed z-[10000000] inset-0 bg-gray-500/20 backdrop-blur-sm flex justify-center items-center">

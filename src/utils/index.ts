@@ -343,7 +343,13 @@ export function filterByName(
     )
   );
 
-  return items.filter((item) =>
-    item.name.toLowerCase().includes(query.toLowerCase())
-  );
+  // return
+
+  if (query.trim().length < 1) {
+    return items;
+  } else {
+    return items.filter((item) =>
+      item.name.toLowerCase().includes(query.toLowerCase())
+    );
+  }
 }
