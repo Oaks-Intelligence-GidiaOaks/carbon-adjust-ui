@@ -87,6 +87,29 @@ export const retrofittingServices = [
   { label: "Undecided", value: "Undecided" },
 ];
 
+export const staffSideBarItems = [
+  {
+    icon: DashboardIcon,
+    title: "Dashboard",
+    href: "/staff",
+  },
+  {
+    icon: DashboardIcon,
+    title: "Orders",
+    href: "/staff/orders",
+  },
+  {
+    icon: LogoutIcon,
+    title: "Logout",
+    href: "/..",
+  },
+  // {
+  //   icon: DashboardIcon,
+  //   title: "Profile",
+  //   href: "/staff/profile",
+  // },
+];
+
 export const homeOwnerSideBarItems = [
   // {
   //   icon: HomeIcon,

@@ -88,6 +88,13 @@ export const generateSlotQuery = (data: {
   });
 };
 
+export const assignApplicationsToStaffQuery = (data: {
+  applications: string[];
+  assignee: string;
+}) => {
+  return axiosInstance.post("/application/assign", data);
+};
+
 export const updatePackageImage = (data: FormData, packageId: string) => {
   return axiosInstance.patch(`/packages/${packageId}/file/edit`, data, {
     headers: {

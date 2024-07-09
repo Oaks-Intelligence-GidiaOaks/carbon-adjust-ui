@@ -93,7 +93,7 @@ const ProductCheckout = (props: {
         {/* checkout */}
         <div className="flex  justify-center md:justify-end ">
           <div
-            className={`bg-white mt-10 mx-auto md:mx-0 ds:w-[90vw] h-[90vh] md:mt-0 md:h-[100vh] overflow-y-scroll pb-[30px] w-fit `}
+            className={`bg-white mt-10 mx-auto md:mx-0 ds:w-[90vw] h-[90vh] md:mt-0 md:h-[100vh] overflow-y-scroll pb-[30px] w-fit safari-only`}
           >
             {stageMap[stage]}
           </div>

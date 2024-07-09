@@ -73,10 +73,10 @@ const DescriptionSection = (props: {
             {/* @ts-ignore  */}
             <h2>{prod.owner.name ?? ""}</h2>
 
-            <h4>
+            {/* <h4>
               lesuada sit vitae. Velit leo vehicula viverra mauris ut eget risus
               massa porta. A.
-            </h4>
+            </h4> */}
 
             <div className="rounded-[20px] pt-2 w-full grid place-items-center relative">
               <video
@@ -127,12 +127,21 @@ const DescriptionSection = (props: {
 
             <p className="font-[500] text-sm">{prod?.description}</p>
 
-            <button
-              onClick={() => props.setStage(2)}
-              className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px] !mt-auto"
-            >
-              <span>Proceed</span>
-            </button>
+            <div className="flex-center gap-1 flex-wrap">
+              <button
+                onClick={() => props.setStage(2)}
+                className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px] !mt-auto"
+              >
+                <span>Proceed</span>
+              </button>
+
+              <button
+                onClick={() => props.setShowCancel(true)}
+                className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px] !mt-auto"
+              >
+                <span>Cancel</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

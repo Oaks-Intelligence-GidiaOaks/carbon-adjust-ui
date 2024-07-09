@@ -1,4 +1,5 @@
 import { Question } from "@/pages/protected/merchant/NewPackage";
+import { AuthUserProfile } from "@/types/general";
 import { DataRow } from "@/types/generics";
 import { clsx, ClassValue } from "clsx";
 import { Country } from "country-state-city";
@@ -330,4 +331,25 @@ export function isValidQuestionsArray(questionsArray: Question[]) {
 
   // If all checks passed, return true
   return true;
+}
+
+export function filterByName(
+  items: AuthUserProfile[],
+  query: string
+): AuthUserProfile[] {
+  console.log(
+    items.filter((item) =>
+      item.name.toLowerCase().includes(query.toLowerCase())
+    )
+  );
+
+  // return
+
+  if (query.trim().length < 1) {
+    return items;
+  } else {
+    return items.filter((item) =>
+      item.name.toLowerCase().includes(query.toLowerCase())
+    );
+  }
 }
