@@ -72,7 +72,7 @@ import PaymentSuccess from "@/components/containers/checkout/PaymentSuccess";
 import TermsAndConditions from "@/pages/TermsAndConditions";
 import ForgotPassword from "@/pages/public/ForgotPassword";
 import ResetPassword from "@/pages/public/ResetPassword";
-// import { StaffDashboard } from "@/pages/protected/staff";
+import { StaffApplications, StaffDashboard } from "@/pages/protected/staff";
 
 const Router = createBrowserRouter([
   {
@@ -273,16 +273,20 @@ const Router = createBrowserRouter([
   },
 
   // STAFF ROUTES
-  // {
-  //   path: "/staff",
-  //   element: <Layout sidebarType="merchant" />,
-  //   children: [
-  //     {
-  //       path: "",
-  //       element: <StaffDashboard />,
-  //     },
-  //   ],
-  // },
+  {
+    path: "/staff",
+    element: <Layout sidebarType="staff" />,
+    children: [
+      {
+        path: "",
+        element: <StaffDashboard />,
+      },
+      {
+        path: "orders",
+        element: <StaffApplications />,
+      },
+    ],
+  },
 
   // ADMIN ROUTES
   {
