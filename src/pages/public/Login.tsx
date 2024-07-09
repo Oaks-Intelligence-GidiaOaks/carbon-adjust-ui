@@ -54,9 +54,37 @@ const Login = () => {
     onSuccess: (data) => {
       dispatch(setToken(data.data.data.access_token));
       dispatch(setKommunitaToken(data.data.data.kommunita_access_token));
-      toast.success(`${"Login successful"}`, { duration: 4000 });
+      if (
+        data.data.data.user.roles[0] !== "STAFF" &&
+        data.data.data.user.passwordLastResetAt
+      ) {
+        toast.success(`${"Login successful"}`, { duration: 4000 });
+      }
+      if (
+        data.data.data.user.roles[0] === "STAFF" &&
+        data.data.data.user.passwordLastResetAt !== null
+      ) {
+        toast.success(`${"Login successful"}`, { duration: 4000 });
+      }
 
       handleRedirect(data.data.data.user, data.data.data.user.roles[0]);
+    },
+  });
+
+  const sendResetPasswordEmail = useMutation({
+    mutationFn: (loginCredentials: { email: string }) =>
+      axiosInstance.post(`/auth/password/send-token`, loginCredentials),
+    mutationKey: ["reset-password-token"],
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message ??
+          "Error encountered trying to send password reset email."
+      );
+    },
+    onSuccess: () => {
+      toast.success(`${"Password reset email has been sent to your inbox."}`, {
+        duration: 4000,
+      });
     },
   });
 
@@ -65,6 +93,14 @@ const Login = () => {
   const handleRedirect = (user: AuthUserProfile, role: string) => {
     if (role === "HOME_OCCUPANT") return navigate("/dashboard");
     if (role === "ADMIN") return navigate("/admin");
+    if (role === "STAFF") {
+      if (user.passwordLastResetAt === null) {
+        sendResetPasswordEmail.mutate({ email: user.email });
+        return navigate(`/login`);
+      } else {
+        return navigate("/staff");
+      }
+    }
     if (role === "MERCHANT") {
       if (user.status === "pending") {
         return navigate("/account-setup");

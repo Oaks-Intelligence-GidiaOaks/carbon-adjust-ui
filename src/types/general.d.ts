@@ -227,6 +227,7 @@ export type AuthUserProfile = {
     | "LIMITED_LIABILITY"
     | "LIMITED_LIABILITY_LICENSE";
   password: string;
+  passwordLastResetAt?: null | string;
   phoneNos: string;
   roles: string[];
   status: string;

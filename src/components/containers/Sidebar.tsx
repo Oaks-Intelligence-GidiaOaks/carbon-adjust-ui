@@ -43,7 +43,7 @@ const Sidebar = ({
       {/* desktop sidebar */}
       <div
         className={cn(
-          "w-[20%] min-w-[260px] max-w-[302px] max-h-screen px-4 sm:sticky bg-white overflow-y-scroll pb-10 z-20 border-r border-[hsla(110,49%,88%,1)] top-0 hidden sm:block "
+          "w-[20%] min-w-[260px] max-w-[302px] max-h-screen px-4 sm:sticky bg-white overflow-y-scroll pb-10 z-10 border-r border-[hsla(110,49%,88%,1)] top-0 hidden sm:block "
         )}
       >
         <div className="flex justify-between items-center sticky top-0 pt-10 pb-2 z-10 bg-white">
