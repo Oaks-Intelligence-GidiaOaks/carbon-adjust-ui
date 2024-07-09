@@ -4,6 +4,7 @@ import {
   adminSideBarItems,
   homeOwnerSideBarItems,
   merchantSideBarItems,
+  staffSideBarItems,
 } from "@/constants";
 import { SideBarItem, SideBarProps } from "@/types/general";
 import { cn, formatAccountType } from "@/utils";
@@ -27,6 +28,8 @@ const Sidebar = ({
 
   const identifyUserSideBar = (accountType: string): SideBarItem[] => {
     switch (accountType) {
+      case "staff":
+        return staffSideBarItems;
       case "home-occupant":
         return homeOwnerSideBarItems;
       case "merchant":
