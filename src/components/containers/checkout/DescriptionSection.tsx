@@ -38,6 +38,8 @@ const DescriptionSection = (props: {
     };
 
     if (videoElement) {
+      videoElement?.play();
+      setIsPlaying(true);
       videoElement.addEventListener("ended", handleVideoEnded);
     }
 
