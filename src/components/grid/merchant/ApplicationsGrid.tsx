@@ -34,7 +34,7 @@ import { EyeIcon } from "@heroicons/react/24/outline";
 // import { cn } from "@/utils";
 import axiosInstance from "@/api/axiosInstance";
 import toast from "react-hot-toast";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { BsPeople, BsThreeDotsVertical } from "react-icons/bs";
 import {
   //   MdCancel,
   MdDone,
@@ -46,16 +46,24 @@ import {
 // import { PDFIcon } from "@/assets/icons";
 // import { GrClose } from "react-icons/gr";
 import { completeApplication } from "@/services/merchant";
+import { StaffModal } from "@/components/dialogs";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   const navigate = useNavigate();
 
+  const user = useSelector((state: RootState) => state.user.user);
+
   const [showModal, setShowModal] = useState(false);
+  const [showStaffModal, setShowStaffModal] = useState(false);
   const [currentRowId, setCurrentRowId] = useState(null);
   const [currentRowData, setCurrentRowData] = useState({
     packageId: "",
     appId: "",
   });
+
+  console.log(data);
 
   //   console.log(data);
   //   const [expandedRows, setExpandedRows] = useState([]);
@@ -539,13 +547,24 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
               }}
             />
             {/* Modal */}
-
             {showModal && currentRowId === info.getValue() && (
               <div
                 key={info.getValue()}
                 ref={actionButtonsRef}
                 className="absolute top-[-30px] flex flex-col gap-y-2 z-10 right-[40px] bg-white border border-gray-300  rounded p-2"
               >
+                {!info.row.original.isAssigned &&
+                  user?.roles[0] === "MERCHANT" && (
+                    <div
+                      className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
+                      onClick={() => setShowStaffModal(true)}
+                    >
+                      <div className="rounded-full bg-rose-500 p-1">
+                        <BsPeople className="text-white text-base size-3" />
+                      </div>
+                      <span>Assign to staff</span>
+                    </div>
+                  )}
                 {info.row.original.status === "pending" && (
                   <div
                     className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs hover:text-ca-blue px-1"
@@ -569,7 +588,11 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
                 <div
                   className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
                   onClick={() =>
-                    navigate(`/merchant/applications/${info.row.original._id}`)
+                    navigate(
+                      user?.roles[0] === "STAFF"
+                        ? `/staff/orders/${info.row.original._id}`
+                        : `/merchant/applications/${info.row.original._id}`
+                    )
                   }
                 >
                   <div className="rounded-full bg-violet-500 p-1">
@@ -800,15 +823,14 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
           text={"Updating application status"}
         />
       )}
-      {/* {showDeclineModal && (
-        <Modal
-          isOpen={showDeclineModal}
-          onClose={() => setShowDeclineModal(false)}
-          onReject={handleModalReject}
-          label={"Click to Reject"}
-          rowId={declineRowId}
+      {showStaffModal && (
+        <StaffModal
+          showStaffModal={showStaffModal}
+          setShowStaffModal={setShowStaffModal}
+          onClose={() => setShowStaffModal(false)}
+          rowId={currentRowId}
         />
-      )} */}
+      )}
 
       {/* pagination */}
       <TablePagination table={table} />

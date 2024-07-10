@@ -13,13 +13,12 @@ import { useQuery } from "@tanstack/react-query";
 type Props = {};
 
 const Applications = (_: Props) => {
-  // const {
-  //   data,
-  //   isSuccess,
-  // } = useQuery({
-  //   queryKey: ["get-applications"],
-  //   queryFn: () => getAllApplications(),
-  // });
+  const { data, isSuccess } = useQuery({
+    queryKey: ["get-applications"],
+    queryFn: () => getAllApplications(),
+  });
+
+  // console.log(data.data);
 
   const NoApplications = () => (
     <div className="h-[80vh] grid place-items-center">
@@ -44,9 +43,9 @@ const Applications = (_: Props) => {
     return <NoApplications />;
   }
 
-  // const tableApps = isSuccess
-  //   ? transformApplicationsGridData(data.data.orders)
-  //   : [];
+  const tableApps = isSuccess
+    ? transformApplicationsGridData(data.data.orders)
+    : [];
 
   return (
     <div className="px-3 lg:px-4">
@@ -54,7 +53,7 @@ const Applications = (_: Props) => {
 
       {/* table */}
       <div className="-mt-3">
-        <ApplicationsGrid isUpdating data={[]} />
+        <ApplicationsGrid isUpdating data={tableApps} />
       </div>
     </div>
   );

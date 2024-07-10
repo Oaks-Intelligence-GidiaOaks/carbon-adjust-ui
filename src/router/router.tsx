@@ -283,7 +283,16 @@ const Router = createBrowserRouter([
       },
       {
         path: "orders",
-        element: <StaffApplications />,
+        children: [
+          {
+            path: "",
+            element: <StaffApplications />,
+          },
+          {
+            path: ":orderId",
+            element: <MerchantOrderDetails />,
+          },
+        ],
       },
     ],
   },
