@@ -4,6 +4,7 @@ import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import UsersGrid from "../grid/admin/UsersGrid";
 import { formatDate, handleTableDownload } from "@/lib/utils";
+import MerchantGrid from "../grid/admin/MerchantGrid";
 
 const AllUserRegistrations = (props: { data: any; tableHeader: string }) => {
   // console.log(props.data, "data");
@@ -31,7 +32,11 @@ const AllUserRegistrations = (props: { data: any; tableHeader: string }) => {
       </div>
 
       <div className="w-full">
-        <UsersGrid data={props.data} isUpdating={false} />
+        {props.tableHeader === "Merchants" ? (
+          <MerchantGrid data={props.data} />
+        ) : (
+          <UsersGrid data={props.data} isUpdating={false} />
+        )}
       </div>
     </div>
   );
