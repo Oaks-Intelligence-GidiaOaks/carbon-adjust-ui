@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { publishPackage, unPublishPackage } from "@/services/merchantService";
 import toast from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
+import { formatNumberWithCommas } from "@/utils";
 
 const NewPackageCard = (
   props: Package & { attachments?: string[]; isMerchant?: boolean }
@@ -82,7 +83,9 @@ const NewPackageCard = (
         </div> */}
 
         <h2 className="text-xs font-[600]">{props.title}</h2>
-        <h2 className="text-xs font-[600]">{props.price}</h2>
+        <h2 className="text-xs font-[600]">
+          £{formatNumberWithCommas(props.price)}
+        </h2>
 
         <Button
           onClick={() => {
