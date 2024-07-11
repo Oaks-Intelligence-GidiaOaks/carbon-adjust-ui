@@ -73,3 +73,12 @@ export const suspendUserRegistration = async (id: string) => {
 
   return data;
 };
+
+export const makeMerchantInternal = async (id: string) => {
+  const { data } = await axiosInstance.patch(`/users/merchant/internal`, {
+    merchantId: id,
+    status: true,
+  });
+
+  return data;
+};
