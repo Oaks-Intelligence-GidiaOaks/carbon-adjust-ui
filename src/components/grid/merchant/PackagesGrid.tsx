@@ -55,6 +55,9 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       queryClient.invalidateQueries({
         queryKey: ["get-packages"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["get-all-packages"],
+      });
       setCurrentRowId("");
     },
     onError: () => {
@@ -70,6 +73,9 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       setCurrentRowId("");
       queryClient.invalidateQueries({
         queryKey: ["get-packages"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["get-all-packages"],
       });
     },
     onError: () => {
