@@ -27,7 +27,7 @@ import {
   makeMerchantInternal,
 } from "@/services/adminService";
 
-const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
+const MerchantGrid = (props: { data: any[] }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentRowId, setCurrentRowId] = useState<string>("");
   //   const [currentRowData, setCurrentRowData] = useState<any>({
@@ -173,10 +173,38 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
       header: () => <div className="w-32 whitespace-nowrap">Status</div>,
     }),
 
+    // Is Merchant Internal
+    columnHelper.accessor((row: any) => row?.status, {
+      id: "status",
+      cell: (info: any) => (
+        <div className="w-44 relative flex items-center text-sm">
+          {(info.row.original as any).isInternalMerchant ? (
+            <span
+              style={{ color: "#8AC926", background: "#8AC92630" }}
+              className="w-36 py-1 rounded-full inline-block mx-auto"
+            >
+              Approved
+            </span>
+          ) : (
+            <span
+              style={{ color: "#139EEC", background: "#139EEC30" }}
+              className="w-36 py-1 rounded-full inline-block mx-auto"
+            >
+              Not Approved
+            </span>
+          )}
+        </div>
+      ),
+      header: () => (
+        <div className="w-32 whitespace-nowrap"> Internal Merchant</div>
+      ),
+    }),
+
     // Actions
     columnHelper.accessor((row: any) => row._id, {
       id: "_id",
       cell: (info: any) => {
+        console.log("action row-----", info.row.original);
         return (
           <div className="relative px-4 z-10">
             {/* Hamburger menu icon */}
@@ -363,7 +391,9 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
           </div>
         </div>
       </div>
-      {(declineMutation.isPending || approvedMutation.isPending) && (
+      {(declineMutation.isPending ||
+        approvedMutation.isPending ||
+        internalMerchantMutation.isPending) && (
         <LoadingModal text={"Updating registration status"} />
       )}
 
@@ -373,4 +403,4 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
   );
 };
 
-export default UsersGrid;
+export default MerchantGrid;

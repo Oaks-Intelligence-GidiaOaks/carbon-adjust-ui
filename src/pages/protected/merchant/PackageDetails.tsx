@@ -58,6 +58,12 @@ const PackageDetails = (_: Props) => {
         ? "Scheduling available"
         : "No scheduling",
     },
+    {
+      title: "AI PACKAGE",
+      details: (packageDetails.data?.data.package as Package)?.isAiEnergyPackage
+        ? "Yes"
+        : "No",
+    },
   ];
 
   const detail2 = [

@@ -4,7 +4,7 @@ import ProductCard from "@/components/reusables/ProductCard";
 import { Button, CountryRegionDropdown, DropBox, Input } from "@/components/ui";
 import SelectInput from "@/components/ui/SelectInput";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextArea from "@/components/ui/TextArea";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -32,6 +32,9 @@ import {
 import { Oval } from "react-loader-spinner";
 import { questionTypes } from "@/constants";
 import { SelectItem } from "@/types/formSelect";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import AIModal from "@/components/merchants/AIModal";
 
 type Props = {};
 export type QuestionType = {
@@ -84,6 +87,11 @@ export type PackageState = {
   questions: Question[];
   askPurchaserQuote: boolean;
   hasDownloadedableFile: boolean;
+  isAiEnergyPackage: boolean;
+  aiPackageType: {
+    label: string;
+    value: string;
+  };
 };
 export const customStyles = {
   container: (provided: CSSObjectWithLabel) => ({
@@ -163,6 +171,8 @@ const NewPackage = (_: Props) => {
     queryFn: getPackageCategories,
   });
 
+  const user = useSelector((state: RootState) => state.user.user);
+
   // let inputClassName = ` bg-[#E4E7E863] bg-opacity-30 text-xs text-black-main !font-[400]`;
   let labelStyle = `!fonty-[400] !text-sm !leading-[23.97px] !text-[#333333] !mb-[10px]`;
 
@@ -170,6 +180,7 @@ const NewPackage = (_: Props) => {
 
   const [file, setFile] = useState<File[] | null>([]);
   const [downloadableFile, setDownloadableFile] = useState<File[] | null>([]);
+  const [showAIModal, setShowAIModal] = useState(false);
 
   const [packageState, setPackageState] = useState<PackageState>({
     title: "",
@@ -197,6 +208,11 @@ const NewPackage = (_: Props) => {
     questions: [],
     askPurchaserQuote: false,
     hasDownloadedableFile: false,
+    isAiEnergyPackage: false,
+    aiPackageType: {
+      label: "",
+      value: "",
+    },
   });
 
   const createPackageMutation = useMutation({
@@ -234,6 +250,13 @@ const NewPackage = (_: Props) => {
     }
     if (packageState.packageType) {
       formData.append("packageType", packageState.packageType.value);
+    }
+    formData.append(
+      "isAiEnergyPackage",
+      packageState.isAiEnergyPackage.toString()
+    );
+    if (packageState.isAiEnergyPackage) {
+      formData.append("aiPackageType", packageState.aiPackageType.value);
     }
     if (packageState.country) {
       formData.append("country", packageState.country.label);
@@ -304,6 +327,10 @@ const NewPackage = (_: Props) => {
     createPackageMutation.mutate(formData);
   };
 
+  const handleValueChange = (val: boolean) => {
+    packageState.isAiEnergyPackage = val;
+  };
+
   const recentPackages = useQuery({
     queryKey: ["get-recent-packages"],
     queryFn: getRecentPackagesQuery,
@@ -311,6 +338,15 @@ const NewPackage = (_: Props) => {
 
   console.log(recentPackages.data);
 
+  const handleCloseAIModal = () => {
+    setShowAIModal(false);
+  };
+
+  useEffect(() => {
+    if (packageState.isAiEnergyPackage) {
+      setShowAIModal(true);
+    }
+  }, [packageState.isAiEnergyPackage]);
   return (
     <div className="px-2 xl:px-8">
       <div className="flex-center gap-2">
@@ -421,6 +457,58 @@ const NewPackage = (_: Props) => {
             // value={packageState.packageType}
             placeholder="Select specific service"
           />
+
+          {/* Only show this for internal merchants */}
+          {user?.isInternalMerchant === true && (
+            <>
+              <div className="flex-center gap-[11px]">
+                <input
+                  type="checkbox"
+                  name=""
+                  id=""
+                  checked={packageState.isAiEnergyPackage}
+                  onChange={() =>
+                    setPackageState((prev) => ({
+                      ...prev,
+                      isAiEnergyPackage: !prev.isAiEnergyPackage,
+                    }))
+                  }
+                  className="border border-[#575757] h-[19px] w-[19px]"
+                />
+
+                <p>AI Energy Package</p>
+              </div>
+
+              {packageState.isAiEnergyPackage && (
+                <SelectInput
+                  options={[
+                    { label: "Transition Score", value: "transition-score" },
+                    { label: "Carbon Footprint", value: "carbon-footprint" },
+                    { label: "Decarbonization", value: "decarbonization" },
+                  ]}
+                  className=""
+                  label="AI Energy Package Type"
+                  onChange={(val) =>
+                    setPackageState((prev) => ({
+                      ...prev,
+                      aiPackageType: val ? val : { label: "", value: "" },
+                    }))
+                  }
+                  // value={packageState.packageType}
+                  placeholder="Select AI Energy package type"
+                />
+              )}
+
+              <AIModal
+                showModal={showAIModal}
+                onClose={() => {
+                  handleCloseAIModal();
+                }}
+                onValueChange={handleValueChange}
+              />
+            </>
+          )}
+
           {packageState.packageType.value.toLowerCase() === "product" && (
             <div className="flex-center gap-[11px]">
               <input
