@@ -219,6 +219,7 @@ export type AuthUserProfile = {
   emailActivatedAt: string;
   hasAcceptTerms: boolean;
   hasEmailVerified: boolean;
+  isInternalMerchant: boolean;
   name: string;
   dp?: string;
   nonFinMerchantType:
@@ -276,6 +277,9 @@ export type Package = {
   packageType: "Product";
   hasQuestion: boolean;
   allowPartPayment?: boolean;
+  energyBillQuestionId?: string;
+  isAiEnergyPackage: boolean;
+  aiPackageType: string;
   percentPayment?: string;
   hasSchedule: boolean;
   askPurchaserQuote: boolean;
