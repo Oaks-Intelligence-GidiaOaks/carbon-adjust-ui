@@ -33,6 +33,9 @@ import { Oval } from "react-loader-spinner";
 import toast from "react-hot-toast";
 import { PackageImageUpload } from ".";
 import VideoUploader from "@/components/reusables/VideoUploader";
+import AIModal from "@/components/merchants/AIModal";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 type Props = {};
 
@@ -40,6 +43,8 @@ const UpdatePackage = (_: Props) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { packageId } = useParams<{ packageId: string }>();
+
+  const user = useSelector((state: RootState) => state.user.user);
 
   const packageDetails = useQuery({
     queryKey: [packageId],
@@ -62,6 +67,8 @@ const UpdatePackage = (_: Props) => {
   // const [file, setFile] = useState<File[] | null>([]);
   const [downloadableFile, setDownloadableFile] = useState<File[] | null>([]);
 
+  const [showAIModal, setShowAIModal] = useState(false);
+
   console.log(
     getCategories.data?.data.data.categories.length &&
       getCategories.data?.data.data.categories.filter(
@@ -69,6 +76,14 @@ const UpdatePackage = (_: Props) => {
           c._id === (packageDetails.data?.data.package as Package)?.category._id
       )[0]?._id
   );
+
+  const handleCloseAIModal = () => {
+    setShowAIModal(false);
+  };
+
+  const handleValueChange = (val: boolean) => {
+    packageState.isAiEnergyPackage = val;
+  };
 
   const [packageState, setPackageState] = useState<PackageState>({
     title: (packageDetails.data?.data.package as Package)?.title,
@@ -115,6 +130,18 @@ const UpdatePackage = (_: Props) => {
     hasDownloadedableFile:
       (packageDetails.data?.data.package as Package)?.hasDownloadedableFile ??
       false,
+    isAiEnergyPackage:
+      (packageDetails.data?.data.package as Package)?.isAiEnergyPackage ??
+      false,
+    aiPackageType: {
+      label:
+        (packageDetails.data?.data.package as Package)?.aiPackageType
+          ?.split("-")
+          ?.map((w) => w[0].toUpperCase() + w.slice(1))
+          ?.join(" ") ?? "",
+      value:
+        (packageDetails.data?.data.package as Package)?.aiPackageType ?? "",
+    },
   });
 
   const updatePackageMutation = useMutation({
@@ -155,6 +182,12 @@ const UpdatePackage = (_: Props) => {
     if (packageState?.packageType) {
       submissionObject.packageType = packageState?.packageType.value;
       // formData.append("packageType", packageState?.packageType.value);
+    }
+
+    submissionObject.isAiEnergyPackage = packageState.isAiEnergyPackage;
+
+    if (packageState.isAiEnergyPackage) {
+      submissionObject.aiPackageType = packageState.aiPackageType.value;
     }
     if (packageState?.country) {
       submissionObject.country = packageState?.country.label;
@@ -240,11 +273,98 @@ const UpdatePackage = (_: Props) => {
           ...(q._id ? { _id: q._id } : {}),
         }));
         submissionObject.questions = formattedQuestions;
+        if (
+          (packageDetails.data?.data.package as Package).energyBillQuestionId &&
+          !formattedQuestions.some(
+            (q: any) =>
+              q._id ===
+              (packageDetails.data?.data.package as Package)
+                .energyBillQuestionId
+          )
+        ) {
+          const formattedQuestions = (
+            packageDetails.data?.data.package as Package
+          )?.questions
+            .filter(
+              (q) =>
+                q._id ===
+                (packageDetails.data?.data.package as Package)
+                  .energyBillQuestionId
+            )
+            .map((q: Question) => ({
+              title: "Upload your energy bill",
+              questionType: "File Upload Response Question",
+              ...(q.questionType.value === "Single-Choice Question" ||
+              q.questionType.value === "Multiple-Choice Question"
+                ? { options: q.options }
+                : {}),
+              ...(q._id ? { _id: q._id } : {}),
+            }));
+          submissionObject.questions = [
+            ...(submissionObject.questions ?? []),
+            ...formattedQuestions,
+          ];
+        }
         // formData.append("questions", JSON.stringify(formattedQuestions));
       } else {
         return;
       }
     }
+    console.log(packageState);
+
+    if (
+      !packageState.hasQuestion &&
+      packageState.questions.some(
+        (q) =>
+          q._id ===
+          (packageDetails.data?.data.package as Package).energyBillQuestionId
+      )
+    ) {
+      const formattedQuestions = (
+        packageDetails.data?.data.package as Package
+      )?.questions
+        .filter(
+          (q) =>
+            q._id ===
+            (packageDetails.data?.data.package as Package).energyBillQuestionId
+        )
+        .map((q: Question) => ({
+          title: q.title,
+          questionType: q.questionType as any,
+          ...(q.questionType.value === "Single-Choice Question" ||
+          q.questionType.value === "Multiple-Choice Question"
+            ? { options: q.options }
+            : {}),
+          ...(q._id ? { _id: q._id } : {}),
+        }));
+      submissionObject.questions = [
+        ...(submissionObject.questions ?? []),
+        ...formattedQuestions,
+      ];
+    }
+
+    if (
+      !packageState.hasQuestion &&
+      !packageState.questions.some(
+        (q) =>
+          q._id ===
+          (packageDetails.data?.data.package as Package).energyBillQuestionId
+      )
+    ) {
+      const formattedQuestions = [
+        {
+          title: "Upload your energy bill",
+          questionType: "File Upload Response Question",
+          _id: (packageDetails.data?.data.package as Package)
+            .energyBillQuestionId,
+        },
+      ];
+      submissionObject.questions = [
+        ...(submissionObject.questions ?? []),
+        ...formattedQuestions,
+      ];
+    }
+
     console.log(submissionObject);
 
     updatePackageMutation.mutate(submissionObject);
@@ -298,7 +418,10 @@ const UpdatePackage = (_: Props) => {
           hasSchedule: (packageDetails.data?.data.package as Package)
             ?.hasSchedule,
           hasQuestion:
-            (packageDetails.data?.data.package as Package)?.hasQuestion ??
+            ((packageDetails.data?.data.package as Package)?.hasQuestion ||
+              Boolean(
+                (packageDetails.data?.data.package as Package)?.questions.length
+              )) ??
             false,
           questions: (packageDetails.data?.data.package as Package)?.questions
             .length
@@ -317,17 +440,33 @@ const UpdatePackage = (_: Props) => {
                 })
               )
             : [],
+
           askPurchaserQuote:
             (packageDetails.data?.data.package as Package)?.askPurchaserQuote ??
             false,
           hasDownloadedableFile:
             (packageDetails.data?.data.package as Package)
               ?.hasDownloadedableFile ?? false,
+
+          isAiEnergyPackage:
+            (packageDetails.data?.data.package as Package)?.isAiEnergyPackage ??
+            false,
+          aiPackageType: {
+            label:
+              (packageDetails.data?.data.package as Package)?.aiPackageType
+                ?.split("-")
+                ?.map((w) => w[0].toUpperCase() + w.slice(1))
+                ?.join(" ") ?? "",
+            value:
+              (packageDetails.data?.data.package as Package)?.aiPackageType ??
+              "",
+          },
         }));
       }, 1000);
     }
   }, [getCategories.isSuccess, packageDetails.isSuccess]);
 
+  console.log(packageState.questions);
   console.log(packageDetails.data?.data.package);
 
   return (
@@ -488,6 +627,64 @@ const UpdatePackage = (_: Props) => {
                 // value={packageState?.packageType}
                 placeholder="Select specific service"
               />
+
+              {/* Only show this for internal merchants */}
+              {user?.isInternalMerchant === true && (
+                <>
+                  <div className="flex-center gap-[11px]">
+                    <input
+                      type="checkbox"
+                      name=""
+                      id=""
+                      checked={packageState.isAiEnergyPackage}
+                      onChange={() =>
+                        setPackageState((prev) => ({
+                          ...prev,
+                          isAiEnergyPackage: !prev.isAiEnergyPackage,
+                        }))
+                      }
+                      className="border border-[#575757] h-[19px] w-[19px]"
+                    />
+
+                    <p>AI Energy Package</p>
+                  </div>
+
+                  {packageState.isAiEnergyPackage && (
+                    <SelectInput
+                      options={[
+                        {
+                          label: "Transition Score",
+                          value: "transition-score",
+                        },
+                        {
+                          label: "Carbon Footprint",
+                          value: "carbon-footprint",
+                        },
+                        { label: "Decarbonization", value: "decarbonization" },
+                      ]}
+                      className=""
+                      label="AI Energy Package Type"
+                      onChange={(val) =>
+                        setPackageState((prev) => ({
+                          ...prev,
+                          aiPackageType: val ? val : { label: "", value: "" },
+                        }))
+                      }
+                      value={packageState.aiPackageType}
+                      placeholder="Select AI Energy package type"
+                    />
+                  )}
+
+                  <AIModal
+                    showModal={showAIModal}
+                    onClose={() => {
+                      handleCloseAIModal();
+                    }}
+                    onValueChange={handleValueChange}
+                  />
+                </>
+              )}
+
               {packageState?.packageType?.value?.toLowerCase() ===
                 "product" && (
                 <div className="flex-center gap-[11px]">
@@ -686,12 +883,64 @@ const UpdatePackage = (_: Props) => {
                       ...prev,
                       questions: !prev.hasQuestion
                         ? [
+                            ...(
+                              packageDetails.data?.data.package as Package
+                            )?.questions
+                              .filter(
+                                (q) =>
+                                  q._id ===
+                                  (packageDetails.data?.data.package as Package)
+                                    .energyBillQuestionId
+                              )
+                              .map((q: Question) => ({
+                                title: q.title,
+                                questionType: {
+                                  label: q.questionType as any,
+                                  value: q.questionType as any,
+                                },
+                                ...(q.questionType.value ===
+                                  "Single-Choice Question" ||
+                                q.questionType.value ===
+                                  "Multiple-Choice Question"
+                                  ? { options: q.options }
+                                  : {}),
+                                ...(q._id ? { _id: q._id } : {}),
+                              })),
                             {
                               title: "",
                               questionType: { label: "", value: "" },
                             },
                           ]
-                        : [],
+                        : [
+                            ...((packageDetails.data?.data.package as Package)
+                              ?.energyBillQuestionId
+                              ? (
+                                  packageDetails.data?.data.package as Package
+                                )?.questions
+                                  .filter(
+                                    (q) =>
+                                      q._id ===
+                                      (
+                                        packageDetails.data?.data
+                                          .package as Package
+                                      ).energyBillQuestionId
+                                  )
+                                  .map((q: Question) => ({
+                                    title: q.title,
+                                    questionType: {
+                                      label: q.questionType as any,
+                                      value: q.questionType as any,
+                                    },
+                                    ...(q.questionType.value ===
+                                      "Single-Choice Question" ||
+                                    q.questionType.value ===
+                                      "Multiple-Choice Question"
+                                      ? { options: q.options }
+                                      : {}),
+                                    ...(q._id ? { _id: q._id } : {}),
+                                  }))
+                              : []),
+                          ],
                       hasQuestion: !prev.hasQuestion,
                     }));
                   }}
@@ -723,6 +972,14 @@ const UpdatePackage = (_: Props) => {
                         />
                         <SelectInput
                           options={questionTypes}
+                          disabledCallback={() => {
+                            alert("Hello");
+                          }}
+                          disabled={
+                            q._id ===
+                            (packageDetails.data?.data.package as Package)
+                              ?.energyBillQuestionId
+                          }
                           className="border border-none mt-4"
                           // label="Category"
                           value={q.questionType}

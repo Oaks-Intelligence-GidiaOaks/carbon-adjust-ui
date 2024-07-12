@@ -9,9 +9,11 @@ interface SelectItem {
 
 interface SelectInputProps {
   options: SelectItem[];
+  disabledCallback?: () => void;
   className?: string;
   value?: PropsValue<SelectItem> | undefined;
   label?: string;
+  disabled?: boolean;
   onChange?: (
     newValue: SingleValue<SelectItem>,
     actionMeta: ActionMeta<SelectItem>
@@ -120,13 +122,16 @@ const SelectInput: FC<SelectInputProps> = (props) => {
           placeholder={props.placeholder}
           aria-label={props.label}
           data-testid="select-control"
-          isDisabled={false}
+          isDisabled={props.disabled ?? false}
           isLoading={false}
           isClearable={false}
           isSearchable={true}
           value={props.value}
           options={props.options}
           onChange={props.onChange}
+          onFocus={() => {
+            props.disabledCallback && props.disabledCallback();
+          }}
         />
       </div>
     </div>
