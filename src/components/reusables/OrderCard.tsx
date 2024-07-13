@@ -180,8 +180,9 @@ const OrderCard = (props: IPackageOrder) => {
 
           {props.aiOrderResponse && props.aiOrderResponse.length > 0 && (
             <a
-              target="__blank"
+              target="_blank"
               href={props.aiOrderResponse}
+              rel="noopener noreferrer"
               className="flex-center gap-1 ml-auto cursor-pointer"
             >
               <span>
