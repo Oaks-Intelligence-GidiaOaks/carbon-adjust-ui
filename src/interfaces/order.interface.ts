@@ -53,5 +53,6 @@ export interface IPackageOrder {
   status: OrderStatus;
   createdAt: string;
   updatedAt: string;
+  aiOrderResponse: string;
   __v: number;
 }
