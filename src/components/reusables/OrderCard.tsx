@@ -170,7 +170,6 @@ const OrderCard = (props: IPackageOrder) => {
 
             <div>
               {/* downloadable icon */}
-
               {props.package.media && props.package.media.length > 0 && (
                 <a target="__blank" href={props.package.media?.[0]}>
                   <GoDownload color="#575757" size={18} />
@@ -178,6 +177,20 @@ const OrderCard = (props: IPackageOrder) => {
               )}
             </div>
           </div>
+
+          {props.aiOrderResponse && props.aiOrderResponse.length > 0 && (
+            <a
+              target="__blank"
+              href={props.aiOrderResponse}
+              className="flex-center gap-1 ml-auto cursor-pointer"
+            >
+              <span>
+                <GoDownload color="#4CAF50" size={18} />
+              </span>
+
+              <span className="text-gray-600">Download AI Package</span>
+            </a>
+          )}
         </div>
       </div>
     </div>

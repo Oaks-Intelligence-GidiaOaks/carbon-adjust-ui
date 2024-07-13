@@ -112,7 +112,7 @@ const DescriptionSection = (props: {
           </div>
         )}
 
-        <div className="lg:flex-[0.4] w-[300px]  md:w-[360px] py-[15px] flex flex-col gap-[15px] z-10 min-h-[85vh]">
+        <div className="lg:flex-[0.4] w-[300px]  md:w-[360px] py-[15px] flex flex-col gap-[15px] z-10 min-h-[75vh]">
           {/* @ts-ignore */}
           <h2 ref={scrollRef} className="text-center font-[600] text-lg ">
             Checkout
@@ -129,17 +129,17 @@ const DescriptionSection = (props: {
 
             <p className="font-[500] text-sm">{prod?.description}</p>
 
-            <div className="flex-center gap-1 flex-wrap">
+            <div className="flex-center gap-1 pt-2 !mt-auto">
               <button
                 onClick={() => props.setStage(2)}
-                className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px] !mt-auto"
+                className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px] text-sm"
               >
                 <span>Proceed</span>
               </button>
 
               <button
                 onClick={() => props.setShowCancel(true)}
-                className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px] !mt-auto"
+                className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px] text-sm "
               >
                 <span>Cancel</span>
               </button>
