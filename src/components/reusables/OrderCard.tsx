@@ -12,6 +12,13 @@ type AProps = {
 };
 
 const OrderCard = (props: IPackageOrder) => {
+  // const cleanedUrl = props.aiOrderResponse?.replace(/^"|"$/g, "").trim();
+
+  const cleanedUrl = props.aiOrderResponse
+    ?.replace(/^"+|"+$/g, "") // Remove leading/trailing quotes
+    .replace(/\\/g, "") // Remove backslashes
+    .replace(/"/g, "");
+
   const ListTile = (props: { text: string; isBorder?: boolean }) => (
     <div
       className={`${
@@ -79,9 +86,6 @@ const OrderCard = (props: IPackageOrder) => {
 
     return item[status];
   };
-
-  // console.log(props, "order");
-  // console.log(props.package, "package data");
 
   return (
     <div>
@@ -178,10 +182,10 @@ const OrderCard = (props: IPackageOrder) => {
             </div>
           </div>
 
-          {props.aiOrderResponse && props.aiOrderResponse.length > 0 && (
+          {cleanedUrl && cleanedUrl.length > 0 && (
             <a
-              target="_blank"
-              href={props.aiOrderResponse}
+              target="__blank"
+              href={cleanedUrl}
               rel="noopener noreferrer"
               className="flex-center gap-1 ml-auto cursor-pointer"
             >
