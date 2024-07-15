@@ -2,8 +2,8 @@ import { FC } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
 import CarbonAdjustLogo from "../../../assets/icons/CarbonAdjustLogo.svg";
-import SettingIcon from "../../../assets/icons/setting.svg";
-import BellIcon from "../../../assets/icons/bell.svg";
+// import SettingIcon from "../../../assets/icons/setting.svg";
+// import BellIcon from "../../../assets/icons/bell.svg";
 import UserIcon from "../../../assets/icons/User.svg";
 import footerImg from "../../../assets/images/footerImg.png";
 import { Link } from "react-router-dom";
