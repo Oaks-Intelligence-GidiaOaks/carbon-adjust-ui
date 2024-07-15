@@ -46,12 +46,13 @@ const DashboardLanding: FC = () => {
           </Link>
 
           <div className="flex-center gap-2  ml-auto">
-            <img src={SettingIcon} alt="" className="h-4 w-4" />
-            <img src={BellIcon} alt="" className="h-4 w-4" />
-
-            <div className="h-[34px] w-[34px] border rounded-full grid place-items-center ">
-              <img src={UserIcon} alt="" className="h-4 w-4" />
-            </div>
+            {/* <img src={SettingIcon} alt="" className="h-4 w-4" />
+            <img src={BellIcon} alt="" className="h-4 w-4" /> */}
+            <Link to={`/dashboard/profile`}>
+              <div className="h-[34px] w-[34px] border rounded-full grid place-items-center ">
+                <img src={UserIcon} alt="" className="h-4 w-4" />
+              </div>
+            </Link>
           </div>
         </div>
       </div>
