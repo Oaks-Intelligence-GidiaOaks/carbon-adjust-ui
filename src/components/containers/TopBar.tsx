@@ -6,13 +6,13 @@ import { SideBarBtn } from "@/assets/icons";
 // import { useSelector } from "react-redux";
 // import { RootState } from "@/app/store";
 // import { Dropdown } from "../ui";
-import categories from "../../dummy/categories.json";
+// import categories from "../../dummy/categories.json";
 
-import SettingIcon from "../../assets/icons/setting.svg";
-import BellIcon from "../../assets/icons/bell.svg";
+// import SettingIcon from "../../assets/icons/setting.svg";
+// import BellIcon from "../../assets/icons/bell.svg";
 import UserIcon from "../../assets/icons/User.svg";
 import { Link, useLocation } from "react-router-dom";
-import SelectInput from "../ui/SelectInput";
+// import SelectInput from "../ui/SelectInput";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { cn } from "@/utils";
@@ -119,9 +119,8 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
             <h2 className="font-[400] text-sm">{getActiveTab()}</h2>
           </Link>
 
-          {!isMerchant && (
+          {/* {!isMerchant && (
             <div className="hidden lg:flex items-center flex-1  justify-center gap-3 mx-auto">
-              {/* dropdown */}
               <div className="w-[180px] ">
                 <SelectInput
                   options={categories}
@@ -144,7 +143,7 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
                 />
               </div>
             </div>
-          )}
+          )} */}
 
           <div className="flex-center gap-[18px] ml-auto ">
             {/* {role === "HOME_OCCUPANT" && ( */}
@@ -167,11 +166,11 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
             {/* )} */}
 
             <div className="flex-center gap-2  ">
-              {!isMerchant && (
+              {/* {!isMerchant && (
                 <img src={SettingIcon} alt="" className="h-4 w-4" />
-              )}
+              )} */}
 
-              <img src={BellIcon} alt="" className="h-4 w-4" />
+              {/* <img src={BellIcon} alt="" className="h-4 w-4" /> */}
 
               {!isMerchant && (
                 <div className="h-[34px] w-[34px] border rounded-full grid place-items-center ">
