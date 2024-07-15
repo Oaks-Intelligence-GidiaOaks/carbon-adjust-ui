@@ -172,10 +172,12 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
 
               {/* <img src={BellIcon} alt="" className="h-4 w-4" /> */}
 
-              {!isMerchant && (
-                <div className="h-[34px] w-[34px] border rounded-full grid place-items-center ">
-                  <img src={UserIcon} alt="" className="h-4 w-4" />
-                </div>
+              {!isMerchant && !isAdmin && (
+                <Link to={`/dashboard/profile`}>
+                  <div className="h-[34px] cursor-pointer w-[34px] border rounded-full grid place-items-center ">
+                    <img src={UserIcon} alt="" className="h-4 w-4" />
+                  </div>
+                </Link>
               )}
             </div>
           </div>
