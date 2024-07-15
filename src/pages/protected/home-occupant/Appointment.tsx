@@ -3,7 +3,7 @@
 import { IoIosAlert } from "react-icons/io";
 // this is the calendar page for booking appointments
 import { CiClock2 } from "react-icons/ci";
-import { FaCheck } from "react-icons/fa6";
+// import { FaCheck } from "react-icons/fa6";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createOrderBookingSlot,
@@ -256,7 +256,7 @@ const Appointment = (_: Props) => {
 
           <hr className="my-6" />
 
-          <p className="pb-5">
+          {/* <p className="pb-5">
             It is a chance to connect with one of our team members to learn more
             about our platform and how we can help you achieve your goals
           </p>
@@ -287,10 +287,9 @@ const Appointment = (_: Props) => {
             </div>
           </div>
 
-          {/*  */}
           <p className="">
             You can also bring any questions that you might have for us!
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
