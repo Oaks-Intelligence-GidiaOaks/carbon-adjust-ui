@@ -91,7 +91,7 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     }),
 
     // User
-    columnHelper.accessor((row: any) => row.contactName, {
+    columnHelper.accessor((row: any) => row.name || row.contactName, {
       id: "contactName",
       cell: (info) => (
         <div className="w-44 mx-auto text-left">{info.getValue()}</div>
@@ -103,7 +103,7 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row.contactEmail, {
       id: "contactEmail",
       cell: (info) => (
-        <div className="line-clamp-1 pr-4 text-ellipsis w-52">
+        <div className="line-clamp-1 pr-4 text-ellipsis w-64">
           <span className="">{(info.row.original as any).email}</span>
         </div>
       ),
