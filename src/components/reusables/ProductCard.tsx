@@ -17,6 +17,8 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
     dispatch(addProduct({ ...props }));
   };
 
+  console.log(props, "sdbhvhb...");
+
   return (
     <div className="min-w-[228px] group">
       <div className="relative">
@@ -63,7 +65,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
           <div className="flex-center gap-2">
             <span className="text-xs font-[400]">
               {/* @ts-ignore */}
-              {props?.owner?.name! || props?.owner}
+              {props?.owner?.name!}
             </span>
             {Array.from({ length: 5 }, (_, i) => (
               // <FaStar size={13.94} key={i} color="#E99C1B" />
@@ -73,13 +75,13 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
 
           <h2
             className={`text-xs font-[600] ${
-              props.wrapText ? "text-wrap" : "truncate"
+              props?.wrapText ? "text-wrap" : "truncate"
             }  max-w-[228px]`}
           >
-            {props.title}
+            {props?.title}
           </h2>
 
-          <h2 className="text-xs font-[600] ">{` ${props.currency} ${
+          <h2 className="text-xs font-[600] ">{` ${props?.currency} ${
             props.price ?? 0
           }`}</h2>
         </div>

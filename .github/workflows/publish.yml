@@ -19,9 +19,9 @@ jobs:
       - name: Build
         env:
           SOCKET_SERVER: ${{ secrets.SOCKET_SERVER }}
-          VITE_STRIPE_KEY: pk_live_51OVeimKSbtUMob1V48LSN7BnUuZ73JkBlK6sYpYREMTa3JAQmiXj5lWPNWmDh9xwTaPY54teKf2Hy8HhFbacPe41003pluX3ri
-          VITE_BASE_URL: https://carbon-adjust-api-v2-d77b19823594.herokuapp.com/api/v1
-        run: npm run build:debug # The build command of your project
+          VITE_STRIPE_KEY: ${{ secrets.VITE_STRIPE_KEY }}
+          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+        run: npm run build # The build command of your project
 
       - name: Push
         uses: s0/git-publish-subdir-action@develop
