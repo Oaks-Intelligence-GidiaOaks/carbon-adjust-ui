@@ -135,9 +135,9 @@ const Sidebar = ({
           {isMerchant && (
             <div className="flex-center gap-4 mt-auto">
               <img
-                src="/assets/graphics/user-img.svg"
+                src={user?.dp ?? "/assets/graphics/user-img.svg"}
                 alt=""
-                className="h-10 w-10 rounded-full"
+                className="h-10 w-10 rounded-full border"
               />
 
               <div
