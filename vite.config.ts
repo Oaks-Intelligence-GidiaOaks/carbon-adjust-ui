@@ -7,9 +7,6 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), svgr(), tsconfigPaths()],
-  define: {
-    "process.env.NODE_ENV": JSON.stringify("development"),
-  },
   optimizeDeps: {
     exclude: ["chunk-F3A25OKW.js"],
   },
