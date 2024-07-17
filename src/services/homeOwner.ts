@@ -112,3 +112,26 @@ export const initiatePayment = async (iData: { orderId: string }) => {
 
   return data;
 };
+
+// USER MANAGEMENT
+export const updateUserProfile = async (userData: any) => {
+  const { data } = await axiosInstance.patch("/users/me/profile", userData);
+
+  return data;
+};
+
+export const getMe = async () => {
+  const { data } = await axiosInstance.get("/users/me");
+
+  return data;
+};
+
+export const changeProfileDp = async (formData: any) => {
+  const { data } = await axiosInstance.post("/users/me/profile/dp", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+};

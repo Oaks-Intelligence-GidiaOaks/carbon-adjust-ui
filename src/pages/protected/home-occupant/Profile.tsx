@@ -1,19 +1,83 @@
-import { RootState } from "@/app/store";
 import { AccountSetupScribbleRight } from "@/assets/icons";
-import FlyoutSidebar from "@/components/reusables/FlyoutSidebar";
-// import UserProfile from "@/components/sub-pages/user/Profile";
-import { Button, CountryRegionDropdown, Input } from "@/components/ui";
+import EditProfileModal from "@/components/containers/EditProfileModal";
+import { Button } from "@/components/ui";
 import { formatDate } from "@/lib/utils";
+import { changeProfileDp, getMe } from "@/services/homeOwner";
 import { cn } from "@/utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FC, useState } from "react";
+import toast from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
-import { useSelector } from "react-redux";
-
-// type Props = {}
 
 const Profile: FC = () => {
-  const { user } = useSelector((state: RootState) => state.user);
   const [showEditModal, setShowEditModal] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { data, isLoading, isSuccess } = useQuery({
+    queryKey: ["get-me"],
+    queryFn: () => getMe(),
+  });
+
+  const uploadDpMutation = useMutation({
+    mutationKey: ["Edit profile"],
+    mutationFn: (formData: FormData) => changeProfileDp(formData),
+    onSuccess: (_: any) => {
+      queryClient.invalidateQueries({ queryKey: ["get-me"] });
+      toast.success("Profile picture updated successfully.");
+      setShowEditModal(false);
+    },
+    onError: () => {
+      toast.error("Error updating profile picture.");
+    },
+  });
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (!file) {
+      return; // No file selected
+    }
+
+    // Check if the file is an image
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file.");
+      e.target.files = null; // Reset file input
+      return;
+    }
+
+    // Check if the file size exceeds 2MB
+    if (file.size > 1 * 1024 * 1024) {
+      toast.error("Please select an image file smaller than 1MB.");
+      e.target.files = null; // Reset file input
+      return;
+    }
+
+    const formData = new FormData();
+
+    if (file) {
+      formData.append("file", file);
+      uploadDpMutation.mutate(formData);
+    } else {
+      toast.error("You did not select an image.");
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="grid place-items-center">
+        <Oval
+          visible={true}
+          height="20"
+          width="20"
+          color="#ffffff"
+          ariaLabel="oval-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      </div>
+    );
+  }
+
+  let user = isSuccess ? data.data : {};
 
   return (
     <div className="min-h-screen">
@@ -28,7 +92,7 @@ const Profile: FC = () => {
             name="image"
             id="image"
             className="hidden"
-            onChange={() => {}}
+            onChange={handleFileChange}
             accept="image/*"
           />
 
@@ -68,8 +132,8 @@ const Profile: FC = () => {
         {/* name */}
         <div className="flex flex-wrap gap-6 justify-between items-center pb-6 border-b border-grey-swatch-400">
           <div>
-            <p className="font-poppins font-semibold text-lg">{"emmanuel"}</p>
-            <p className="font-poppins text-sm">{"email"}</p>
+            <p className="font-poppins font-semibold text-lg">{user?.name}</p>
+            <p className="font-poppins text-sm">{user?.email}</p>
           </div>
 
           <Button
@@ -95,7 +159,7 @@ const Profile: FC = () => {
             <div>
               <p className="text-ca-blue font-poppins">Account Created</p>
               <p className="text-main font-poppins mt-1">
-                {formatDate(user!.createdAt)}
+                {formatDate(user?.createdAt)}
               </p>
             </div>
             <div>
@@ -138,118 +202,11 @@ const Profile: FC = () => {
       </div>
 
       {/* edit sidebar */}
-      <FlyoutSidebar isOpen={showEditModal} onOpenChange={setShowEditModal}>
-        <div className="font-poppins relative h-full">
-          <div className="px-2 sm:px-6 min-h-screen">
-            <div>
-              <p className="font-semibold text-2xl text-black-main">
-                Edit Profile
-              </p>
-              <p className="text-gray-500 mt-1">
-                Update your profile information
-              </p>
-            </div>
-
-            <div className="px-2 my-10 rounded-xl flex flex-col gap-y-4">
-              {/* Contact Information */}
-              <p className="mb-2 font-medium text-main text-lg">
-                Personal Information
-              </p>
-              <Input
-                name="contactName"
-                label="Contact Name"
-                disabled
-                labelClassName="mb-4"
-                inputClassName="bg-gray-100"
-                placeholder="Enter name"
-                value={"me"}
-                onChange={(e) => console.log(e.target.value)}
-              />
-              <Input
-                name="contactEmail"
-                label="Contact Email"
-                labelClassName="mb-4"
-                inputClassName="bg-gray-100"
-                disabled
-                placeholder="Enter email"
-                // value={formState.email}
-                onChange={() => {}}
-              />
-            </div>
-
-            <div className="px-2 my-10 pb-10 rounded-xl flex flex-col gap-y-4">
-              {/* Address section */}
-              <p className=" mb-2 font-medium text-main text-lg">Address</p>
-              <div>
-                <CountryRegionDropdown
-                  name="countryOfResidence"
-                  labelClassName="mb-4 text-[#000000_!important]"
-                  options={[]}
-                  searchable={true}
-                  label="Country of Residence"
-                  wrapperClassName="bg-gray-100 w-full"
-                  placeholder="Select country"
-                  // value={}
-                  cityChange={() => {}}
-                />
-              </div>
-
-              <div>
-                <CountryRegionDropdown
-                  name="city/province"
-                  labelClassName="mb-4 text-[#000000_!important]"
-                  options={[]}
-                  searchable={true}
-                  label="City/Province"
-                  wrapperClassName="bg-gray-100 w-full"
-                  placeholder="Select city/province"
-                  // value={formState.address.cityOrProvince}
-                  cityChange={() => {}}
-                />
-              </div>
-              <Input
-                name="lineOfAddress"
-                label="First Line of Address"
-                labelClassName="mb-4"
-                inputClassName="bg-gray-100"
-                placeholder="Enter address"
-                // value={}
-                onChange={() => {}}
-              />
-
-              <Input
-                name="zipCode"
-                label="Zip Code"
-                labelClassName="mb-4"
-                inputClassName="bg-gray-100"
-                placeholder="Enter zip code"
-                // value={}
-                onChange={() => {}}
-              />
-            </div>
-          </div>
-          <div className="sticky bottom-0 mt-20 bg-white left-0 p-4 flex justify-around gap-2 flex-wrap font-poppins border w-full border-t-black-main/50 z-50">
-            <Button
-              onClick={() => {}}
-              className="text-white w-full min-w-[120px]"
-            >
-              {/* {editProfileMutation.isPending ? (
-                <Oval
-                  visible={editProfileMutation.isPending}
-                  height="20"
-                  width="20"
-                  color="#ffffff"
-                  ariaLabel="oval-loading"
-                  wrapperStyle={{}}
-                  wrapperClass=""
-                />
-              ) : ( */}
-              <span>Save changes</span>
-              {/* )} */}
-            </Button>
-          </div>
-        </div>
-      </FlyoutSidebar>
+      <EditProfileModal
+        // @ts-ignore
+        setShowEditModal={setShowEditModal}
+        showEditModal={showEditModal}
+      />
     </div>
   );
 };
