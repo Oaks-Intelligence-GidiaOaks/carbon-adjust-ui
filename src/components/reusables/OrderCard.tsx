@@ -95,7 +95,8 @@ const OrderCard = (props: IPackageOrder) => {
             <div className=" hidden md:px-4 bg-[#F3F5F7] w-[100px] h-[100px] md:grid place-items-center rounded-lg">
               <img
                 src={
-                  props.package.attachments[0] || "/assets/graphics/user1.svg"
+                  props.package?.attachments?.[0] ||
+                  "/assets/graphics/user1.svg"
                 }
                 alt=""
                 className="object-cover rounded-lg"
@@ -105,24 +106,24 @@ const OrderCard = (props: IPackageOrder) => {
             {/*  */}
             <div className="flex flex-col justify-between pl-4">
               <h2 className="text-lg font-[600] font-poppins">
-                {props.package.title}
+                {props?.package?.title}
               </h2>
 
               <div className="flex-center gap-[10px]">
                 <ListTile
-                  text={`Applied Date: ${formatDate(props.createdAt)} `}
+                  text={`Applied Date: ${formatDate(props?.createdAt)} `}
                   key={1}
                   isBorder={true}
                 />
 
                 <ListTile
-                  text={`${props.package.title}`}
+                  text={`${props?.package?.title || ""}`}
                   key={1}
                   isBorder={true}
                 />
 
                 <ListTile
-                  text={props.package.country}
+                  text={props?.package?.country}
                   key={1}
                   isBorder={true}
                 />
@@ -152,7 +153,7 @@ const OrderCard = (props: IPackageOrder) => {
                 props.status
               )}  font-dm-sans rounded-[26px] h-[22px] w-[97px] grid place-items-center text-white font-[400] text-xs`}
             >
-              <span>{props.status}</span>
+              <span>{props?.status}</span>
             </button>
           </div>
         </div>
@@ -167,15 +168,15 @@ const OrderCard = (props: IPackageOrder) => {
 
           <div className="flex-center gap-2">
             <span className="font-[500] text-[#2B2A2A]">
-              Payment: {props.paymentStatus.toUpperCase()}
+              Payment: {props?.paymentStatus?.toUpperCase()}
             </span>
 
-            {paymentStatusIcon(props.paymentStatus)}
+            {paymentStatusIcon(props?.paymentStatus)}
 
             <div>
               {/* downloadable icon */}
-              {props.package.media && props.package.media.length > 0 && (
-                <a target="__blank" href={props.package.media?.[0]}>
+              {props.package?.media && props.package.media?.length > 0 && (
+                <a target="__blank" href={props.package?.media?.[0]}>
                   <GoDownload color="#575757" size={18} />
                 </a>
               )}

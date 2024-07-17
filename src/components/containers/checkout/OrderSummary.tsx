@@ -49,7 +49,7 @@ const OrderSummary = (props: {
       dispatch(updatePrice(sx.data.price));
       // console.log(sx.data, "order data");
 
-      console.log(product, "product");
+      // console.log(product, "product");
 
       // redirect to process payment page
       if (product.price && Number(product.price) > 0) {
