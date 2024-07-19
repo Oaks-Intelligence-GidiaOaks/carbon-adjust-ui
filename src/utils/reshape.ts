@@ -7,7 +7,6 @@ export const transformAdminUserRegistrations = (data: any) => {
     const {
       activationCode,
       activationExpiry,
-      address,
       bio,
       doc,
       emailActivatedAt,
