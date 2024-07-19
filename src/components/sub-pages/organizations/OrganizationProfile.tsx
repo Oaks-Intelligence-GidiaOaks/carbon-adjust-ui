@@ -35,15 +35,15 @@ const OrganizationProfile = (_: Props) => {
   const [formState, setFormState] = useState({
     address: {
       country: {
-        label: userData?.address.country ?? "",
-        value: userData?.address.country ?? "",
+        label: userData?.address?.country ?? "",
+        value: userData?.address?.country ?? "",
       },
       cityOrProvince: {
-        label: userData?.address.cityOrProvince ?? "",
-        value: userData?.address.cityOrProvince ?? "",
+        label: userData?.address?.cityOrProvince ?? "",
+        value: userData?.address?.cityOrProvince ?? "",
       },
-      firstLineAddress: userData?.address.firstLineAddress ?? "",
-      zipcode: userData?.address.zipcode ?? "",
+      firstLineAddress: userData?.address?.firstLineAddress ?? "",
+      zipcode: userData?.address?.zipcode ?? "",
     },
     bio: userData?.bio ?? "",
     contactEmail: userData?.contactEmail ?? "",
@@ -125,7 +125,7 @@ const OrganizationProfile = (_: Props) => {
 
   useEffect(() => {
     setStatesList(
-      State.getStatesOfCountry(formState.address.country?.value).map(
+      State.getStatesOfCountry(formState?.address?.country?.value).map(
         (state) => ({
           label: state.name,
           value: state.name,
@@ -133,7 +133,7 @@ const OrganizationProfile = (_: Props) => {
       )
     );
 
-    if (formState.address.country.label !== userData?.address.country) {
+    if (formState?.address?.country?.label !== userData?.address?.country) {
       setFormState((prev) => ({
         ...prev,
         address: {

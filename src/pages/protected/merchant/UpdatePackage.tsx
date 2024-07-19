@@ -137,7 +137,7 @@ const UpdatePackage = (_: Props) => {
       label:
         (packageDetails.data?.data.package as Package)?.aiPackageType
           ?.split("-")
-          ?.map((w) => w[0].toUpperCase() + w.slice(1))
+          ?.map((w) => w[0]?.toUpperCase() + w?.slice(1))
           ?.join(" ") ?? "",
       value:
         (packageDetails.data?.data.package as Package)?.aiPackageType ?? "",
@@ -455,7 +455,7 @@ const UpdatePackage = (_: Props) => {
             label:
               (packageDetails.data?.data.package as Package)?.aiPackageType
                 ?.split("-")
-                ?.map((w) => w[0].toUpperCase() + w.slice(1))
+                ?.map((w) => w[0]?.toUpperCase() + w?.slice(1))
                 ?.join(" ") ?? "",
             value:
               (packageDetails.data?.data.package as Package)?.aiPackageType ??
@@ -952,7 +952,7 @@ const UpdatePackage = (_: Props) => {
               {packageState?.hasQuestion && (
                 <div className="mt-4 flex flex-col gap-y-6">
                   {packageState?.questions.map((q, i: number) => (
-                    <div className="flex gap-x-4 items-end">
+                    <div key={i} className="flex gap-x-4 items-end">
                       <div className="flex flex-col flex-1">
                         <Input
                           name=""

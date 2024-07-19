@@ -70,10 +70,10 @@ const StaffModal = (props: Props) => {
   }, [searchQuery, staff.isSuccess]);
 
   return (
-    <div className="fixed z-[10000000] inset-0 bg-gray-500/20 backdrop-blur-sm flex justify-center items-center">
+    <div className="fixed z-[10000000] overflow-scroll inset-0 bg-gray-500/20 backdrop-blur-sm flex justify-center items-center">
       <div
         ref={ref}
-        className="w-[95%] sm:w-1/2 max-w-[513px] min-w-[240px] h-[clamp(400px,60%,688px)] flex flex-col bg-white shadow-lg rounded-xl overflow-hidden"
+        className="w-[95%] sm:w-1/2 max-w-[513px] min-w-[240px] h-[clamp(400px,80%,688px)] flex flex-col bg-white shadow-lg rounded-xl overflow-scroll"
       >
         {/* Header */}
         <div className="bg-gray-100/70 p-8 pb-4 flex justify-between gap-x-4 items-start">
