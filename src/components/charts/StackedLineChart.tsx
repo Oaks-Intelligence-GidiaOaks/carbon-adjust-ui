@@ -92,44 +92,54 @@ export const options = {
 };
 
 export type StackedChartProps = {
-  received?: { month: string; year: number; count: number }[];
-  rejected?: { month: string; year: number; count: number }[];
-  approved?: { month: string; year: number; count: number }[];
+  completed?: { month: string; year: number; count: number }[];
+  cancelled?: { month: string; year: number; count: number }[];
+  pending?: { month: string; year: number; count: number }[];
+  processing?: { month: string; year: number; count: number }[];
 };
 
 export function StackedLineChart({
-  received,
-  rejected,
-  approved,
+  completed,
+  cancelled,
+  pending,
+  processing,
 }: StackedChartProps) {
   const labels: string[] = [];
 
-  received?.forEach((val) => labels.push(val.month));
+  pending?.forEach((val) => labels.push(val.month));
 
   const data = {
     labels,
     datasets: [
       {
-        label: "Received",
-        data: received?.map((app) => app.count),
+        label: "Pending",
+        data: pending?.map((app) => app.count),
         borderColor: "rgb(243, 245, 255, 0.7)",
         backgroundColor: "rgba(243, 245, 255, 0.7)",
         yAxisID: "y",
         fill: true,
       },
       {
-        label: "Approved",
-        data: approved?.map((app) => app.count),
-        borderColor: "rgb(249, 151, 138, 0.8)",
-        backgroundColor: "rgba(249, 151, 138, 0.8)",
+        label: "Completed",
+        data: completed?.map((app) => app.count),
+        borderColor: "rgb(55,215,75, 0.3)",
+        backgroundColor: "rgba(55,215,75, 0.3)",
         yAxisID: "y",
         fill: true,
       },
       {
-        label: "Rejected",
-        data: rejected?.map((app) => app.count),
-        borderColor: "rgb(205, 228, 254, 0.6)",
-        backgroundColor: "rgba(205, 228, 254, 0.6)",
+        label: "Cancelled",
+        data: cancelled?.map((app) => app.count),
+        borderColor: "rgb(254, 1, 6, 0.3)",
+        backgroundColor: "rgba(254, 1, 6, 0.3)",
+        yAxisID: "y",
+        fill: true,
+      },
+      {
+        label: "Processing",
+        data: processing?.map((app) => app.count),
+        borderColor: "rgb(255,215,75)",
+        backgroundColor: "rgba(255,215,75)",
         yAxisID: "y",
         fill: true,
       },

@@ -197,6 +197,7 @@ DropdownProps) => {
             value?.label ? "" : "text-grey-swatch-600"
           )}
           name={name}
+          disabled={disabled}
         >
           {value?.label === "" ? placeholder : value?.label}
           <ChevronDownIcon

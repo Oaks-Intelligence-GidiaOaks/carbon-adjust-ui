@@ -54,8 +54,22 @@ export const getAllPackages = async () => {
   return data;
 };
 
+export const getEarnings = async () => {
+  const { data } = await axiosInstance.get(`/application/merchant/earnings`);
+
+  return data;
+};
+
 export const getAllApplications = async () => {
   const { data } = await axiosInstance.get(`/application/merchant`);
+
+  return data;
+};
+
+export const getApplicationsChart = async (year: number) => {
+  const { data } = await axiosInstance.get(
+    `/application/merchant/monthly-chart?year=${year}`
+  );
 
   return data;
 };

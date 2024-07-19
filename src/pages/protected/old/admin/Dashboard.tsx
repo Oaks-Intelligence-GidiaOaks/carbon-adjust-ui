@@ -2,7 +2,7 @@ import { FC } from "react";
 import OrgDashboardDetailsCard from "@/components/reusables/OrgDashboardDetailsCard";
 import { formatLargeNumber } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
-import { StackedLineChart } from "@/components/charts/StackedLineChart";
+// import { StackedLineChart } from "@/components/charts/StackedLineChart";
 import AdminAggregatorRegistrationGrid from "@/components/grid/CollapsibleGrid";
 import { fetchAllUsers } from "@/services/adminService";
 // import { Dropdown } from "@/components/ui";
@@ -109,7 +109,7 @@ const Dashboard: FC = () => {
                 }}
                 className="relative w-full"
               >
-                <StackedLineChart
+                {/* <StackedLineChart
                   approved={
                     adminDashboardData.data.data.data.applications_chart
                       .approved
@@ -122,7 +122,7 @@ const Dashboard: FC = () => {
                     adminDashboardData.data.data.data.applications_chart
                       .received
                   }
-                />
+                /> */}
               </div>
               <div className="mt-6 flex justify-center gap-x-3 items-center"></div>
             </div>

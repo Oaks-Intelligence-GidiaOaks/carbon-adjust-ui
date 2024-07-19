@@ -8,16 +8,41 @@ import MainActionSubHeader from "@/components/reusables/MainActionSubHeader";
 // import ProcessApplicationModal from "@/components/reusables/ProcessApplicationModal";
 // import RejectApplicationModal from "@/components/reusables/RejectApplicationModal";
 import { useQuery } from "@tanstack/react-query";
-import { getAllApplications, getAllPackages } from "@/services/merchantService";
+import {
+  getAllApplications,
+  getAllPackages,
+  getApplicationsChart,
+  getEarnings,
+} from "@/services/merchantService";
 import { transformPackagesGridData } from "@/utils/reshape";
+import { formatNumberWithCommas, getLastFiveYears } from "@/utils";
+import { useState } from "react";
+import { Dropdown } from "@/components/ui";
 
 type Props = {};
 
+type ChartType = {
+  month: string;
+  year: number;
+  cancelled: number;
+  pending: number;
+  completed: number;
+  processing: number;
+};
+
 const Dashboard = (_: Props) => {
+  const [yearSelector, setYearSelector] = useState({
+    label: new Date().getFullYear(),
+    value: new Date().getFullYear(),
+  });
   // integration
   const { data, isSuccess } = useQuery({
     queryKey: ["get-packages"],
     queryFn: () => getAllPackages(),
+  });
+  const { data: earningsData } = useQuery({
+    queryKey: ["get-total-earnings"],
+    queryFn: () => getEarnings(),
   });
 
   const { data: applicationsData, isSuccess: isApplicationsSuccess } = useQuery(
@@ -26,6 +51,11 @@ const Dashboard = (_: Props) => {
       queryFn: () => getAllApplications(),
     }
   );
+
+  const { data: applicationsChart } = useQuery({
+    queryKey: ["get-applications-chart", yearSelector.value],
+    queryFn: () => getApplicationsChart(yearSelector.value),
+  });
 
   const pkgData = isSuccess
     ? transformPackagesGridData(data.data.packages)
@@ -59,7 +89,7 @@ const Dashboard = (_: Props) => {
     },
     {
       title: "Total Earnings",
-      value: "£0",
+      value: `£${formatNumberWithCommas(earningsData?.data?.total ?? "0")}`,
       icon: (
         <div className="size-7 flex justify-center items-center bg-purple-100 rounded-lg">
           <img src="/assets/icons/org-dashboard/project.svg" />
@@ -102,13 +132,13 @@ const Dashboard = (_: Props) => {
           <p className="font-poppins font-bold pb-8 text-main text-xl">
             Applications
           </p>
-          {/* <Dropdown
-                name="yearSelector"
-                wrapperClassName={"w-20 border border-gray-500 shadow-lg"}
-                value={yearSelector}
-                onOptionChange={(value) => setYearSelector(value)}
-                options={getLastFiveYears()}
-              /> */}
+          <Dropdown
+            name="yearSelector"
+            wrapperClassName={"w-20 border border-gray-500 shadow-lg"}
+            value={yearSelector}
+            onOptionChange={(value) => setYearSelector(value)}
+            options={getLastFiveYears()}
+          />
         </div>
         <div
           style={{
@@ -119,7 +149,60 @@ const Dashboard = (_: Props) => {
           }}
           className="relative w-full"
         >
-          <StackedLineChart approved={[]} rejected={[]} received={[]} />
+          <StackedLineChart
+            completed={
+              applicationsChart?.data?.map((v: ChartType) => ({
+                month: v.month,
+                year: v.year,
+                count: v.completed,
+              })) ?? []
+            }
+            cancelled={
+              applicationsChart?.data?.map((v: ChartType) => ({
+                month: v.month,
+                year: v.year,
+                count: v.cancelled,
+              })) ?? []
+            }
+            pending={
+              applicationsChart?.data?.map((v: ChartType) => ({
+                month: v.month,
+                year: v.year,
+                count: v.pending,
+              })) ?? []
+            }
+            processing={
+              applicationsChart?.data?.map((v: ChartType) => ({
+                month: v.month,
+                year: v.year,
+                count: v.processing,
+              })) ?? []
+            }
+          />
+          <div className="flex gap-4 flex-wrap justify-center items-center px-4 mt-4">
+            <div className="flex justify-center gap-2 items-center">
+              <div className="size-2 rounded-full bg-[rgba(243,245,255,1)] drop-shadow-[0_0_1px_rgba(0,0,0,0.3)]" />
+              <span className="text-[rgba(243,245,255,1)] drop-shadow-[0_0_1px_rgba(0,0,0,0.3)] text-sm">
+                Pending
+              </span>
+            </div>
+            <div className="flex justify-center gap-2 items-center">
+              <div className="size-2 rounded-full bg-[rgba(255,215,75,1)] drop-shadow-[0_0_1px_rgba(0,0,0,0.3)]" />
+              <span className="text-[rgba(255,215,75,1)] text-sm">
+                Processing
+              </span>
+            </div>
+            <div className="flex justify-center gap-2 items-center">
+              <div className="size-2 rounded-full bg-[rgba(55,215,75,1)]" />
+              <span className="text-[rgba(55,215,75,1)] text-sm">
+                Completed
+              </span>
+            </div>
+            <div className="flex justify-center gap-2 items-center">
+              <div className="size-2 rounded-full bg-[rgba(254,1,6,1)]" />
+              <span className="text-[rgba(254,1,6,1)] text-sm">Cancelled</span>
+            </div>
+          </div>
         </div>
 
         <div className="mt-6 flex justify-center gap-x-3 items-center"></div>
