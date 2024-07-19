@@ -1,4 +1,4 @@
-import { StackedLineChart } from "@/components/charts/StackedLineChart";
+// import { StackedLineChart } from "@/components/charts/StackedLineChart";
 // import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
 import OrgDashboardDetailsCard from "@/components/reusables/OrgDashboardDetailsCard";
 // import { IComponentMap } from "@/types/general";
@@ -116,7 +116,7 @@ const Dashboard = (_: Props) => {
           }}
           className="relative w-full"
         >
-          <StackedLineChart approved={[]} rejected={[]} received={[]} />
+          {/* <StackedLineChart approved={[]} rejected={[]} received={[]} /> */}
         </div>
 
         <div className="mt-6 flex justify-center gap-x-3 items-center"></div>

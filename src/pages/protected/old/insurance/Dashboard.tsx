@@ -4,7 +4,7 @@ import { formatLargeNumber } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/api/axiosInstance";
 import MainActionSubHeader from "@/components/reusables/MainActionSubHeader";
-import { StackedLineChart } from "@/components/charts/StackedLineChart";
+// import { StackedLineChart } from "@/components/charts/StackedLineChart";
 import InsuranceApplicationsGrid from "@/components/grid/InsuranceApplicationsGrid";
 import Loading from "@/components/reusables/Loading";
 // import { Dropdown } from "@/components/ui";
@@ -114,7 +114,7 @@ const Dashboard: FC = () => {
               }}
               className="relative w-full"
             >
-              <StackedLineChart
+              {/* <StackedLineChart
                 approved={
                   insuranceDashboardData.data.data.data.applications_chart
                     .approved
@@ -127,7 +127,7 @@ const Dashboard: FC = () => {
                   insuranceDashboardData.data.data.data.applications_chart
                     .received
                 }
-              />
+              /> */}
             </div>
             <div className="mt-6 flex justify-center gap-x-3 items-center"></div>
           </div>
