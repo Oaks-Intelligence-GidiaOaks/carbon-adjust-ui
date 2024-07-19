@@ -616,6 +616,11 @@ export const adminSideBarItems = [
     title: "Packages",
     href: "/admin/packages",
   },
+  {
+    icon: UsersIcon,
+    title: "Adverts",
+    href: "/admin/ads",
+  },
   // {
   //   icon: ApplicationsIcon,
   //   title: "Applications",
