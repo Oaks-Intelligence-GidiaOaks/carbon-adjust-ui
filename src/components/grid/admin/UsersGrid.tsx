@@ -34,6 +34,8 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
   //     userId: "",
   //   });
 
+  console.log(props.data, "ahsvg");
+
   const queryClient = useQueryClient();
   const actionButtonsRef = useRef<HTMLDivElement>(null);
 
@@ -125,6 +127,78 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
       header: () => <div className="w-44 text-left">Phone</div>,
     }),
 
+    columnHelper.accessor((row: any) => row?.address.country, {
+      id: "Country",
+      cell: (info) => {
+        console.log(info.row.original);
+
+        return (
+          <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
+            <span className="">
+              {Boolean((info.row.original as any)?.address?.country)
+                ? (info.row.original as any)?.address?.country
+                : "---------------"}
+            </span>
+          </div>
+        );
+      },
+      header: () => <div className="w-44 text-left">Country</div>,
+    }),
+
+    // Address info
+    columnHelper.accessor((row: any) => row?.address.cityOrProvince, {
+      id: "City",
+      cell: (info) => {
+        console.log(info.row.original);
+
+        return (
+          <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
+            <span className="">
+              {Boolean((info.row.original as any)?.address?.cityOrProvince)
+                ? (info.row.original as any)?.address?.cityOrProvince
+                : "---------------"}
+            </span>
+          </div>
+        );
+      },
+      header: () => <div className="w-44 text-left">City</div>,
+    }),
+
+    columnHelper.accessor((row: any) => row?.address.firstLineAddress, {
+      id: "Address",
+      cell: (info) => {
+        console.log(info.row.original);
+
+        return (
+          <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
+            <span className="">
+              {Boolean((info.row.original as any)?.address?.firstLineAddress)
+                ? (info.row.original as any)?.address?.firstLineAddress
+                : "---------------"}
+            </span>
+          </div>
+        );
+      },
+      header: () => <div className="w-44 text-left">Home Address</div>,
+    }),
+
+    columnHelper.accessor((row: any) => row?.address.zipcode, {
+      id: "Address",
+      cell: (info) => {
+        console.log(info.row.original);
+
+        return (
+          <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
+            <span className="">
+              {Boolean((info.row.original as any)?.address?.zipcode)
+                ? (info.row.original as any)?.address?.zipcode
+                : "---------------"}
+            </span>
+          </div>
+        );
+      },
+      header: () => <div className="w-44 text-left">Zip code</div>,
+    }),
     // Acount Type
 
     // Status
