@@ -69,10 +69,12 @@ import MerchantRegister from "@/pages/public/MerchantRegister";
 import ManagePackageSchedule from "@/pages/protected/merchant/ManagePackageSchedule";
 import Payment from "@/pages/protected/home-occupant/Payment";
 import PaymentSuccess from "@/components/containers/checkout/PaymentSuccess";
-import TermsAndConditions from "@/pages/TermsAndConditions";
 import ForgotPassword from "@/pages/public/ForgotPassword";
 import ResetPassword from "@/pages/public/ResetPassword";
 import { StaffApplications, StaffDashboard } from "@/pages/protected/staff";
+import PrivacyPolicy from "@/pages/public/PrivacyPolicy";
+import TermsAndConditions from "@/pages/public/TermsAndConditions";
+import MerchantTermsAndConditions from "@/pages/public/MerchantTermsAndConditions";
 
 const Router = createBrowserRouter([
   {
@@ -82,6 +84,14 @@ const Router = createBrowserRouter([
   {
     path: "/terms-and-conditions",
     element: <TermsAndConditions />,
+  },
+  {
+    path: "/terms-and-conditions/merchant",
+    element: <MerchantTermsAndConditions />,
+  },
+  {
+    path: "/privacy-policy",
+    element: <PrivacyPolicy />,
   },
   {
     path: "/forgot-password",
