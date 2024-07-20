@@ -257,9 +257,15 @@ const MerchantRegister = () => {
                   />
                   <p className="font-poppins text-xs text-grey-swatch-800">
                     By clicking create account, you agree to the{" "}
-                    <Link to={"/terms-and-conditions"}>
+                    <Link to={"/terms-and-conditions/merchant"}>
                       <span className="inline-flex text-xs py-0 h-fit px-0 bg-transparent text-blue-main hover:underline underline-offset-1 font-normal">
                         Terms and Conditions
+                      </span>
+                    </Link>{" "}
+                    and{" "}
+                    <Link to={"/privacy-policy"}>
+                      <span className="inline-flex text-xs py-0 h-fit px-0 bg-transparent text-blue-main hover:underline underline-offset-1 font-normal">
+                        Privacy Policy
                       </span>
                     </Link>
                   </p>

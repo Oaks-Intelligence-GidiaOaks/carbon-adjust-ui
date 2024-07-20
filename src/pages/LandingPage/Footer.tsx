@@ -56,13 +56,13 @@ const Footer = () => {
     <div className="px-6 lg:px-0 h-[450px] md:h-[250px] relative lg:w-[80%] mx-auto">
       <div className="lg:container">
         <div className="pt-10">
-          <div className="md:flex md:flex-wrap md:items-center md:justify-between">
+          <div className="md:flex md:flex-wrap md:items-start md:justify-between">
             <NavLink to={"#home"}>
               <img className=" bg-cover w-36" src={footerLogo} alt="" />
             </NavLink>
             <div className="flex flex-col gap-6 lg:gap-3 md:items-start md:justify-start mt-6 md:mt-0">
               <NavLink
-                to={"#"}
+                to={"#contact-us"}
                 className="text-sm font-medium font-poppins text-[#2E599A] md:flex md:items-center md:justify-center"
               >
                 Help
@@ -74,9 +74,9 @@ const Footer = () => {
                 Contact us
               </NavLink>
             </div>
-            <div className="flex flex-col gap-6 lg:gap-3 md:items-center md:justify-center mt-6  md:mt-0">
+            <div className="flex flex-col gap-6 lg:gap-3 md:items-start md:justify-center mt-6  md:mt-0">
               <NavLink
-                to={"#"}
+                to={"/privacy-policy"}
                 className="text-sm font-medium font-poppins text-[#2E599A] md:flex items-center md:justify-center"
               >
                 Privacy policy
@@ -85,7 +85,13 @@ const Footer = () => {
                 to={"/terms-and-conditions"}
                 className="text-sm font-medium font-poppins text-[#2E599A] md:flex md:items-center md:justify-center"
               >
-                Terms of use
+                Home Occupant T&C
+              </NavLink>
+              <NavLink
+                to={"/terms-and-conditions/merchant"}
+                className="text-sm font-medium font-poppins text-[#2E599A] md:flex md:items-center md:justify-center"
+              >
+                Merchant T&C
               </NavLink>
             </div>
             <div className="mt-6  md:mt-0">
