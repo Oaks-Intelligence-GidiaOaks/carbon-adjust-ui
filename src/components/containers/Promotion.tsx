@@ -14,21 +14,20 @@ const Promotion = (_: Props) => {
   });
 
   const promotionCards = data?.data || [];
-
-  console.log(data?.data, "-----------");
+  // console.log(data?.data, "-----------");
 
   useEffect(() => {
-    if (promotionCards.length > 0) {
-      const { exposureTime } = promotionCards[currentIndex];
+    if (promotionCards.length === 0) return;
 
-      const duration = Number(exposureTime) * 1000;
+    const { exposureTime } = promotionCards[currentIndex];
+    if (!exposureTime) return;
 
-      const timeout = setTimeout(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % promotionCards.length);
-      }, duration);
+    const duration = Number(exposureTime) * 1000;
+    const timeout = setTimeout(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % promotionCards.length);
+    }, duration);
 
-      return () => clearTimeout(timeout);
-    }
+    return () => clearTimeout(timeout);
   }, [currentIndex, promotionCards]);
 
   // useEffect(() => {
