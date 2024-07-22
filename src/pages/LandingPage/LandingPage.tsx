@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaBars } from "react-icons/fa";
+// import { FaBars } from "react-icons/fa";
 import CarbonAdjustLogo from "../../assets/icons/CarbonAdjustLogo.svg";
 // import BgCover from "../../assets/images/BgCover.png";
 import Hero from "./Hero";
@@ -85,7 +85,7 @@ const LandingPage = () => {
               <img src={CarbonAdjustLogo} alt="" className="xl:w-[200px]" />
             </div>
 
-            <ul className=" hidden sm:flex justify-center flex-1 items-center gap-6">
+            {/* <ul className=" hidden sm:flex justify-center flex-1 items-center gap-6">
               <Link to={"#home"}>
                 <li className={`cursor-pointer py-4 base px-2 text-black`}>
                   Home
@@ -106,7 +106,7 @@ const LandingPage = () => {
                   Contact us
                 </li>
               </Link>
-            </ul>
+            </ul> */}
 
             <div className="gap-6">
               <Link to={"/login"}>
@@ -114,7 +114,7 @@ const LandingPage = () => {
               </Link>
             </div>
 
-            <div className="flex cursor-pointer sm:hidden text-2xl flex-1 justify-end">
+            {/* <div className="flex cursor-pointer sm:hidden text-2xl flex-1 justify-end">
               {isMenuOpen ? (
                 <AiOutlineClose
                   size={24}
@@ -130,13 +130,13 @@ const LandingPage = () => {
                   className=" text-ca-blue"
                 />
               )}
-            </div>
+            </div> */}
           </nav>
         </header>
 
         {/* Harmburger menu */}
         <section
-          className={`fixed top-0 sm:hidden h-screen  w-full text-5xl flex-col opacity- justify-items-center z-20 origin-top animate-open-menu ${
+          className={`top-0 hidden h-screen w-full text-5xl flex-col opacity- justify-items-center z-20 origin-top animate-open-menu ${
             isMenuOpen ? "animation-open-menu" : "hidden"
           }`}
           style={{
