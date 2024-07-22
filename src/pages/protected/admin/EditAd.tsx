@@ -1,43 +1,71 @@
+import { RootState } from "@/app/store";
 import { Button, Input } from "@/components/ui";
 import { IAds } from "@/interfaces/ads.interface";
-import { createAd } from "@/services/adminService";
-import { useMutation } from "@tanstack/react-query";
+import {
+  editAdvertResponse,
+  updateAdvertBanner,
+} from "@/services/adminService";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FiDownloadCloud } from "react-icons/fi";
 import { IoArrowBackSharp } from "react-icons/io5";
 import { Oval } from "react-loader-spinner";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 type Props = {};
 
-const NewAd = (_: Props) => {
+const EditAd = (_: Props) => {
+  const ad = useSelector((state: RootState) => state.ads);
+  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [formData, setFormData] = useState<IAds>({
-    title: "",
-    description: "",
-    hasCTA: false,
-    ctaLink: "",
-    ctaText: "",
-    exposureTime: "",
-    expirationDuration: "",
-    showBannerImgOnly: false,
-    file: null,
+  const [formData, setFormData] = useState<
+    Omit<IAds, "file"> & { bannerImage: string }
+  >({
+    _id: ad._id,
+    title: ad.title,
+    description: ad.description,
+    hasCTA: ad.hasCTA,
+    ctaLink: ad.ctaLink,
+    ctaText: ad.ctaText,
+    exposureTime: ad.exposureTime,
+    expirationDuration: ad.expirationDuration,
+    showBannerImgOnly: ad.showBannerImgOnly || false,
+    bannerImage: ad.bannerImage,
   });
 
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    ad.bannerImage
+  );
 
-  const createAdMutation = useMutation({
-    mutationKey: ["create-ad"],
-    mutationFn: (adData: any) => createAd(adData),
+  const editAdMutation = useMutation({
+    mutationKey: ["edit-ad"],
+    mutationFn: (adData: { adsId: string; data: Partial<IAds> }) =>
+      editAdvertResponse(adData),
     onSuccess: (sx: any) => {
-      console.log(sx);
       toast.success(sx.message);
       resetForm();
-
       navigate(`/admin/ads`);
+    },
+    onError: (ex: any) => {
+      toast.error(ex.response.data.message);
+    },
+  });
+
+  const updateAdvertBannerMutation = useMutation({
+    mutationKey: ["update-banner-ad"],
+    mutationFn: (bannerData: { adsId: string; file: File }) =>
+      updateAdvertBanner(bannerData),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["All"] });
+    },
+    onSuccess: (sx: any) => {
+      setImagePreview(sx.data.bannerImage);
+      toast.success(sx.message);
     },
     onError: (ex: any) => {
       toast.error(ex.response.data.message);
@@ -67,14 +95,12 @@ const NewAd = (_: Props) => {
     const file = e.target.files?.[0];
 
     if (file && file.type.startsWith("image/")) {
-      setFormData((prev) => ({
-        ...prev,
-        file: file,
-      }));
-
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        updateAdvertBannerMutation.mutate({
+          adsId: formData._id as string,
+          file: file,
+        });
       };
 
       reader.readAsDataURL(file);
@@ -102,13 +128,23 @@ const NewAd = (_: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const adsData = new FormData();
+    const { bannerImage, _id, ...rest } = formData;
 
-    Object.entries(formData).map((item) => {
-      adsData.append(item[0], item[1]);
-    });
+    const filteredEntries = Object.entries({ ...rest })
+      .filter(([_, val]) => val !== "")
+      .reduce<Record<string, any>>((acc, [key, val]) => {
+        acc[key] = val;
+        return acc;
+      }, {});
 
-    createAdMutation.mutate(adsData);
+    const adsData = {
+      adsId: _id as string,
+      data: {
+        ...filteredEntries,
+      },
+    };
+
+    editAdMutation.mutate(adsData);
   };
 
   const resetForm = () => {
@@ -121,8 +157,9 @@ const NewAd = (_: Props) => {
       exposureTime: "",
       expirationDuration: "",
       showBannerImgOnly: false,
-      file: null,
+      bannerImage: "",
     });
+
     setImagePreview(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -157,7 +194,17 @@ const NewAd = (_: Props) => {
               className="rounded-xl border grid place-items-center h-[180px] cursor-pointer "
               onClick={triggerFileInput}
             >
-              {imagePreview ? (
+              {updateAdvertBannerMutation.isPending ? (
+                <Oval
+                  visible={true}
+                  height="20"
+                  width="20"
+                  color="#ffffff"
+                  ariaLabel="oval-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
+              ) : imagePreview ? (
                 <ImagePreviewCard image={imagePreview} />
               ) : (
                 <div className="w-fit h-fit grid place-items-center space-y-2">
@@ -181,6 +228,7 @@ const NewAd = (_: Props) => {
               placeholder="Write a brief Title for the advert"
               className="border rounded-xl px-2 text-sm"
               onChange={handleInputChange}
+              value={formData.title}
             />
           </div>
 
@@ -191,6 +239,7 @@ const NewAd = (_: Props) => {
             <textarea
               onChange={handleInputChange}
               name="description"
+              value={formData.description}
               rows={10}
               id=""
               className="border w-full p-2 rounded-xl ml-2 "
@@ -222,6 +271,7 @@ const NewAd = (_: Props) => {
                   <Input
                     name="ctaLink"
                     onChange={handleInputChange}
+                    value={formData.ctaLink}
                     placeholder="Call to Action Link"
                     className="border rounded-xl px-2 mt-2"
                   />
@@ -234,6 +284,7 @@ const NewAd = (_: Props) => {
 
                   <Input
                     name="ctaText"
+                    value={ad.ctaText}
                     onChange={handleInputChange}
                     placeholder="Call to Action text"
                     className="border rounded-xl px-2 mt-2"
@@ -254,6 +305,7 @@ const NewAd = (_: Props) => {
                 placeholder=""
                 name="exposureTime"
                 onChange={handleInputChange}
+                value={Number(formData.exposureTime)}
               />
             </div>
 
@@ -266,6 +318,7 @@ const NewAd = (_: Props) => {
                 placeholder=""
                 name="expirationDuration"
                 max={5}
+                value={Number(formData.expirationDuration)}
                 onChange={handleInputChange}
               />
             </div>
@@ -283,8 +336,8 @@ const NewAd = (_: Props) => {
           </div>
 
           <div className="w-full mx-auto ">
-            <Button disabled={createAdMutation.isPending} className="w-full">
-              {createAdMutation.isPending ? (
+            <Button disabled={editAdMutation.isPending} className="w-full">
+              {editAdMutation.isPending ? (
                 <Oval
                   visible={true}
                   height="20"
@@ -295,7 +348,7 @@ const NewAd = (_: Props) => {
                   wrapperClass=""
                 />
               ) : (
-                <span>Create</span>
+                <span>Update </span>
               )}
             </Button>
           </div>
@@ -305,4 +358,4 @@ const NewAd = (_: Props) => {
   );
 };
 
-export default NewAd;
+export default EditAd;
