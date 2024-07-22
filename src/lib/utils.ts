@@ -103,3 +103,30 @@ export const handleTableDownload = (tableData: any[]) => {
   XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
   XLSX.writeFile(wb, "table_data.xlsx");
 };
+
+export const calculateTimeLeft = (timestamp: string): string => {
+  const now = new Date();
+  const targetDate = new Date(timestamp);
+  const difference = targetDate.getTime() - now.getTime();
+
+  if (difference <= 0) {
+    return "Time's up!";
+  }
+
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(
+    (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+  if (days > 0) {
+    return `${days} days left`;
+  } else if (hours > 0) {
+    return `${hours} hours left`;
+  } else if (minutes > 0) {
+    return `${minutes} minutes left`;
+  } else {
+    return `${seconds} seconds left`;
+  }
+};

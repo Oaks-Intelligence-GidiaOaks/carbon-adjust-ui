@@ -1,13 +1,14 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { IAds } from "@/interfaces/ads.interface";
+import { useEffect, useRef, useState } from "react";
 import { IoIosMore } from "react-icons/io";
 
-const AdvertCard = (props: {
+type Props = Omit<IAds, "file"> & {
+  setIsActive: () => void;
   image: string;
-  isActive: boolean;
-  setIsActive: Dispatch<SetStateAction<boolean>>;
-  text: string;
-}) => {
-  const [isActive, setIsActive] = useState<boolean>(false);
+};
+
+const AdvertCard = (props: Props) => {
+  // const [isActive, setIsActive] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const popupRef = useRef<HTMLDivElement>(null);
   const moreIconRef = useRef<HTMLDivElement>(null);
@@ -69,15 +70,15 @@ const AdvertCard = (props: {
       </div>
 
       <div className="flex-center justify-between">
-        <span className="text-xs">{props.text}</span>
+        <span className="text-xs">{props.description}</span>
 
         <label className="relative inline-flex items-center cursor-pointer">
           <input
             data-testid="notification-checkbox"
             type="checkbox"
             className="sr-only peer"
-            checked={isActive}
-            onChange={() => setIsActive(!isActive)}
+            checked={props.isActive}
+            onChange={props.setIsActive}
           />
 
           <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>

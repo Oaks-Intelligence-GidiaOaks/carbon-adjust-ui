@@ -110,7 +110,7 @@ const Login = () => {
   };
 
   const onSubmit: SubmitHandler<LoginFormContext> = async (data) => {
-    console.log(data);
+    // console.log(data);
     await loginUser.mutateAsync({
       email: data.email,
       password: data.password,

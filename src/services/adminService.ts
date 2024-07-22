@@ -1,4 +1,5 @@
 import axiosInstance from "@/api/axiosInstance";
+import { IAds } from "@/interfaces/ads.interface";
 
 export const fetchUsersRegistration = async ({
   accountType,
@@ -79,6 +80,107 @@ export const makeMerchantInternal = async (id: string) => {
     merchantId: id,
     status: true,
   });
+
+  return data;
+};
+
+// ADMIN ADVERTS
+
+export const createAd = async (adData: {
+  title: string;
+  description: string;
+  hasCTA: boolean;
+  ctaLink?: string;
+  exposureTime: string;
+  expirationDuration: string;
+  showBannerImgOnly: boolean;
+  file: File | null;
+}) => {
+  const { data } = await axiosInstance.post(`/adverts`, adData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+};
+
+export const getAllAds = async () => {
+  const { data } = await axiosInstance.get(`/adverts`);
+
+  return data;
+};
+
+export const getFeaturedAds = async () => {
+  const { data } = await axiosInstance.get(`/adverts/featured`);
+  return data;
+};
+
+export const getHeroAds = async () => {
+  const { data } = await axiosInstance.get(`/adverts/hero`);
+  return data;
+};
+
+enum LocationEnum {
+  FEATURED = "FEATURED",
+  HERO = "HERO",
+}
+
+export const publishAdsToLocation = async (adsData: {
+  location: string;
+  adverts: string[];
+}) => {
+  const { data } = await axiosInstance.patch(`/adverts/publish`, adsData);
+  return data;
+};
+
+export const unPublishAdsFromLocation = async (adsId: string) => {
+  const { data } = await axiosInstance.patch(`/adverts/${adsId}/unpublish`);
+  return data;
+};
+
+export const pubishAdsToDefault = async (adsData: {
+  location: LocationEnum;
+  adverts: string[];
+}) => {
+  const { data } = await axiosInstance.patch(`/adverts/make/default`, adsData);
+
+  return data;
+};
+
+export const unPubishAdsFromDefault = async (adsId: string) => {
+  const { data } = await axiosInstance.patch(
+    `/adverts/${adsId}/override/default`
+  );
+
+  return data;
+};
+
+export const editAdvertResponse = async (adsData: {
+  adsId: string;
+  data: Partial<IAds>;
+}) => {
+  const { data } = await axiosInstance.patch(
+    `/adverts/${adsData.adsId}`,
+    adsData.data
+  );
+
+  return data;
+};
+
+export const updateAdvertBanner = async (adsData: {
+  adsId: string;
+  file: File;
+}) => {
+  const { data } = await axiosInstance.patch(
+    `/adverts/${adsData.adsId}/file/upload`,
+    { file: adsData.file },
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 
   return data;
 };

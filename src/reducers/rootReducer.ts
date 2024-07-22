@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import userReducer from "../features/userSlice";
 import productReducer from "../features/productSlice";
 import orderReducer from "../features/orderSlice";
+import adReducer from "../features/adSlice";
 
 const persistConfig = {
   key: "root",
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   product: productReducer,
   order: orderReducer,
+  ads: adReducer,
   // Add other reducers here
 });
 
