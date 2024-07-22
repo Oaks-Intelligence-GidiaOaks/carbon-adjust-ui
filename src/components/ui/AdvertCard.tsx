@@ -1,6 +1,6 @@
 import { IAds } from "@/interfaces/ads.interface";
-import { useEffect, useRef, useState } from "react";
-import { IoIosMore } from "react-icons/io";
+import { useEffect, useRef } from "react";
+// import { IoIosMore } from "react-icons/io";
 
 type Props = Omit<IAds, "file"> & {
   setIsActive: () => void;
@@ -8,8 +8,7 @@ type Props = Omit<IAds, "file"> & {
 };
 
 const AdvertCard = (props: Props) => {
-  // const [isActive, setIsActive] = useState<boolean>(false);
-  const [showPopup, setShowPopup] = useState<boolean>(false);
+  // const [showPopup, setShowPopup] = useState<boolean>(false);
   const popupRef = useRef<HTMLDivElement>(null);
   const moreIconRef = useRef<HTMLDivElement>(null);
 
@@ -20,7 +19,7 @@ const AdvertCard = (props: Props) => {
       moreIconRef.current &&
       !moreIconRef.current.contains(event.target as Node)
     ) {
-      setShowPopup(false);
+      // setShowPopup(false);
     }
   };
 
@@ -39,7 +38,7 @@ const AdvertCard = (props: Props) => {
           Public
         </span>
 
-        <div ref={moreIconRef} className="relative ">
+        {/* <div ref={moreIconRef} className="relative ">
           <IoIosMore
             className="cursor-pointer"
             onClick={(e) => {
@@ -48,7 +47,7 @@ const AdvertCard = (props: Props) => {
             }}
           />
 
-          {showPopup && (
+          {false && (
             <div
               ref={popupRef}
               className="absolute -bottom-13 -left-20 flex flex-col border p-2 font-[400] text-center bg-white shadow-sm rounded-sm w-[100px] space-y-1 text-[10px]"
@@ -62,7 +61,7 @@ const AdvertCard = (props: Props) => {
               </span>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
 
       <div className="h-[135px] w-full">
@@ -78,7 +77,7 @@ const AdvertCard = (props: Props) => {
             type="checkbox"
             className="sr-only peer"
             checked={props.isActive}
-            onChange={props.setIsActive}
+            onChange={() => props.setIsActive()}
           />
 
           <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>

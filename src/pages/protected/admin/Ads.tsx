@@ -86,6 +86,7 @@ const Ads = () => {
     All: <AdsGrid data={data?.data?.adverts || []} />,
     "Featured Ads": (
       <AdCards
+        activeTab={activeTab}
         isError={isError}
         isLoading={isLoading}
         data={data?.data || []}
@@ -94,6 +95,7 @@ const Ads = () => {
 
     "Hero Ads": (
       <AdCards
+        activeTab={activeTab}
         isError={isError}
         isLoading={isLoading}
         data={data?.data || []}
