@@ -30,6 +30,7 @@ import {
   AccountManagement,
   AdminAds,
   AdminDashboard,
+  AdminEditAd,
   // AdminDisputes,
   AdminNewAd,
   AdminNewUser,
@@ -327,12 +328,12 @@ const Router = createBrowserRouter([
             path: "new",
             element: <AdminNewAd />,
           },
+          {
+            path: ":adId/edit",
+            element: <AdminEditAd />,
+          },
         ],
       },
-      // {
-      //   path: "disputes",
-      //   element: <AdminDisputes />,
-      // },
       {
         path: "logs",
         element: <AdmnLog />,
@@ -350,14 +351,6 @@ const Router = createBrowserRouter([
           },
         ],
       },
-      // {
-      //   path: "sales",
-      //   element: <AdminSales />,
-      // },
-      // {
-      //   path: "transactions",
-      //   element: <AdminTransactions />,
-      // },
       {
         path: "wallet",
         element: <AdminWallet />,

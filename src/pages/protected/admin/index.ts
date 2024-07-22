@@ -5,7 +5,7 @@ export { default as AdminDisputes } from "./Disputes";
 export { default as AdmnLog } from "./Log";
 export { default as AdminNewAd } from "./NewAd";
 export { default as AdminNewUser } from "./NewUser";
-export { default as AdminSales } from "./Sales";
+export { default as AdminEditAd } from "./EditAd";
 export { default as AdminTransactions } from "./Transaction";
 export { default as AdminWallet } from "./Wallet";
 export { default as AdminPackages } from "./Packages";

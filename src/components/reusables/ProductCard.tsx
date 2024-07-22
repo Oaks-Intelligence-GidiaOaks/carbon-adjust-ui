@@ -17,8 +17,6 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
     dispatch(addProduct({ ...props }));
   };
 
-  console.log(props, "sdbhvhb...");
-
   return (
     <div className="min-w-[228px] group">
       <div className="relative">
