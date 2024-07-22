@@ -41,8 +41,8 @@ const AdsGrid = (props: { data: any[] }) => {
     mutationKey: ["publish-ads-to-location"],
     mutationFn: (adsData: { location: string; adverts: string[] }) =>
       publishAdsToLocation(adsData),
-    onSuccess: (sx: any) => {
-      toast.success(sx.message);
+    onSuccess: (_: any) => {
+      toast.success(`ads published successfully.`);
     },
     onSettled: () => {
       queryClient.invalidateQueries({
