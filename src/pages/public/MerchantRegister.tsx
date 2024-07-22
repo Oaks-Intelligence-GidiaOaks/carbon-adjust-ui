@@ -141,7 +141,7 @@ const MerchantRegister = () => {
                   register={register}
                   wrapperClassName="mt-4"
                   error={errors.name?.message}
-                  placeholder="Name"
+                  placeholder="Entity Name/Organization Name "
                 />
                 <Input
                   // label="Password"
@@ -250,7 +250,7 @@ const MerchantRegister = () => {
                 )} */}
                 <div className="flex gap-x-2 items-start mt-4">
                   <CheckBox
-                    className="border-2 border-grey-swatch-700"
+                    className="border-2 border-grey-swatch-700 shrink-0"
                     id="t&c"
                     checked={acceptTerms}
                     setIsChecked={(value) => setAcceptTerms(value)}

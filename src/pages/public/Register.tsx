@@ -190,7 +190,7 @@ const Register = () => {
                 />
                 <div className="flex gap-x-2 items-start mt-4">
                   <CheckBox
-                    className="border-2 border-grey-swatch-700"
+                    className="border-2 border-grey-swatch-700 shrink-0"
                     id="t&c"
                     checked={acceptTerms}
                     setIsChecked={(value) => setAcceptTerms(value)}
