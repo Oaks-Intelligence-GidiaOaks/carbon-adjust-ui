@@ -972,9 +972,7 @@ const UpdatePackage = (_: Props) => {
                         />
                         <SelectInput
                           options={questionTypes}
-                          disabledCallback={() => {
-                            alert("Hello");
-                          }}
+                          disabledCallback={() => {}}
                           disabled={
                             q._id ===
                             (packageDetails.data?.data.package as Package)
