@@ -138,7 +138,7 @@ const AddPackage = () => {
     }
 
     if (packageState.packageVisibility.toLowerCase() === "regional") {
-      alert(packageState.packageVisibility);
+      // alert(packageState.packageVisibility);
       formData.append(
         "regions",
         JSON.stringify(packageState.regions.map((region) => region.label))
