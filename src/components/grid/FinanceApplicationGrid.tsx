@@ -375,7 +375,6 @@ const FinanceApplicationGrid = ({
               id="rejection-file"
               className="hidden"
               onChange={(e) => {
-                alert("Hello");
                 handleDeclineMutation(
                   e,
                   currentRowData.appId,
