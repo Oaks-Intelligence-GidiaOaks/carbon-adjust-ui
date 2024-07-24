@@ -255,7 +255,7 @@ const LandingPage = () => {
       <div className="bg-[#F0F0F0]">
         <MarketPlace />
       </div>
-      <div>
+      <div id="faqs">
         <Faq />
       </div>
       <div
