@@ -62,10 +62,10 @@ const Footer = () => {
             </NavLink>
             <div className="flex flex-col gap-6 lg:gap-3 md:items-start md:justify-start mt-6 md:mt-0">
               <NavLink
-                to={"#contact-us"}
+                to={"#faqs"}
                 className="text-sm font-medium font-poppins text-[#2E599A] md:flex md:items-center md:justify-center"
               >
-                Help
+                FAQs
               </NavLink>
               <NavLink
                 to={"#contact-us"}
