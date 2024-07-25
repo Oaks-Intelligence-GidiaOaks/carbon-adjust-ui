@@ -1,4 +1,4 @@
-import CarbonAdjustLogo from "../../assets/images/carbonAdjustLogo.png";
+import CarbonAdjustLogo from "../../assets/images/carbonAdjustLogo.svg";
 
 const PrivacyPolicy = () => {
   return (
