@@ -107,7 +107,7 @@ const Footer = () => {
                 >
                   support@carbon-adjust.com
                 </Link>
-                {/* <form action="w-full">
+                <form action="w-full" className="hidden">
                   <div className="relative h-12 flex items-center justify-center w-full">
                     <input
                       name="email"
@@ -151,7 +151,7 @@ const Footer = () => {
                       noMargin={true}
                     />
                   )}
-                </form> */}
+                </form>
               </div>
             </div>
           </div>
