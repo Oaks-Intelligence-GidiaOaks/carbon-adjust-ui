@@ -1,6 +1,6 @@
 import { ChangeEvent, MouseEvent, useState } from "react";
 import footerLogo from "../../assets/footerLogo.svg";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { BsSend } from "react-icons/bs";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -67,12 +67,12 @@ const Footer = () => {
               >
                 FAQs
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 to={"#contact-us"}
                 className="text-sm font-medium font-poppins text-[#2E599A] md:flex md:items-center md:justify-center"
               >
                 Contact us
-              </NavLink>
+              </NavLink> */}
             </div>
             <div className="flex flex-col gap-6 lg:gap-3 md:items-start md:justify-center mt-6  md:mt-0">
               <NavLink
@@ -99,8 +99,15 @@ const Footer = () => {
                 Need Help getting started?
               </h2>
 
-              <div className="mt-4 w-full pb-4">
-                <form action="w-full">
+              <div className="mt-4 w-full pb-4 font-poppins text-sm">
+                Contact us at{" "}
+                <Link
+                  className="underline underline-offset-1 decoration-[#2E599A] hover:text-[#2E599A]"
+                  to={"mailto:support@carbon-adjust.com"}
+                >
+                  support@carbon-adjust.com
+                </Link>
+                <form action="w-full" className="hidden">
                   <div className="relative h-12 flex items-center justify-center w-full">
                     <input
                       name="email"
