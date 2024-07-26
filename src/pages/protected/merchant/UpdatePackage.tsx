@@ -432,8 +432,8 @@ const UpdatePackage = (_: Props) => {
                     label: q.questionType as any,
                     value: q.questionType as any,
                   },
-                  ...(q.questionType.value === "Single-Choice Question" ||
-                  q.questionType.value === "Multiple-Choice Question"
+                  ...((q.questionType as any) === "Single-Choice Question" ||
+                  (q.questionType as any) === "Multiple-Choice Question"
                     ? { options: q.options }
                     : {}),
                   ...(q._id ? { _id: q._id } : {}),
@@ -974,9 +974,11 @@ const UpdatePackage = (_: Props) => {
                           options={questionTypes}
                           disabledCallback={() => {}}
                           disabled={
-                            q._id ===
-                            (packageDetails.data?.data.package as Package)
-                              ?.energyBillQuestionId
+                            q._id
+                              ? q._id ===
+                                (packageDetails.data?.data.package as Package)
+                                  ?.energyBillQuestionId
+                              : false
                           }
                           className="border border-none mt-4"
                           // label="Category"
