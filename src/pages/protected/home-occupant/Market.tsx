@@ -1,4 +1,5 @@
 // import DashboardBanner from "@/components/containers/DashboardBanner";
+import DashboardBanner from "@/components/containers/DashboardBanner";
 import Promotion from "@/components/containers/Promotion";
 import BestSellers from "@/components/containers/home/BestSellers";
 import CategoriesLoading from "@/components/reusables/CategoriesLoading";
@@ -49,7 +50,7 @@ const Market = (_: Props) => {
 
   return (
     <div className="">
-      {/* <DashboardBanner /> */}
+      <DashboardBanner />
       <BestSellers />
       <Promotion />
 

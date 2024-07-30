@@ -1,47 +1,38 @@
+import { IAds } from "@/interfaces/ads.interface";
+import { getHeroAds } from "@/services/adminService";
+import { useQuery } from "@tanstack/react-query";
 import { FC, useEffect, useState } from "react";
 // import { FaStar } from "react-icons/fa";
 // import { FaArrowRight } from "react-icons/fa6";
 
+interface IHeroAds extends IAds {
+  bannerImage: string;
+}
+
 const DashboardBanner: FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
+  const { data } = useQuery({
+    queryKey: ["Hero Ads"],
+    queryFn: () => getHeroAds(),
+  });
+
+  const freebies: IHeroAds[] = data?.data ?? [];
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % 3);
-    }, 3600);
+    if (Boolean(freebies?.length === 0)) return;
 
-    return () => clearInterval(interval);
-  }, []);
+    const { exposureTime } = freebies![currentIndex];
+    if (!exposureTime) return;
 
-  const freebies = [
-    {
-      id: 1,
-      image: "/assets/banners/banner-1.png",
-      // name: "Skullcandy - Rail True Wireless Earbuds",
-      // cost: "$79.99",
-      header:
-        "CONTRIBUTE TO OUR ONGOING RESEARCH ON LEVERAGING AI TO GENERATE HOME ENERGY SURVEYS",
-      text: "Get a £20 voucher and a complimentary access to Pavlos when it launches by simply uploading a 1 year energy bill or a home energy plan (if you've got one). £20 max per household applies",
-    },
-    {
-      id: 2,
-      image: "/assets/banners/banner-2.png",
-      // name: "Second carousel element",
-      // cost: "$79.99",
-      header:
-        "SPEAK TO AN EXPERT ON DOMESTIC RETROFIT AND GET CLARITY ON WHAT OPTIONS ARE AVAILABLE",
-      text: "Schedule a call back session with Artemis and speak for up to 30 minutes with a retrofit expert. 1 call session max per household applies",
-    },
-    {
-      id: 3,
-      image: "/assets/banners/banner-3.png",
-      // name: "Third carousel element",
-      // cost: "$79.99",
-      header:
-        "GET OUR BESPOKE AND COMPREHENSIVE ON-SITE HOME ENERGY PLAN TODAY",
-      text: "Start your home energy efficiency improvement journey today by scheduling a visit from our qualified assessors. Offer is for a limited time",
-    },
-  ];
+    const duration = Number(exposureTime) * 1000;
+
+    const timeout = setTimeout(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % freebies!.length);
+    }, duration);
+
+    return () => clearTimeout(timeout);
+  }, [currentIndex, freebies]);
 
   return (
     <div
@@ -59,15 +50,15 @@ const DashboardBanner: FC = () => {
           className="hidden flex-1 lg:flex-[0.45] flex-col lg:flex gap-y-[15px] my-auto "
         >
           <h2 className="font-[700] text-[20px] ">
-            {freebies[currentIndex].header}
+            {freebies[currentIndex]?.title}
           </h2>
 
           <h4 className="font-[400] text-[18px]">
-            {freebies[currentIndex].text}
+            {freebies[currentIndex]?.description}
           </h4>
 
           <button className="uppercase font-[700] text-base rounded-[24px] w-[194px] blue-gradient py-[14px]">
-            See More
+            {freebies[currentIndex]?.ctaText || "See More"}
           </button>
         </div>
         {/* ))} */}
@@ -83,7 +74,7 @@ const DashboardBanner: FC = () => {
                 } " flex-1 items-end`}
               >
                 <img
-                  src={item.image}
+                  src={item?.bannerImage}
                   alt=""
                   className="w-2/3 mx-auto rounded-lg"
                 />
@@ -108,7 +99,7 @@ const DashboardBanner: FC = () => {
 
           {/* carousel indicators */}
           <div className="flex-center w-fit mx-auto gap-2">
-            {Array.from({ length: 3 }, (_, i) => (
+            {Array.from({ length: freebies.length }, (_, i) => (
               <div
                 key={i}
                 className={` ${
