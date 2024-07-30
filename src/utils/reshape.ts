@@ -77,8 +77,8 @@ export const transformApplicationsGridData = (data: any) => {
         price === undefined
           ? `${pkg?.currency ?? "£"} 0`
           : `${pkg?.currency ?? "£"} ${formatNumberWithCommas(price)}`,
-      category: pkg.category.name,
-      name: pkg.title,
+      category: pkg?.category?.name,
+      name: pkg?.title,
     });
   });
 
