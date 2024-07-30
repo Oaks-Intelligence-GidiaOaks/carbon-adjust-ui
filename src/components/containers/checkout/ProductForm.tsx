@@ -193,7 +193,7 @@ const ProductForm = (props: {
       }
 
       if (type === "File Upload Response Question" && file) {
-        if (file!.size > 1048576 * 2) {
+        if (file!.size > 1048576 * 10) {
           alert("file size exceeds 2MB, please choose another file.");
           fileInputRef!.current!.value = "";
           return null;
