@@ -148,12 +148,19 @@ const UpdatePackage = (_: Props) => {
     mutationKey: ["update package"],
     mutationFn: (data: any) => updatePackageQuery(data, packageId!),
     onSuccess: (data) => {
-      console.log(data);
+      console.log(data.data.data);
       queryClient.invalidateQueries({ queryKey: [packageId] });
       if (data.data.data.hasSchedule) {
-        // navigate(`/merchant/packages/schedule/update/${data.data.data._id}`);
+        if ((packageDetails.data?.data.package as Package)?.hasSchedule) {
+          toast.success("Package updated successfully");
+          // return navigate(
+          //   `/merchant/packages/schedule/slots/${data.data.data._id}`
+          // );
+        } else {
+          toast.success("Package updated successfully");
+          return navigate(`/merchant/packages/schedule/${data.data.data._id}`);
+        }
         navigate(`/merchant/packages`);
-        toast.success("Package updated successfully");
       } else {
         navigate("/merchant/packages");
         toast.success("Package updated successfully");
