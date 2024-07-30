@@ -64,7 +64,7 @@ const OrderSummary = (props: {
       // });
     },
     onError: (ex: any) => {
-      console.log(ex);
+      // console.log(ex);
       toast.error(ex.response.data.message);
     },
   });
@@ -91,7 +91,7 @@ const OrderSummary = (props: {
   };
 
   return (
-    <div>
+    <div className="md:w-[380px]">
       <div className="flex-center font-poppins justify-between w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
         <div className="flex-center gap-[13px]">
           <IoIosArrowRoundBack onClick={() => props.setStage(2)} />
@@ -103,7 +103,7 @@ const OrderSummary = (props: {
         </span>
       </div>
 
-      <div className="flex flex-col gap-[22px] border px-5 mx-auto">
+      <div className="flex flex-col gap-[22px] px-5 mx-auto">
         <h2 className="font-[600] text-lg mt-3">Order Summary</h2>
 
         <div className="flex-start">
