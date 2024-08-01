@@ -36,6 +36,8 @@ import VideoUploader from "@/components/reusables/VideoUploader";
 import AIModal from "@/components/merchants/AIModal";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
+import SwitchButton from "@/components/ui/Switch";
+import ToolTip from "@/components/ui/Tooltip";
 
 type Props = {};
 
@@ -275,6 +277,7 @@ const UpdatePackage = (_: Props) => {
       if (isValidQuestionsArray(packageState?.questions)) {
         const formattedQuestions = packageState?.questions.map((q) => ({
           title: q.title,
+          isRequired: q.isRequired,
           questionType: q.questionType.value,
           ...(q.options ? { options: q.options } : {}),
           ...(q._id ? { _id: q._id } : {}),
@@ -300,6 +303,7 @@ const UpdatePackage = (_: Props) => {
             )
             .map((q: Question) => ({
               title: "Upload your energy bill",
+              isRequired: q.isRequired,
               questionType: "File Upload Response Question",
               ...(q.questionType.value === "Single-Choice Question" ||
               q.questionType.value === "Multiple-Choice Question"
@@ -435,6 +439,11 @@ const UpdatePackage = (_: Props) => {
             ? (packageDetails.data?.data.package as Package)?.questions.map(
                 (q: Question) => ({
                   title: q.title,
+                  isRequired:
+                    (packageDetails.data?.data.package as Package)
+                      .energyBillQuestionId === q._id
+                      ? true
+                      : q?.isRequired ?? false,
                   questionType: {
                     label: q.questionType as any,
                     value: q.questionType as any,
@@ -650,7 +659,7 @@ const UpdatePackage = (_: Props) => {
                           isAiEnergyPackage: !prev.isAiEnergyPackage,
                         }))
                       }
-                      className="border border-[#575757] h-[19px] w-[19px]"
+                      className="accent-ca-blue border border-[#575757] h-[19px] w-[19px]"
                     />
 
                     <p>AI Energy Package</p>
@@ -706,7 +715,7 @@ const UpdatePackage = (_: Props) => {
                         hasDownloadedableFile: !prev.hasDownloadedableFile,
                       }))
                     }
-                    className="border border-[#575757] h-[19px] w-[19px]"
+                    className="accent-ca-blue border border-[#575757] h-[19px] w-[19px]"
                   />
 
                   <p>Has downloadable file</p>
@@ -750,7 +759,7 @@ const UpdatePackage = (_: Props) => {
                       askPurchaserQuote: !prev.askPurchaserQuote,
                     }))
                   }
-                  className="border border-[#575757] h-[19px] w-[19px]"
+                  className="accent-ca-blue border border-[#575757] h-[19px] w-[19px]"
                 />
 
                 <p>Purchasers should ask for a quote</p>
@@ -865,7 +874,7 @@ const UpdatePackage = (_: Props) => {
                   type="checkbox"
                   name=""
                   id=""
-                  className="border border-[#575757] h-[19px] w-[19px] "
+                  className="accent-ca-blue border border-[#575757] h-[19px] w-[19px] "
                   checked={packageState?.hasSchedule}
                   onChange={() =>
                     setPackageState((prev) => ({
@@ -884,7 +893,7 @@ const UpdatePackage = (_: Props) => {
                   name=""
                   id=""
                   checked={packageState?.hasQuestion}
-                  className="border border-[#575757] h-[19px] w-[19px] "
+                  className="accent-ca-blue border border-[#575757] h-[19px] w-[19px] "
                   onChange={() => {
                     setPackageState((prev) => ({
                       ...prev,
@@ -901,6 +910,7 @@ const UpdatePackage = (_: Props) => {
                               )
                               .map((q: Question) => ({
                                 title: q.title,
+                                isRequired: q?.isRequired ?? false,
                                 questionType: {
                                   label: q.questionType as any,
                                   value: q.questionType as any,
@@ -915,6 +925,7 @@ const UpdatePackage = (_: Props) => {
                               })),
                             {
                               title: "",
+                              isRequired: false,
                               questionType: { label: "", value: "" },
                             },
                           ]
@@ -934,6 +945,7 @@ const UpdatePackage = (_: Props) => {
                                   )
                                   .map((q: Question) => ({
                                     title: q.title,
+                                    isRequired: q.isRequired,
                                     questionType: {
                                       label: q.questionType as any,
                                       value: q.questionType as any,
@@ -961,6 +973,18 @@ const UpdatePackage = (_: Props) => {
                   {packageState?.questions.map((q, i: number) => (
                     <div key={i} className="flex gap-x-4 items-end">
                       <div className="flex flex-col flex-1">
+                        {(packageDetails.data?.data.package as Package)
+                          .energyBillQuestionId === q._id && (
+                          <div className="translate-y-4 w-full flex justify-end">
+                            <ToolTip>
+                              <p className="font-open-sans text-xs">
+                                Some fields for this question are disabled
+                                because they are required by default for an AI
+                                package.
+                              </p>
+                            </ToolTip>
+                          </div>
+                        )}
                         <Input
                           name=""
                           label={`Question ${i + 1}`}
@@ -1045,7 +1069,10 @@ const UpdatePackage = (_: Props) => {
 
                             <div className="min-h-10 border border-border rounded-b-[12px] p-2 flex flex-wrap gap-4">
                               {q.options?.map((op: string, ind: number) => (
-                                <div className="pl-2 gap-1 flex items-center bg-gray-100 rounded-md">
+                                <div
+                                  key={ind}
+                                  className="pl-2 gap-1 flex items-center bg-gray-100 rounded-md"
+                                >
                                   <span>{op}</span>
                                   <Button
                                     variant={"outline"}
@@ -1071,6 +1098,25 @@ const UpdatePackage = (_: Props) => {
                             </div>
                           </div>
                         )}
+                        {/* required */}
+                        <div className="flex justify-start gap-4 mt-3 items-center">
+                          <SwitchButton
+                            disabled={
+                              (packageDetails.data?.data.package as Package)
+                                .energyBillQuestionId === q._id
+                            }
+                            value={q?.isRequired ?? false}
+                            onCheckedChange={(val) => {
+                              const list = [...packageState.questions];
+                              list[i].isRequired = val;
+                              setPackageState((prev) => ({
+                                ...prev,
+                                questions: list,
+                              }));
+                            }}
+                          />
+                          <p>Required</p>
+                        </div>
                       </div>
                       {packageState?.questions.length > 1 && (
                         <Button
@@ -1098,7 +1144,11 @@ const UpdatePackage = (_: Props) => {
                         ...prev,
                         questions: [
                           ...prev.questions,
-                          { title: "", questionType: { label: "", value: "" } }, // Correctly initialize questionType as an object
+                          {
+                            title: "",
+                            isRequired: false,
+                            questionType: { label: "", value: "" },
+                          }, // Correctly initialize questionType as an object
                         ],
                       }));
                     }}

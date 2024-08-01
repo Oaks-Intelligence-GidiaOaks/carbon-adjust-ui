@@ -65,10 +65,7 @@ export const transformStaffGridData = (data: any) => {
 export const transformApplicationsGridData = (data: any) => {
   let newData: any[] = [];
 
-  console.log(data);
-
   Array.from(data, (item: any) => {
-    console.log(item);
     const { currency, title, price, package: pkg, category, ...rest } = item;
 
     newData.push({
