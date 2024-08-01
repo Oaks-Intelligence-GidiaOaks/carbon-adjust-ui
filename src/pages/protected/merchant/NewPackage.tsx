@@ -35,6 +35,7 @@ import { SelectItem } from "@/types/formSelect";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import AIModal from "@/components/merchants/AIModal";
+import SwitchButton from "@/components/ui/Switch";
 
 type Props = {};
 export type QuestionType = {
@@ -60,6 +61,7 @@ export type Question = {
   title: string;
   questionType: QuestionType;
   options?: string[];
+  isRequired: boolean;
   _id?: string;
 };
 export type PackageState = {
@@ -312,6 +314,7 @@ const NewPackage = (_: Props) => {
     if (Boolean(packageState.questions.length)) {
       const formattedQuestions = packageState.questions.map((q) => ({
         title: q.title,
+        isRequired: q.isRequired,
         questionType: q.questionType.value,
         ...(q.options ? { options: q.options } : {}),
       }));
@@ -473,7 +476,7 @@ const NewPackage = (_: Props) => {
                       isAiEnergyPackage: !prev.isAiEnergyPackage,
                     }))
                   }
-                  className="border border-[#575757] h-[19px] w-[19px]"
+                  className="border accent-ca-blue border-[#575757] h-[19px] w-[19px]"
                 />
 
                 <p>AI Energy Package</p>
@@ -522,7 +525,7 @@ const NewPackage = (_: Props) => {
                     hasDownloadedableFile: !prev.hasDownloadedableFile,
                   }))
                 }
-                className="border border-[#575757] h-[19px] w-[19px]"
+                className="border accent-ca-blue border-[#575757] h-[19px] w-[19px]"
               />
 
               <p>Has downloadable file</p>
@@ -549,7 +552,7 @@ const NewPackage = (_: Props) => {
                   askPurchaserQuote: !prev.askPurchaserQuote,
                 }))
               }
-              className="border border-[#575757] h-[19px] w-[19px]"
+              className="border accent-ca-blue border-[#575757] h-[19px] w-[19px]"
             />
 
             <p>Purchasers should ask for a quote</p>
@@ -664,7 +667,7 @@ const NewPackage = (_: Props) => {
               type="checkbox"
               name=""
               id=""
-              className="border border-[#575757] h-[19px] w-[19px] "
+              className="border accent-ca-blue border-[#575757] h-[19px] w-[19px] "
               onChange={() =>
                 setPackageState((prev) => ({
                   ...prev,
@@ -681,12 +684,18 @@ const NewPackage = (_: Props) => {
               type="checkbox"
               name=""
               id=""
-              className="border border-[#575757] h-[19px] w-[19px] "
+              className="border accent-ca-blue border-[#575757] h-[19px] w-[19px] "
               onChange={() => {
                 setPackageState((prev) => ({
                   ...prev,
                   questions: !prev.hasQuestion
-                    ? [{ title: "", questionType: { label: "", value: "" } }]
+                    ? [
+                        {
+                          title: "",
+                          questionType: { label: "", value: "" },
+                          isRequired: false,
+                        },
+                      ]
                     : [],
                   hasQuestion: !prev.hasQuestion,
                 }));
@@ -775,7 +784,10 @@ const NewPackage = (_: Props) => {
 
                         <div className="min-h-10 border border-border rounded-b-[12px] p-2 flex flex-wrap gap-4">
                           {q.options?.map((op: string, ind: number) => (
-                            <div className="pl-2 gap-1 flex items-center bg-gray-100 rounded-md">
+                            <div
+                              key={ind}
+                              className="pl-2 gap-1 flex items-center bg-gray-100 rounded-md"
+                            >
                               <span>{op}</span>
                               <Button
                                 variant={"outline"}
@@ -801,6 +813,21 @@ const NewPackage = (_: Props) => {
                         </div>
                       </div>
                     )}
+                    {/* required */}
+                    <div className="flex justify-start gap-4 mt-3 items-center">
+                      <SwitchButton
+                        value={q.isRequired}
+                        onCheckedChange={(val) => {
+                          const list = [...packageState.questions];
+                          list[i].isRequired = val;
+                          setPackageState((prev) => ({
+                            ...prev,
+                            questions: list,
+                          }));
+                        }}
+                      />
+                      <p>Required</p>
+                    </div>
                   </div>
                   {packageState.questions.length > 1 && (
                     <Button
@@ -828,7 +855,11 @@ const NewPackage = (_: Props) => {
                     ...prev,
                     questions: [
                       ...prev.questions,
-                      { title: "", questionType: { label: "", value: "" } }, // Correctly initialize questionType as an object
+                      {
+                        title: "",
+                        questionType: { label: "", value: "" },
+                        isRequired: false,
+                      }, // Correctly initialize questionType as an object
                     ],
                   }));
                 }}
