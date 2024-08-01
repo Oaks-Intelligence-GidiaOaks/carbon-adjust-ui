@@ -99,7 +99,7 @@ const OrderCard = (props: IPackageOrder) => {
                   "/assets/graphics/user1.svg"
                 }
                 alt=""
-                className="object-cover rounded-lg"
+                className="object-fit rounded-lg w-[100px] max-h-[100px]"
               />
             </div>
 
