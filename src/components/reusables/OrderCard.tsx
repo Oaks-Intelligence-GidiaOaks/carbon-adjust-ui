@@ -61,6 +61,7 @@ const OrderCard = (props: IPackageOrder) => {
   const getStatusBg = (status: string) => {
     const colors: any = {
       pending: "bg-[#FFA500]",
+      processing: "bg-[#FFA500]",
       completed: "bg-[#4CAF50]",
       cancelled: "bg-[#F44336]",
     };
