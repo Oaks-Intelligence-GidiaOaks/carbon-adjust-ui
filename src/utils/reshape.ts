@@ -36,8 +36,8 @@ export const transformPackagesGridData = (data: any) => {
       ...rest,
       price:
         price === undefined
-          ? `${currency} 0`
-          : `${currency} ${formatNumberWithCommas(price)}`,
+          ? `${currency ?? "£"} 0`
+          : `${currency ?? "£"} ${formatNumberWithCommas(price)}`,
       category: category.name,
     });
   });
@@ -65,20 +65,17 @@ export const transformStaffGridData = (data: any) => {
 export const transformApplicationsGridData = (data: any) => {
   let newData: any[] = [];
 
-  console.log(data);
-
   Array.from(data, (item: any) => {
-    console.log(item);
     const { currency, title, price, package: pkg, category, ...rest } = item;
 
     newData.push({
       ...rest,
       amount:
         price === undefined
-          ? `${pkg.currency} 0`
-          : `${pkg.currency} ${formatNumberWithCommas(price)}`,
-      category: pkg.category.name,
-      name: pkg.title,
+          ? `${pkg?.currency ?? "£"} 0`
+          : `${pkg?.currency ?? "£"} ${formatNumberWithCommas(price ?? 0)}`,
+      category: pkg?.category?.name,
+      name: pkg?.title,
     });
   });
 
@@ -110,7 +107,7 @@ export const transformCategoryPackages = (data: any) => {
 
     newData.push({
       _id,
-      price: `${currency}${price}`,
+      price: `${currency ?? "£"}${price}`,
       slug: category.slug,
       title,
       category: category.name,
@@ -146,7 +143,7 @@ export const transformHomePagePackages = (data: any) => {
         slug,
         category,
         discount,
-        price: `${currency} ${price}`,
+        price: `${currency ?? "£"} ${price}`,
         questions,
         regions,
         title,
