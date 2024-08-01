@@ -3,6 +3,7 @@ export interface IQuestion {
   _id: string;
   questionType?: string;
   options?: string[];
+  isRequired?: boolean;
 }
 
 // for energy efficient products
