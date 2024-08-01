@@ -1,6 +1,7 @@
 export interface IResponse {
   question: string;
   response: string;
+  isRequired?: boolean;
 }
 
 export interface ISelectInput {

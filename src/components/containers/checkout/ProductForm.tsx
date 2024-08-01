@@ -26,6 +26,7 @@ import { SelectItem } from "@/types/formSelect";
 import { Country, State } from "country-state-city";
 import Phoneinput from "@/components/ui/PhoneInput";
 import { MdArrowBack } from "react-icons/md";
+import { IQuestion } from "@/interfaces/product.interface";
 
 const ProductForm = (props: {
   setStage: Dispatch<SetStateAction<number>>;
@@ -68,11 +69,15 @@ const ProductForm = (props: {
     customerAddress.firstLineAddress.length > 0 &&
     customerAddress.zipcode.length > 0;
 
+  // filter to get required responses and compare with required questions.
   const isDisabled: boolean = Boolean(
-    product.questions.length !== responses.length || isFormValues || !isLocation
+    product.questions.filter((item) => item.isRequired).length !==
+      responses.filter((item) => item.isRequired).length ||
+      isFormValues ||
+      !isLocation
   );
 
-  const RenderQuestions = product.questions?.map((item) => {
+  const RenderQuestions = product.questions?.map((item: IQuestion) => {
     const responseIndex = responses.findIndex(
       (it: any) => it.question === item._id
     );
@@ -134,10 +139,14 @@ const ProductForm = (props: {
       if (type === "Binary Response Question") {
         setResponse(val);
 
-        let newObj = {
+        let newObj: IResponse = {
           question: item._id,
           response: val,
         };
+
+        if (item.isRequired !== null || item.isRequired !== undefined) {
+          newObj.isRequired = item.isRequired;
+        }
 
         let newArr = updateOrAddObject(order.responses, newObj);
         // console.log(newArr, "new array");
@@ -147,10 +156,14 @@ const ProductForm = (props: {
       if (type === "Open-Ended Question") {
         setResponse(val);
 
-        let newObj = {
+        let newObj: IResponse = {
           question: item._id,
           response: val,
         };
+
+        if (item.isRequired !== null || item.isRequired !== undefined) {
+          newObj.isRequired = item.isRequired;
+        }
 
         let newArr = updateOrAddObject(order.responses, newObj);
 
@@ -159,10 +172,14 @@ const ProductForm = (props: {
 
       if (type === "Single-Choice Question") {
         setSelectResponse(formatSelectOptions([val])[0]);
-        let newObj = {
+        let newObj: IResponse = {
           question: item._id,
           response: val,
         };
+
+        if (item.isRequired !== null || item.isRequired !== undefined) {
+          newObj.isRequired = item.isRequired;
+        }
 
         let newArr = updateOrAddObject(order.responses, newObj);
 
@@ -183,10 +200,14 @@ const ProductForm = (props: {
         }
         setMultiChoiceResponse(updatedMultiChoiceResponse);
 
-        let newObj = {
+        let newObj: IResponse = {
           question: item._id,
           response: updatedMultiChoiceResponse.join(", "), // Join selected options into a single string
         };
+
+        if (item.isRequired !== null || item.isRequired !== undefined) {
+          newObj.isRequired = item.isRequired;
+        }
 
         let newArr = updateOrAddObject(order.responses, newObj);
         dispatch(updateResponses(newArr));
@@ -204,6 +225,10 @@ const ProductForm = (props: {
             question: item._id,
             response: fileString,
           };
+
+          if (item.isRequired !== null || item.isRequired !== undefined) {
+            newObj.isRequired = item.isRequired;
+          }
 
           const newArr = updateOrAddObject(order.responses, newObj);
           dispatch(updateResponses(newArr));
@@ -314,7 +339,13 @@ const ProductForm = (props: {
 
     return (
       <div className="flex flex-col gap-[8px]">
-        <p className="font-[400] text-sm text-[#333333]">{item?.title}</p>
+        <p className="font-[400] text-sm text-[#333333]">
+          {item?.title}
+
+          {Boolean(item.isRequired) && (
+            <span className="pl-1 text-red-500">*</span>
+          )}
+        </p>
 
         {getQuestionInput[item?.questionType!]}
       </div>
@@ -347,6 +378,7 @@ const ProductForm = (props: {
           <Input
             key={1}
             label="Package"
+            required
             className=""
             labelClassName="pb-[10px]"
             wrapperClassName=""
@@ -361,6 +393,7 @@ const ProductForm = (props: {
           <Input
             key={80}
             label="Name"
+            required
             className=""
             labelClassName="pb-[10px]"
             wrapperClassName=""
@@ -375,6 +408,7 @@ const ProductForm = (props: {
           <Input
             key={3}
             label="Email address"
+            required
             className=""
             labelClassName="pb-[10px]"
             wrapperClassName=""
@@ -391,6 +425,7 @@ const ProductForm = (props: {
           <Phoneinput
             name="tel"
             label="Phone"
+            required
             labelClassName="mb-4"
             inputClassName="bg-gray-100 text-[#000000]"
             placeholder="+234"
@@ -404,6 +439,7 @@ const ProductForm = (props: {
           <Input
             key={2}
             label="First Line of address"
+            required
             className=""
             labelClassName="pb-[10px]"
             wrapperClassName=""
@@ -440,6 +476,7 @@ const ProductForm = (props: {
                 className=" block text-sm group-valid:text-[#171717] group-has-[:valid]:text-[#171717] pb-2"
               >
                 Add Quantity
+                <span className="text-red-500 pl-1">*</span>
               </label>
 
               <div
@@ -476,6 +513,7 @@ const ProductForm = (props: {
               value: country.isoCode,
               prefixIcon: country.flag,
             }))}
+            required
             searchable={true}
             label="Country of Residence"
             wrapperClassName="bg-gray-100 w-full"
@@ -488,6 +526,7 @@ const ProductForm = (props: {
 
           {/* city dropdown */}
           <CountryRegionDropdown
+            required
             name="city/province"
             labelClassName="mb-4 text-[#000000_!important]"
             options={statesList}
@@ -501,6 +540,7 @@ const ProductForm = (props: {
 
           <Input
             name="zipCode"
+            required
             label="Zip Code"
             labelClassName="mb-4"
             inputClassName="bg-gray-100"
