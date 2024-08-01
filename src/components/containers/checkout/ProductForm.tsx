@@ -242,13 +242,13 @@ const ProductForm = (props: {
           <div className="flex-center gap-[6px]">
             <input
               onChange={(_: React.ChangeEvent<HTMLInputElement>) =>
-                handleAnswerQuestion("yes", "Binary Response Question")
+                handleAnswerQuestion("Yes", "Binary Response Question")
               }
               value={response}
               type="radio"
               name=""
               id=""
-              checked={response === "yes"}
+              checked={response === "Yes"}
               className="bg-[#0E89F7] h-4 w-4"
             />
             <span>Yes</span>
@@ -257,9 +257,9 @@ const ProductForm = (props: {
           <div className="flex-center gap-[6px]">
             <input
               onChange={(_: React.ChangeEvent<HTMLInputElement>) =>
-                handleAnswerQuestion("no", "Binary Response Question")
+                handleAnswerQuestion("No", "Binary Response Question")
               }
-              checked={response === "no"}
+              checked={response === "No"}
               type="radio"
               name=""
               id=""
