@@ -24,6 +24,7 @@ const Dropdown = ({
   searchable,
   name,
   label,
+  required,
   options,
   control,
   value,
@@ -188,6 +189,7 @@ DropdownProps) => {
             className={`mb-1 block ${labelClassName} group-valid:text-[#171717] group-has-[:valid]:text-[#171717]`}
           >
             {label}
+            {required && <span className="text-red-500 pl-1">*</span>}
           </Label>
         )}
         <ListboxButton

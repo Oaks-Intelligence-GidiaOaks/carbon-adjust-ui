@@ -41,7 +41,7 @@ const Input = ({
             labelClassName
           )}
         >
-          {label}
+          {label} {props.required && <span className="text-red-500">*</span>}
         </Label>
       )}
 
