@@ -156,10 +156,14 @@ const ProductForm = (props: {
       if (type === "Open-Ended Question") {
         setResponse(val);
 
-        let newObj = {
+        let newObj: IResponse = {
           question: item._id,
           response: val,
         };
+
+        if (item.isRequired !== null || item.isRequired !== undefined) {
+          newObj.isRequired = item.isRequired;
+        }
 
         let newArr = updateOrAddObject(order.responses, newObj);
 
@@ -168,10 +172,14 @@ const ProductForm = (props: {
 
       if (type === "Single-Choice Question") {
         setSelectResponse(formatSelectOptions([val])[0]);
-        let newObj = {
+        let newObj: IResponse = {
           question: item._id,
           response: val,
         };
+
+        if (item.isRequired !== null || item.isRequired !== undefined) {
+          newObj.isRequired = item.isRequired;
+        }
 
         let newArr = updateOrAddObject(order.responses, newObj);
 
@@ -192,10 +200,14 @@ const ProductForm = (props: {
         }
         setMultiChoiceResponse(updatedMultiChoiceResponse);
 
-        let newObj = {
+        let newObj: IResponse = {
           question: item._id,
           response: updatedMultiChoiceResponse.join(", "), // Join selected options into a single string
         };
+
+        if (item.isRequired !== null || item.isRequired !== undefined) {
+          newObj.isRequired = item.isRequired;
+        }
 
         let newArr = updateOrAddObject(order.responses, newObj);
         dispatch(updateResponses(newArr));
@@ -213,6 +225,10 @@ const ProductForm = (props: {
             question: item._id,
             response: fileString,
           };
+
+          if (item.isRequired !== null || item.isRequired !== undefined) {
+            newObj.isRequired = item.isRequired;
+          }
 
           const newArr = updateOrAddObject(order.responses, newObj);
           dispatch(updateResponses(newArr));
