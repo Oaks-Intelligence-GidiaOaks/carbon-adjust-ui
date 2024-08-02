@@ -280,6 +280,12 @@ const UpdatePackage = (_: Props) => {
           isRequired: q.isRequired,
           questionType: q.questionType.value,
           ...(q.options ? { options: q.options } : {}),
+          ...(q.questionType.value === "Binary Response Question" &&
+          !Boolean(q.options)
+            ? { options: ["Yes", "No"] }
+            : q.options
+            ? { options: q.options }
+            : {}),
           ...(q._id ? { _id: q._id } : {}),
         }));
         submissionObject.questions = formattedQuestions;
@@ -307,6 +313,12 @@ const UpdatePackage = (_: Props) => {
               questionType: "File Upload Response Question",
               ...(q.questionType.value === "Single-Choice Question" ||
               q.questionType.value === "Multiple-Choice Question"
+                ? { options: q.options }
+                : {}),
+              ...(q.questionType.value === "Binary Response Question" &&
+              !Boolean(q.options)
+                ? { options: ["Yes", "No"] }
+                : q.options
                 ? { options: q.options }
                 : {}),
               ...(q._id ? { _id: q._id } : {}),
@@ -343,7 +355,14 @@ const UpdatePackage = (_: Props) => {
           title: q.title,
           questionType: q.questionType as any,
           ...(q.questionType.value === "Single-Choice Question" ||
+          // (q.questionType as any) === "Binary Response Question" ||
           q.questionType.value === "Multiple-Choice Question"
+            ? { options: q.options }
+            : {}),
+          ...(q.questionType.value === "Binary Response Question" &&
+          !Boolean(q.options)
+            ? { options: ["Yes", "No"] }
+            : q.options
             ? { options: q.options }
             : {}),
           ...(q._id ? { _id: q._id } : {}),
@@ -353,6 +372,11 @@ const UpdatePackage = (_: Props) => {
         ...formattedQuestions,
       ];
     }
+
+    // q.questionType.value === "Binary Response Question"
+    //       ? { options: ["Yes", "No"] }
+    //       : q.options
+    //       ? { options: q.options }
 
     if (
       !packageState.hasQuestion &&
@@ -380,6 +404,8 @@ const UpdatePackage = (_: Props) => {
 
     updatePackageMutation.mutate(submissionObject);
   };
+
+  console.log(packageState);
 
   useEffect(() => {
     if (getCategories.isSuccess && packageDetails.isSuccess) {
@@ -449,9 +475,14 @@ const UpdatePackage = (_: Props) => {
                     value: q.questionType as any,
                   },
                   ...((q.questionType as any) === "Single-Choice Question" ||
+                  // (q.questionType as any) === "Binary Response Question" ||
                   (q.questionType as any) === "Multiple-Choice Question"
                     ? { options: q.options }
                     : {}),
+                  ...((q.questionType as any) === "Binary Response Question" &&
+                  !Boolean(q.options?.length)
+                    ? { options: ["Yes", "No"] }
+                    : q.options),
                   ...(q._id ? { _id: q._id } : {}),
                 })
               )
@@ -921,6 +952,12 @@ const UpdatePackage = (_: Props) => {
                                   "Multiple-Choice Question"
                                   ? { options: q.options }
                                   : {}),
+                                //                           ...(!Boolean(q.options?.length) &&
+                                // q.questionType.value === "Binary Response Question"
+                                //   ? { options: ["Yes", "No"] }
+                                //   : q.options
+                                //   ? { options: q.options }
+                                //   : {}),
                                 ...(q._id ? { _id: q._id } : {}),
                               })),
                             {
@@ -973,18 +1010,26 @@ const UpdatePackage = (_: Props) => {
                   {packageState?.questions.map((q, i: number) => (
                     <div key={i} className="flex gap-x-4 items-end">
                       <div className="flex flex-col flex-1">
-                        {(packageDetails.data?.data.package as Package)
-                          .energyBillQuestionId === q._id && (
-                          <div className="translate-y-4 w-full flex justify-end">
-                            <ToolTip>
-                              <p className="font-open-sans text-xs">
-                                Some fields for this question are disabled
-                                because they are required by default for an AI
-                                package.
-                              </p>
-                            </ToolTip>
-                          </div>
-                        )}
+                        {q._id &&
+                          ((packageDetails.data?.data.package as Package)
+                            .energyBillQuestionId === q._id ||
+                            ((packageDetails.data?.data.package as Package)
+                              ?.defaultDecarbonizationQuestions &&
+                              (
+                                packageDetails.data?.data.package as Package
+                              )?.defaultDecarbonizationQuestions?.includes(
+                                q._id
+                              ))) && (
+                            <div className="translate-y-4 w-full flex justify-end">
+                              <ToolTip>
+                                <p className="font-open-sans text-xs">
+                                  Some fields for this question are disabled
+                                  because they are required by default for an AI
+                                  package.
+                                </p>
+                              </ToolTip>
+                            </div>
+                          )}
                         <Input
                           name=""
                           label={`Question ${i + 1}`}
@@ -1006,9 +1051,15 @@ const UpdatePackage = (_: Props) => {
                           disabledCallback={() => {}}
                           disabled={
                             q._id
-                              ? q._id ===
-                                (packageDetails.data?.data.package as Package)
-                                  ?.energyBillQuestionId
+                              ? (packageDetails.data?.data.package as Package)
+                                  .energyBillQuestionId === q._id ||
+                                ((packageDetails.data?.data.package as Package)
+                                  ?.defaultDecarbonizationQuestions &&
+                                  (
+                                    packageDetails.data?.data.package as Package
+                                  )?.defaultDecarbonizationQuestions?.includes(
+                                    q._id
+                                  ))
                               : false
                           }
                           className="border border-none mt-4"
@@ -1022,6 +1073,17 @@ const UpdatePackage = (_: Props) => {
                                   value: val.value as QuestionType["value"],
                                 }
                               : { label: "", value: "" };
+                            if (newList[i].options !== undefined) {
+                              delete newList[i].options;
+                            }
+
+                            if (
+                              (val?.value as QuestionType["value"]) ===
+                              "Binary Response Question"
+                            ) {
+                              newList[i].options = ["Yes", "No"];
+                            }
+
                             setPackageState((prev) => ({
                               ...prev,
                               questions: newList,
@@ -1037,6 +1099,22 @@ const UpdatePackage = (_: Props) => {
                             <div className="flex justify-between">
                               <Input
                                 name="option"
+                                disabled={
+                                  Boolean(q._id) &&
+                                  ((
+                                    packageDetails.data?.data.package as Package
+                                  ).energyBillQuestionId === q._id ||
+                                    ((
+                                      packageDetails.data?.data
+                                        .package as Package
+                                    )?.defaultDecarbonizationQuestions &&
+                                      (
+                                        packageDetails.data?.data
+                                          .package as Package
+                                      )?.defaultDecarbonizationQuestions?.includes(
+                                        q._id!
+                                      )))
+                                }
                                 value={option}
                                 inputClassName={cn(
                                   "border p-3 bg-[#E4E7E8] rounded-l-[12px] !rounded-r-[0] !rounded-b-[0] placeholder:text-left placeholder:align-top"
@@ -1060,6 +1138,7 @@ const UpdatePackage = (_: Props) => {
                                   }));
                                   setOption("");
                                 }}
+                                disabled={option.trim().length <= 0}
                                 className="h-12 border-ca-blue !bg-ca-blue rounded-[12px] !rounded-b-[0] !rounded-l-[0] text-white"
                               >
                                 Add
@@ -1089,6 +1168,23 @@ const UpdatePackage = (_: Props) => {
                                         questions: list,
                                       }));
                                     }}
+                                    disabled={
+                                      Boolean(q._id) &&
+                                      ((
+                                        packageDetails.data?.data
+                                          .package as Package
+                                      ).energyBillQuestionId === q._id ||
+                                        ((
+                                          packageDetails.data?.data
+                                            .package as Package
+                                        )?.defaultDecarbonizationQuestions &&
+                                          (
+                                            packageDetails.data?.data
+                                              .package as Package
+                                          )?.defaultDecarbonizationQuestions?.includes(
+                                            q._id!
+                                          )))
+                                    }
                                     className="bg-gray-200 hover:bg-gray-400 p-0 h-6 rounded-l-none"
                                   >
                                     <BiX />
@@ -1102,8 +1198,16 @@ const UpdatePackage = (_: Props) => {
                         <div className="flex justify-start gap-4 mt-3 items-center">
                           <SwitchButton
                             disabled={
-                              (packageDetails.data?.data.package as Package)
-                                .energyBillQuestionId === q._id
+                              Boolean(q._id) &&
+                              ((packageDetails.data?.data.package as Package)
+                                .energyBillQuestionId === q._id ||
+                                ((packageDetails.data?.data.package as Package)
+                                  ?.defaultDecarbonizationQuestions &&
+                                  (
+                                    packageDetails.data?.data.package as Package
+                                  )?.defaultDecarbonizationQuestions?.includes(
+                                    q._id!
+                                  )))
                             }
                             value={q?.isRequired ?? false}
                             onCheckedChange={(val) => {
@@ -1122,6 +1226,19 @@ const UpdatePackage = (_: Props) => {
                         <Button
                           variant={"ghost"}
                           className="flex justify-center items-center p-0 h-10 hover:bg-transparent mb-1"
+                          disabled={
+                            q._id
+                              ? (packageDetails.data?.data.package as Package)
+                                  .energyBillQuestionId === q._id ||
+                                ((packageDetails.data?.data.package as Package)
+                                  ?.defaultDecarbonizationQuestions &&
+                                  (
+                                    packageDetails.data?.data.package as Package
+                                  )?.defaultDecarbonizationQuestions?.includes(
+                                    q._id
+                                  ))
+                              : false
+                          }
                           onClick={() => {
                             let newList = [...packageState?.questions];
                             newList.splice(i, 1);

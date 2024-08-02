@@ -272,6 +272,7 @@ export type Package = {
   owner: string;
   category: Category;
   regions: string[];
+  defaultDecarbonizationQuestions?: string[];
   country: string;
   status: "publish";
   packageType: "Product";
