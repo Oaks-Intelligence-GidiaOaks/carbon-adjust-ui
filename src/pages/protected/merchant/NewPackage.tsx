@@ -316,7 +316,12 @@ const NewPackage = (_: Props) => {
         title: q.title,
         isRequired: q.isRequired,
         questionType: q.questionType.value,
-        ...(q.options ? { options: q.options } : {}),
+        ...(!Boolean(q.options?.length) &&
+        q.questionType.value === "Binary Response Question"
+          ? { options: ["Yes", "No"] }
+          : q.options
+          ? { options: q.options }
+          : {}),
       }));
       formData.append("questions", JSON.stringify(formattedQuestions));
     }
