@@ -61,6 +61,7 @@ const OrderCard = (props: IPackageOrder) => {
   const getStatusBg = (status: string) => {
     const colors: any = {
       pending: "bg-[#FFA500]",
+      processing: "bg-[#FFA500]",
       completed: "bg-[#4CAF50]",
       cancelled: "bg-[#F44336]",
     };
@@ -99,7 +100,7 @@ const OrderCard = (props: IPackageOrder) => {
                   "/assets/graphics/user1.svg"
                 }
                 alt=""
-                className="object-cover rounded-lg"
+                className="object-fit rounded-lg w-[100px] max-h-[100px]"
               />
             </div>
 

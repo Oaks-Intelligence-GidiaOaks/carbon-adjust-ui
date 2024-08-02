@@ -30,6 +30,7 @@ const Phoneinput = ({
   prependIcon,
   appendIcon,
   wrapperClassName,
+  required,
   // register,
   onInputChange,
   error,
@@ -49,6 +50,7 @@ InputProps) => {
           className={`mb-1 block ${labelClassName} text-[#888888] group-valid:text-[#171717] group-has-[:valid]:text-[#171717]`}
         >
           {label}
+          {required && <span className="text-red-500 pl-1">*</span>}
         </Label>
       )}
 
