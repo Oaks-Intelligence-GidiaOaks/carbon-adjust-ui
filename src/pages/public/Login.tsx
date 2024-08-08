@@ -18,6 +18,7 @@ import { setKommunitaToken, setToken } from "@/features/userSlice";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { AuthUserProfile } from "@/types/general";
 import { RootState } from "@/app/store";
+import { MixPanelRepository } from "@/repository/mixPanel";
 // import { uniqueObjectsByIdType } from "@/utils";
 // import { RootState } from "@/app/store";
 // import { uniqueObjectsByIdType } from "@/utils";
@@ -52,6 +53,18 @@ const Login = () => {
       );
     },
     onSuccess: (data) => {
+      const { user }: { user: AuthUserProfile } = data.data.data;
+      // const mixPanelInstance = new MixPanel();
+      // console.log(user, "=======USER=========");
+
+      // MixPanelRepository.identifyUser(user._id);
+      // MixPanelRepository.getDefaultProperties();
+
+      // MixPanelRepository.setUserProperties({
+      //   $email: user.email,
+      //   name: user.name,
+      // });
+
       dispatch(setToken(data.data.data.access_token));
       dispatch(setKommunitaToken(data.data.data.kommunita_access_token));
       if (

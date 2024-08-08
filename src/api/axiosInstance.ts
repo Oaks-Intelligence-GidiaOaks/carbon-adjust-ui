@@ -38,7 +38,6 @@ axiosInstance.interceptors.response.use(
     return config;
   },
   (error) => {
-    console.log(error);
     if (error.response.status === 401) {
       persistor.pause();
       persistor.flush().then(() => {

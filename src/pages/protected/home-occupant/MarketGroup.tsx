@@ -10,6 +10,7 @@ import ProductCard from "@/components/reusables/ProductCard";
 import { formatSlug } from "@/lib/utils";
 import { IProduct } from "@/interfaces/product.interface";
 import CategoriesLoading from "@/components/reusables/CategoriesLoading";
+import { MixPanelRepository } from "@/repository/mixPanel";
 // import { useDispatch } from "react-redux";
 // import { addProduct } from "@/features/productSlice";
 

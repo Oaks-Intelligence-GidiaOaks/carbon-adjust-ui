@@ -15,7 +15,6 @@ const DescriptionSection = (props: {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const scrollRef = useRef();
 
-  console.log(prod);
   // @ts-ignore
   const isVideo = Boolean(prod.videoUrl);
 

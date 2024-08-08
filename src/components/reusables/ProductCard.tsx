@@ -1,9 +1,12 @@
 import { addProduct } from "@/features/productSlice";
 import { IProduct } from "@/interfaces/product.interface";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GrFavorite } from "react-icons/gr";
 import { MdStarRate } from "react-icons/md";
+import { MixPanelRepository } from "@/repository/mixPanel";
+import { useSocket } from "@/hooks/useSocket";
+import { RootState } from "@/app/store";
 // import questions from "../../dummy/questions.json";
 
 interface Props extends IProduct {
@@ -12,8 +15,16 @@ interface Props extends IProduct {
 
 const ProductCard = ({ isMerchant = false, ...props }: Props) => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const socket = useSocket();
 
   const handleInitiateCheckout = () => {
+    socket?.emit("send_message", {
+      ...props,
+      user,
+    });
+
     dispatch(addProduct({ ...props }));
   };
 
