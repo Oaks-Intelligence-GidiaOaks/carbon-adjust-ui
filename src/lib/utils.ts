@@ -130,3 +130,42 @@ export const calculateTimeLeft = (timestamp: string): string => {
     return `${seconds} seconds left`;
   }
 };
+
+export const getBrowserAndOS = () => {
+  const userAgent = navigator.userAgent;
+  let browserName = "Unknown";
+  let osName = "Unknown";
+
+  // Detect browser
+  if (userAgent.indexOf("Firefox") > -1) {
+    browserName = "Firefox";
+  } else if (userAgent.indexOf("Chrome") > -1) {
+    browserName = "Chrome";
+  } else if (userAgent.indexOf("Safari") > -1) {
+    browserName = "Safari";
+  } else if (
+    userAgent.indexOf("MSIE") > -1 ||
+    userAgent.indexOf("Trident") > -1
+  ) {
+    browserName = "Internet Explorer";
+  } else if (userAgent.indexOf("Edge") > -1) {
+    browserName = "Edge";
+  } else if (userAgent.indexOf("Opera") > -1 || userAgent.indexOf("OPR") > -1) {
+    browserName = "Opera";
+  }
+
+  // Detect OS
+  if (userAgent.indexOf("Win") > -1) {
+    osName = "Windows";
+  } else if (userAgent.indexOf("Mac") > -1) {
+    osName = "MacOS";
+  } else if (userAgent.indexOf("Linux") > -1) {
+    osName = "Linux";
+  } else if (userAgent.indexOf("Android") > -1) {
+    osName = "Android";
+  } else if (userAgent.indexOf("like Mac") > -1) {
+    osName = "iOS";
+  }
+
+  return { browser: browserName, os: osName };
+};

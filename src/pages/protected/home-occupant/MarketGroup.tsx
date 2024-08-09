@@ -4,14 +4,37 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPackagesByCategorySlug } from "@/services/homeOwner";
 import ProductCard from "@/components/reusables/ProductCard";
-import { formatSlug } from "@/lib/utils";
+import { formatSlug, getBrowserAndOS } from "@/lib/utils";
 import { IProduct } from "@/interfaces/product.interface";
 import CategoriesLoading from "@/components/reusables/CategoriesLoading";
+import { useEffect } from "react";
+import {
+  IPageViewPayload,
+  MonitoringEvent,
+  PageEvent,
+} from "@/interfaces/events.interface";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import SocketService from "@/repository/socket";
 
 type Props = {};
 
 const MarketGroup = (_: Props) => {
-  // console.log(productDetails);
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const { browser, os } = getBrowserAndOS();
+
+  const pageEventPayload: IPageViewPayload = {
+    name: PageEvent.PACKAGE_CATEGORY,
+    time: Date.now(),
+    userId: user?._id as string,
+    browser,
+    os,
+  };
+
+  useEffect(() => {
+    SocketService.emit(MonitoringEvent.NEW_PAGE_VIEW, pageEventPayload);
+  }, []);
 
   const param: any = useParams();
   const [searchParams] = useSearchParams();

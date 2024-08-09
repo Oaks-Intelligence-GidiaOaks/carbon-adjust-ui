@@ -18,6 +18,7 @@ import { ISlot } from "@/interfaces/slots.interface";
 import { Oval } from "react-loader-spinner";
 import { Dayjs } from "dayjs";
 import {
+  getBrowserAndOS,
   getFormattedDayFromIndex,
   getFormattedMonthFromIndex,
 } from "@/lib/utils";
@@ -25,7 +26,9 @@ import SlotsLoading from "@/components/reusables/SlotsLoading";
 import CalendarDays from "@/components/reusables/CalendarDays";
 import {
   IOrderBookingEventPayload,
+  IPageViewPayload,
   MonitoringEvent,
+  PageEvent,
   SubLevelEvent,
 } from "@/interfaces/events.interface";
 import { useSelector } from "react-redux";
@@ -36,6 +39,20 @@ type Props = {};
 
 const Appointment = (_: Props) => {
   const { user } = useSelector((state: RootState) => state);
+
+  const { browser, os } = getBrowserAndOS();
+
+  const pageEventPayload: IPageViewPayload = {
+    name: PageEvent.ORDER_LIST,
+    time: Date.now(),
+    userId: user.user?._id as string,
+    browser,
+    os,
+  };
+
+  useEffect(() => {
+    SocketService.emit(MonitoringEvent.NEW_PAGE_VIEW, pageEventPayload);
+  }, []);
 
   const { orderId } = useParams();
   const [dt, setDt] = useState<any>();

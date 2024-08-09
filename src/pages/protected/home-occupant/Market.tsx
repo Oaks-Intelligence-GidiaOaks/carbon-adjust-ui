@@ -13,9 +13,13 @@ import { useDispatch, useSelector } from "react-redux";
 import SocketService from "@/repository/socket";
 import {
   ILoginEventPayload,
+  IPageViewPayload,
+  MonitoringEvent,
+  PageEvent,
   SubLevelEvent,
 } from "@/interfaces/events.interface";
 import { RootState } from "@/app/store";
+import { getBrowserAndOS } from "@/lib/utils";
 
 type Props = {};
 
@@ -31,9 +35,20 @@ const Market = (_: Props) => {
     eventName: SubLevelEvent.LOGIN_USER_EVENT,
   };
 
+  const { browser, os } = getBrowserAndOS();
+
+  const pageEventPayload: IPageViewPayload = {
+    name: PageEvent.DASHBOARD,
+    time: Date.now(),
+    userId: user?._id as string,
+    browser,
+    os,
+  };
+
   useEffect(() => {
     SocketService.on("connect", () => {
       SocketService.emit(SubLevelEvent.LOGIN_USER_EVENT, loginEventPayload);
+      SocketService.emit(MonitoringEvent.NEW_PAGE_VIEW, pageEventPayload);
     });
     dispatch(clearOrder());
     dispatch(clearProduct());

@@ -5,6 +5,16 @@ export enum MonitoringEvent {
   SUCCESS = "success",
 }
 
+export enum PageEvent {
+  DASHBOARD = "Dashboard Page",
+  PACKAGE_CATEGORY = "Package Category Page",
+  PACKAGE_DETAIL_MODAL = "Package Detail Modal",
+  ORDER_LIST = "Order List Page",
+  PACKAGE_BOOKING = "Package Booking Page",
+  USER_PROFILE = "User Profile Page",
+  HOMEOWNER_PAGE = "Homeowner Landing Page",
+}
+
 export enum SubLevelEvent {
   LOGIN_USER_EVENT = "Log In User",
   LOGOUT_USER_EVENT = "Log Out User",
@@ -16,6 +26,14 @@ export enum SubLevelEvent {
   ORDER_SUCCESS_EVENT = "Order Success",
   ORDER_FAILURE_EVENT = "Order Failure",
   ORDER_BOOKING_EVENT = "Order Booking",
+}
+
+export interface IPageViewPayload {
+  name: string;
+  userId: string;
+  browser: string;
+  os: string;
+  time: number;
 }
 
 // SUB-LEVEL EVENTS
