@@ -5,17 +5,41 @@ import OrderCard from "@/components/reusables/OrderCard";
 import { IPackageOrder } from "@/interfaces/order.interface";
 import { getHoOrders } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
-// import { useEffect, useState } from "react";
 import OrdersLoading from "@/components/reusables/OrdersLoading";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearOrder } from "@/features/orderSlice";
 import { clearProduct } from "@/features/productSlice";
+import SocketService from "@/repository/socket";
+import { RootState } from "@/app/store";
+import { getBrowserAndOS } from "@/lib/utils";
+import {
+  IPageViewPayload,
+  MonitoringEvent,
+  PageEvent,
+} from "@/interfaces/events.interface";
 
 type Props = {};
 
 const OrderList = (_: Props) => {
   // const [currentPage, setCurrentPage] = useState(1);
+
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const { browser, os } = getBrowserAndOS();
+
+  const pageEventPayload: IPageViewPayload = {
+    name: PageEvent.ORDER_LIST,
+    time: Date.now(),
+    userId: user?._id as string,
+    browser,
+    os,
+  };
+
+  useEffect(() => {
+    SocketService.emit(MonitoringEvent.NEW_PAGE_VIEW, pageEventPayload);
+  }, []);
+
   const dispatch = useDispatch();
 
   const { data, isSuccess, isLoading } = useQuery({

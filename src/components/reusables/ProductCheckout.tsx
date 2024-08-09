@@ -9,15 +9,24 @@ import PaymentSuccessful from "../containers/checkout/PaymentSuccessful";
 import ProcessingPayment from "../containers/checkout/ProcessingPayment";
 import CloseModal from "./CloseModal";
 import { clearProduct } from "@/features/productSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearOrder } from "@/features/orderSlice";
 import useDisableScroll from "@/hooks/useDisableScroll";
+import SocketService from "@/repository/socket";
+import {
+  ICancelAddToBasketEventPayload,
+  MonitoringEvent,
+  SubLevelEvent,
+} from "@/interfaces/events.interface";
+import { RootState } from "@/app/store";
 
 const ProductCheckout = (props: {
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
   showCheckout: boolean;
   categoryName: string;
 }) => {
+  const { product, user } = useSelector((state: RootState) => state);
+
   const [stage, setStage] = useState<number>(1);
   const [showCancel, setShowCancel] = useState<boolean>(false);
 
@@ -26,6 +35,19 @@ const ProductCheckout = (props: {
   const dispatch = useDispatch();
 
   const cancelCheckout = () => {
+    const basketPayload: ICancelAddToBasketEventPayload = {
+      packageCategory: product.category?.name as string,
+      packageId: product._id,
+      packageName: product.title,
+      packagePrice: Number(product.price),
+      pakageType: product.packageType,
+      time: Date.now(),
+      userId: user.user?._id as string,
+      eventName: SubLevelEvent.CANCEL_ADD_TO_CART_EVENT,
+    };
+
+    SocketService.emit(MonitoringEvent.NEW_SUBLEVEL_EVENT, basketPayload);
+
     dispatch(clearProduct());
     dispatch(clearOrder());
     props.setShowcheckout(false);

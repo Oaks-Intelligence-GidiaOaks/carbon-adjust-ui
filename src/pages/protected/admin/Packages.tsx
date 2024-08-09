@@ -1,5 +1,3 @@
-// import React from 'react'
-
 import AdminPackagesGrid from "@/components/grid/admin/AdminPackagesGrid";
 import { handleTableDownload } from "@/lib/utils";
 import { getAdminPackages } from "@/services/homeOwner";

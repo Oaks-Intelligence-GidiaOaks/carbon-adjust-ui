@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
 import CarbonAdjustLogo from "../../../assets/icons/CarbonAdjustLogo.svg";
@@ -10,6 +10,13 @@ import { Link } from "react-router-dom";
 import VideoContainer from "@/components/containers/home/VideoContainer";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
+import { getBrowserAndOS } from "@/lib/utils";
+import {
+  IPageViewPayload,
+  MonitoringEvent,
+  PageEvent,
+} from "@/interfaces/events.interface";
+import SocketService from "@/repository/socket";
 
 // this is the landing page the home owner and merchant sees after login contaning the video  playback
 
@@ -17,6 +24,22 @@ const DashboardLanding: FC = () => {
   const kommunitaToken = useSelector(
     (state: RootState) => state.user.kommunitaToken
   );
+
+  const { user: sUser } = useSelector((state: RootState) => state);
+
+  const { browser, os } = getBrowserAndOS();
+
+  const pageEventPayload: IPageViewPayload = {
+    name: PageEvent.HOMEOWNER_PAGE,
+    time: Date.now(),
+    userId: sUser.user?._id as string,
+    browser,
+    os,
+  };
+
+  useEffect(() => {
+    SocketService.emit(MonitoringEvent.NEW_PAGE_VIEW, pageEventPayload);
+  }, []);
 
   return (
     <>

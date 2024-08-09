@@ -5,6 +5,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { FaPlay } from "react-icons/fa";
 import UseScrollToTop from "@/hooks/useScrollToTop";
+import SocketService from "@/repository/socket";
+import {
+  IOrderSummaryEventPayload,
+  MonitoringEvent,
+  SubLevelEvent,
+} from "@/interfaces/events.interface";
 
 const DescriptionSection = (props: {
   setStage: Dispatch<SetStateAction<number>>;
@@ -12,10 +18,10 @@ const DescriptionSection = (props: {
   setShowCancel: Dispatch<SetStateAction<boolean>>;
 }) => {
   const prod = useSelector((state: RootState) => state.product);
+  const { user } = useSelector((state: RootState) => state.user);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const scrollRef = useRef();
 
-  console.log(prod);
   // @ts-ignore
   const isVideo = Boolean(prod.videoUrl);
 
@@ -51,6 +57,17 @@ const DescriptionSection = (props: {
   }, []);
 
   UseScrollToTop(scrollRef);
+
+  const orderSummaryEventPayload: IOrderSummaryEventPayload = {
+    packageId: prod._id,
+    packageName: prod.title,
+    pakageType: prod.packageType,
+    packageCategory: prod.category?.name as string,
+    packagePrice: Number(prod.price),
+    time: Date.now(),
+    userId: user?._id as string,
+    eventName: SubLevelEvent.ORDER_SUMMARY_EVENT,
+  };
 
   return (
     <div className="lg:max-w-[60vw] xl:max-w-[55vw] lg:ml-auto">
@@ -131,7 +148,14 @@ const DescriptionSection = (props: {
 
             <div className="flex-center gap-1 pt-2 !mt-auto">
               <button
-                onClick={() => props.setStage(2)}
+                onClick={() => {
+                  SocketService.emit(
+                    MonitoringEvent.NEW_SUBLEVEL_EVENT,
+                    orderSummaryEventPayload
+                  );
+
+                  props.setStage(2);
+                }}
                 className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px] text-sm"
               >
                 <span>Proceed</span>

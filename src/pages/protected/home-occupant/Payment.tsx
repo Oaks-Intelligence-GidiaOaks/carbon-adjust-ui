@@ -18,10 +18,20 @@ import { useParams } from "react-router-dom";
 import { MdOutlinePayment } from "react-icons/md";
 import { CiLock } from "react-icons/ci";
 
+import SocketService from "@/repository/socket";
+import {
+  IOrderPaymentEventPayload,
+  IOrderPaymentFailureEventPayload,
+  IOrderPaymentSuccessEventPayload,
+  MonitoringEvent,
+  SubLevelEvent,
+} from "@/interfaces/events.interface";
+
 // Load your publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
 const CheckoutForm = () => {
+  const { user } = useSelector((state: RootState) => state.user);
   const { orderId } = useParams();
   const stripe = useStripe!();
   const elements = useElements();
@@ -41,6 +51,24 @@ const CheckoutForm = () => {
       setBtnLoading(false);
     },
   });
+
+  let orderPaymentPayload: IOrderPaymentEventPayload = {
+    orderId: orderId as string,
+    userId: user?._id as string,
+    time: Date.now(),
+    eventName: SubLevelEvent.ORDER_PAYMENT_EVENT,
+    amount: Number(order.price),
+  };
+
+  let orderPaymentFailurePayload: IOrderPaymentFailureEventPayload = {
+    ...orderPaymentPayload,
+    success: false,
+  };
+
+  let orderPaymentSuccessPayload: IOrderPaymentSuccessEventPayload = {
+    ...orderPaymentPayload,
+    success: true,
+  };
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -62,6 +90,9 @@ const CheckoutForm = () => {
       return;
     }
 
+    // ORDER_PAYMENT_EVENT
+    SocketService.emit(MonitoringEvent.NEW_SUBLEVEL_EVENT, orderPaymentPayload);
+
     const { data: intentData } = await createPaymentIntent.mutateAsync({
       orderId,
     });
@@ -78,14 +109,24 @@ const CheckoutForm = () => {
       // This point will only be reached if there is an immediate error when
       // confirming the payment. Show error to your customer (for example, payment
       // details incomplete)
-      console.log(error, "error");
+
+      // ORDER_FAILURE_EVENT
+      SocketService.emit(
+        MonitoringEvent.NEW_SUBLEVEL_EVENT,
+        orderPaymentFailurePayload
+      );
+
       setBtnLoading(false);
-      // toast.error(error?.message);
       // setErrorMessage(error.message);
     } else {
+      // ORDER_SUCCESS_EVENT
+      SocketService.emit(
+        MonitoringEvent.NEW_SUBLEVEL_EVENT,
+        orderPaymentSuccessPayload
+      );
+
       setBtnLoading(false);
 
-      // toast.success("final stage reached");
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.

@@ -130,7 +130,6 @@ const Layout = (props: Props) => {
           userData.data.data.data,
           userData.data.data.data.roles[0]
         );
-        // console.log(uniqueObjectsByIdType(userData.data.data.data?.doc).length);
         // console.log(uniqueObjectsByIdType(userData.data.data.data?.doc));
         // if (uniqueObjectsByIdType(userData.data.data.data?.doc).length < 4) {
         //   return navigate("/account-setup");
