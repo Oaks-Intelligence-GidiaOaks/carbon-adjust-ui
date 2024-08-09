@@ -1,20 +1,35 @@
+import { RootState } from "@/app/store";
 import { useEffect, useState } from "react";
-import { io, Socket } from "socket.io-client";
+import { useSelector } from "react-redux";
+import { io } from "socket.io-client";
 
-const SOCKET_SERVER_URL = import.meta.env.VITE_BASE_URL_LOCAL;
+const SOCKET_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER;
 
 export const useSocket = () => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const [socket, setSocket] = useState<any>(null);
 
   useEffect(() => {
-    const socketConnection = io(SOCKET_SERVER_URL, {
-      transports: ["websocket"],
+    if (!user?._id) return;
+
+    const socketInstance = io(`${SOCKET_SERVER_URL}?userId=${user?._id}`);
+
+    setSocket(socketInstance);
+
+    socketInstance.on("connect", () => {
+      console.log("socketInstance connected:", socketInstance.id);
     });
 
-    setSocket(socketConnection);
+    socketInstance.on("disconnect", () => {
+      console.log("Socket disconnected");
+    });
 
     return () => {
-      socketConnection.disconnect();
+      if (socketInstance) {
+        socket?.disconnect();
+        console.log("Socket connection closed");
+      }
     };
   }, []);
 

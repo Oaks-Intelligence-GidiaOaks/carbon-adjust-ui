@@ -23,10 +23,20 @@ import {
 } from "@/lib/utils";
 import SlotsLoading from "@/components/reusables/SlotsLoading";
 import CalendarDays from "@/components/reusables/CalendarDays";
+import {
+  IOrderBookingEventPayload,
+  MonitoringEvent,
+  SubLevelEvent,
+} from "@/interfaces/events.interface";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import SocketService from "@/repository/socket";
 
 type Props = {};
 
 const Appointment = (_: Props) => {
+  const { user } = useSelector((state: RootState) => state);
+
   const { orderId } = useParams();
   const [dt, setDt] = useState<any>();
   const [activeSlot, setActiveSlot] = useState<ISlot>();
@@ -44,8 +54,6 @@ const Appointment = (_: Props) => {
         dt.$D
       )}`,
   };
-
-  // console.log(dt, "dt");
 
   const {
     data,
@@ -65,11 +73,6 @@ const Appointment = (_: Props) => {
     isSuccess && data.data.schedules.length > 0
       ? data.data.schedules.map((it: any) => it.shortDay.toLowerCase())
       : [];
-
-  console.log(scheduledDays, "scheduled days");
-
-  // console.log(slots, "slots");
-  // console.log(schedule, "schedule");
 
   const createOrderBooking = useMutation({
     mutationKey: ["create-order-booking"],
@@ -100,19 +103,20 @@ const Appointment = (_: Props) => {
     }
   }, [dt, refetch]);
 
-  // const getSpecificDateSlots = () => {
-  //   refetch();
-  // };
-
-  // const slots = isSuccess ? data.slots : [];
+  let bookingEventPayload: IOrderBookingEventPayload = {
+    orderId: orderId as string,
+    userId: user.user?._id as string,
+    time: Date.now(),
+    eventName: SubLevelEvent.ORDER_BOOKING_EVENT,
+  };
 
   const handleSlotClick = (slot: ISlot) => {
     setActiveSlot(slot);
   };
 
-  // console.log(order);
-
   const handleBookSlot = () => {
+    SocketService.emit(MonitoringEvent.NEW_SUBLEVEL_EVENT, bookingEventPayload);
+
     const bookingData = {
       orderId: orderId!,
       schedule: activeSlot?.schedule!,
@@ -125,8 +129,6 @@ const Appointment = (_: Props) => {
 
   const proceedDisabled =
     activeSlot === undefined || createOrderBooking.isPending;
-
-  // const scheduledDates = ["2024-06-25", "2024-06-15", "2024-06-20"];
 
   return (
     <div>

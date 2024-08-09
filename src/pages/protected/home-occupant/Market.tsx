@@ -1,40 +1,40 @@
-// import DashboardBanner from "@/components/containers/DashboardBanner";
-// import DashboardBanner from "@/components/containers/DashboardBanner";
 import Promotion from "@/components/containers/Promotion";
 import BestSellers from "@/components/containers/home/BestSellers";
 import CategoriesLoading from "@/components/reusables/CategoriesLoading";
-// import EnergyEfficient from "@/components/containers/home/EnergyEfficient";
-// import EnergySaving from "@/components/containers/home/EnergySaving";
-// import HomeEnergy from "@/components/containers/home/HomeEnergy";
-// import HomeImprovement from "@/components/containers/home/HomeImprovement";
-// import Retrofit from "@/components/containers/home/Retrofit";
-// import CategoryProducts from "@/components/reusables/CategoryProducts";
 import ProductsCategory from "@/components/reusables/ProductsCategory";
 import { clearOrder } from "@/features/orderSlice";
 import { clearProduct } from "@/features/productSlice";
 import { IProdCategory } from "@/interfaces/product.interface";
-import {
-  // getAllPackageCategories,
-  // getBestSellerPackages,
-  // getHomePageFreebies,
-  getHomePagePackages,
-} from "@/services/homeOwner";
-// import // transformCategoryPackages,
-// // transformHomePagePackages,
-//
-// // "@/utils/reshape";
+import { getHomePagePackages } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import SocketService from "@/repository/socket";
+import {
+  ILoginEventPayload,
+  SubLevelEvent,
+} from "@/interfaces/events.interface";
+import { RootState } from "@/app/store";
 
 type Props = {};
 
 // this is the Main Dashboard page for showing all products in different categries
 
 const Market = (_: Props) => {
+  const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
+  const loginEventPayload: ILoginEventPayload = {
+    userId: user?._id as string,
+    time: Date.now(),
+    eventName: SubLevelEvent.LOGIN_USER_EVENT,
+  };
+
   useEffect(() => {
+    SocketService.on("connect", () => {
+      SocketService.emit(SubLevelEvent.LOGIN_USER_EVENT, loginEventPayload);
+    });
     dispatch(clearOrder());
     dispatch(clearProduct());
   }, []);

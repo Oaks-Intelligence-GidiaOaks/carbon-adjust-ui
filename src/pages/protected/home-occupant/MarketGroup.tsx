@@ -1,8 +1,5 @@
 import Promotion from "@/components/containers/Promotion";
-
 import ProductCheckout from "@/components/reusables/ProductCheckout";
-// import EnergyPackage from "@/components/reusables/EnergyPackage";
-// import { useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPackagesByCategorySlug } from "@/services/homeOwner";
@@ -10,9 +7,6 @@ import ProductCard from "@/components/reusables/ProductCard";
 import { formatSlug } from "@/lib/utils";
 import { IProduct } from "@/interfaces/product.interface";
 import CategoriesLoading from "@/components/reusables/CategoriesLoading";
-import { MixPanelRepository } from "@/repository/mixPanel";
-// import { useDispatch } from "react-redux";
-// import { addProduct } from "@/features/productSlice";
 
 type Props = {};
 
@@ -41,10 +35,6 @@ const MarketGroup = (_: Props) => {
   });
 
   const catProducts: IProduct[] = isSuccess ? data.data.packages : [];
-
-  // console.log(catProducts, "cat products");
-
-  // console.log(catProducts, "cat products");
 
   return (
     <div className="relative ">

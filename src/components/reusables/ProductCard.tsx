@@ -4,10 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GrFavorite } from "react-icons/gr";
 import { MdStarRate } from "react-icons/md";
-import { MixPanelRepository } from "@/repository/mixPanel";
-import { useSocket } from "@/hooks/useSocket";
+
 import { RootState } from "@/app/store";
-// import questions from "../../dummy/questions.json";
+import {
+  IAddToBasketEventPayload,
+  MonitoringEvent,
+  SubLevelEvent,
+} from "@/interfaces/events.interface";
+import SocketService from "@/repository/socket";
 
 interface Props extends IProduct {
   wrapText?: boolean;
@@ -17,15 +21,21 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.user);
 
-  const socket = useSocket();
-
   const handleInitiateCheckout = () => {
-    socket?.emit("send_message", {
-      ...props,
-      user,
-    });
-
     dispatch(addProduct({ ...props }));
+
+    const basketPayload: IAddToBasketEventPayload = {
+      packageId: props?._id,
+      packageName: props?.title,
+      pakageType: props?.packageType,
+      packageCategory: props.category?.name as string,
+      packagePrice: Number(props?.price),
+      time: Date.now(),
+      userId: user?._id as string,
+      eventName: SubLevelEvent.ADD_TO_CART_EVENT,
+    };
+
+    SocketService.emit(MonitoringEvent.NEW_SUBLEVEL_EVENT, basketPayload);
   };
 
   return (
