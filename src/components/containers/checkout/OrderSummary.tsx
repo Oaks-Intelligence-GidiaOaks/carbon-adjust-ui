@@ -11,6 +11,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Oval } from "react-loader-spinner";
 import { updateOrderId, updatePrice } from "@/features/orderSlice";
 import { useNavigate } from "react-router-dom";
+import SocketService from "@/repository/socket";
+import {
+  IInitializeEventPayload,
+  MonitoringEvent,
+  SubLevelEvent,
+} from "@/interfaces/events.interface";
 
 type IAddress = {
   country: string;
@@ -69,9 +75,27 @@ const OrderSummary = (props: {
     },
   });
 
+  const initializeEventPayload: IInitializeEventPayload = {
+    country: order.customerAddress.country.value,
+    city: order.customerAddress.cityOrProvince.value,
+    userId: user.user?._id as string,
+    packageId: product._id,
+    packageName: product.title,
+    pakageType: product.packageType,
+    packageCategory: product.category?.name as string,
+    packagePrice: Number(product.price),
+    time: Date.now(),
+    eventName: SubLevelEvent.INITIALIZE_ORDER_EVENT,
+  };
+
   const isDisabled = createOrder.isPending;
 
   const handleOrderPayment = () => {
+    SocketService.emit(
+      MonitoringEvent.NEW_SUBLEVEL_EVENT,
+      initializeEventPayload
+    );
+
     const newOrder: IOrder = {
       ...order,
       package: product._id,
@@ -86,8 +110,6 @@ const OrderSummary = (props: {
     };
 
     createOrder.mutate(newOrder);
-
-    // console.log(newOrder, "new  order");
   };
 
   return (

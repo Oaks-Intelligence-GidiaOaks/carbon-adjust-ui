@@ -11,6 +11,12 @@ import { cn, formatAccountType } from "@/utils";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import SocketService from "@/repository/socket";
+import {
+  ILoginOutPayload,
+  MonitoringEvent,
+  SubLevelEvent,
+} from "@/interfaces/events.interface";
 
 const Sidebar = ({
   accountType,
@@ -110,6 +116,16 @@ const Sidebar = ({
                 onClick={() => {
                   persistor.pause();
                   persistor.flush().then(() => {
+                    const logoutPayload: ILoginOutPayload = {
+                      userId: user?._id as string,
+                      time: Date.now(),
+                      eventName: SubLevelEvent.LOGOUT_USER_EVENT,
+                    };
+
+                    SocketService.emit(
+                      MonitoringEvent.NEW_SUBLEVEL_EVENT,
+                      logoutPayload
+                    );
                     return persistor.purge();
                   });
                   window.location.assign("/");

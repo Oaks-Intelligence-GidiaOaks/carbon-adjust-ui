@@ -21,6 +21,7 @@ jobs:
           SOCKET_SERVER: https://carbon-adjust-dev-ff1d65869271.herokuapp.com/api/v1
           VITE_BASE_URL: https://carbon-adjust-dev-ff1d65869271.herokuapp.com/api/v1
           VITE_STRIPE_KEY: pk_test_51OVeimKSbtUMob1VZpBI2Gpk86SUc9ohc4SJYACRxeaiqjxgiwdX3ccVpO8KUYXtTo5bF88wNHuks3tSdrtB7cYY00L2SlFfVq
+          VITE_SOCKET_SERVER: https://carbon-adjust-dev-ff1d65869271.herokuapp.com
         run: npm run build # The build command of your project
 
       - name: Push

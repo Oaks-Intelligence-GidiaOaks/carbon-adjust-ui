@@ -1,17 +1,41 @@
 import { AccountSetupScribbleRight } from "@/assets/icons";
 import EditProfileModal from "@/components/containers/EditProfileModal";
 import { Button } from "@/components/ui";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getBrowserAndOS } from "@/lib/utils";
 import { changeProfileDp, getMe } from "@/services/homeOwner";
 import { cn } from "@/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
+import SocketService from "@/repository/socket";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import {
+  IPageViewPayload,
+  MonitoringEvent,
+  PageEvent,
+} from "@/interfaces/events.interface";
 
 const Profile: FC = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const queryClient = useQueryClient();
+
+  const { user: sUser } = useSelector((state: RootState) => state);
+
+  const { browser, os } = getBrowserAndOS();
+
+  const pageEventPayload: IPageViewPayload = {
+    name: PageEvent.USER_PROFILE,
+    time: Date.now(),
+    userId: sUser.user?._id as string,
+    browser,
+    os,
+  };
+
+  useEffect(() => {
+    SocketService.emit(MonitoringEvent.NEW_PAGE_VIEW, pageEventPayload);
+  }, []);
 
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ["get-me"],
