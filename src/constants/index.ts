@@ -3,6 +3,7 @@ import {
   // CarbonCreditIcon,
   // ContactIcon,
   DashboardIcon,
+  OrdersIcon,
   // HomeIcon,
   // DevicesIcon,
   // DocumentCentreIcon,
@@ -13,7 +14,7 @@ import {
   PNGIcon,
   ProfileIcon,
   UsersIcon,
-  AggregatorIcon,
+  PackageIcon,
   // ProjectIcon,
 } from "@/assets/icons";
 import { DropdownOption, Finance, Payment } from "@/types/general";
@@ -95,7 +96,7 @@ export const staffSideBarItems = [
     href: "/staff",
   },
   {
-    icon: DashboardIcon,
+    icon: OrdersIcon,
     title: "Orders",
     href: "/staff/orders",
   },
@@ -104,54 +105,21 @@ export const staffSideBarItems = [
     title: "Logout",
     href: "/..",
   },
-  // {
-  //   icon: DashboardIcon,
-  //   title: "Profile",
-  //   href: "/staff/profile",
-  // },
 ];
 
 export const homeOwnerSideBarItems = [
-  // {
-  //   icon: HomeIcon,
-  //   title: "Home",
-  //   href: "/home",
-  // },
   {
     icon: DashboardIcon,
     title: "Dashboard",
     href: "/dashboard",
   },
-  // {
-  //   icon: ApplicationsIcon,
-  //   title: "Bookings",
-  //   href: "/dashboard/order-booking/orderId",
-  // },
+
   {
-    icon: ApplicationsIcon,
+    icon: OrdersIcon,
     title: "Orders",
     href: "/dashboard/orders",
   },
-  // {
-  //   icon: CarbonCreditIcon,
-  //   title: "",
-  //   href: "/dashboard/wallet",
-  // },
-  // {
-  //   icon: InboxIcon,
-  //   title: "",
-  //   href: "/dashboard/inbox",
-  // },
-  // {
-  //   icon: ContactIcon,
-  //   title: "Contact Us",
-  //   href: "/dashboard/contact",
-  // },
-  // {
-  //   icon: ProfileIcon,
-  //   title: "Profile",
-  //   href: "/dashboard/profile",
-  // },
+
   {
     icon: LogoutIcon,
     title: "Logout",
@@ -166,7 +134,7 @@ export const merchantSideBarItems = [
     href: "/merchant",
   },
   {
-    icon: ApplicationsIcon,
+    icon: PackageIcon,
     title: "Packages",
     href: "/merchant/packages",
   },
@@ -175,26 +143,7 @@ export const merchantSideBarItems = [
     title: "Applications",
     href: "/merchant/applications",
   },
-  // {
-  //   icon: ApplicationsIcon,
-  //   title: "Bookings",
-  //   href: "/merchant/bookings",
-  // },
-  // {
-  //   icon: DevicesIcon,
-  //   title: "Wallet",
-  //   href: "/merchant/bookings",
-  // },
-  // {
-  //   icon: CarbonCreditIcon,
-  //   title: "Wallet",
-  //   href: "/merchant/wallet",
-  // },
-  // {
-  //   icon: InboxIcon,
-  //   title: "Inbox",
-  //   href: "/merchant/inbox",
-  // },
+
   {
     icon: ProfileIcon,
     title: "Staff",
@@ -613,12 +562,12 @@ export const adminSideBarItems = [
     href: "/admin/users",
   },
   {
-    icon: UsersIcon,
+    icon: PackageIcon,
     title: "Packages",
     href: "/admin/packages",
   },
   {
-    icon: AggregatorIcon,
+    icon: OrdersIcon,
     title: "Orders",
     href: "/admin/orders",
   },
@@ -627,46 +576,6 @@ export const adminSideBarItems = [
     title: "Adverts",
     href: "/admin/ads",
   },
-  // {
-  //   icon: ApplicationsIcon,
-  //   title: "Applications",
-  //   href: "/admin/applications",
-  // },
-  // {
-  //   icon: ProfileIcon,
-  //   title: "Projects",
-  //   href: "/admin/projects",
-  // },
-  // {
-  //   icon: DevicesIcon,
-  //   title: "Staff",
-  //   href: "/admin/staff",
-  // },
-  // {
-  //   icon: CarbonCreditIcon,
-  //   title: "Carbon Credit Account",
-  //   href: "/admin/carbon-credit",
-  // },
-  // {
-  //   icon: InboxIcon,
-  //   title: "Inbox",
-  //   href: "/admin/inbox",
-  // },
-  // {
-  //   icon: DocumentCentreIcon,
-  //   title: "Document Centre",
-  //   href: "/admin/document-centre",
-  // },
-  // {
-  //   icon: ContactIcon,
-  //   title: "Contact Us",
-  //   href: "/admin/contact",
-  // },
-  // {
-  //   icon: ProfileIcon,
-  //   title: "Profile",
-  //   href: "/admin/profile",
-  // },
   {
     icon: LogoutIcon,
     title: "Logout",
