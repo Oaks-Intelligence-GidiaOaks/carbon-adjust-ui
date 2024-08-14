@@ -184,3 +184,9 @@ export const updateAdvertBanner = async (adsData: {
 
   return data;
 };
+
+export const getAdminApplications = async () => {
+  const { data } = await axiosInstance.get(`/application/all`);
+
+  return data;
+};

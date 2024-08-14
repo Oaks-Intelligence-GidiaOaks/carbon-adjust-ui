@@ -17,30 +17,22 @@ import LoadingModal from "../../reusables/LoadingModal";
 import { useNavigate } from "react-router-dom";
 
 import { useOutsideCloser } from "../../../hooks/useOutsideCloser";
+// @ts-ignore
 import { EyeIcon } from "@heroicons/react/24/outline";
 
-import axiosInstance from "@/api/axiosInstance";
 import toast from "react-hot-toast";
-import { BsPeople, BsThreeDotsVertical } from "react-icons/bs";
-import { MdDone } from "react-icons/md";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 import { completeApplication } from "@/services/merchant";
 import { StaffModal } from "@/components/dialogs";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store";
 
-const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
+const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
+  // @ts-ignore
   const navigate = useNavigate();
-
-  const user = useSelector((state: RootState) => state.user.user);
 
   const [showModal, setShowModal] = useState(false);
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [currentRowId, setCurrentRowId] = useState(null);
-  const [currentRowData, setCurrentRowData] = useState({
-    packageId: "",
-    appId: "",
-  });
 
   const queryClient = useQueryClient();
 
@@ -58,13 +50,7 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     },
   });
 
-  const handleActionClick = (id: any, rowData: any) => {
-    console.log(rowData._id);
-
-    setCurrentRowData({
-      appId: rowData._id,
-      packageId: rowData._id,
-    });
+  const handleActionClick = (id: any) => {
     if (currentRowId === id) {
       setShowModal((prevState) => !prevState);
     } else {
@@ -74,107 +60,6 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   };
 
   const columnHelper = createColumnHelper();
-
-  const approvalInputRef = useRef<HTMLInputElement>(null);
-  const declineInputRef = useRef<HTMLInputElement>(null);
-
-  const declineMutation = useMutation({
-    mutationKey: ["decline application"],
-    mutationFn: (ids: { appId: string; file: File }) => {
-      const formData = new FormData();
-
-      if (!ids.file) {
-        toast.error("Attach document");
-      }
-
-      if (ids.file) {
-        formData.append("file", ids.file);
-      }
-
-      formData.append("status", "false");
-
-      return axiosInstance.patch(
-        `applications/${ids.appId}/aggregator/review`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-    },
-    onSuccess: () => {
-      toast.success("Application declined");
-      queryClient.invalidateQueries({
-        queryKey: ["get-applications"],
-      });
-      setCurrentRowId(null);
-    },
-    onError: () => {
-      toast.error("Error approving contractor");
-    },
-  });
-
-  const approvedMutation = useMutation({
-    mutationKey: ["approve application"],
-    mutationFn: (ids: { appId: string; file: File }) => {
-      const formData = new FormData();
-
-      if (!ids.file) {
-        toast.error("Attach document");
-      }
-      if (ids.file) {
-        formData.append("file", ids.file);
-      }
-      formData.append("status", "true");
-
-      return axiosInstance.patch(
-        `applications/${ids.appId}/aggregator/review`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-    },
-    onSuccess: () => {
-      toast.success("Application approved");
-      setCurrentRowId(null);
-      queryClient.invalidateQueries({
-        queryKey: ["get-applications"],
-      });
-    },
-    onError: () => {
-      toast.error("Error approving application");
-    },
-  });
-
-  const handleApprovalMutation = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newFile = event.target.files?.[0]; // Get the selected file
-    if (newFile) {
-      // Perform your request here
-      approvedMutation.mutate({
-        appId: currentRowData.appId,
-        file: newFile,
-      });
-    }
-  };
-
-  const handleDeclineMutation = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newFile = event.target.files?.[0]; // Get the selected file
-    if (newFile) {
-      // Perform your request here
-      declineMutation.mutate({
-        appId: currentRowData.appId,
-        file: newFile,
-      });
-    }
-  };
 
   const columns = [
     columnHelper.accessor((_, rowIndex) => ({ serialNumber: rowIndex + 1 }), {
@@ -438,90 +323,35 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
             <div
               key={info.getValue()}
               className="rounded-full px-3 p-1 text-xs cursor-pointer mx-auto hover:bg-gray-300"
-              onClick={() =>
-                handleActionClick(info.getValue(), info.row.original)
-              }
+              onClick={() => handleActionClick(info.getValue())}
             >
               <BsThreeDotsVertical size={20} className="" />
             </div>
-            <input
-              ref={approvalInputRef}
-              type="file"
-              name="image"
-              id="approval-file"
-              className="hidden"
-              onChange={(e) => {
-                if (e.target.files) {
-                  handleApprovalMutation(e);
-                }
-              }}
-            />
-            <input
-              ref={declineInputRef}
-              type="file"
-              name="image"
-              id="rejection-file"
-              className="hidden"
-              onChange={(e) => {
-                handleDeclineMutation(e);
-              }}
-            />
-            {/* Modal */}
-            {showModal && currentRowId === info.getValue() && (
-              <div
-                key={info.getValue()}
-                ref={actionButtonsRef}
-                className="absolute top-[-30px] flex flex-col gap-y-2 z-10 right-[40px] bg-white border border-gray-300  rounded p-2"
-              >
-                {!info.row.original.isAssigned &&
-                  user?.roles[0] === "MERCHANT" && (
-                    <div
-                      className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
-                      onClick={() => setShowStaffModal(true)}
-                    >
-                      <div className="rounded-full bg-rose-500 p-1">
-                        <BsPeople className="text-white text-base size-3" />
-                      </div>
-                      <span>Assign to staff</span>
-                    </div>
-                  )}
-                {info.row.original.status === "pending" && (
-                  <div
-                    className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs hover:text-ca-blue px-1"
-                    // onClick={() => {
-                    //   setUserToDelete(info.row.original);
-                    //   setShowDeleteModal(true);
-                    // }}
-                    onClick={() => {
-                      completeApplicationMutation.mutate(info.getValue());
-                      setCurrentRowId(null);
-                      setShowModal(false);
-                    }}
-                  >
-                    <div className="rounded-full bg-ca-blue p-1">
-                      <MdDone className="text-white text-base size-3" />
-                    </div>
-                    <span>Complete Application</span>
-                  </div>
-                )}
 
-                <div
-                  className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
-                  onClick={() =>
-                    navigate(
-                      user?.roles[0] === "STAFF"
-                        ? `/staff/orders/${info.row.original._id}`
-                        : `/merchant/applications/${info.row.original._id}`
-                    )
-                  }
-                >
-                  <div className="rounded-full bg-violet-500 p-1">
-                    <EyeIcon className="text-white text-base size-3" />
-                  </div>
-                  <span> View Details</span>
-                </div>
-              </div>
-            )}
+            {/* Modal */}
+            {
+              showModal && currentRowId === info.getValue() && null
+              //  (
+              //   <div
+              //     key={info.getValue()}
+              //     ref={actionButtonsRef}
+              //     className="absolute top-[-30px] flex flex-col gap-y-2 z-10 right-[40px] bg-white border border-gray-300  rounded p-2"
+              //   >
+              //     <div
+              //       className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
+              //       onClick={
+              //         () =>
+              //         navigate(`/admin/orders/${info.row.original._id}`)
+              //       }
+              //     >
+              //       <div className="rounded-full bg-violet-500 p-1">
+              //         <EyeIcon className="text-white text-base size-3" />
+              //       </div>
+              //       <span> View Details</span>
+              //     </div>
+              //   </div>
+              // )
+            }
           </div>
         );
       },
@@ -633,12 +463,14 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
           </div>
         </div>
       </div>
+
       {completeApplicationMutation.isPending && (
         <LoadingModal
           key={Math.random() * 354546576}
           text={"Updating application status"}
         />
       )}
+
       {showStaffModal && (
         <StaffModal
           showStaffModal={showStaffModal}
@@ -654,4 +486,4 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   );
 };
 
-export default ApplicationsGrid;
+export default OrdersGrid;
