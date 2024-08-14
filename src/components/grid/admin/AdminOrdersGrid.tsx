@@ -21,6 +21,7 @@ import { useOutsideCloser } from "../../../hooks/useOutsideCloser";
 import { EyeIcon } from "@heroicons/react/24/outline";
 
 import toast from "react-hot-toast";
+// @ts-ignore
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 import { completeApplication } from "@/services/merchant";
@@ -50,6 +51,7 @@ const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     },
   });
 
+  // @ts-ignore
   const handleActionClick = (id: any) => {
     if (currentRowId === id) {
       setShowModal((prevState) => !prevState);
@@ -66,7 +68,6 @@ const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       id: "serialNumber",
       cell: (info) => (
         <div className="w-14 mx-auto text-center">
-          {" "}
           {info.getValue().serialNumber}{" "}
         </div>
       ),
@@ -75,18 +76,18 @@ const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
 
     columnHelper.accessor((row: any) => row?._id, {
       id: "_id",
+      cell: (info) => <div className="w-fit text-left">{info.getValue()}</div>,
+      header: () => <div className="w-60 text-left">Order ID</div>,
+    }),
+
+    columnHelper.accessor((row: any) => row?.merchant, {
+      id: "merchantName",
       cell: (info) => (
-        <div className="w-fit text-left">
-          {
-            //   formatDate(
-
-            info.getValue()
-
-            // )
-          }
+        <div className="w-44 mx-auto text-left">
+          {(info.row.original as any).merchant.name ?? "----------------"}
         </div>
       ),
-      header: () => <div className="w-60 text-left">Order ID</div>,
+      header: () => <div className="w-44 text-left">Merchant Name</div>,
     }),
 
     columnHelper.accessor((row: any) => row?.customer, {
@@ -97,6 +98,29 @@ const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
         </div>
       ),
       header: () => <div className="w-44 text-left">Customer Name</div>,
+    }),
+
+    columnHelper.accessor((row: any) => row?.customer, {
+      id: "customerAddress",
+      cell: (info) => (
+        <div className="w-44 mx-auto text-left">
+          {`${(info.row.original as any).customerAddress.firstLineAddress} ${
+            (info.row.original as any).customerAddress.cityOrProvince
+          } ${(info.row.original as any).customerAddress.country}` ??
+            "----------------"}
+        </div>
+      ),
+      header: () => <div className="w-44 text-left">Customer Address</div>,
+    }),
+
+    columnHelper.accessor((row: any) => row?.customer, {
+      id: "customerAddress",
+      cell: (info) => (
+        <div className="w-44 mx-auto text-left">
+          {(info.row.original as any).customerPhone ?? "----------------"}
+        </div>
+      ),
+      header: () => <div className="w-44 text-left">Customer Phone</div>,
     }),
 
     columnHelper.accessor((row: any) => row?.name, {
@@ -118,10 +142,7 @@ const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.amount, {
       id: "amount",
       cell: (info) => (
-        <div className="w-24 mx-auto text-left">
-          {console.log(console.log(info.row.original))}
-          {info.getValue()}
-        </div>
+        <div className="w-24 mx-auto text-left">{info.getValue()}</div>
       ),
       header: () => <div className="w-36 text-left">Amount</div>,
     }),
@@ -312,52 +333,6 @@ const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       ),
       header: () => <div className="w-32 whitespace-nowrap">Status</div>,
     }),
-
-    //
-    columnHelper.accessor((row: any) => row._id, {
-      id: "_id",
-      cell: (info: any) => {
-        return (
-          <div className="relative px-4 z-10">
-            {/* Hamburger menu icon */}
-            <div
-              key={info.getValue()}
-              className="rounded-full px-3 p-1 text-xs cursor-pointer mx-auto hover:bg-gray-300"
-              onClick={() => handleActionClick(info.getValue())}
-            >
-              <BsThreeDotsVertical size={20} className="" />
-            </div>
-
-            {/* Modal */}
-            {
-              showModal && currentRowId === info.getValue() && null
-              //  (
-              //   <div
-              //     key={info.getValue()}
-              //     ref={actionButtonsRef}
-              //     className="absolute top-[-30px] flex flex-col gap-y-2 z-10 right-[40px] bg-white border border-gray-300  rounded p-2"
-              //   >
-              //     <div
-              //       className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
-              //       onClick={
-              //         () =>
-              //         navigate(`/admin/orders/${info.row.original._id}`)
-              //       }
-              //     >
-              //       <div className="rounded-full bg-violet-500 p-1">
-              //         <EyeIcon className="text-white text-base size-3" />
-              //       </div>
-              //       <span> View Details</span>
-              //     </div>
-              //   </div>
-              // )
-            }
-          </div>
-        );
-      },
-      header: () => <div className="">Action</div>,
-    }),
-    //
   ];
 
   const [sorting, setSorting] = useState<SortingState>([]);

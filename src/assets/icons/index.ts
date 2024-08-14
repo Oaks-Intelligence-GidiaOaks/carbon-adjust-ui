@@ -28,8 +28,12 @@ import UsersIcon from "./users.svg?react";
 import ProjectIcon from "./projects.svg?react";
 import HomeIcon from "./home-03.svg?react";
 import SideBarBtn from "./sidebarbtn.svg?react";
+import OrdersIcon from "./ordersIcon.svg?react";
+import PackageIcon from "./packageIcon.svg?react";
 
 export {
+  PackageIcon,
+  OrdersIcon,
   Logo,
   LogoAndBrand,
   LogoAndBrandVertical,

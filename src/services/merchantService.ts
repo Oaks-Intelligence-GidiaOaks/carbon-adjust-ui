@@ -60,8 +60,24 @@ export const getEarnings = async () => {
   return data;
 };
 
-export const getAllApplications = async () => {
-  const { data } = await axiosInstance.get(`/application/merchant`);
+export const getAllApplications = async (page?: number, limit?: number) => {
+  const queryParams = new URLSearchParams();
+
+  if (page !== undefined) {
+    queryParams.append("page", page.toString());
+  }
+
+  if (limit !== undefined) {
+    queryParams.append("limit", limit.toString());
+  }
+
+  const queryString = queryParams.toString()
+    ? `?${queryParams.toString()}`
+    : "";
+
+  const { data } = await axiosInstance.get(
+    `/application/merchant${queryString}`
+  );
 
   return data;
 };

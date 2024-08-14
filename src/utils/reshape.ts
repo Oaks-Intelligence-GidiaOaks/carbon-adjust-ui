@@ -82,6 +82,37 @@ export const transformApplicationsGridData = (data: any) => {
   return newData;
 };
 
+export const transformAdminOrdersGridData = (data: any) => {
+  let newData: any[] = [];
+
+  Array.from(data, (item: any) => {
+    const {
+      currency,
+      title,
+      price,
+      package: pkg,
+      category,
+      merchant,
+      ...rest
+    } = item;
+
+    console.log(item);
+
+    newData.push({
+      ...rest,
+      name: pkg?.title,
+      merchant,
+      amount:
+        price === undefined
+          ? `${pkg?.currency ?? "£"} 0`
+          : `${pkg?.currency ?? "£"} ${formatNumberWithCommas(price ?? 0)}`,
+      category: pkg?.category?.name,
+    });
+  });
+
+  return newData;
+};
+
 export const transformPackageCards = (data: any) => {
   let newData: any[] = [];
 
