@@ -13,6 +13,7 @@ import {
   PNGIcon,
   ProfileIcon,
   UsersIcon,
+  AggregatorIcon,
   // ProjectIcon,
 } from "@/assets/icons";
 import { DropdownOption, Finance, Payment } from "@/types/general";
@@ -615,6 +616,11 @@ export const adminSideBarItems = [
     icon: UsersIcon,
     title: "Packages",
     href: "/admin/packages",
+  },
+  {
+    icon: AggregatorIcon,
+    title: "Orders",
+    href: "/admin/orders",
   },
   {
     icon: UsersIcon,

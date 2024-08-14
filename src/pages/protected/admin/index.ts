@@ -9,3 +9,5 @@ export { default as AdminEditAd } from "./EditAd";
 export { default as AdminTransactions } from "./Transaction";
 export { default as AdminWallet } from "./Wallet";
 export { default as AdminPackages } from "./Packages";
+export { default as AdminOrders } from "./Orders";
+export { default as AdminOrderDetails } from "./OrderDetails";
