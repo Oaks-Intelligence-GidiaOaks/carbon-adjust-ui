@@ -1,25 +1,22 @@
-// import React from 'react'
-
 import ApplicationsGrid from "@/components/grid/merchant/ApplicationsGrid";
 import { getAllApplications } from "@/services/merchantService";
 import { transformApplicationsGridData } from "@/utils/reshape";
 import { useQuery } from "@tanstack/react-query";
-// import { getRecentPackages } from "@/services/merchantService";
-// import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 type Props = {};
 
 const Applications = (_: Props) => {
-  const {
-    data,
-    isSuccess,
-    // isLoading,
-  } = useQuery({
-    queryKey: ["get-applications"],
-    queryFn: () => getAllApplications(),
+  // @ts-ignore
+  const [params, setParams] = useState({
+    page: 1,
+    limit: 100,
   });
 
-  console.log(data);
+  const { data, isSuccess } = useQuery({
+    queryKey: ["get-applications"],
+    queryFn: () => getAllApplications(params.page, params.limit),
+  });
 
   const NoApplications = () => (
     <div className="h-[80vh] grid place-items-center">
