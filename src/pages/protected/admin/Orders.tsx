@@ -1,12 +1,19 @@
 import OrdersGrid from "@/components/grid/admin/AdminOrdersGrid";
 import { getAdminApplications } from "@/services/adminService";
-import { transformApplicationsGridData } from "@/utils/reshape";
+import { transformAdminOrdersGridData } from "@/utils/reshape";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 const Orders = () => {
+  // @ts-ignore
+  const [params, setParams] = useState({
+    page: 1,
+    limit: 100,
+  });
+
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ["get-admin-applications"],
-    queryFn: () => getAdminApplications(),
+    queryFn: () => getAdminApplications(params.page, params.limit),
   });
 
   const NoOrders = () => (
@@ -26,13 +33,12 @@ const Orders = () => {
     </div>
   );
 
-  const tableApps = isSuccess
-    ? transformApplicationsGridData(data.data.orders)
-    : [];
-
-  if (!tableApps.length) {
-    return;
+  if (data?.data.order) {
+    console.log(data.data.orders, "===ORDERS======");
   }
+  const tableApps = isSuccess
+    ? transformAdminOrdersGridData(data.data.orders)
+    : [];
 
   return (
     <div className="px-3 lg:px-4">
