@@ -28,6 +28,7 @@ import { completeApplication } from "@/services/merchant";
 import { StaffModal } from "@/components/dialogs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
+import { formatDate } from "@/lib/utils";
 
 const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   const navigate = useNavigate();
@@ -188,19 +189,17 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       header: () => <div className="w-14 px-1 text-center">S/N</div>,
     }),
 
+    columnHelper.accessor((row: any) => row?.createdAt, {
+      id: "createdAt",
+      cell: (info) => (
+        <div className="w-fit text-left">{formatDate(info.getValue())}</div>
+      ),
+      header: () => <div className="w-32 text-left">Date</div>,
+    }),
+
     columnHelper.accessor((row: any) => row?._id, {
       id: "_id",
-      cell: (info) => (
-        <div className="w-fit text-left">
-          {
-            //   formatDate(
-
-            info.getValue()
-
-            // )
-          }
-        </div>
-      ),
+      cell: (info) => <div className="w-fit text-left">{info.getValue()}</div>,
       header: () => <div className="w-60 text-left">Order ID</div>,
     }),
 

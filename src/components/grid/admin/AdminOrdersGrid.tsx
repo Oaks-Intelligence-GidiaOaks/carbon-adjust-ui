@@ -26,6 +26,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 
 import { completeApplication } from "@/services/merchant";
 import { StaffModal } from "@/components/dialogs";
+import { formatDate } from "@/lib/utils";
 
 const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   // @ts-ignore
@@ -72,6 +73,14 @@ const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
         </div>
       ),
       header: () => <div className="w-14 px-1 text-center">S/N</div>,
+    }),
+
+    columnHelper.accessor((row: any) => row?.createdAt, {
+      id: "createdAt",
+      cell: (info) => (
+        <div className="w-fit text-left">{formatDate(info.getValue())}</div>
+      ),
+      header: () => <div className="w-44 text-left">Date</div>,
     }),
 
     columnHelper.accessor((row: any) => row?._id, {
