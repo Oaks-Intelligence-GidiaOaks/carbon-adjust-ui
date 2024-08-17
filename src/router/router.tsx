@@ -36,6 +36,8 @@ import {
   MerchantWallet,
   StaffDetails,
   UpdatePackageDetails,
+  MerchantDevices,
+  MerchantNewDevice,
 } from "@/pages/protected/merchant";
 import {
   UserAppointment,
@@ -211,6 +213,19 @@ const Router = createBrowserRouter([
           {
             path: "update/:packageId",
             element: <UpdatePackageDetails />,
+          },
+        ],
+      },
+      {
+        path: "devices",
+        children: [
+          {
+            path: "",
+            element: <MerchantDevices />,
+          },
+          {
+            path: "add",
+            element: <MerchantNewDevice />,
           },
         ],
       },

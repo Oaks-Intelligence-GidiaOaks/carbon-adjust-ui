@@ -141,6 +141,10 @@ body::-webkit-scrollbar-track {
   @apply flex items-start;
 }
 
+.text-light {
+  @apply text-[#4C5563];
+}
+
 /* CSS reset */
 html {
   overflow-y: scroll;

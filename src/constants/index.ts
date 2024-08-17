@@ -15,6 +15,7 @@ import {
   ProfileIcon,
   UsersIcon,
   PackageIcon,
+  DeviceIcon,
   // ProjectIcon,
 } from "@/assets/icons";
 import { DropdownOption, Finance, Payment } from "@/types/general";
@@ -142,6 +143,11 @@ export const merchantSideBarItems = [
     icon: ApplicationsIcon,
     title: "Applications",
     href: "/merchant/applications",
+  },
+  {
+    icon: DeviceIcon,
+    title: "Devices",
+    href: "/merchant/devices",
   },
 
   {

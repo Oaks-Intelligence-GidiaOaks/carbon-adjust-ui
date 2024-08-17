@@ -126,3 +126,10 @@ export const unPublishPackage = async (packageId: string) => {
 
   return data;
 };
+
+// DEVICES
+export const createDevice = async (payload: {}) => {
+  const { data } = await axiosInstance.post(`/devices`, payload);
+
+  return data;
+};

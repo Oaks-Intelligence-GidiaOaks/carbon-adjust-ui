@@ -14,3 +14,5 @@ export { default as PackageImageUpload } from "./PackageImageUpload";
 export { default as MerchantStaff } from "./Staff";
 export { default as AddStaff } from "./AddStaff";
 export { default as StaffDetails } from "./StaffDetails";
+export { default as MerchantDevices } from "./Devices";
+export { default as MerchantNewDevice } from "./NewDevice";
