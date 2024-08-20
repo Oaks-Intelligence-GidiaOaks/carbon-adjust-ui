@@ -37,7 +37,6 @@ const Layout = (props: Props) => {
     queryKey: ["fetch-user-info"],
     queryFn: userService().fetchUserInfo,
   });
-  // console.log(userData);
 
   const handleRedirect = (user: AuthUserProfile, role: string) => {
     if (role === "HOME_OCCUPANT") return navigate("/dashboard");

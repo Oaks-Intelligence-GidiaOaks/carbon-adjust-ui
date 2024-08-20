@@ -7,8 +7,6 @@ import { formatDate, handleTableDownload } from "@/lib/utils";
 import MerchantGrid from "../grid/admin/MerchantGrid";
 
 const AllUserRegistrations = (props: { data: any; tableHeader: string }) => {
-  // console.log(props.data, "data");
-
   const tData = props.data.map(
     // @ts-ignore
     ({ roles, passwordLastResetAt, createdAt, ...rest }) => ({
