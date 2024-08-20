@@ -583,6 +583,15 @@ export const adminSideBarItems = [
   },
 ];
 
+// ADMIN STAFF SIDE ITEMS
+export const adminStaffSideBarItems = [
+  {
+    icon: OrdersIcon,
+    title: "Orders",
+    href: "/admin-staff/",
+  },
+];
+
 export const lineChartOptions = {
   responsive: true,
   maintainAspectRatio: false,

@@ -30,11 +30,6 @@ import {
 const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentRowId, setCurrentRowId] = useState<string>("");
-  //   const [currentRowData, setCurrentRowData] = useState<any>({
-  //     userId: "",
-  //   });
-
-  console.log(props.data, "ahsvg");
 
   const queryClient = useQueryClient();
   const actionButtonsRef = useRef<HTMLDivElement>(null);
@@ -130,8 +125,6 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.address.country, {
       id: "Country",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -149,8 +142,6 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.address.cityOrProvince, {
       id: "City",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -167,8 +158,6 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.address.firstLineAddress, {
       id: "Address",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -183,10 +172,8 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     }),
 
     columnHelper.accessor((row: any) => row?.address.zipcode, {
-      id: "Address",
+      id: "zipcode",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -437,6 +424,7 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
           </div>
         </div>
       </div>
+
       {(declineMutation.isPending || approvedMutation.isPending) && (
         <LoadingModal text={"Updating registration status"} />
       )}
