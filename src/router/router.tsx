@@ -55,6 +55,7 @@ import { StaffApplications, StaffDashboard } from "@/pages/protected/staff";
 import PrivacyPolicy from "@/pages/public/PrivacyPolicy";
 import TermsAndConditions from "@/pages/public/TermsAndConditions";
 import MerchantTermsAndConditions from "@/pages/public/MerchantTermsAndConditions";
+import { AdminStaffOrders } from "@/pages/protected/admin-staff";
 
 const Router = createBrowserRouter([
   {
@@ -350,6 +351,16 @@ const Router = createBrowserRouter([
             element: <AdminOrderDetails />,
           },
         ],
+      },
+    ],
+  },
+  {
+    path: "admin-staff",
+    element: <Layout sidebarType="admin-staff" />,
+    children: [
+      {
+        path: "",
+        element: <AdminStaffOrders />,
       },
     ],
   },

@@ -126,3 +126,18 @@ export const unPublishPackage = async (packageId: string) => {
 
   return data;
 };
+
+// For Report Merchant And Admin Staff
+export const uploadReport = async (orderId: string, formData: FormData) => {
+  const { data } = await axiosInstance.patch(
+    `/application/${orderId}/report`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return data;
+};

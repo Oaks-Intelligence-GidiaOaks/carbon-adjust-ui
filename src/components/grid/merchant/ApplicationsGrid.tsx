@@ -28,6 +28,11 @@ import { completeApplication } from "@/services/merchant";
 import { StaffModal } from "@/components/dialogs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
+import { formatDate } from "@/lib/utils";
+import UploadDocModal from "@/components/dialogs/UploadDocModal";
+import { UserRole } from "@/interfaces/user.interface";
+import { IoDocumentText } from "react-icons/io5";
+import GridDocField from "@/components/reusables/GridDocField";
 
 const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   const navigate = useNavigate();
@@ -36,7 +41,8 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
 
   const [showModal, setShowModal] = useState(false);
   const [showStaffModal, setShowStaffModal] = useState(false);
-  const [currentRowId, setCurrentRowId] = useState(null);
+  const [showUploadDocModal, setShowUploadDocModal] = useState<boolean>(false);
+  const [currentRowId, setCurrentRowId] = useState<string | null>(null);
   const [currentRowData, setCurrentRowData] = useState({
     packageId: "",
     appId: "",
@@ -188,19 +194,17 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       header: () => <div className="w-14 px-1 text-center">S/N</div>,
     }),
 
+    columnHelper.accessor((row: any) => row?.createdAt, {
+      id: "createdAt",
+      cell: (info) => (
+        <div className="w-fit text-left">{formatDate(info.getValue())}</div>
+      ),
+      header: () => <div className="w-32 text-left">Date</div>,
+    }),
+
     columnHelper.accessor((row: any) => row?._id, {
       id: "_id",
-      cell: (info) => (
-        <div className="w-fit text-left">
-          {
-            //   formatDate(
-
-            info.getValue()
-
-            // )
-          }
-        </div>
-      ),
+      cell: (info) => <div className="w-fit text-left">{info.getValue()}</div>,
       header: () => <div className="w-60 text-left">Order ID</div>,
     }),
 
@@ -485,6 +489,21 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
                       <span>Assign to staff</span>
                     </div>
                   )}
+
+                {/* Upload Report Only for report merchant */}
+                {user?.roles.includes(UserRole.REPORT_MERCHANT) && (
+                  <div
+                    className="cursor-pointer flex items-center gap-1 font-poppins hover:text-teal-600 text-xs whitespace-nowrap px-1"
+                    onClick={() => setShowUploadDocModal(true)}
+                  >
+                    <div className="rounded-full bg-teal-600 p-1">
+                      <IoDocumentText className="text-white text-base size-3" />
+                    </div>
+
+                    <span>Upload Report</span>
+                  </div>
+                )}
+
                 {info.row.original.status === "pending" && (
                   <div
                     className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs hover:text-ca-blue px-1"
@@ -529,6 +548,40 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     }),
     //
   ];
+
+  if (user?.roles.includes(UserRole.REPORT_MERCHANT)) {
+    columns.splice(
+      7,
+      0,
+      columnHelper.accessor((row: any) => row.merchantReport, {
+        id: "reports",
+        cell: (info) => {
+          const docs = [];
+
+          if ((info.row.original as any).merchantReport?.length) {
+            docs.push({
+              url: info.getValue(),
+              idType: "Merchant Report",
+            });
+          }
+
+          if ((info.row.original as any).adminReport?.length) {
+            docs.push({
+              url: (info.row.original as any).adminReport,
+              idType: "Admin Report",
+            });
+          }
+
+          return (
+            <div>
+              <GridDocField docs={docs || []} />
+            </div>
+          );
+        },
+        header: () => <div className="w-44 text-left">Reports</div>,
+      })
+    );
+  }
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterQuery, setFilterQuery] = useState("");
@@ -645,6 +698,14 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
           setShowStaffModal={setShowStaffModal}
           onClose={() => setShowStaffModal(false)}
           rowId={currentRowId}
+        />
+      )}
+
+      {showUploadDocModal && (
+        <UploadDocModal
+          rowId={currentRowId}
+          setShowUploadDocModal={setShowUploadDocModal}
+          showUploadDocModal={showUploadDocModal}
         />
       )}
 

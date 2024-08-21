@@ -25,14 +25,14 @@ import {
   approveUserRegistration,
   declineUserRegistration,
   makeMerchantInternal,
+  makeReportMerchant,
 } from "@/services/adminService";
+import GridDocField from "@/components/reusables/GridDocField";
+import { UserRole } from "@/interfaces/user.interface";
 
 const MerchantGrid = (props: { data: any[] }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentRowId, setCurrentRowId] = useState<string>("");
-  //   const [currentRowData, setCurrentRowData] = useState<any>({
-  //     userId: "",
-  //   });
 
   const queryClient = useQueryClient();
   const actionButtonsRef = useRef<HTMLDivElement>(null);
@@ -61,8 +61,9 @@ const MerchantGrid = (props: { data: any[] }) => {
     internalMerchantMutation.mutate(userId);
   };
 
-  // const approvalInputRef = useRef<HTMLInputElement>(null);
-  // const declineInputRef = useRef<HTMLInputElement>(null);
+  const handleMakeReportMerchant = (userId: string) => {
+    reportMerchantMutation.mutate(userId);
+  };
 
   const columnHelper = createColumnHelper();
 
@@ -128,8 +129,6 @@ const MerchantGrid = (props: { data: any[] }) => {
     columnHelper.accessor((row: any) => row?.address.country, {
       id: "Country",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -147,8 +146,6 @@ const MerchantGrid = (props: { data: any[] }) => {
     columnHelper.accessor((row: any) => row?.address.cityOrProvince, {
       id: "City",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -165,8 +162,6 @@ const MerchantGrid = (props: { data: any[] }) => {
     columnHelper.accessor((row: any) => row?.address.firstLineAddress, {
       id: "Address",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -180,11 +175,10 @@ const MerchantGrid = (props: { data: any[] }) => {
       header: () => <div className="w-44 text-left">Home Address</div>,
     }),
 
+    // Zip code
     columnHelper.accessor((row: any) => row?.address.zipcode, {
-      id: "Address",
+      id: "zipcode",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -198,7 +192,14 @@ const MerchantGrid = (props: { data: any[] }) => {
       header: () => <div className="w-44 text-left">Zip code</div>,
     }),
 
-    // Acount Type
+    // Documents
+    columnHelper.accessor((row: any) => row?.doc, {
+      id: "doc",
+      cell: (info) => (
+        <GridDocField docs={(info.row.original as any).doc || []} />
+      ),
+      header: () => <div className="w-44 text-left">Documents</div>,
+    }),
 
     // Status
     columnHelper.accessor((row: any) => row?.status, {
@@ -248,7 +249,7 @@ const MerchantGrid = (props: { data: any[] }) => {
 
     // Is Merchant Internal
     columnHelper.accessor((row: any) => row?.status, {
-      id: "status",
+      id: "isInternalMerchant",
       cell: (info: any) => (
         <div className="w-44 relative flex items-center text-sm">
           {(info.row.original as any).isInternalMerchant ? (
@@ -256,28 +257,31 @@ const MerchantGrid = (props: { data: any[] }) => {
               style={{ color: "#8AC926", background: "#8AC92630" }}
               className="w-36 py-1 rounded-full inline-block mx-auto"
             >
-              Approved
+              Internal
+            </span>
+          ) : (info.row.original as any).roles.includes(
+              UserRole.REPORT_MERCHANT
+            ) ? (
+            <span className="w-36 bg-teal-600 text-gray-200 py-1 rounded-full inline-block mx-auto">
+              Report
             </span>
           ) : (
             <span
               style={{ color: "#139EEC", background: "#139EEC30" }}
               className="w-36 py-1 rounded-full inline-block mx-auto"
             >
-              Not Approved
+              Default
             </span>
           )}
         </div>
       ),
-      header: () => (
-        <div className="w-32 whitespace-nowrap"> Internal Merchant</div>
-      ),
+      header: () => <div className="w-32 whitespace-nowrap">Merchant Role</div>,
     }),
 
     // Actions
     columnHelper.accessor((row: any) => row._id, {
       id: "_id",
       cell: (info: any) => {
-        console.log("action row-----", info.row.original);
         return (
           <div className="relative px-4 z-10">
             {/* Hamburger menu icon */}
@@ -297,15 +301,17 @@ const MerchantGrid = (props: { data: any[] }) => {
                 onClick={() => setShowModal(true)}
                 className="absolute top-[-30px] flex flex-col gap-y-3  right-[40px] bg-white border border-gray-300  rounded p-2"
               >
-                <div
-                  className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs px-1 hover:text-ca-blue "
-                  onClick={() => handleApprovalMutation(currentRowId)}
-                >
-                  <div className="rounded-full bg-ca-blue p-1">
-                    <BsPeople className="text-white text-base size-3" />
+                {info.row.original.status !== "completed" && (
+                  <div
+                    className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs px-1 hover:text-ca-blue "
+                    onClick={() => handleApprovalMutation(currentRowId)}
+                  >
+                    <div className="rounded-full bg-ca-blue p-1">
+                      <BsPeople className="text-white text-base size-3" />
+                    </div>
+                    <span>Activate</span>
                   </div>
-                  <span>Activate</span>
-                </div>
+                )}
 
                 {!info.row.original.isInternalMerchant &&
                   info.row.original.merchantType && (
@@ -321,6 +327,21 @@ const MerchantGrid = (props: { data: any[] }) => {
                     </div>
                   )}
 
+                {!info.row.original.roles.includes(UserRole.REPORT_MERCHANT) &&
+                  info.row.original.merchantType && (
+                    <div
+                      className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-green-500 text-xs whitespace-nowrap px-1"
+                      onClick={() => handleMakeReportMerchant(currentRowId)}
+                    >
+                      <div className="rounded-full bg-green-500 p-1">
+                        <IoClose className="text-white text-base size-3" />
+                      </div>
+
+                      <span> Make report merchant</span>
+                    </div>
+                  )}
+
+                {/* Make This To Be Active Again */}
                 <div
                   className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-red text-xs whitespace-nowrap px-1"
                   onClick={() => handleDeclineMutation(currentRowId)}
@@ -331,6 +352,18 @@ const MerchantGrid = (props: { data: any[] }) => {
 
                   <span> Suspend</span>
                 </div>
+
+                {/* This is temporary: Change back to suspend action */}
+                {/* <div
+                  className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-red text-xs whitespace-nowrap px-1"
+                  onClick={() => handleDeclineMutation(currentRowId)}
+                >
+                  <div className="rounded-full bg-red-500 p-1">
+                    <IoClose className="text-white text-base size-3" />
+                  </div>
+
+                  <span> Delete</span>
+                </div> */}
               </div>
             )}
           </div>
@@ -390,6 +423,18 @@ const MerchantGrid = (props: { data: any[] }) => {
     mutationFn: (id: string) => makeMerchantInternal(id),
     onSuccess: (_: any) => {
       toast.success("Merchant internalised succesfully");
+      queryClient.invalidateQueries({ queryKey: ["users-registration"] });
+    },
+    onError: (ex: any) => {
+      toast.error(ex.response.data.message);
+    },
+  });
+
+  const reportMerchantMutation = useMutation({
+    mutationKey: ["report-merchant"],
+    mutationFn: (id: string) => makeReportMerchant(id),
+    onSuccess: (_: any) => {
+      toast.success("Merchant updated succesfully");
       queryClient.invalidateQueries({ queryKey: ["users-registration"] });
     },
     onError: (ex: any) => {
@@ -466,7 +511,8 @@ const MerchantGrid = (props: { data: any[] }) => {
       </div>
       {(declineMutation.isPending ||
         approvedMutation.isPending ||
-        internalMerchantMutation.isPending) && (
+        internalMerchantMutation.isPending ||
+        reportMerchantMutation.isPending) && (
         <LoadingModal text={"Updating registration status"} />
       )}
 

@@ -25,6 +25,7 @@ import {
   MonitoringEvent,
   SubLevelEvent,
 } from "@/interfaces/events.interface";
+import { UserRole } from "@/interfaces/user.interface";
 // import { uniqueObjectsByIdType } from "@/utils";
 // import { RootState } from "@/app/store";
 // import { uniqueObjectsByIdType } from "@/utils";
@@ -78,12 +79,14 @@ const Login = () => {
 
       dispatch(setToken(data.data.data.access_token));
       dispatch(setKommunitaToken(data.data.data.kommunita_access_token));
+
       if (
         data.data.data.user.roles[0] !== "STAFF" &&
         data.data.data.user.passwordLastResetAt
       ) {
         toast.success(`${"Login successful"}`, { duration: 4000 });
       }
+
       if (
         data.data.data.user.roles[0] === "STAFF" &&
         data.data.data.user.passwordLastResetAt !== null
@@ -130,6 +133,11 @@ const Login = () => {
         return navigate("/account-setup");
       }
       return navigate("/merchant");
+    }
+
+    // For the new admin staff user
+    if (role === UserRole.ADMIN_STAFF) {
+      return navigate("/admin-staff");
     }
   };
 

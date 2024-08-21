@@ -562,3 +562,26 @@ input[type="number"] {
   border-color: none !important;
   border-radius: 10px !important;
 }
+
+#progress-bar-container .progress-bar-striped {
+  transition: 0.4s linear;
+  transition-property: width;
+  animation: progressAnimationStrike 4s;
+  width: 100%;
+}
+
+@keyframes progressAnimationStrike {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.gradient-border {
+  border-width: 1px;
+  border-radius: 16px;
+  border-color: #5049e1;
+  border-style: dashed;
+}

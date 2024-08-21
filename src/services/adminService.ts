@@ -84,6 +84,15 @@ export const makeMerchantInternal = async (id: string) => {
   return data;
 };
 
+export const makeReportMerchant = async (id: string) => {
+  const { data } = await axiosInstance.patch(`/users/merchant/report`, {
+    merchantId: id,
+    status: true,
+  });
+
+  return data;
+};
+
 // ADMIN ADVERTS
 
 export const createAd = async (adData: {

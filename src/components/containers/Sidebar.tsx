@@ -2,6 +2,7 @@ import { RootState, persistor } from "@/app/store";
 import { Logo } from "@/assets/icons";
 import {
   adminSideBarItems,
+  adminStaffSideBarItems,
   homeOwnerSideBarItems,
   merchantSideBarItems,
   staffSideBarItems,
@@ -42,6 +43,8 @@ const Sidebar = ({
         return merchantSideBarItems;
       case "admin":
         return adminSideBarItems;
+      case "admin-staff":
+        return adminStaffSideBarItems;
       default:
         return homeOwnerSideBarItems;
     }
