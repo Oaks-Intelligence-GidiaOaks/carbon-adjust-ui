@@ -1,0 +1,11 @@
+<svg width="30" height="31" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon/Outline/cloud-upload">
+<path id="Icon" d="M8.91942 20.3074C6.23331 20.3074 4.05579 18.1299 4.05579 15.4438C4.05579 13.125 5.6785 11.1852 7.85028 10.698C7.7542 10.2688 7.70351 9.82242 7.70351 9.36421C7.70351 6.00657 10.4254 3.28467 13.7831 3.28467C16.7247 3.28467 19.1784 5.3739 19.7412 8.14949C19.7816 8.1487 19.8221 8.1483 19.8626 8.1483C23.2202 8.1483 25.9422 10.8702 25.9422 14.2279C25.9422 17.1691 23.8535 19.6225 21.0785 20.1858M18.6467 16.6597L14.999 13.0119M14.999 13.0119L11.3512 16.6597M14.999 13.0119L14.999 27.6029" stroke="url(#paint0_linear_8250_7224)" stroke-width="1.21591" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_8250_7224" x1="10.3801" y1="7.22816" x2="18.8414" y2="8.97333" gradientUnits="userSpaceOnUse">
+<stop stop-color="#5049E1"/>
+<stop offset="1" stop-color="#29B0FA"/>
+</linearGradient>
+</defs>
+</svg>
