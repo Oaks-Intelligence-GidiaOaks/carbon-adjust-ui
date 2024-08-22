@@ -26,9 +26,11 @@ import {
   declineUserRegistration,
   makeMerchantInternal,
 } from "@/services/adminService";
+import DeleteUserModal from "@/components/dialogs/DeleteUserModal";
 
 const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [currentRowId, setCurrentRowId] = useState<string>("");
 
   const queryClient = useQueryClient();
@@ -50,6 +52,7 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     approvedMutation.mutate(userId);
   };
 
+  // @ts-ignore
   const handleDeclineMutation = (userId: string) => {
     declineMutation.mutate(userId);
   };
@@ -281,7 +284,8 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
                     </div>
                   )}
 
-                <div
+                {/* Make This To Be Active Again */}
+                {/* <div
                   className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-red text-xs whitespace-nowrap px-1"
                   onClick={() => handleDeclineMutation(currentRowId)}
                 >
@@ -290,6 +294,18 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
                   </div>
 
                   <span> Suspend</span>
+                </div> */}
+
+                {/* This is temporary: Change back to suspend action */}
+                <div
+                  className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-red text-xs whitespace-nowrap px-1"
+                  onClick={() => setShowDeleteModal(true)}
+                >
+                  <div className="rounded-full bg-red-500 p-1">
+                    <IoClose className="text-white text-base size-3" />
+                  </div>
+
+                  <span> Delete</span>
                 </div>
               </div>
             )}
@@ -427,6 +443,14 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
 
       {(declineMutation.isPending || approvedMutation.isPending) && (
         <LoadingModal text={"Updating registration status"} />
+      )}
+
+      {showDeleteModal && (
+        <DeleteUserModal
+          rowId={currentRowId}
+          setShowDeleteModal={setShowDeleteModal}
+          showUDeleteModal={showDeleteModal}
+        />
       )}
 
       {/* pagination */}

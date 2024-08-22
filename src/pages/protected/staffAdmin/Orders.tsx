@@ -1,5 +1,5 @@
-import OrdersGrid from "@/components/grid/admin/AdminOrdersGrid";
-import { getAdminApplications } from "@/services/adminService";
+import ApplicationsGrid from "@/components/grid/merchant/ApplicationsGrid";
+import { getStaffAdminOrders } from "@/services/adminService";
 import { transformAdminOrdersGridData } from "@/utils/reshape";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -12,8 +12,8 @@ const Orders = () => {
   });
 
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ["get-admin-applications"],
-    queryFn: () => getAdminApplications(params.page, params.limit),
+    queryKey: ["get-orders-sa", params.page, params.limit],
+    queryFn: () => getStaffAdminOrders(params.page, params.limit),
   });
 
   const NoOrders = () => (
@@ -44,7 +44,7 @@ const Orders = () => {
       {!isLoading &&
         (tableApps.length > 0 ? (
           <div className="-mt-3">
-            <OrdersGrid isUpdating data={tableApps} />
+            <ApplicationsGrid isUpdating data={tableApps} params={params} />
           </div>
         ) : (
           <NoOrders />

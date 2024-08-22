@@ -66,6 +66,12 @@ export const declineUserRegistration = async (id: string) => {
   return data;
 };
 
+export const deleteUser = async (id: string) => {
+  const { data } = await axiosInstance.delete(`/users/${id}`);
+
+  return data;
+};
+
 export const suspendUserRegistration = async (id: string) => {
   const { data } = await axiosInstance.patch(`/users/review/profile`, {
     userId: id,
@@ -210,6 +216,27 @@ export const getAdminApplications = async (page?: number, limit?: number) => {
     : "";
 
   const { data } = await axiosInstance.get(`/application/all${queryString}`);
+
+  return data;
+};
+
+// STAFF ADMIN
+export const getStaffAdminOrders = async (page?: number, limit?: number) => {
+  const queryParams = new URLSearchParams();
+
+  if (page !== undefined) {
+    queryParams.append("page", page.toString());
+  }
+
+  if (limit !== undefined) {
+    queryParams.append("limit", limit.toString());
+  }
+
+  const queryString = queryParams.toString()
+    ? `?${queryParams.toString()}`
+    : "";
+
+  const { data } = await axiosInstance.get(`/application/staff${queryString}`);
 
   return data;
 };

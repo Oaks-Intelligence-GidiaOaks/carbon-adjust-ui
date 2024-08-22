@@ -29,10 +29,12 @@ import {
 } from "@/services/adminService";
 import GridDocField from "@/components/reusables/GridDocField";
 import { UserRole } from "@/interfaces/user.interface";
+import DeleteUserModal from "@/components/dialogs/DeleteUserModal";
 
 const MerchantGrid = (props: { data: any[] }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentRowId, setCurrentRowId] = useState<string>("");
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   const queryClient = useQueryClient();
   const actionButtonsRef = useRef<HTMLDivElement>(null);
@@ -51,10 +53,6 @@ const MerchantGrid = (props: { data: any[] }) => {
   const handleApprovalMutation = (userId: string) => {
     handleActionClick(userId);
     approvedMutation.mutate(userId);
-  };
-
-  const handleDeclineMutation = (userId: string) => {
-    declineMutation.mutate(userId);
   };
 
   const handleMakeMerchantInternal = (userId: string) => {
@@ -342,18 +340,6 @@ const MerchantGrid = (props: { data: any[] }) => {
                   )}
 
                 {/* Make This To Be Active Again */}
-                <div
-                  className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-red text-xs whitespace-nowrap px-1"
-                  onClick={() => handleDeclineMutation(currentRowId)}
-                >
-                  <div className="rounded-full bg-red-500 p-1">
-                    <IoClose className="text-white text-base size-3" />
-                  </div>
-
-                  <span> Suspend</span>
-                </div>
-
-                {/* This is temporary: Change back to suspend action */}
                 {/* <div
                   className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-red text-xs whitespace-nowrap px-1"
                   onClick={() => handleDeclineMutation(currentRowId)}
@@ -362,8 +348,20 @@ const MerchantGrid = (props: { data: any[] }) => {
                     <IoClose className="text-white text-base size-3" />
                   </div>
 
-                  <span> Delete</span>
+                  <span> Suspend</span>
                 </div> */}
+
+                {/* This is temporary: Change back to suspend action */}
+                <div
+                  className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-red text-xs whitespace-nowrap px-1"
+                  onClick={() => setShowDeleteModal(true)}
+                >
+                  <div className="rounded-full bg-red-500 p-1">
+                    <IoClose className="text-white text-base size-3" />
+                  </div>
+
+                  <span> Delete</span>
+                </div>
               </div>
             )}
           </div>
@@ -509,11 +507,20 @@ const MerchantGrid = (props: { data: any[] }) => {
           </div>
         </div>
       </div>
+
       {(declineMutation.isPending ||
         approvedMutation.isPending ||
         internalMerchantMutation.isPending ||
         reportMerchantMutation.isPending) && (
         <LoadingModal text={"Updating registration status"} />
+      )}
+
+      {showDeleteModal && (
+        <DeleteUserModal
+          rowId={currentRowId}
+          setShowDeleteModal={setShowDeleteModal}
+          showUDeleteModal={showDeleteModal}
+        />
       )}
 
       {/* pagination */}

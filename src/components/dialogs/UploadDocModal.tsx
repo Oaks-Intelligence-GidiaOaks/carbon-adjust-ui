@@ -8,13 +8,26 @@ import { Oval } from "react-loader-spinner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadReport } from "@/services/merchantService";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { UserRole } from "@/interfaces/user.interface";
 
 const UploadDocModal = (props: {
   rowId: string | null;
   showUploadDocModal: boolean;
   setShowUploadDocModal: Dispatch<SetStateAction<boolean>>;
+  params?: {
+    page: number;
+    limit: number;
+  };
 }) => {
+  const { user } = useSelector((state: RootState) => state.user);
   const queryClient = useQueryClient();
+
+  const isStaffAdmin = user?.roles.includes(UserRole.ADMIN_STAFF);
+
+  // @ts-ignore
+  const isReportMerchant = user?.roles.includes(UserRole.REPORT_MERCHANT);
 
   const ref = useRef(null);
   useOutsideCloser(ref, props.showUploadDocModal, props.setShowUploadDocModal);
@@ -37,13 +50,20 @@ const UploadDocModal = (props: {
     },
     onSettled: () => {
       props.setShowUploadDocModal(false);
-      queryClient.invalidateQueries({ queryKey: ["get-applications"] });
+
+      if (isStaffAdmin && props.params) {
+        queryClient.invalidateQueries({
+          queryKey: ["get-orders-sa", props.params.page, props.params.limit],
+        });
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: ["get-applications"],
+        });
+      }
     },
   });
 
   const handleSubmit = () => {
-    // validate input fields
-
     if (!file) {
       toast.error(`Please add a document`);
       return;
@@ -52,7 +72,6 @@ const UploadDocModal = (props: {
     const formData = new FormData();
 
     formData.append("file", file as File);
-
     UploadReport.mutate({ orderId: props.rowId as string, formData });
   };
 

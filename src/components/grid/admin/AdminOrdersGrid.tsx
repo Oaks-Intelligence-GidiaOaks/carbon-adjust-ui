@@ -104,7 +104,7 @@ const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       id: "customerName",
       cell: (info) => (
         <div className="w-44 mx-auto text-left">
-          {(info.row.original as any).customer.name ?? "----------------"}
+          {(info.row.original as any).customer?.name ?? "----------------"}
         </div>
       ),
       header: () => <div className="w-44 text-left">Customer Name</div>,
