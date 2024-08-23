@@ -24,6 +24,7 @@ const UploadDocModal = (props: {
   const { user } = useSelector((state: RootState) => state.user);
   const queryClient = useQueryClient();
 
+  // @ts-ignore
   const isStaffAdmin = user?.roles.includes(UserRole.ADMIN_STAFF);
 
   // @ts-ignore
@@ -46,14 +47,14 @@ const UploadDocModal = (props: {
       toast.success("Uploaded Report Successfully");
     },
     onError: (ex: any) => {
-      toast.error(ex.response.data.message);
+      toast.error(ex.response?.data?.message || "Error Uploading Report");
     },
     onSettled: () => {
       props.setShowUploadDocModal(false);
 
-      if (isStaffAdmin && props.params) {
+      if (isStaffAdmin) {
         queryClient.invalidateQueries({
-          queryKey: ["get-orders-sa", props.params.page, props.params.limit],
+          queryKey: ["get-orders-sa"],
         });
       } else {
         queryClient.invalidateQueries({

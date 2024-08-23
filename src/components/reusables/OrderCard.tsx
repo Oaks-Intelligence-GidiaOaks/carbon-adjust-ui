@@ -184,20 +184,37 @@ const OrderCard = (props: IPackageOrder) => {
             </div>
           </div>
 
-          {cleanedUrl && cleanedUrl.length > 0 && (
-            <a
-              target="__blank"
-              href={cleanedUrl}
-              rel="noopener noreferrer"
-              className="flex-center gap-1 ml-auto cursor-pointer"
-            >
-              <span>
-                <GoDownload color="#4CAF50" size={18} />
-              </span>
+          <div className="ml-auto w-fit flex-center gap-6">
+            {props.adminReport?.length && (
+              <a
+                target="__blank"
+                href={props.adminReport}
+                rel="noopener noreferrer"
+                className="flex-center gap-1 cursor-pointer p-1 rounded border bg-teal-50"
+              >
+                <span>
+                  <GoDownload color="#4CAF50" size={18} />
+                </span>
 
-              <span className="text-gray-600">Download AI Package</span>
-            </a>
-          )}
+                <span className="text-gray-600">Download Report</span>
+              </a>
+            )}
+
+            {cleanedUrl && cleanedUrl.length > 0 && (
+              <a
+                target="__blank"
+                href={cleanedUrl}
+                rel="noopener noreferrer"
+                className="flex-center gap-1  cursor-pointer rounded border bg-teal-50 p-1"
+              >
+                <span>
+                  <GoDownload color="#4CAF50" size={18} />
+                </span>
+
+                <span className="text-gray-600">Download AI Package</span>
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </div>

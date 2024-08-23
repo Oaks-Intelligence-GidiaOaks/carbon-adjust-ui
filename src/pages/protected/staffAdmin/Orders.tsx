@@ -1,4 +1,5 @@
 import ApplicationsGrid from "@/components/grid/merchant/ApplicationsGrid";
+import LoadingState from "@/components/ui/LoadingState";
 import { getStaffAdminOrders } from "@/services/adminService";
 import { transformAdminOrdersGridData } from "@/utils/reshape";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +13,7 @@ const Orders = () => {
   });
 
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ["get-orders-sa", params.page, params.limit],
+    queryKey: ["get-orders-sa"],
     queryFn: () => getStaffAdminOrders(params.page, params.limit),
   });
 
@@ -41,14 +42,17 @@ const Orders = () => {
     <div className="px-3 lg:px-4">
       <h2 className="font-[600] text-lg pt-2 ">Orders</h2>
 
-      {!isLoading &&
-        (tableApps.length > 0 ? (
+      {!isLoading ? (
+        tableApps.length > 0 ? (
           <div className="-mt-3">
             <ApplicationsGrid isUpdating data={tableApps} params={params} />
           </div>
         ) : (
           <NoOrders />
-        ))}
+        )
+      ) : (
+        <LoadingState />
+      )}
     </div>
   );
 };
