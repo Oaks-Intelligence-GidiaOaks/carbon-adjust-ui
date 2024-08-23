@@ -60,5 +60,6 @@ export interface IPackageOrder {
   createdAt: string;
   updatedAt: string;
   aiOrderResponse: string;
+  adminReport?: string;
   __v: number;
 }

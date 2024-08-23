@@ -1,4 +1,6 @@
 import OrdersGrid from "@/components/grid/admin/AdminOrdersGrid";
+import LoadingState from "@/components/ui/LoadingState";
+import { handleTableDownload } from "@/lib/utils";
 import { getAdminApplications } from "@/services/adminService";
 import { transformAdminOrdersGridData } from "@/utils/reshape";
 import { useQuery } from "@tanstack/react-query";
@@ -33,25 +35,36 @@ const Orders = () => {
     </div>
   );
 
-  if (data?.data.order) {
-    console.log(data.data.orders, "===ORDERS======");
-  }
   const tableApps = isSuccess
     ? transformAdminOrdersGridData(data.data.orders)
     : [];
 
   return (
     <div className="px-3 lg:px-4">
-      <h2 className="font-[600] text-lg pt-2 ">Orders</h2>
+      <div className="flex-center justify-between">
+        <h2 className="font-[600] text-lg pt-2 ">Orders</h2>
 
-      {!isLoading &&
-        (tableApps.length > 0 ? (
+        {!isLoading && tableApps.length > 0 && (
+          <button
+            onClick={() => handleTableDownload(tableApps)}
+            className="border px-5 text-sm font-poppins font-[600] text-white blue-gradient py-2 rounded-md mr-8"
+          >
+            Download
+          </button>
+        )}
+      </div>
+
+      {!isLoading ? (
+        tableApps.length > 0 ? (
           <div className="-mt-3">
             <OrdersGrid isUpdating data={tableApps} />
           </div>
         ) : (
           <NoOrders />
-        ))}
+        )
+      ) : (
+        <LoadingState />
+      )}
     </div>
   );
 };

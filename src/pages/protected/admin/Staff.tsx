@@ -21,7 +21,7 @@ const Staff = (_: Props) => {
     <div className="min-h-screen">
       <div className="flex-center justify-between p-4">
         <h2 className="page-header">Staff</h2>
-        <Link to={`/merchant/staff/add`} className="">
+        <Link to={`/admin/staff/add`} className="">
           <Button className="flex items-center gap-2">
             <span className="text-white">Add staff</span>
 

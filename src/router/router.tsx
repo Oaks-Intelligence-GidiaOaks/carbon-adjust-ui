@@ -9,6 +9,7 @@ import DashboardLanding from "@/pages/protected/shared/DashboardLanding";
 import Market from "@/pages/protected/home-occupant/Market";
 import {
   AccountManagement,
+  AdminAddStaff,
   AdminAds,
   AdminDashboard,
   AdminEditAd,
@@ -17,6 +18,7 @@ import {
   AdminOrderDetails,
   AdminOrders,
   AdminPackages,
+  AdminStaff,
   AdminWallet,
   AdmnLog,
 } from "@/pages/protected/admin";
@@ -55,7 +57,7 @@ import { StaffApplications, StaffDashboard } from "@/pages/protected/staff";
 import PrivacyPolicy from "@/pages/public/PrivacyPolicy";
 import TermsAndConditions from "@/pages/public/TermsAndConditions";
 import MerchantTermsAndConditions from "@/pages/public/MerchantTermsAndConditions";
-import { AdminStaffOrders } from "@/pages/protected/admin-staff";
+import { AdminStaffOrders } from "@/pages/protected/staffAdmin";
 
 const Router = createBrowserRouter([
   {
@@ -349,6 +351,19 @@ const Router = createBrowserRouter([
           {
             path: ":orderId",
             element: <AdminOrderDetails />,
+          },
+        ],
+      },
+      {
+        path: "staff",
+        children: [
+          {
+            path: "",
+            element: <AdminStaff />,
+          },
+          {
+            path: "add",
+            element: <AdminAddStaff />,
           },
         ],
       },

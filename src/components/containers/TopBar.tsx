@@ -1,12 +1,7 @@
 // import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction } from "react";
-// import { useNavigate } from "react-router-dom";
 // import useBreadcrumbs from "use-react-router-breadcrumbs";
 import { SideBarBtn } from "@/assets/icons";
-// import { useSelector } from "react-redux";
-// import { RootState } from "@/app/store";
-// import { Dropdown } from "../ui";
-// import categories from "../../dummy/categories.json";
 
 // import SettingIcon from "../../assets/icons/setting.svg";
 // import BellIcon from "../../assets/icons/bell.svg";
@@ -16,6 +11,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { cn } from "@/utils";
+import { UserRole } from "@/interfaces/user.interface";
 
 type Props = {
   mobileMenuIsOpen: boolean;
@@ -35,6 +31,7 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
   const admin = "ADMIN";
   const isMerchant = user?.roles.includes(merchant);
   const isAdmin = user?.roles.includes(admin);
+  const isAdminStaff = user?.roles.includes(UserRole.ADMIN_STAFF);
 
   const getActiveTab = () => {
     const currentPath = location.pathname;
@@ -107,7 +104,15 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
           </div>
 
           <Link
-            to={isMerchant ? "/merchant/" : isAdmin ? "/admin" : "/dashboard"}
+            to={
+              isMerchant
+                ? "/merchant/"
+                : isAdmin
+                ? "/admin"
+                : isAdminStaff
+                ? "/admin-staff"
+                : "/dashboard"
+            }
             className="flex-center gap-[18.8px] cursor-pointer"
           >
             <img
@@ -172,7 +177,7 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
 
               {/* <img src={BellIcon} alt="" className="h-4 w-4" /> */}
 
-              {!isMerchant && !isAdmin && (
+              {!isMerchant && !isAdmin && !isAdminStaff && (
                 <Link to={`/dashboard/profile`}>
                   <div className="h-[34px] cursor-pointer w-[34px] border rounded-full grid place-items-center ">
                     <img src={UserIcon} alt="" className="h-4 w-4" />
