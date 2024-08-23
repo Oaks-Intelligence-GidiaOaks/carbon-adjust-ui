@@ -16,10 +16,6 @@ const UploadDocModal = (props: {
   rowId: string | null;
   showUploadDocModal: boolean;
   setShowUploadDocModal: Dispatch<SetStateAction<boolean>>;
-  params?: {
-    page: number;
-    limit: number;
-  };
 }) => {
   const { user } = useSelector((state: RootState) => state.user);
   const queryClient = useQueryClient();
@@ -54,7 +50,7 @@ const UploadDocModal = (props: {
 
       if (isStaffAdmin) {
         queryClient.invalidateQueries({
-          queryKey: ["get-orders-sa"],
+          queryKey: ["get-applications-sa"],
         });
       } else {
         queryClient.invalidateQueries({

@@ -13,7 +13,7 @@ const Orders = () => {
   });
 
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ["get-orders-sa"],
+    queryKey: ["get-applications-sa"],
     queryFn: () => getStaffAdminOrders(params.page, params.limit),
   });
 
@@ -45,7 +45,7 @@ const Orders = () => {
       {!isLoading ? (
         tableApps.length > 0 ? (
           <div className="-mt-3">
-            <ApplicationsGrid isUpdating data={tableApps} params={params} />
+            <ApplicationsGrid isUpdating data={tableApps} />
           </div>
         ) : (
           <NoOrders />

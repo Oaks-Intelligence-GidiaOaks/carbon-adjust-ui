@@ -34,14 +34,7 @@ import { UserRole } from "@/interfaces/user.interface";
 import { IoDocumentText } from "react-icons/io5";
 import GridDocField from "@/components/reusables/GridDocField";
 
-const ApplicationsGrid = ({
-  data,
-  params,
-}: {
-  data: any[];
-  params?: { page: number; limit: number };
-  isUpdating: boolean;
-}) => {
+const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
 
@@ -716,7 +709,6 @@ const ApplicationsGrid = ({
           rowId={currentRowId}
           setShowUploadDocModal={setShowUploadDocModal}
           showUploadDocModal={showUploadDocModal}
-          params={params}
         />
       )}
 
