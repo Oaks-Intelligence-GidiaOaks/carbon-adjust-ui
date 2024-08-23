@@ -1,6 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 const HomeBanner = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="font-poppins bg-[#edf6fda4] flex flex-col relative h-[500px] overflow-hidden md:pl-6 xl:pl-24">
+    <div
+      onClick={() => navigate("/dashboard/marketplace/home-energy-plans")}
+      className="font-poppins bg-[#edf6fda4] flex flex-col relative h-[500px] overflow-hidden md:pl-6 xl:pl-24 cursor-pointer"
+    >
       <img
         src="/assets/banners/dots-img.svg"
         className="w-[500px] absolute top-0 right-0  z-[20]"
