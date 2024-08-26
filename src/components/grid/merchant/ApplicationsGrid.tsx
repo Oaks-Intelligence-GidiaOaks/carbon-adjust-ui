@@ -29,19 +29,27 @@ import { StaffModal } from "@/components/dialogs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { formatDate } from "@/lib/utils";
+import UploadDocModal from "@/components/dialogs/UploadDocModal";
+import { UserRole } from "@/interfaces/user.interface";
+import { IoDocumentText } from "react-icons/io5";
+import GridDocField from "@/components/reusables/GridDocField";
 
 const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   const navigate = useNavigate();
-
   const user = useSelector((state: RootState) => state.user.user);
 
   const [showModal, setShowModal] = useState(false);
   const [showStaffModal, setShowStaffModal] = useState(false);
-  const [currentRowId, setCurrentRowId] = useState(null);
+  const [showUploadDocModal, setShowUploadDocModal] = useState<boolean>(false);
+  const [currentRowId, setCurrentRowId] = useState<string | null>(null);
   const [currentRowData, setCurrentRowData] = useState({
     packageId: "",
     appId: "",
   });
+
+  const hasReportAccess =
+    user?.roles.includes(UserRole.ADMIN_STAFF) ||
+    user?.roles.includes(UserRole.REPORT_MERCHANT);
 
   const queryClient = useQueryClient();
 
@@ -60,8 +68,6 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   });
 
   const handleActionClick = (id: any, rowData: any) => {
-    console.log(rowData._id);
-
     setCurrentRowData({
       appId: rowData._id,
       packageId: rowData._id,
@@ -207,7 +213,7 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       id: "customerName",
       cell: (info) => (
         <div className="w-44 mx-auto text-left">
-          {(info.row.original as any).customer.name ?? "----------------"}
+          {(info.row.original as any).customer?.name ?? "----------------"}
         </div>
       ),
       header: () => <div className="w-44 text-left">Customer Name</div>,
@@ -216,7 +222,9 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.name, {
       id: "name",
       cell: (info) => (
-        <div className="w-60 mx-auto text-left">{info.getValue()}</div>
+        <div className="w-60 mx-auto text-left">
+          {info.getValue() || "-------------"}
+        </div>
       ),
       header: () => <div className="w-60 text-left">Package Name</div>,
     }),
@@ -232,10 +240,7 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.amount, {
       id: "amount",
       cell: (info) => (
-        <div className="w-24 mx-auto text-left">
-          {console.log(console.log(info.row.original))}
-          {info.getValue()}
-        </div>
+        <div className="w-24 mx-auto text-left">{info.getValue()}</div>
       ),
       header: () => <div className="w-36 text-left">Amount</div>,
     }),
@@ -484,41 +489,59 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
                       <span>Assign to staff</span>
                     </div>
                   )}
-                {info.row.original.status === "pending" && (
+
+                {/* Upload Report Only for report merchant */}
+                {hasReportAccess && (
                   <div
-                    className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs hover:text-ca-blue px-1"
-                    // onClick={() => {
-                    //   setUserToDelete(info.row.original);
-                    //   setShowDeleteModal(true);
-                    // }}
-                    onClick={() => {
-                      completeApplicationMutation.mutate(info.getValue());
-                      setCurrentRowId(null);
-                      setShowModal(false);
-                    }}
+                    className="cursor-pointer flex items-center gap-1 font-poppins hover:text-teal-600 text-xs whitespace-nowrap px-1"
+                    onClick={() => setShowUploadDocModal(true)}
                   >
-                    <div className="rounded-full bg-ca-blue p-1">
-                      <MdDone className="text-white text-base size-3" />
+                    <div className="rounded-full bg-teal-600 p-1">
+                      <IoDocumentText className="text-white text-base size-3" />
                     </div>
-                    <span>Complete Application</span>
+
+                    <span>Upload Report</span>
                   </div>
                 )}
 
-                <div
-                  className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
-                  onClick={() =>
-                    navigate(
-                      user?.roles[0] === "STAFF"
-                        ? `/staff/orders/${info.row.original._id}`
-                        : `/merchant/applications/${info.row.original._id}`
-                    )
-                  }
-                >
-                  <div className="rounded-full bg-violet-500 p-1">
-                    <EyeIcon className="text-white text-base size-3" />
+                {info.row.original.status === "pending" &&
+                  !user?.roles.includes(UserRole.ADMIN_STAFF) && (
+                    <div
+                      className="cursor-pointer flex items-center gap-1 font-poppins whitespace-nowrap text-left text-xs hover:text-ca-blue px-1"
+                      // onClick={() => {
+                      //   setUserToDelete(info.row.original);
+                      //   setShowDeleteModal(true);
+                      // }}
+                      onClick={() => {
+                        completeApplicationMutation.mutate(info.getValue());
+                        setCurrentRowId(null);
+                        setShowModal(false);
+                      }}
+                    >
+                      <div className="rounded-full bg-ca-blue p-1">
+                        <MdDone className="text-white text-base size-3" />
+                      </div>
+                      <span>Complete Application</span>
+                    </div>
+                  )}
+
+                {!user?.roles.includes(UserRole.ADMIN_STAFF) && (
+                  <div
+                    className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
+                    onClick={() =>
+                      navigate(
+                        user?.roles[0] === "STAFF"
+                          ? `/staff/orders/${info.row.original._id}`
+                          : `/merchant/applications/${info.row.original._id}`
+                      )
+                    }
+                  >
+                    <div className="rounded-full bg-violet-500 p-1">
+                      <EyeIcon className="text-white text-base size-3" />
+                    </div>
+                    <span> View Details</span>
                   </div>
-                  <span> View Details</span>
-                </div>
+                )}
               </div>
             )}
           </div>
@@ -528,6 +551,40 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     }),
     //
   ];
+
+  if (hasReportAccess) {
+    columns.splice(
+      7,
+      0,
+      columnHelper.accessor((row: any) => row.merchantReport, {
+        id: "reports",
+        cell: (info) => {
+          const docs = [];
+
+          if ((info.row.original as any).merchantReport?.length) {
+            docs.push({
+              url: info.getValue(),
+              idType: "Merchant Report",
+            });
+          }
+
+          if ((info.row.original as any).adminReport?.length) {
+            docs.push({
+              url: (info.row.original as any).adminReport,
+              idType: "Admin Report",
+            });
+          }
+
+          return (
+            <div>
+              <GridDocField docs={docs || []} />
+            </div>
+          );
+        },
+        header: () => <div className="w-44 text-left">Reports</div>,
+      })
+    );
+  }
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterQuery, setFilterQuery] = useState("");
@@ -644,6 +701,14 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
           setShowStaffModal={setShowStaffModal}
           onClose={() => setShowStaffModal(false)}
           rowId={currentRowId}
+        />
+      )}
+
+      {showUploadDocModal && (
+        <UploadDocModal
+          rowId={currentRowId}
+          setShowUploadDocModal={setShowUploadDocModal}
+          showUploadDocModal={showUploadDocModal}
         />
       )}
 

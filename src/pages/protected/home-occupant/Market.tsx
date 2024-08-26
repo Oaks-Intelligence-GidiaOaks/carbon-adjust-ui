@@ -20,6 +20,7 @@ import {
 } from "@/interfaces/events.interface";
 import { RootState } from "@/app/store";
 import { getBrowserAndOS } from "@/lib/utils";
+import HomeBanner from "@/components/containers/HomeBanner";
 
 type Props = {};
 
@@ -66,6 +67,7 @@ const Market = (_: Props) => {
   return (
     <div className="">
       {/* <DashboardBanner /> */}
+      <HomeBanner />
       <BestSellers />
       <Promotion />
 

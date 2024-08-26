@@ -1,5 +1,11 @@
 import { IProduct } from "./product.interface";
 
+export enum UploadStates {
+  default = "default",
+  inProgress = "inProgress",
+  completed = "completed",
+}
+
 export enum Activity {
   Quote = "REQUEST_QUOTE",
   Call = "SCEHDULE_CALL",
@@ -54,5 +60,6 @@ export interface IPackageOrder {
   createdAt: string;
   updatedAt: string;
   aiOrderResponse: string;
+  adminReport?: string;
   __v: number;
 }

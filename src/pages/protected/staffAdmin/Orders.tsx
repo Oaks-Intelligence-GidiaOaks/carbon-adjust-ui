@@ -1,7 +1,6 @@
-import OrdersGrid from "@/components/grid/admin/AdminOrdersGrid";
+import ApplicationsGrid from "@/components/grid/merchant/ApplicationsGrid";
 import LoadingState from "@/components/ui/LoadingState";
-import { handleTableDownload } from "@/lib/utils";
-import { getAdminApplications } from "@/services/adminService";
+import { getStaffAdminOrders } from "@/services/adminService";
 import { transformAdminOrdersGridData } from "@/utils/reshape";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -14,8 +13,8 @@ const Orders = () => {
   });
 
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ["get-admin-applications"],
-    queryFn: () => getAdminApplications(params.page, params.limit),
+    queryKey: ["get-applications-sa"],
+    queryFn: () => getStaffAdminOrders(params.page, params.limit),
   });
 
   const NoOrders = () => (
@@ -41,23 +40,12 @@ const Orders = () => {
 
   return (
     <div className="px-3 lg:px-4">
-      <div className="flex-center justify-between">
-        <h2 className="font-[600] text-lg pt-2 ">Orders</h2>
-
-        {!isLoading && tableApps.length > 0 && (
-          <button
-            onClick={() => handleTableDownload(tableApps)}
-            className="border px-5 text-sm font-poppins font-[600] text-white blue-gradient py-2 rounded-md mr-8"
-          >
-            Download
-          </button>
-        )}
-      </div>
+      <h2 className="font-[600] text-lg pt-2 ">Orders</h2>
 
       {!isLoading ? (
         tableApps.length > 0 ? (
           <div className="-mt-3">
-            <OrdersGrid isUpdating data={tableApps} />
+            <ApplicationsGrid isUpdating data={tableApps} />
           </div>
         ) : (
           <NoOrders />

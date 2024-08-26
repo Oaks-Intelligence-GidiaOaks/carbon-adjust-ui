@@ -26,15 +26,12 @@ import {
   declineUserRegistration,
   makeMerchantInternal,
 } from "@/services/adminService";
+import DeleteUserModal from "@/components/dialogs/DeleteUserModal";
 
 const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [currentRowId, setCurrentRowId] = useState<string>("");
-  //   const [currentRowData, setCurrentRowData] = useState<any>({
-  //     userId: "",
-  //   });
-
-  console.log(props.data, "ahsvg");
 
   const queryClient = useQueryClient();
   const actionButtonsRef = useRef<HTMLDivElement>(null);
@@ -55,6 +52,7 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     approvedMutation.mutate(userId);
   };
 
+  // @ts-ignore
   const handleDeclineMutation = (userId: string) => {
     declineMutation.mutate(userId);
   };
@@ -130,8 +128,6 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.address.country, {
       id: "Country",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -149,8 +145,6 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.address.cityOrProvince, {
       id: "City",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -167,8 +161,6 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     columnHelper.accessor((row: any) => row?.address.firstLineAddress, {
       id: "Address",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -183,10 +175,8 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
     }),
 
     columnHelper.accessor((row: any) => row?.address.zipcode, {
-      id: "Address",
+      id: "zipcode",
       cell: (info) => {
-        console.log(info.row.original);
-
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <span className="">
@@ -294,7 +284,8 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
                     </div>
                   )}
 
-                <div
+                {/* Make This To Be Active Again */}
+                {/* <div
                   className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-red text-xs whitespace-nowrap px-1"
                   onClick={() => handleDeclineMutation(currentRowId)}
                 >
@@ -303,6 +294,18 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
                   </div>
 
                   <span> Suspend</span>
+                </div> */}
+
+                {/* This is temporary: Change back to suspend action */}
+                <div
+                  className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-ca-red text-xs whitespace-nowrap px-1"
+                  onClick={() => setShowDeleteModal(true)}
+                >
+                  <div className="rounded-full bg-red-500 p-1">
+                    <IoClose className="text-white text-base size-3" />
+                  </div>
+
+                  <span> Delete</span>
                 </div>
               </div>
             )}
@@ -437,8 +440,17 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
           </div>
         </div>
       </div>
+
       {(declineMutation.isPending || approvedMutation.isPending) && (
         <LoadingModal text={"Updating registration status"} />
+      )}
+
+      {showDeleteModal && (
+        <DeleteUserModal
+          rowId={currentRowId}
+          setShowDeleteModal={setShowDeleteModal}
+          showUDeleteModal={showDeleteModal}
+        />
       )}
 
       {/* pagination */}

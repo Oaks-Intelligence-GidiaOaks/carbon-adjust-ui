@@ -5,6 +5,9 @@ import { useMutation } from "@tanstack/react-query";
 import { addStaff } from "@/services/merchant";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { UserRole } from "@/interfaces/user.interface";
 
 type Props = {
   handleSubmit?: () => void;
@@ -24,6 +27,7 @@ interface User {
 
 const StaffForm: FC<Props> = ({}) => {
   const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state);
 
   function isValidStaff(user: User): boolean {
     // Check if firstName, surname, and email have non-empty values
@@ -67,7 +71,9 @@ const StaffForm: FC<Props> = ({}) => {
     mutationFn: (data: any) => addStaff(data),
     onSuccess: () => {
       toast.success("Staff account created successfully");
-      navigate("/merchant/staff");
+      user.user?.roles.includes(UserRole.ADMIN)
+        ? navigate("/admin/staff")
+        : navigate("/merchant/staff");
     },
     onError: (error: any) => {
       toast.error(

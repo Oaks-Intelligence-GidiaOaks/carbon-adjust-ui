@@ -2,21 +2,16 @@ import userService from "@/api/services/user";
 import { persistor, RootState } from "@/app/store";
 import Footer from "@/components/containers/Footer";
 import SideMenu from "@/components/containers/SideMenu";
-// import { RootState } from "@/app/store";
 import Sidebar from "@/components/containers/Sidebar";
 import TopBar from "@/components/containers/TopBar";
 import InactivityWrapper from "@/components/hoc/InactivityWrapper";
-// import InactivityWrapper from "@/components/hoc/InactivityWrapper";
 import { setUser } from "@/features/userSlice";
 import ProtectedRoute from "@/guards/ProtectedRoute";
 import UseScrollToTop from "@/hooks/useScrollToTop";
 import { AuthUserProfile } from "@/types/general";
-// import ProtectedRoute from "@/guards/ProtectedRoute";
 import { cn, uniqueObjectsByIdType } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-// import toast from "react-hot-toast";
-// import { Oval } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -37,7 +32,6 @@ const Layout = (props: Props) => {
     queryKey: ["fetch-user-info"],
     queryFn: userService().fetchUserInfo,
   });
-  // console.log(userData);
 
   const handleRedirect = (user: AuthUserProfile, role: string) => {
     if (role === "HOME_OCCUPANT") return navigate("/dashboard");

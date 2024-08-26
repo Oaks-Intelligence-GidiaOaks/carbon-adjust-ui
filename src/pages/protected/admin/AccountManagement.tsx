@@ -26,7 +26,7 @@ const AccountManagement = (_: Props) => {
     () => ({
       accountType: activeTab,
       page: 1,
-      limit: 50,
+      limit: 400,
     }),
     [activeTab]
   );

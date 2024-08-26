@@ -27,6 +27,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { completeApplication } from "@/services/merchant";
 import { StaffModal } from "@/components/dialogs";
 import { formatDate } from "@/lib/utils";
+import GridDocField from "@/components/reusables/GridDocField";
 
 const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
   // @ts-ignore
@@ -93,7 +94,7 @@ const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       id: "merchantName",
       cell: (info) => (
         <div className="w-44 mx-auto text-left">
-          {(info.row.original as any).merchant.name ?? "----------------"}
+          {(info.row.original as any).merchant?.name ?? "----------------"}
         </div>
       ),
       header: () => <div className="w-44 text-left">Merchant Name</div>,
@@ -103,7 +104,7 @@ const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       id: "customerName",
       cell: (info) => (
         <div className="w-44 mx-auto text-left">
-          {(info.row.original as any).customer.name ?? "----------------"}
+          {(info.row.original as any).customer?.name ?? "----------------"}
         </div>
       ),
       header: () => <div className="w-44 text-left">Customer Name</div>,
@@ -154,6 +155,32 @@ const OrdersGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
         <div className="w-24 mx-auto text-left">{info.getValue()}</div>
       ),
       header: () => <div className="w-36 text-left">Amount</div>,
+    }),
+
+    // Reports
+    columnHelper.accessor((row: any) => row?.merchantReport, {
+      id: "merchantReport",
+      cell: (info) => {
+        const docs = [];
+
+        if ((info.row.original as any).merchantReport?.length) {
+          docs.push({
+            url: info.getValue(),
+            idType: "Merchant Report",
+          });
+        }
+
+        if ((info.row.original as any).adminReport?.length) {
+          docs.push({
+            url: (info.row.original as any).adminReport,
+            idType: "Admin Report",
+          });
+        }
+
+        return <GridDocField docs={docs || []} />;
+      },
+
+      header: () => <div className="w-36 text-left">Reports</div>,
     }),
 
     columnHelper.accessor((row: any) => row?.status, {

@@ -11,3 +11,5 @@ export { default as AdminWallet } from "./Wallet";
 export { default as AdminPackages } from "./Packages";
 export { default as AdminOrders } from "./Orders";
 export { default as AdminOrderDetails } from "./OrderDetails";
+export { default as AdminStaff } from "./Staff";
+export { default as AdminAddStaff } from "./AddStaff";

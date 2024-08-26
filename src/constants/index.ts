@@ -568,6 +568,11 @@ export const adminSideBarItems = [
     href: "/admin/users",
   },
   {
+    icon: ProfileIcon,
+    title: "Staff",
+    href: "/admin/staff",
+  },
+  {
     icon: PackageIcon,
     title: "Packages",
     href: "/admin/packages",
@@ -581,6 +586,20 @@ export const adminSideBarItems = [
     icon: UsersIcon,
     title: "Adverts",
     href: "/admin/ads",
+  },
+  {
+    icon: LogoutIcon,
+    title: "Logout",
+    href: "/..",
+  },
+];
+
+// ADMIN STAFF SIDE ITEMS
+export const adminStaffSideBarItems = [
+  {
+    icon: OrdersIcon,
+    title: "Orders",
+    href: "/admin-staff/",
   },
   {
     icon: LogoutIcon,

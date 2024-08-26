@@ -8,7 +8,6 @@ export const transformAdminUserRegistrations = (data: any) => {
       activationCode,
       activationExpiry,
       bio,
-      doc,
       emailActivatedAt,
       hasEmailVerified,
       hasAcceptTerms,
@@ -100,7 +99,7 @@ export const transformAdminOrdersGridData = (data: any) => {
 
     newData.push({
       ...rest,
-      name: pkg?.title,
+      name: pkg?.title || "----------------",
       merchant,
       amount:
         price === undefined
