@@ -5,7 +5,9 @@ const HomeBanner = () => {
 
   return (
     <div
-      onClick={() => navigate("/dashboard/marketplace/home-energy-plans")}
+      onClick={() =>
+        navigate("/dashboard/marketplace/home-improvement-services")
+      }
       className="font-poppins bg-[#edf6fda4] flex flex-col relative h-[500px] overflow-hidden md:pl-6 xl:pl-24 cursor-pointer"
     >
       <img
