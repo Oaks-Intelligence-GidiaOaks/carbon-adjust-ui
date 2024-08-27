@@ -1,5 +1,6 @@
 [
   {
+    "id": "1",
     "device_id": "68180-882",
     "application_id": "37205-826",
     "device ip address": "62.144.132.215",
@@ -7,6 +8,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "2",
     "device_id": "21695-179",
     "application_id": "0093-2048",
     "device ip address": "211.57.123.187",
@@ -14,6 +16,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "3",
     "device_id": "13537-305",
     "application_id": "49999-266",
     "device ip address": "120.78.245.228",
@@ -21,6 +24,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "4",
     "device_id": "19392-210",
     "application_id": "42808-110",
     "device ip address": "215.18.48.18",
@@ -28,6 +32,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "5",
     "device_id": "29500-6000",
     "application_id": "68788-9164",
     "device ip address": "252.199.207.193",
@@ -35,6 +40,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "6",
     "device_id": "49884-197",
     "application_id": "30142-906",
     "device ip address": "249.72.203.82",
@@ -42,6 +48,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "7",
     "device_id": "0338-0519",
     "application_id": "59469-038",
     "device ip address": "159.242.48.36",
@@ -49,6 +56,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "8",
     "device_id": "67938-110",
     "application_id": "0527-1407",
     "device ip address": "34.163.21.150",
@@ -56,6 +64,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "9",
     "device_id": "49349-582",
     "application_id": "0597-0019",
     "device ip address": "49.77.110.128",
@@ -63,6 +72,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "10",
     "device_id": "42627-216",
     "application_id": "49288-0065",
     "device ip address": "149.52.151.133",
@@ -70,6 +80,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "11",
     "device_id": "63739-167",
     "application_id": "49999-860",
     "device ip address": "142.211.157.0",
@@ -77,6 +88,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "12",
     "device_id": "76237-274",
     "application_id": "64679-983",
     "device ip address": "16.26.80.63",
@@ -84,6 +96,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "13",
     "device_id": "60429-766",
     "application_id": "11822-0566",
     "device ip address": "204.237.42.12",
@@ -91,6 +104,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "14",
     "device_id": "55648-906",
     "application_id": "49614-462",
     "device ip address": "105.160.50.163",
@@ -98,6 +112,7 @@
     "voltage level": "220 volts"
   },
   {
+    "id": "15",
     "device_id": "42806-018",
     "application_id": "76331-810",
     "device ip address": "73.143.168.72",

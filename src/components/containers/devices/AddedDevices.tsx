@@ -1,5 +1,9 @@
 import { BiSearch } from "react-icons/bi";
 import DeviceCard from "./DeviceCard";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui";
+import { PlusIcon } from "@/assets/icons";
+import devicesDummy from "@/dummy/devices.json";
 
 const AddedDevices = () => {
   return (
@@ -14,11 +18,18 @@ const AddedDevices = () => {
             onChange={() => {}}
           />
         </div>
+
+        <Link className="ml-auto" to="/dashboard/devices/add">
+          <Button className="rounded-[20px] flex-center gap-1 ">
+            <span>Add device</span>
+            <PlusIcon />
+          </Button>
+        </Link>
       </div>
 
       <div className="mt-[15px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5">
-        {Array.from({ length: 4 }, (_, i) => (
-          <DeviceCard key={i} />
+        {Array.from(devicesDummy.slice(0, 4), (it, i) => (
+          <DeviceCard key={i} {...it} />
         ))}
       </div>
     </div>

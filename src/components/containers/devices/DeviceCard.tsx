@@ -1,9 +1,15 @@
+import { BoxIcon } from "@/assets/icons";
 import { Button } from "@/components/ui";
 
 import { IoAlertCircleSharp } from "react-icons/io5";
 import { MdMoreVert } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setDeviceId } from "@/features/assetSlice";
+import { Device } from "@/interfaces/device.interface";
 
-const DeviceCard = () => {
+const DeviceCard = (props: Device) => {
+  const dispatch = useDispatch();
+
   const ListTile = (props: { name: string; listing: string }) => (
     <div className="space-y-[1]">
       <h5 className="text-[#767A85] text-xs  font-[400]">{props.name}</h5>
@@ -91,6 +97,10 @@ const DeviceCard = () => {
     </div>
   );
 
+  const handleScheduleDispatch = (id: string) => {
+    dispatch(setDeviceId(id));
+  };
+
   return (
     <div className="border-[0.4px] rounded-xl bg-white shadow-sm max-w-[392px]">
       <div className="flex-center justify-between px-[10px] border-b p-3 relative">
@@ -98,6 +108,7 @@ const DeviceCard = () => {
         <MdMoreVert />
         {/* <CardPopup show /> */}
         <CardActions />
+        {/* <CardPopup /> */}
       </div>
 
       <div className="flex items-start gap-4 border-b border-[0.4px] p-3 md:pl-[30px]">
@@ -115,6 +126,13 @@ const DeviceCard = () => {
         </div>
       </div>
 
+      <div className="py-2 pl-5">
+        <button className="text-[#139EEC] border-[#139EEC] border !rounded-[15.2px] px-4 py-1 flex-center gap-[7px] text-xs font-[400] font-sans">
+          <span>Link Device</span>
+          <BoxIcon className="h-5 w-5" />
+        </button>
+      </div>
+
       <div
         className={`flex-center justify-between p-2 bg-[#DEE7F2] rounded-b-[10px]`}
       >
@@ -123,7 +141,11 @@ const DeviceCard = () => {
           <span>No dispatch scheduled</span>
         </div>
 
-        <Button size="sm" className="!rounded-[20px] !px-4 !h-[27px]">
+        <Button
+          onClick={() => handleScheduleDispatch(props.id as string)}
+          size="sm"
+          className="!rounded-[20px] !px-4 !h-[27px]"
+        >
           <span className="text-xs font-sans">Schedule Dispatch</span>
         </Button>
 

@@ -113,7 +113,7 @@ const NewDevice = () => {
           <Button
             variant={"ghost"}
             className="px-2"
-            onClick={() => navigate("/merchant/devices")}
+            onClick={() => navigate("/dashboard/devices")}
           >
             <MdKeyboardArrowLeft />
             <h2 className="pl-4 text-base font-[600]">Devices</h2>

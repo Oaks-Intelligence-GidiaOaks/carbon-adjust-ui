@@ -114,13 +114,16 @@ export const homeOwnerSideBarItems = [
     title: "Dashboard",
     href: "/dashboard",
   },
-
   {
     icon: OrdersIcon,
     title: "Orders",
     href: "/dashboard/orders",
   },
-
+  {
+    icon: DeviceIcon,
+    title: "Devices",
+    href: "/dashboard/devices",
+  },
   {
     icon: LogoutIcon,
     title: "Logout",
@@ -144,12 +147,6 @@ export const merchantSideBarItems = [
     title: "Applications",
     href: "/merchant/applications",
   },
-  {
-    icon: DeviceIcon,
-    title: "Devices",
-    href: "/merchant/devices",
-  },
-
   {
     icon: ProfileIcon,
     title: "Staff",

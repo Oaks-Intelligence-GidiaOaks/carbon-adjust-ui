@@ -370,3 +370,5 @@ export type Order = {
     __v: number;
   };
 };
+
+export type DState = string | boolean | null;

@@ -5,6 +5,7 @@ import userReducer from "../features/userSlice";
 import productReducer from "../features/productSlice";
 import orderReducer from "../features/orderSlice";
 import adReducer from "../features/adSlice";
+import assetReducer from "../features/assetSlice";
 
 const persistConfig = {
   key: "root",
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   product: productReducer,
   order: orderReducer,
   ads: adReducer,
+  assets: assetReducer,
   // Add other reducers here
 });
 
