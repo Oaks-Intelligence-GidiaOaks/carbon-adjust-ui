@@ -29,8 +29,11 @@ const HomeBanner = () => {
         />
 
         <div className="z-[50] relative my-auto  lg:w-[45%] tracking-tight text-center md:text-left">
-          <h2 className="bg-gradient-to-tr from-[#2E599A] to-[#0B8DFF] text-transparent bg-clip-text font-[700] text-[30px] lg:text-[50px]  lg:leading-[60px] tracking-tight drop-shadow-md">
+          {/* <h2 className="bg-gradient-to-tr from-[#2E599A] to-[#0B8DFF] text-transparent bg-clip-text font-[700] text-[30px] lg:text-[50px]  lg:leading-[60px] tracking-tight drop-shadow-md">
             Book your consultation noww
+          </h2> */}
+          <h2 className="bg-gradient-to-tr from-[#2E599A] to-[#0B8DFF] text-transparent bg-clip-text font-[700] text-[30px] lg:text-[50px]  lg:leading-[60px] tracking-tight drop-shadow-md">
+            Uduak
           </h2>
 
           <h5 className="text-[#4C5660] font-[500] text-[23.14px] ">
