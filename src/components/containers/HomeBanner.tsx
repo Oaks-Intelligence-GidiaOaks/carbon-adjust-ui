@@ -33,7 +33,7 @@ const HomeBanner = () => {
             Book your consultation noww
           </h2> */}
           <h2 className="bg-gradient-to-tr from-[#2E599A] to-[#0B8DFF] text-transparent bg-clip-text font-[700] text-[30px] lg:text-[50px]  lg:leading-[60px] tracking-tight drop-shadow-md">
-            Uduak
+            Uduak deleted git folder
           </h2>
 
           <h5 className="text-[#4C5660] font-[500] text-[23.14px] ">
