@@ -34,7 +34,7 @@ const HomeBanner = () => {
           </h2>
 
           <h5 className="text-[#4C5660] font-[500] text-[23.14px] ">
-            Energy efficiency starts here. Test H
+            Energy efficiency starts here.
           </h5>
         </div>
       </div>
