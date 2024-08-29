@@ -18,7 +18,7 @@ const HomeBanner = () => {
 
         <img
           src="/assets/banners/Contioveo_Head_Girl_2 1.svg"
-          alt=""
+          alt="ggg"
           className="z-[30] absolute -bottom-4 right-10 w-60 lg:w-auto "
         />
 
