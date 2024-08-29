@@ -13,7 +13,7 @@ const HomeBanner = () => {
         <img
           src="/assets/banners/dots-left.svg"
           className="absolute bottom-0 lg:top-0 left-0  z-[5]"
-          alt=""
+          alt="test"
         />
 
         <img
