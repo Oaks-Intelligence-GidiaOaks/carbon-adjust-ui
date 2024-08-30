@@ -1,3 +1,4 @@
+import { IDevice } from "@/interfaces/device.interface";
 import { SelectItem } from "@/types/formSelect";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -169,4 +170,146 @@ export const getBrowserAndOS = () => {
   }
 
   return { browser: browserName, os: osName };
+};
+
+// device
+export const validateDeviceInputs = (formData: IDevice) => {
+  let error: string | null = null;
+
+  switch (true) {
+    case Boolean(formData.name.length) === false:
+      error = "Name must not be empty";
+      break;
+    // @ts-ignore
+    case Boolean(formData.type?.value.length) === false:
+      error = "Type must have a value";
+      break;
+    case Boolean(formData.serialNos.length) === false:
+      error = "serial number must have a value";
+      break;
+    case Boolean(formData.powerRating.length) === false:
+      error = "Power rating must have a value";
+      break;
+    case Boolean(formData.voltageLevel.length) === false:
+      error = "Voltage Level must have a value";
+      break;
+    // @ts-ignore
+    case Boolean(formData.energySource?.value.length) === false:
+      error = "Energy source must have a value";
+      break;
+    // @ts-ignore
+    case Boolean(formData.energySource?.value.length) === true &&
+      // @ts-ignore
+      Boolean(formData.electricityProvider?.value.length) === false &&
+      // @ts-ignore
+      Boolean(formData.gasProvider?.value.length) === false:
+      error = "Select an energy provider";
+      break;
+    case formData.file === null:
+      error = "Add a device Image";
+      break;
+    default:
+      break;
+  }
+  return error;
+};
+
+export const getRemainingHours = (): string[] => {
+  const currentDate = new Date();
+  const currentHour = currentDate.getHours(); // Get the current hour (0-23)
+
+  const remainingHours = 23 - currentHour; // Calculate remaining hours until midnight
+
+  // Create an array of remaining hours as strings
+  const hoursArray = Array.from({ length: remainingHours + 1 }, (_, i) =>
+    (currentHour + i + 1).toString()
+  );
+
+  return ["4", "6"];
+
+  return hoursArray;
+};
+
+export const getStartTimes = (workingPeriod: number) => {
+  const now = new Date();
+  const currentHour = now.getHours() + 1;
+  const maxStartTime = currentHour + (22 - workingPeriod);
+
+  const startTimes = [];
+
+  for (let i = currentHour; i <= maxStartTime; i++) {
+    startTimes.push(i % 24); // Wrap around 24 hours
+  }
+
+  return startTimes.map((hour) => `${hour}:00`); // Format in "HH:00"
+};
+
+/**
+ * Generates allowed device working periods based on the dispatch window and start time.
+ * @param dispatchWindow The total allowed working period in hours (max 18 hours).
+ * @param startTime The start time for the working period in "HH:MM" format.
+ * @returns An array of allowed working periods in hours.
+ */
+export function getAllowedWorkingPeriods(
+  dispatchWindow: number,
+  startTime: string
+): number[] {
+  // Ensure dispatchWindow is within the 18-hour limit
+  const maxDispatchWindow = 6;
+  if (dispatchWindow <= 0 || dispatchWindow > maxDispatchWindow) {
+    throw new Error(
+      `Dispatch window must be between 1 and ${maxDispatchWindow} hours.`
+    );
+  }
+
+  // Parse the start time
+  const [startHour, startMinute] = startTime.split(":").map(Number);
+  if (
+    isNaN(startHour) ||
+    isNaN(startMinute) ||
+    startHour < 0 ||
+    startHour > 23 ||
+    startMinute < 0 ||
+    startMinute > 59
+  ) {
+    throw new Error('Invalid start time format. It should be "HH:MM".');
+  }
+
+  // Initialize the array to store allowed working periods
+  const allowedPeriods: number[] = [];
+
+  // Define a 1-hour increment for allowed periods
+  const periodIncrement = 1;
+
+  // Loop to generate allowed periods
+  for (
+    let period = periodIncrement;
+    period <= dispatchWindow;
+    period += periodIncrement
+  ) {
+    // Calculate the end time for this period
+    const periodEndHour = (startHour + period) % 24;
+    const periodEndMinute = startMinute;
+
+    console.log(periodEndHour, "period end hour");
+    console.log(periodEndMinute, "period End Minute");
+
+    // Check if the period end time is within the dispatch window
+    // We assume the working period ends at most 18 hours later
+    const endHour = (startHour + dispatchWindow) % 24;
+
+    if (
+      endHour >= periodEndHour ||
+      (endHour === periodEndHour && startMinute <= periodEndMinute)
+    ) {
+      allowedPeriods.push(period);
+    }
+  }
+
+  return allowedPeriods;
+}
+
+export const stripColonAndReturnNumber = (time: string): number => {
+  const [hour] = time.split(":");
+  return parseInt(hour, 10);
 };

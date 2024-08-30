@@ -1,8 +1,15 @@
 import { Button, Input } from "@/components/ui";
 import ImagePreviewCard from "@/components/ui/ImagePreviewCard";
 import SelectInput from "@/components/ui/SelectInput";
+import {
+  electricitySuppliers,
+  energySources,
+  gasSuppliers,
+  types,
+} from "@/constants/devices";
 import { IDevice } from "@/interfaces/device.interface";
-import { createDevice } from "@/services/merchantService";
+import { validateDeviceInputs } from "@/lib/utils";
+import { addDevice } from "@/services/homeOwner";
 import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -17,10 +24,12 @@ const NewDevice = () => {
   let initialState: IDevice = {
     name: "",
     type: { label: "", value: "" },
-    serialNumber: "",
+    serialNos: "",
     powerRating: "",
     voltageLevel: "",
     energySource: { label: "", value: "" },
+    electricityProvider: { label: "", value: "" },
+    gasProvider: { label: "", value: "" },
     file: null,
   };
 
@@ -29,14 +38,14 @@ const NewDevice = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const CreateDevice = useMutation({
-    mutationKey: ["create-ad"],
-    mutationFn: (deviceData: any) => createDevice(deviceData),
+    mutationKey: ["create-device"],
+    mutationFn: (deviceData: FormData) => addDevice(deviceData),
     onSuccess: (sx: any) => {
       console.log(sx);
       toast.success(sx.message);
       resetForm();
 
-      navigate(`/merchant/devices`);
+      navigate(`/dashboard/devices`);
     },
     onError: (ex: any) => {
       toast.error(ex.response.data.message);
@@ -86,16 +95,47 @@ const NewDevice = () => {
     }
   };
 
+  const handleSelectInputChange = (e: any, fieldName: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [fieldName]: e,
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    // validate required inputs
+    const error = validateDeviceInputs(formData);
+
+    if (error) {
+      return toast.error(error);
+    }
+
+    const { gasProvider, ...rest } = formData;
+
+    let nData = {
+      ...rest,
+      // @ts-ignore
+      type: formData.type.value,
+      // @ts-ignore
+      energySource: formData.energySource.value,
+      // @ts-ignore
+      electricityProvider: formData.electricityProvider.value,
+    };
+
+    if (nData.energySource === "Electricity/Gas") {
+      // @ts-ignore
+      nData["gasProvider"] = gasProvider.value;
+    }
+
     const deviceData = new FormData();
 
-    Object.entries(formData).map((item) => {
+    Object.entries(nData).map((item) => {
       deviceData.append(item[0], item[1]);
     });
 
-    // CreateDevice.mutate(deviceData);
+    CreateDevice.mutate(deviceData);
   };
 
   const resetForm = () => {
@@ -173,9 +213,9 @@ const NewDevice = () => {
             <h2 className="pl-2">Device type</h2>
 
             <SelectInput
-              options={[{ label: "option 1", value: "Option 1" }]}
+              options={types}
               value={formData.type}
-              // onChange={(e)=> handleInputChange()}
+              onChange={(e) => handleSelectInputChange(e, "type")}
             />
           </div>
 
@@ -185,8 +225,8 @@ const NewDevice = () => {
             <Input
               className="border rounded-xl px-2 text-sm"
               type="number"
-              name="serialNumber"
-              value={formData.serialNumber}
+              name="serialNos"
+              value={formData.serialNos}
               onChange={handleInputChange}
             />
           </div>
@@ -219,11 +259,43 @@ const NewDevice = () => {
             <h2 className="pl-2">What is/are your energy source(s)?</h2>
 
             <SelectInput
-              options={[{ label: "option 1", value: "Option 1" }]}
+              options={energySources}
               value={formData.energySource}
-              // onChange={(e)=> handleInputChange()}
+              onChange={(e) => handleSelectInputChange(e, "energySource")}
             />
           </div>
+
+          {
+            // @ts-ignore
+            Boolean(formData.energySource.value.length) && (
+              <div className="space-y-2 px-2">
+                <h2 className="pl-2">Who is your electricity supplier?</h2>
+
+                <SelectInput
+                  options={electricitySuppliers}
+                  value={formData.electricityProvider}
+                  onChange={(e) =>
+                    handleSelectInputChange(e, "electricityProvider")
+                  }
+                />
+              </div>
+            )
+          }
+
+          {
+            // @ts-ignore
+            formData.energySource.value === "Electricity/Gas" && (
+              <div className="space-y-2 px-2">
+                <h2 className="pl-2">Who is your gas provider?</h2>
+
+                <SelectInput
+                  options={gasSuppliers}
+                  value={formData.gasProvider}
+                  onChange={(e) => handleSelectInputChange(e, "gasProvider")}
+                />
+              </div>
+            )
+          }
 
           <div className="w-full mx-auto ">
             <Button disabled={false} className="w-full">

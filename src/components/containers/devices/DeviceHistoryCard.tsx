@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GoDotFill } from "react-icons/go";
 
-const DeviceHistoryCard = () => {
+const DeviceHistoryCard = (_: any) => {
   const [checked, setChecked] = useState<boolean>(false);
 
   const toggleChecked = () => {

@@ -14,32 +14,73 @@ export enum DeviceTabs {
   DispatchHistory = "Dispatch History",
 }
 
+export enum CurrentDispatchStatus {
+  Scheduled = "scheduled",
+  Activated = "dispatched",
+}
+
 export enum DeviceStatus {
-  NoDispatch = "No Dispatch",
-  Dispatched = "Dispatched",
-  Ongoing = "Ongoing",
+  Activated = "activated",
+  DeActivated = "deactivated",
 }
 
 export interface IDevice {
   id?: string;
   name: string;
   type: PropsValue<SelectItem>;
-  serialNumber: string;
+  serialNos: string;
   powerRating: string;
   voltageLevel: string;
   energySource: PropsValue<SelectItem>;
+  electricityProvider: PropsValue<SelectItem>;
+  gasProvider: PropsValue<SelectItem>;
   file: File | null;
 }
 
+export interface ICreateDevice {
+  name: string;
+  type: string;
+  serialNos: string;
+  powerRating: string;
+  voltageLevel: string;
+  energySource: string;
+  electricityProvider: string;
+  gasProvider: string;
+  file: File | null;
+}
+
+export interface IDispatchDevice {
+  deviceId: string;
+  dispatchWindow: string;
+  workingPeriod: string;
+  startTime: string;
+}
+
 export interface IAsset {
-  device: Partial<IDevice>;
+  device: IDispatchData;
 }
 
 export interface Device {
-  id?: string;
-  device_id: string;
-  application_id: string;
-  "device ip address": string;
-  "power rating": number;
-  "voltage level": string;
+  _id?: string;
+  key?: number | string;
+  creator: string;
+  energySource: string;
+  gasProvider?: string;
+  name: string;
+  electricityProvider: string;
+  status: string;
+  currentDispatchStatus: CurrentDispatchStatus;
+  currentDispatchTime: string;
+  powerRating: number;
+  serialNos: string;
+  type: string;
+  voltageLevel: string;
+  file: string;
+}
+
+export interface IDispatchData {
+  deviceId: string;
+  dispatchWindow: number;
+  workingPeriod: string;
+  startTime: string;
 }

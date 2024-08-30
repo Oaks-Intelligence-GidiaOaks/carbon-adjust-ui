@@ -6,13 +6,8 @@ import NoDevices from "@/components/containers/devices/NoDevices";
 import DispatchHistory from "@/components/containers/devices/DispatchHistory";
 import { IComponentMap } from "@/types/general";
 import AddedDevices from "@/components/containers/devices/AddedDevices";
-import DeviceDialog from "@/components/dialogs/DeviceDialog";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store";
 
 const Devices = () => {
-  const { device } = useSelector((state: RootState) => state.assets);
-
   const tabs: DeviceTabs[] = [
     DeviceTabs.AddedDevices,
     DeviceTabs.DispatchedDevices,
@@ -45,18 +40,6 @@ const Devices = () => {
       </div>
 
       <div className="mt-[15px]">{activeComponent[activeTab]}</div>
-
-      {(device.id as string).length && (
-        <DeviceDialog
-          deviceId={device.id as string}
-          actions={[
-            { text: "No", actionType: "secondary", onClick: () => {} },
-            { text: "Yes", actionType: "destructive", onClick: () => {} },
-          ]}
-          headerText="Cancel Schedule"
-          leadText="Are you sure you want to cancel schedule for this device?"
-        />
-      )}
     </div>
   );
 };

@@ -1,9 +1,12 @@
-import { IAsset } from "@/interfaces/device.interface";
+import { IAsset, IDispatchData } from "@/interfaces/device.interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState: IAsset = {
   device: {
-    id: "",
+    deviceId: "",
+    dispatchWindow: 1,
+    startTime: "00:00",
+    workingPeriod: "",
   },
 };
 
@@ -11,17 +14,17 @@ const assetSlice = createSlice({
   name: "assets",
   initialState,
   reducers: {
-    setDeviceId: (_, action: PayloadAction<string>) => {
-      return {
-        ...initialState,
-        device: {
-          ...initialState.device,
-          id: action.payload,
-        },
+    deviceChanged: (state, action: PayloadAction<Partial<IDispatchData>>) => {
+      state.device = {
+        ...state.device,
+        ...action.payload,
       };
+    },
+    clearDevice: (state) => {
+      state.device = initialState.device;
     },
   },
 });
 
-export const { setDeviceId } = assetSlice.actions;
+export const { deviceChanged, clearDevice } = assetSlice.actions;
 export default assetSlice.reducer;

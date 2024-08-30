@@ -4,7 +4,7 @@ import Modal from "./Modal";
 import { DState } from "@/types/general";
 import { useModalCloser } from "@/hooks/useModalCloser";
 import { useDispatch } from "react-redux";
-import { setDeviceId } from "@/features/assetSlice";
+import { deviceChanged } from "@/features/assetSlice";
 
 type Action = {
   text: string;
@@ -22,7 +22,7 @@ const DeviceDialog = (props: {
   const dialogRef = useRef<null | HTMLDivElement>(null);
 
   const closeModal = () => {
-    dispatch(setDeviceId(""));
+    dispatch(deviceChanged({}));
   };
 
   useModalCloser(dialogRef, props.deviceId, closeModal);
@@ -47,6 +47,7 @@ const DeviceDialog = (props: {
               key={i}
               className="flex-[0.5] "
               variant={it.actionType || "default"}
+              onClick={it.onClick}
             >
               <span>{it.text}</span>
             </Button>

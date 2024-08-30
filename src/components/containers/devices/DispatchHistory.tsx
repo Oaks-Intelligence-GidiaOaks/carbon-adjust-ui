@@ -9,8 +9,23 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/CardPagination";
+// import { useQuery } from "@tanstack/react-query";
+// import Loading from "@/components/reusables/Loading";
 
 const DispatchHistory = () => {
+  // const { data, isLoading } = useQuery({
+  //   queryKey: [""],
+  //   queryFn: () => getDispatchedDevices(),
+  // });
+
+  // if (isLoading) {
+  //   return (
+  //     <div className="">
+  //       <Loading message="Loading.." />
+  //     </div>
+  //   );
+  // }
+
   return (
     <div>
       <div className="flex-center w-full">
