@@ -12,6 +12,7 @@ import {
   AdminAddStaff,
   AdminAds,
   AdminDashboard,
+  AdminDevices,
   AdminEditAd,
   AdminNewAd,
   AdminNewUser,
@@ -41,8 +42,10 @@ import {
 } from "@/pages/protected/merchant";
 import {
   UserAppointment,
+  UserDevices,
   UserMarketGroup,
   UserMarketPlace,
+  UserNewDevice,
   UserOrderList,
   UserProfile,
 } from "@/pages/protected/home-occupant";
@@ -58,6 +61,8 @@ import PrivacyPolicy from "@/pages/public/PrivacyPolicy";
 import TermsAndConditions from "@/pages/public/TermsAndConditions";
 import MerchantTermsAndConditions from "@/pages/public/MerchantTermsAndConditions";
 import { AdminStaffOrders } from "@/pages/protected/staffAdmin";
+import AssetsLayout from "@/layouts/AssetsLayout";
+import ComingSoon from "@/components/reusables/ComingSoon";
 
 const Router = createBrowserRouter([
   {
@@ -141,6 +146,50 @@ const Router = createBrowserRouter([
       {
         path: "orders",
         element: <UserOrderList />,
+      },
+      {
+        path: "devices",
+        element: <AssetsLayout />,
+        children: [
+          {
+            path: "",
+            element: <UserDevices />,
+          },
+          {
+            path: "add",
+            element: <UserNewDevice />,
+          },
+        ],
+      },
+      {
+        path: "buildings",
+        element: <AssetsLayout />,
+        children: [
+          {
+            path: "",
+            element: <ComingSoon />,
+          },
+        ],
+      },
+      {
+        path: "transport",
+        element: <AssetsLayout />,
+        children: [
+          {
+            path: "",
+            element: <ComingSoon />,
+          },
+        ],
+      },
+      {
+        path: "others",
+        element: <AssetsLayout />,
+        children: [
+          {
+            path: "",
+            element: <ComingSoon />,
+          },
+        ],
       },
       {
         path: "profile",
@@ -340,6 +389,10 @@ const Router = createBrowserRouter([
       {
         path: "packages",
         element: <AdminPackages />,
+      },
+      {
+        path: "devices",
+        element: <AdminDevices />,
       },
       {
         path: "orders",

@@ -1,4 +1,5 @@
 import axiosInstance from "@/api/axiosInstance";
+import { IDispatchData } from "@/interfaces/device.interface";
 
 export const getAllPackageCategories = async () => {
   const { data } = await axiosInstance.get(`/packages/categories`);
@@ -132,6 +133,41 @@ export const changeProfileDp = async (formData: any) => {
       "Content-Type": "multipart/form-data",
     },
   });
+
+  return data;
+};
+
+// DEVICES
+export const addDevice = async (formData: FormData) => {
+  const { data } = await axiosInstance.post("/devices", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+};
+
+export const dispatchDevice = async (input: IDispatchData) => {
+  const { data } = await axiosInstance.post("/devices/dispatch", input);
+
+  return data;
+};
+
+export const getUserDevices = async () => {
+  const { data } = await axiosInstance.get("/devices/user-devices");
+
+  return data;
+};
+
+export const deviceMetaData = async () => {
+  const { data } = await axiosInstance.get("applications/metadata");
+
+  return data;
+};
+
+export const getDispatchedDevices = async () => {
+  const { data } = await axiosInstance.get(`devices/dispatch`);
 
   return data;
 };

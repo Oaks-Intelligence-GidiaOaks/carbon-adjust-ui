@@ -30,8 +30,14 @@ import HomeIcon from "./home-03.svg?react";
 import SideBarBtn from "./sidebarbtn.svg?react";
 import OrdersIcon from "./ordersIcon.svg?react";
 import PackageIcon from "./packageIcon.svg?react";
+import DeviceIcon from "./deviceIcon.svg?react";
+import PlusIcon from "./plusIcon.svg?react";
+import BoxIcon from "./mega-box.svg?react";
 
 export {
+  BoxIcon,
+  PlusIcon,
+  DeviceIcon,
   PackageIcon,
   OrdersIcon,
   Logo,

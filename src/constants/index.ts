@@ -15,6 +15,7 @@ import {
   ProfileIcon,
   UsersIcon,
   PackageIcon,
+  DeviceIcon,
   // ProjectIcon,
 } from "@/assets/icons";
 import { DropdownOption, Finance, Payment } from "@/types/general";
@@ -113,13 +114,16 @@ export const homeOwnerSideBarItems = [
     title: "Dashboard",
     href: "/dashboard",
   },
-
   {
     icon: OrdersIcon,
     title: "Orders",
     href: "/dashboard/orders",
   },
-
+  {
+    icon: DeviceIcon,
+    title: "Devices",
+    href: "/dashboard/devices",
+  },
   {
     icon: LogoutIcon,
     title: "Logout",
@@ -143,7 +147,6 @@ export const merchantSideBarItems = [
     title: "Applications",
     href: "/merchant/applications",
   },
-
   {
     icon: ProfileIcon,
     title: "Staff",
@@ -575,6 +578,11 @@ export const adminSideBarItems = [
     icon: OrdersIcon,
     title: "Orders",
     href: "/admin/orders",
+  },
+  {
+    icon: PackageIcon,
+    title: "Devices",
+    href: "/admin/devices",
   },
   {
     icon: UsersIcon,
