@@ -12,6 +12,7 @@ import {
   AdminAddStaff,
   AdminAds,
   AdminDashboard,
+  AdminDevices,
   AdminEditAd,
   AdminNewAd,
   AdminNewUser,
@@ -388,6 +389,10 @@ const Router = createBrowserRouter([
       {
         path: "packages",
         element: <AdminPackages />,
+      },
+      {
+        path: "devices",
+        element: <AdminDevices />,
       },
       {
         path: "orders",

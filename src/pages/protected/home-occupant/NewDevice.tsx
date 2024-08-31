@@ -180,7 +180,7 @@ const NewDevice = () => {
             />
 
             <div
-              className="rounded-xl border grid place-items-center h-[180px] cursor-pointer "
+              className="rounded-xl border grid place-items-center h-[180px] cursor-pointer"
               onClick={triggerFileInput}
             >
               {imagePreview ? (

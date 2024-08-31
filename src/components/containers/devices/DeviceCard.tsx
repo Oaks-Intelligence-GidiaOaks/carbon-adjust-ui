@@ -147,7 +147,7 @@ const DeviceCard = (props: Device) => {
   return (
     <div className="border-[0.4px] rounded-xl bg-white shadow-md max-w-[392px]">
       <div className="flex-center justify-between px-[10px] border-b p-3 relative">
-        <h2>{props.name}</h2>
+        <h2 className="font-[600] text-sm font-inter pl-3">{props.name}</h2>
         <MdMoreVert onClick={() => setCardActions(!cardActions)} />
         {id && <CardPopup />}
 
@@ -194,7 +194,7 @@ const DeviceCard = (props: Device) => {
           </div>
         )}
 
-        {props.currentDispatchStatus === CurrentDispatchStatus.Activated && (
+        {!props.currentDispatchStatus && (
           <Button
             onClick={() => setId(props._id as string)}
             size="sm"

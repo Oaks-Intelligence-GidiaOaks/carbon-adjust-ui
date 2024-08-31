@@ -9,22 +9,24 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/CardPagination";
-// import { useQuery } from "@tanstack/react-query";
-// import Loading from "@/components/reusables/Loading";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/components/reusables/Loading";
+import { getDispatchedDevices } from "@/services/homeOwner";
+import { IDispatchDevice } from "@/interfaces/device.interface";
 
 const DispatchHistory = () => {
-  // const { data, isLoading } = useQuery({
-  //   queryKey: [""],
-  //   queryFn: () => getDispatchedDevices(),
-  // });
+  const { data, isLoading } = useQuery({
+    queryKey: ["dispatch-devices"],
+    queryFn: () => getDispatchedDevices(),
+  });
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="">
-  //       <Loading message="Loading.." />
-  //     </div>
-  //   );
-  // }
+  if (isLoading) {
+    return (
+      <div className="">
+        <Loading message="Loading.." />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -34,9 +36,12 @@ const DispatchHistory = () => {
       </div>
 
       <div className="flex flex-col gap-4 mt-4">
-        {Array.from({ length: 3 }, (_, i) => (
-          <DeviceHistoryCard key={i} />
-        ))}
+        {Array.from(
+          data?.data?.dispatchDevices as IDispatchDevice[],
+          (item) => (
+            <DeviceHistoryCard key={item._id} {...item} />
+          )
+        )}
       </div>
 
       <div className="mt-4 w-fit ml-auto">

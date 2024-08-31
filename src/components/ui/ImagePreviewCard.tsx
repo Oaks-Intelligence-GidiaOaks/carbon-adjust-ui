@@ -3,7 +3,7 @@ const ImagePreviewCard = (props: { image: string }) => (
     <img
       src={props.image}
       alt="Image Preview"
-      className="w-full max-h-[180px]"
+      className=" max-h-[180px] rounded mx-auto pb-[1px]"
       width={400}
       height={180}
     />

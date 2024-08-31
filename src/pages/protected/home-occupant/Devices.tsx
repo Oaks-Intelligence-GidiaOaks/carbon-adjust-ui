@@ -22,7 +22,7 @@ const Devices = () => {
 
   const activeComponent: IComponentMap = {
     [DeviceTabs.AddedDevices]: <AddedDevices />,
-    [DeviceTabs.DispatchedDevices]: <div>No Dispatched Devices</div>,
+    [DeviceTabs.DispatchedDevices]: <DispatchHistory />,
     [DeviceTabs.DispatchHistory]: <DispatchHistory />,
   };
 

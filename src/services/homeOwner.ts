@@ -165,3 +165,9 @@ export const deviceMetaData = async () => {
 
   return data;
 };
+
+export const getDispatchedDevices = async () => {
+  const { data } = await axiosInstance.get(`devices/dispatch`);
+
+  return data;
+};

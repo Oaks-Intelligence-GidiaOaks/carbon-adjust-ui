@@ -84,3 +84,32 @@ export interface IDispatchData {
   workingPeriod: string;
   startTime: string;
 }
+
+export interface IDispatchTimeline {
+  status: "processed" | "received"; // make enum
+  timestamp: Date;
+  _id: string;
+}
+
+export interface INotificationTimes {
+  scheduleTime: Date;
+  status: string;
+  _id: string;
+}
+
+export interface IDispatchDevice {
+  bestDispatchStartTime: Date;
+  createdAt: Date;
+  creator: string;
+  device: Device;
+  dispatchStartTime: string;
+  dispatchTimeline: Array<IDispatchTimeline>;
+  dispatchWindowInHours: number;
+  notificationTimes: Array<INotificationTimes>;
+  status: string;
+  taskId: string;
+  updatedAt: Date;
+  wpInHours: string;
+  wpInHoursTimestamp: Date;
+  _id: string;
+}
