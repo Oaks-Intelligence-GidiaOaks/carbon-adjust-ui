@@ -8,7 +8,7 @@ import { deviceChanged } from "@/features/assetSlice";
 import { CurrentDispatchStatus, Device } from "@/interfaces/device.interface";
 import { useState } from "react";
 import {
-  formatDate,
+  formDateWithTime,
   getAllowedWorkingPeriods,
   getRemainingHours,
   getStartTimes,
@@ -84,7 +84,6 @@ const DeviceCard = (props: Device) => {
 
         <div className="space-y-1">
           <h5>Device working period (hrs)</h5>
-          <input type="time" name="" id="" min="01:00" max={"10:00"} />
 
           <select
             name="workingPeriod"
@@ -179,6 +178,13 @@ const DeviceCard = (props: Device) => {
       <div
         className={`flex-center justify-between p-3 px-6 bg-[#DEE7F2] rounded-b-[10px]`}
       >
+        {!props.currentDispatchTime && Boolean(props.currentDispatchStatus) && (
+          <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
+            <IoAlertCircleSharp />
+            <span>Scheduled</span>
+          </div>
+        )}
+
         {Boolean(!props.currentDispatchStatus) && (
           <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
             <IoAlertCircleSharp />
@@ -189,7 +195,8 @@ const DeviceCard = (props: Device) => {
         {props.currentDispatchTime && (
           <div className="flex-center gap-1 font-[500] text-xs font-sans">
             <span className="bg-gradient-to-r from-[#139EEC] to-[#3465AF] bg-clip-text text-transparent text-xs font-[500]">
-              Dispatch scheduled for {formatDate(props.currentDispatchTime)}
+              Dispatch scheduled for{" "}
+              {formDateWithTime(props.currentDispatchTime)}
             </span>
           </div>
         )}

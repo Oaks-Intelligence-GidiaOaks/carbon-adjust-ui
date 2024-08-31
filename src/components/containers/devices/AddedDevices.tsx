@@ -95,7 +95,7 @@ const AddedDevices = () => {
             },
           ]}
           headerText="Schedule Device"
-          leadText="Are you sure you want to schedule your device window for (6 hours)  and Device duration for 24hrs(18hrs left) "
+          leadText={`Are you sure you want to schedule your device window for ${device.dispatchWindow} hours  and Device duration for ${device.workingPeriod} hours `}
         />
       )}
     </div>

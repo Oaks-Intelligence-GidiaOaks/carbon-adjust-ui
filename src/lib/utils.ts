@@ -31,6 +31,32 @@ export const formatDate = (createdDate: string) => {
   return date.toLocaleDateString("en-US", options as any);
 };
 
+export const formDateWithTime = (createdDate: string) => {
+  const date = new Date(createdDate);
+  // const today = new Date();
+
+  // if (
+  //   date.getDate() === today.getDate() &&
+  //   date.getMonth() === today.getMonth() &&
+  //   date.getFullYear() === today.getFullYear()
+  // ) {
+  //   return "Today";
+  // }
+
+  const options = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric", // Optional, if you want to display seconds
+    timeZone: "Africa/Lagos",
+    hour12: true, // Optional, to display 12-hour format with AM/PM. Use `false` for 24-hour format.
+  };
+
+  return date.toLocaleDateString("en-US", options as any);
+};
+
 // textHelpers.js
 
 // Helper function to truncate text and add ellipsis
