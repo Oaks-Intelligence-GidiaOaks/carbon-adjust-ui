@@ -31,17 +31,19 @@ export const formatDate = (createdDate: string) => {
   return date.toLocaleDateString("en-US", options as any);
 };
 
-export const formDateWithTime = (createdDate: string) => {
+export const formDateWithTime = (
+  createdDate: string,
+  onlyTime: boolean = false
+) => {
   const date = new Date(createdDate);
-  // const today = new Date();
 
-  // if (
-  //   date.getDate() === today.getDate() &&
-  //   date.getMonth() === today.getMonth() &&
-  //   date.getFullYear() === today.getFullYear()
-  // ) {
-  //   return "Today";
-  // }
+  const option = {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric", // Optional, if you want to display seconds
+    timeZone: "Africa/Lagos",
+    hour12: true, // Optional, to display 12-hour format with AM/PM. Use `false` for 24-hour format.
+  };
 
   const options = {
     year: "numeric",
@@ -54,7 +56,9 @@ export const formDateWithTime = (createdDate: string) => {
     hour12: true, // Optional, to display 12-hour format with AM/PM. Use `false` for 24-hour format.
   };
 
-  return date.toLocaleDateString("en-US", options as any);
+  return onlyTime
+    ? date.toLocaleTimeString("en-US", option as any)
+    : date.toLocaleDateString("en-US", options as any);
 };
 
 // textHelpers.js

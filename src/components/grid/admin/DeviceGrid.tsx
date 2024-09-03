@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-table";
 
 //   util functions
-import { formatDate } from "@/lib/utils";
+import { formDateWithTime, formatDate } from "@/lib/utils";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
 
 // child   components
@@ -31,6 +31,17 @@ const DeviceGrid = (props: {
   const actionButtonsRef = useRef<HTMLDivElement>(null);
 
   const columnHelper = createColumnHelper();
+
+  const getStatusColor: any = {
+    processed: {
+      main: "text-[#139EEC] bg-[#139EEC30]",
+      dot: "bg-[#139EEC]",
+    },
+    received: {
+      main: "text-[#8AC926] bg-[#8AC92630]",
+      dot: "bg-[#8AC926]",
+    },
+  };
 
   const columns = [
     // S/N
@@ -56,8 +67,23 @@ const DeviceGrid = (props: {
       header: () => <div className="w-24 px-1 text-center">Date created</div>,
     }),
 
-    // User
-    columnHelper.accessor((row: any) => row.device.type, {
+    // schedule ID
+    columnHelper.accessor((row: any) => row._id, {
+      id: "scheduleId",
+      cell: (info) => <div className="">{info.getValue()}</div>,
+      header: () => <div className="">Schedule ID</div>,
+    }),
+
+    // Device Name
+    columnHelper.accessor((row: any) => row.device?.name, {
+      id: "deviceName",
+      cell: (info) => (
+        <div className="w-44 mx-auto text-left">{info.getValue()}</div>
+      ),
+      header: () => <div className="w-44 text-left">Device Name</div>,
+    }),
+    // Device Type
+    columnHelper.accessor((row: any) => row.device?.type, {
       id: "deviceType",
       cell: (info) => (
         <div className="w-44 mx-auto text-left">{info.getValue()}</div>
@@ -65,41 +91,67 @@ const DeviceGrid = (props: {
       header: () => <div className="w-44 text-left">Device Type</div>,
     }),
 
-    // Email
-    columnHelper.accessor((row: any) => row.dispatchWindowInHours, {
-      id: "dispatchWindowInHours",
+    // Electricty Supplier
+    columnHelper.accessor((row: any) => row.device?.electricityProvider, {
+      id: "electricityProvider",
+      cell: (info) => (
+        <div className="w-44 mx-auto text-left">{info.getValue()}</div>
+      ),
+      header: () => <div className="w-44 text-left">Electricity Supplier</div>,
+    }),
+
+    // Device Duration
+    columnHelper.accessor((row: any) => row.wpInHours, {
+      id: "wpInHours",
       cell: (info) => (
         <div className="line-clamp-1 pr-4 text-ellipsis w-64">
-          <span className="">{info.getValue()}</span>
+          <span className="">{info.getValue()} hrs</span>
         </div>
       ),
       header: () => <div className="w-52 text-left">Device Duration</div>,
     }),
 
-    // phone
-    columnHelper.accessor((row: any) => row?.dispatchStartTime, {
-      id: "dispatchStartTime",
+    // Start Time
+    columnHelper.accessor((row: any) => row?.wpInHoursTimestamp, {
+      id: "wpInHoursTimestamp",
       cell: (info) => {
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
-            <span className="">{info.getValue()}</span>
+            <span className="">{formDateWithTime(info.getValue(), true)}</span>
           </div>
         );
       },
       header: () => <div className="w-44 text-left">Start Time</div>,
     }),
 
+    // Emissions
+
+    // Status
     columnHelper.accessor((row: any) => row?.status, {
       id: "status",
       cell: (info) => {
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
-            <span className="">{info.getValue()}</span>
+            <div
+              className={`flex-center gap-2 p-[6px] rounded-3xl px-4 border w-[120px] ${
+                getStatusColor[info.getValue()].main
+              }`}
+            >
+              <span
+                className={`h-[6px] w-[6px] rounded-full border-[0.5px] ${
+                  getStatusColor[info.getValue()].dot
+                }`}
+              />
+
+              <span>{info.getValue()}</span>
+            </div>
           </div>
         );
       },
       header: () => <div className="w-44 text-left">Status</div>,
     }),
+
+    // Smart Plug ID
   ];
 
   const [sorting, setSorting] = useState<SortingState>([]);
