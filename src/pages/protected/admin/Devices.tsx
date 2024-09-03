@@ -1,6 +1,8 @@
+// @ts-ignore
 import { LineChart } from "@/components/charts";
 import DeviceGrid from "@/components/grid/admin/DeviceGrid";
 import Loading from "@/components/reusables/Loading";
+// @ts-ignore
 import { Button, Input } from "@/components/ui";
 import { formatNumber } from "@/lib/utils";
 import { getDispatchedDevices } from "@/services/homeOwner";
@@ -21,6 +23,7 @@ const Devices = () => {
     );
   }
 
+  // @ts-ignore
   const datum: LineChartProps = {
     options: {
       responsive: true,
@@ -85,14 +88,10 @@ const Devices = () => {
   return (
     <div className="px-5 bg-[#F9FCFD] text-sm py-7">
       {/* <h2>Devices</h2> */}
-      {/* Wallet */}
-      {/* Chart */}
 
-      <div className="bg-white shadow-md  p-6 rounded-xl">
+      {/* <div className="bg-white shadow-md  p-6 rounded-xl">
         <div className="flex-center">
           <h2 className="pl-5 pb-3 font-[500] text-xl">Devices</h2>
-
-          {/* dropdown */}
         </div>
 
         <div
@@ -147,7 +146,8 @@ const Devices = () => {
             <span className="text-white ">Set</span>
           </Button>
         </div>
-      </div>
+      </div> */}
+
       {/* Table */}
       <div className="">
         <DeviceGrid data={data.data.dispatchDevices} isUpdating />
