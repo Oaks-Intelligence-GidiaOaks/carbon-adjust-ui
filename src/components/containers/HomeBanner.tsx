@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const HomeBanner = () => {
   return (
-    <Link to="/dashboard/marketplace/home-improvement-services">
+    <Link to="/dashboard/marketplace/energy-saving-advisory">
       <div className="font-poppins bg-[#edf6fda4] flex flex-col relative h-[500px] overflow-hidden md:pl-6 xl:pl-24 cursor-pointer">
         <img
           src="/assets/banners/dots-img.svg"

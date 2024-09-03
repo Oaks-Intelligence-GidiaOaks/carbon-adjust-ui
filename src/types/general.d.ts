@@ -196,6 +196,10 @@ export type IComponentMap = {
   [key: string | number]: JSX.Element | [] | string;
 };
 
+export type IStateMap = {
+  [key: string]: number;
+};
+
 export type AuthUserProfile = {
   accountType: string;
   merchantType: string;
@@ -372,3 +376,19 @@ export type Order = {
 };
 
 export type DState = string | boolean | null;
+
+export type LineChartProps = {
+  options: {};
+  data: {
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      lineTension: number;
+      borderColor: string;
+      backgroundColor: string;
+      pointRadius: number;
+      yAxisID: string;
+    }[];
+  };
+};
