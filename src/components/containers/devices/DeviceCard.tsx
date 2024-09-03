@@ -92,6 +92,7 @@ const DeviceCard = (props: Device) => {
             id=""
             className="border rounded-md p-[6px] w-full outline-none"
           >
+            <option>00:00</option>
             {Array.from(getStartTimes(device.dispatchWindow), (item, i) => (
               <option value={item} key={i}>
                 {item}
