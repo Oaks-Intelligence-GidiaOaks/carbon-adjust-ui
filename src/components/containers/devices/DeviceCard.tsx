@@ -25,6 +25,10 @@ const DeviceCard = (props: Device) => {
   const [cardActions, setCardActions] = useState<boolean>(false);
   const [id, setId] = useState<string | null>(null);
 
+  const actionsRef = useRef<null | HTMLDivElement>(null);
+
+  useOutsideCloser(actionsRef, cardActions, setCardActions);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
 
@@ -185,7 +189,10 @@ const DeviceCard = (props: Device) => {
   };
 
   const CardActions = () => (
-    <div className="absolute bg-white top-8 right-2 max-w-[150px] shadow-lg border space-y-2 rounded-[10px] px-2 py-3">
+    <div
+      ref={actionsRef}
+      className="absolute bg-white top-8 right-2 max-w-[150px] shadow-lg border space-y-2 rounded-[10px] px-2 py-3"
+    >
       <div className="text-[#414141] cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 ">
         <span>Edit Device</span>
       </div>
