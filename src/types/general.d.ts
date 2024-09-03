@@ -196,6 +196,10 @@ export type IComponentMap = {
   [key: string | number]: JSX.Element | [] | string;
 };
 
+export type IStateMap = {
+  [key: string]: number;
+};
+
 export type AuthUserProfile = {
   accountType: string;
   merchantType: string;

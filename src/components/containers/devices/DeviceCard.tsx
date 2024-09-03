@@ -4,17 +4,18 @@ import { Button } from "@/components/ui";
 import { IoAlertCircleSharp } from "react-icons/io5";
 import { MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { deviceChanged } from "@/features/assetSlice";
+import { deviceChanged, timeChanged } from "@/features/assetSlice";
 import { CurrentDispatchStatus, Device } from "@/interfaces/device.interface";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   formDateWithTime,
-  getAllowedWorkingPeriods,
   getRemainingHours,
   getStartTimes,
+  getWorkingPeriodHours,
   // stripColonAndReturnNumber,
 } from "@/lib/utils";
 import { RootState } from "@/app/store";
+import { useOutsideCloser } from "@/hooks/useOutsideCloser";
 
 const DeviceCard = (props: Device) => {
   const { device } = useSelector((state: RootState) => state.assets);
@@ -42,6 +43,25 @@ const DeviceCard = (props: Device) => {
   );
 
   const CardPopup = () => {
+    const timeInputRef = useRef<HTMLDivElement | null>(null);
+    const [showTimeInput, setShowTimeInput] = useState<boolean>(false);
+
+    useOutsideCloser(timeInputRef, showTimeInput, setShowTimeInput);
+
+    let activeStyles = "bg-blue-main text-white";
+
+    const isNoActive = (num: number, field: string) => {
+      return (device.workingPeriod as any)[field] === num;
+    };
+
+    const changeTime = (val: number, field: string) => {
+      let dData = {
+        [field]: val,
+      };
+
+      dispatch(timeChanged(dData));
+    };
+
     return (
       <div className="absolute top-8 right-2 border-[0.1px] px-3 border-[#BABABA] bg-white max-w-[200px] text-[#767A85] shadow-lg rounded-lg text-xs space-y-3 py-4">
         <div className="space-y-1">
@@ -54,7 +74,6 @@ const DeviceCard = (props: Device) => {
             onChange={handleInputChange}
             value={device.dispatchWindow}
           >
-            <option> 0 hours </option>
             {Array.from(getRemainingHours(), (item, i) => (
               <option value={item} key={i}>
                 {item} hours
@@ -73,7 +92,6 @@ const DeviceCard = (props: Device) => {
             id=""
             className="border rounded-md p-[6px] w-full outline-none"
           >
-            <option> 00:00 </option>
             {Array.from(getStartTimes(device.dispatchWindow), (item, i) => (
               <option value={item} key={i}>
                 {item}
@@ -85,23 +103,62 @@ const DeviceCard = (props: Device) => {
         <div className="space-y-1">
           <h5>Device working period (hrs)</h5>
 
-          <select
-            name="workingPeriod"
-            onChange={handleInputChange}
-            value={device.workingPeriod}
-            id=""
-            className="border rounded-md p-[6px] w-full outline-none"
-          >
-            <option> 00:00 </option>
-            {Array.from(
-              getAllowedWorkingPeriods(device.dispatchWindow, device.startTime),
-              (item, i) => (
-                <option value={item} key={i}>
-                  {item}:00
-                </option>
-              )
+          <div className="relative space-y-1">
+            <div
+              onClick={() => setShowTimeInput(!showTimeInput)}
+              className="border p-2 rounded-md flex-center cursor-pointer"
+            >
+              <span className="px-1">
+                {device.workingPeriod.hh < 10
+                  ? `0${device.workingPeriod.hh}`
+                  : device.workingPeriod.hh}
+              </span>
+              :
+              <span className="px-1">
+                {(device.workingPeriod.mm as number) < 10
+                  ? `0${device.workingPeriod.mm}`
+                  : device.workingPeriod.mm}
+              </span>
+            </div>
+
+            {showTimeInput && (
+              <div
+                ref={timeInputRef}
+                className="flex items-start border gap-1 p-1  rounded-md bg-white h-48 absolute w-[90%] mx-auto z-[50]"
+              >
+                <div className="flex flex-col flex-1 text-center gap-3 overflow-y-scroll scrollbar-hide">
+                  {Array.from(
+                    getWorkingPeriodHours(device.dispatchWindow),
+                    (item, i) => (
+                      <span
+                        onClick={() => changeTime(item, "hh")}
+                        className={`cursor-pointer p-2 rounded ${
+                          isNoActive(item, "hh") && activeStyles
+                        }`}
+                        key={i}
+                      >
+                        {item}
+                      </span>
+                    )
+                  )}
+                </div>
+
+                <div className="flex flex-col flex-1 text-center gap-3 overflow-y-scroll scrollbar-hide  h-full">
+                  {Array.from({ length: 60 }, (_, i) => (
+                    <span
+                      onClick={() => changeTime(i, "mm")}
+                      className={`cursor-pointer p-2 rounded ${
+                        isNoActive(i, "mm") ? activeStyles : ""
+                      }`}
+                      key={i}
+                    >
+                      {i < 10 ? `0${i}` : i}
+                    </span>
+                  ))}
+                </div>
+              </div>
             )}
-          </select>
+          </div>
         </div>
 
         <div className="flex-center gap-2">

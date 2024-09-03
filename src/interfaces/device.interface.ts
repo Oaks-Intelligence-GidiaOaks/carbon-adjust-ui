@@ -81,7 +81,10 @@ export interface Device {
 export interface IDispatchData {
   deviceId: string;
   dispatchWindow: number;
-  workingPeriod: string;
+  workingPeriod: {
+    hh: number;
+    mm: number;
+  };
   startTime: string;
 }
 

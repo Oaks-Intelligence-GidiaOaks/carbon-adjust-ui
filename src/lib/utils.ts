@@ -335,7 +335,21 @@ export function getAllowedWorkingPeriods(
   return allowedPeriods;
 }
 
+export const getWorkingPeriodHours = (dispatchWindow: number) => {
+  let arr: number[] = [];
+
+  Array.from({ length: dispatchWindow }, (_, i) => {
+    arr.push(i + 1);
+  });
+
+  return arr;
+};
+
 export const stripColonAndReturnNumber = (time: string): number => {
   const [hour] = time.split(":");
   return parseInt(hour, 10);
+};
+
+export const formatNumber = (num: number) => {
+  return num < 10 ? `0${num}` : `${num}`;
 };

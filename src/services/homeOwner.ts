@@ -1,5 +1,6 @@
 import axiosInstance from "@/api/axiosInstance";
 import { IDispatchData } from "@/interfaces/device.interface";
+import { formatNumber } from "@/lib/utils";
 
 export const getAllPackageCategories = async () => {
   const { data } = await axiosInstance.get(`/packages/categories`);
@@ -149,7 +150,14 @@ export const addDevice = async (formData: FormData) => {
 };
 
 export const dispatchDevice = async (input: IDispatchData) => {
-  const { data } = await axiosInstance.post("/devices/dispatch", input);
+  const newInput = {
+    ...input,
+    workingPeriod: `${formatNumber(input.workingPeriod.hh)}:${formatNumber(
+      input.workingPeriod.mm
+    )}`,
+  };
+
+  const { data } = await axiosInstance.post("/devices/dispatch", newInput);
 
   return data;
 };
