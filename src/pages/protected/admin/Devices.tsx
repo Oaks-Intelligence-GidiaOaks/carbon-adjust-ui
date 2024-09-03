@@ -21,10 +21,6 @@ const Devices = () => {
     <div className="px-5">
       <h2>Devices</h2>
 
-      {/* Wallet */}
-
-      {/* Chart */}
-
       {/* Table */}
       <div className="">
         <DeviceGrid data={data.data.dispatchDevices} isUpdating />

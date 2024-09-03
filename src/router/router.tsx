@@ -63,11 +63,16 @@ import MerchantTermsAndConditions from "@/pages/public/MerchantTermsAndCondition
 import { AdminStaffOrders } from "@/pages/protected/staffAdmin";
 import AssetsLayout from "@/layouts/AssetsLayout";
 import ComingSoon from "@/components/reusables/ComingSoon";
+import ZohoPage from "@/pages/public/test";
 
 const Router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/test",
+    element: <ZohoPage />,
   },
   {
     path: "/terms-and-conditions",
