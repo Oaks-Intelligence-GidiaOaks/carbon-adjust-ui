@@ -76,8 +76,8 @@ const Devices = () => {
           label: "Emission (C02e)",
           data: Array.from({ length: 13 }, () => Math.floor(Math.random() * 9)),
           lineTension: 0.4,
-          borderColor: "#347AE2",
-          backgroundColor: "#347AE2",
+          borderColor: "#FFE7BF",
+          backgroundColor: "#FFE7BF",
           pointRadius: 1,
           yAxisID: "y1",
         },
@@ -89,14 +89,14 @@ const Devices = () => {
     <div className="px-5 bg-[#F9FCFD] text-sm py-7">
       {/* <h2>Devices</h2> */}
 
-      {/* <div className="bg-white shadow-md  p-6 rounded-xl">
+      <div className="bg-white shadow-md  p-6 rounded-xl">
         <div className="flex-center">
           <h2 className="pl-5 pb-3 font-[500] text-xl">Devices</h2>
         </div>
 
         <div
           style={{
-            height: "43vh",
+            height: "45vh",
             position: "relative",
             marginBottom: "1%",
             padding: "1%",
@@ -146,7 +146,7 @@ const Devices = () => {
             <span className="text-white ">Set</span>
           </Button>
         </div>
-      </div> */}
+      </div>
 
       {/* Table */}
       <div className="">

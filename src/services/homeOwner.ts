@@ -174,8 +174,16 @@ export const deviceMetaData = async () => {
   return data;
 };
 
-export const getDispatchedDevices = async () => {
-  const { data } = await axiosInstance.get(`devices/dispatch`);
+export const getDispatchedDevices = async (
+  limit: number = 100,
+  page: number = 1
+) => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("limit", limit.toString());
+  queryParams.append("page", page.toString());
+
+  const url = `devices/dispatch?${queryParams.toString()}`;
+  const { data } = await axiosInstance.get(url);
 
   return data;
 };

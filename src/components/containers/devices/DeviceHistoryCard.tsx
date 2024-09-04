@@ -1,12 +1,22 @@
+import ListTile from "@/components/reusables/device/ListTile";
 import { IDispatchDevice } from "@/interfaces/device.interface";
 import { useState } from "react";
-import { GoDotFill } from "react-icons/go";
+import { GoDotFill, GoDownload } from "react-icons/go";
+import {
+  MdOutlineKeyboardArrowDown,
+  MdOutlineKeyboardArrowUp,
+} from "react-icons/md";
 
 const DeviceHistoryCard = (props: IDispatchDevice) => {
   const [checked, setChecked] = useState<boolean>(false);
+  const [deviceShown, setDeviceShown] = useState<boolean>(false);
 
   const toggleChecked = () => {
     setChecked(!checked);
+  };
+
+  const handleDownload = (e: any) => {
+    e.stopPropagation();
   };
 
   return (
@@ -63,6 +73,62 @@ const DeviceHistoryCard = (props: IDispatchDevice) => {
             </h4>
             <h4 className="text-light">789 tCO2e</h4>
           </div>
+        </div>
+
+        <hr className="" />
+
+        {deviceShown && (
+          <div className="p-3 flex items-stretch border-b pb-5 md:pl-24 h-[160px] ">
+            <img
+              src={props?.device?.file}
+              alt=""
+              className="w-[150px] h-full rounded-md"
+            />
+
+            <div className="flex flex-col gap-3 px-3 h-full ">
+              <ListTile
+                listing={props?.device?.powerRating || ""}
+                name="Power rating"
+              />
+
+              <button
+                onClick={handleDownload}
+                className="mt-auto flex-center text-xs  gap-2 py-[6px] px-5 border rounded-3xl bg-gr text-primary-foreground hover:bg-primary/90 bg-gradient-to-l from-blue-main to-blue-secondary hover:bg-gradient-to-t hover:scale-[1.01] transition-all"
+              >
+                <GoDownload />
+                <span>Download</span>
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-3 px-3">
+              <ListTile
+                listing={props?.device?.serialNos}
+                name="Serial number"
+              />
+              <ListTile
+                listing={`${props?.device?.voltageLevel || ""} V`}
+                name="Voltage Level"
+              />
+            </div>
+          </div>
+        )}
+
+        <div className="flex-center p-1">
+          <p
+            onClick={(e) => {
+              e.stopPropagation();
+              setDeviceShown(!deviceShown);
+            }}
+            className="flex-center gap-2 w-fit mx-auto cursor-pointer text-xs"
+          >
+            <span> {deviceShown ? "Collapse" : "Expand"} </span>
+
+            {deviceShown ? (
+              <MdOutlineKeyboardArrowUp />
+            ) : (
+              <MdOutlineKeyboardArrowDown />
+            )}
+          </p>
         </div>
       </div>
     </div>
