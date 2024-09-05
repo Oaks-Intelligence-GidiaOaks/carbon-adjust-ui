@@ -4,6 +4,7 @@ import DeviceGrid from "@/components/grid/admin/DeviceGrid";
 import Loading from "@/components/reusables/Loading";
 // @ts-ignore
 import { Button, Input } from "@/components/ui";
+import WalletCard from "@/components/ui/WalletCard";
 import { formatNumber } from "@/lib/utils";
 import { getDispatchedDevices } from "@/services/homeOwner";
 import { LineChartProps } from "@/types/general";
@@ -89,7 +90,10 @@ const Devices = () => {
     <div className="px-5 bg-[#F9FCFD] text-sm py-7">
       {/* <h2>Devices</h2> */}
 
-      <div className="bg-white shadow-md  p-6 rounded-xl">
+      {/* Wallet */}
+      <WalletCard />
+
+      <div className="bg-white shadow-md  p-6 rounded-xl mt-12">
         <div className="flex-center">
           <h2 className="pl-5 pb-3 font-[500] text-xl">Devices</h2>
         </div>

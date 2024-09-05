@@ -48,6 +48,7 @@ import {
   UserNewDevice,
   UserOrderList,
   UserProfile,
+  UserWallet,
 } from "@/pages/protected/home-occupant";
 
 import MerchantRegister from "@/pages/public/MerchantRegister";
@@ -165,6 +166,10 @@ const Router = createBrowserRouter([
             element: <UserNewDevice />,
           },
         ],
+      },
+      {
+        path: "wallet",
+        element: <UserWallet />,
       },
       {
         path: "buildings",

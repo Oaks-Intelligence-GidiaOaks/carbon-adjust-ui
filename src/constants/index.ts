@@ -16,6 +16,7 @@ import {
   UsersIcon,
   PackageIcon,
   DeviceIcon,
+  WalletIcon,
   // ProjectIcon,
 } from "@/assets/icons";
 import { DropdownOption, Finance, Payment } from "@/types/general";
@@ -123,6 +124,11 @@ export const homeOwnerSideBarItems = [
     icon: DeviceIcon,
     title: "Devices",
     href: "/dashboard/devices",
+  },
+  {
+    icon: WalletIcon,
+    title: "Wallet",
+    href: "/dashboard/wallet",
   },
   {
     icon: LogoutIcon,
