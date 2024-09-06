@@ -230,6 +230,19 @@ react-calendar__tile react-calendar__month-view__days__day {
 
 .safari-only {
 }
+.format-scrollback {
+  /* background-color: red; */
+}
+.format-scrollback::-webkit-scrollbar {
+  height: 1px !important;
+}
+
+.format-scrollback::-webkit-scrollbar-track {
+}
+
+.format-scrollback::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+}
 
 @media not all and (min-resolution: 0.001dpcm) {
   @supports (-webkit-appearance: none) {

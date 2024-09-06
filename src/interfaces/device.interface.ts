@@ -116,3 +116,18 @@ export interface IDispatchDevice {
   wpInHoursTimestamp: Date;
   _id: string;
 }
+
+export interface IPowerLimit {
+  from_time: string;
+  to_time: string;
+  consumption_limit: number;
+}
+
+export interface IDeviceChartData {
+  from_date: Date;
+  to_date: Date;
+  emissions: number;
+  total_power: number;
+  no_devices: number;
+  power_limit: number;
+}
