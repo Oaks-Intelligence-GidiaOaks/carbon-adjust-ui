@@ -154,7 +154,7 @@ const AdminDeviceChart = () => {
         <div className=" space-y-4 mt-6 pl-5">
           <h5 className="font-[600] ">Set Limits</h5>
 
-          <div className="flex-center gap-6">
+          {/* <div className="flex-center gap-6">
             <div className="flex-center gap-1">
               <input type="checkbox" name="" id="" />
               <label htmlFor="">Power</label>
@@ -169,7 +169,7 @@ const AdminDeviceChart = () => {
               <input type="checkbox" name="" id="" />
               <label htmlFor="">Emission</label>
             </div>
-          </div>
+          </div> */}
 
           {/* <div className="flex flex-col gap-2 w-fit">
             <h2 className="pl-2">Power cap(Value)</h2>
