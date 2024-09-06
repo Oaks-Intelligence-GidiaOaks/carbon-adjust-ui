@@ -1,5 +1,6 @@
 import axiosInstance from "@/api/axiosInstance";
 import { IAds } from "@/interfaces/ads.interface";
+import { IDeviceChartData, IPowerLimit } from "@/interfaces/device.interface";
 
 export const fetchUsersRegistration = async ({
   accountType,
@@ -237,6 +238,31 @@ export const getStaffAdminOrders = async (page?: number, limit?: number) => {
     : "";
 
   const { data } = await axiosInstance.get(`/application/staff${queryString}`);
+
+  return data;
+};
+
+// device charts
+export const getChartData = async (): Promise<{
+  powerLimits: Array<IPowerLimit>;
+  chartData: Array<IDeviceChartData>;
+}> => {
+  const { data } = await axiosInstance.get(`/devices/chart`);
+
+  // separate and reformat if needed.
+  const powerLimits: Array<IPowerLimit> = data.data.powerLimit;
+  const chartData: Array<IDeviceChartData> = data.data.chartData;
+
+  return {
+    powerLimits,
+    chartData,
+  };
+};
+
+export const updateLimits = async (iData: Array<IPowerLimit>) => {
+  const { data } = await axiosInstance.put(`/devices/power-limit`, {
+    data: iData,
+  });
 
   return data;
 };

@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
     Authorization: `Bearer ${token}`, // Set Bearer token
     // Add any other common headers here
   },
-  timeout: 10000, // Request timeout in milliseconds
+  // Request timeout in milliseconds
   // Add other custom configurations as needed
 });
 

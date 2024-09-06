@@ -1,0 +1,242 @@
+[
+  {
+    "from_time": "00:30",
+    "to_time": "01:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "01:00",
+    "to_time": "01:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "01:30",
+    "to_time": "02:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "02:00",
+    "to_time": "02:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "02:30",
+    "to_time": "03:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "03:00",
+    "to_time": "03:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "03:30",
+    "to_time": "04:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "04:00",
+    "to_time": "04:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "04:30",
+    "to_time": "05:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "05:00",
+    "to_time": "05:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "05:30",
+    "to_time": "06:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "06:00",
+    "to_time": "06:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "06:30",
+    "to_time": "07:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "07:00",
+    "to_time": "07:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "07:30",
+    "to_time": "08:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "08:00",
+    "to_time": "08:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "08:30",
+    "to_time": "09:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "09:00",
+    "to_time": "09:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "09:30",
+    "to_time": "10:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "10:00",
+    "to_time": "10:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "10:30",
+    "to_time": "11:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "11:00",
+    "to_time": "11:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "11:30",
+    "to_time": "12:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "12:00",
+    "to_time": "12:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "12:30",
+    "to_time": "13:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "13:00",
+    "to_time": "13:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "13:30",
+    "to_time": "14:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "14:00",
+    "to_time": "14:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "14:30",
+    "to_time": "15:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "15:00",
+    "to_time": "15:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "15:30",
+    "to_time": "16:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "16:00",
+    "to_time": "16:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "16:30",
+    "to_time": "17:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "17:00",
+    "to_time": "17:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "17:30",
+    "to_time": "18:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "18:00",
+    "to_time": "18:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "18:30",
+    "to_time": "19:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "19:00",
+    "to_time": "19:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "19:30",
+    "to_time": "20:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "20:00",
+    "to_time": "20:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "20:30",
+    "to_time": "21:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "21:00",
+    "to_time": "21:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "21:30",
+    "to_time": "22:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "22:00",
+    "to_time": "22:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "22:30",
+    "to_time": "23:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "23:00",
+    "to_time": "23:30",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "23:30",
+    "to_time": "00:00",
+    "consumption_limit": 1000
+  },
+  {
+    "from_time": "00:00",
+    "to_time": "00:30",
+    "consumption_limit": 1000
+  }
+]

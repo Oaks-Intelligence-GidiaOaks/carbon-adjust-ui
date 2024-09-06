@@ -1,4 +1,4 @@
-import { IDevice } from "@/interfaces/device.interface";
+import { IDevice, IDeviceChartData } from "@/interfaces/device.interface";
 import { SelectItem } from "@/types/formSelect";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -356,4 +356,18 @@ export const stripColonAndReturnNumber = (time: string): number => {
 
 export const formatNumber = (num: number) => {
   return num < 10 ? `0${num}` : `${num}`;
+};
+
+export const formatChartLabel = (chartData: IDeviceChartData[]) => {
+  return chartData.map((item) => {
+    return formDateWithTime(item.from_date as unknown as string, true);
+  });
+};
+
+export const getPowerDataSet = (chartData: IDeviceChartData[]) => {
+  return chartData.map((item) => item.total_power);
+};
+
+export const getEmissionDataSet = (chartData: IDeviceChartData[]) => {
+  return chartData.map((item) => item.emissions);
 };
