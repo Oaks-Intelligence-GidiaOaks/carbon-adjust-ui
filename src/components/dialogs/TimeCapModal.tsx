@@ -30,6 +30,7 @@ const TimeCapModal = (props: {
   const handleSetLimit = () => {
     props.updateLimits(limits);
   };
+  //
 
   return (
     <Modal>
