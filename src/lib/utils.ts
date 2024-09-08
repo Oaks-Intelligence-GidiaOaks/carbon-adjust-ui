@@ -77,8 +77,6 @@ export const formatSlug = (slug: string) => {
 };
 
 export const formatSelectOptions = (options: string[]): SelectItem[] => {
-  // console.log(options);
-
   let data = options.map((it) => ({ label: it, value: it }));
 
   return data;
@@ -125,8 +123,6 @@ export const getFormattedDayFromIndex = (dayIndex: number): string => {
 };
 
 export const handleTableDownload = (tableData: any[]) => {
-  console.log(tableData, "from util func");
-
   // Create a worksheet
   const ws = XLSX.utils.json_to_sheet(tableData);
 
@@ -321,9 +317,6 @@ export function getAllowedWorkingPeriods(
     const periodEndHour = (startHour + period) % 24;
     const periodEndMinute = startMinute;
 
-    console.log(periodEndHour, "period end hour");
-    console.log(periodEndMinute, "period End Minute");
-
     // Check if the period end time is within the dispatch window
     // We assume the working period ends at most 18 hours later
     const endHour = (startHour + dispatchWindow) % 24;
@@ -342,7 +335,7 @@ export function getAllowedWorkingPeriods(
 export const getWorkingPeriodHours = (dispatchWindow: number) => {
   let arr: number[] = [];
 
-  Array.from({ length: dispatchWindow }, (_, i) => {
+  Array.from({ length: dispatchWindow - 1 }, (_, i) => {
     arr.push(i + 1);
   });
 
@@ -370,4 +363,19 @@ export const getPowerDataSet = (chartData: IDeviceChartData[]) => {
 
 export const getEmissionDataSet = (chartData: IDeviceChartData[]) => {
   return chartData.map((item) => item.emissions);
+};
+
+export const getTimeWithDay = (inputTime: string): string => {
+  const [hours, minutes] = inputTime.split(":").map(Number);
+
+  const now = new Date();
+
+  const inputDate = new Date();
+  inputDate.setHours(hours, minutes, 0, 0);
+
+  if (inputDate > now) {
+    return `${inputTime} (today)`;
+  } else {
+    return `${inputTime} (tomorrow)`;
+  }
 };

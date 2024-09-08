@@ -6,6 +6,7 @@ import Loading from "@/components/reusables/Loading";
 // @ts-ignore
 import { Button, Input } from "@/components/ui";
 import WalletCard from "@/components/ui/WalletCard";
+import { handleTableDownload } from "@/lib/utils";
 import { getDispatchedDevices } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
 
@@ -14,6 +15,22 @@ const Devices = () => {
     queryKey: ["get-devices-dispatch"],
     queryFn: () => getDispatchedDevices(),
   });
+
+  const tData = data
+    ? data.data.dispatchDevices.map(({ device, ...rest }: any, i: number) => {
+        return {
+          "S/N": i + 1,
+          "Date Created": rest?.createdAt,
+          "Schedule ID": rest?._id,
+          "Device Name": device?.name,
+          "Device Type": device?.type,
+          "Electricity Supplier": device?.electricityProvider,
+          "Device Duration (hh:mm)": `${rest?.wpInHours}`,
+          "Start Time": rest?.dispatchStartTime,
+          Status: rest?.status,
+        };
+      })
+    : [];
 
   if (isLoading) {
     return (
@@ -33,7 +50,16 @@ const Devices = () => {
       <AdminDeviceChart />
 
       {/* Table */}
-      <div className="">
+      <div className="mt-8">
+        <div className="flex-center ml-auto">
+          <Button
+            onClick={() => handleTableDownload(tData)}
+            className="ml-auto"
+          >
+            <span>Download</span>
+          </Button>
+        </div>
+
         <DeviceGrid data={data.data.dispatchDevices} isUpdating />
       </div>
     </div>

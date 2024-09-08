@@ -11,6 +11,7 @@ import {
   formDateWithTime,
   getRemainingHours,
   getStartTimes,
+  getTimeWithDay,
   getWorkingPeriodHours,
   // stripColonAndReturnNumber,
 } from "@/lib/utils";
@@ -99,14 +100,14 @@ const DeviceCard = (props: Device) => {
             <option>00:00</option>
             {Array.from(getStartTimes(device.dispatchWindow), (item, i) => (
               <option value={item} key={i}>
-                {item}
+                {getTimeWithDay(item)}
               </option>
             ))}
           </select>
         </div>
 
         <div className="space-y-1">
-          <h5>Device working period (hrs)</h5>
+          <h5 className="text-[12px]">Device working period (hh:mm)</h5>
 
           <div className="relative space-y-1">
             <div
@@ -131,7 +132,7 @@ const DeviceCard = (props: Device) => {
                 ref={timeInputRef}
                 className="flex items-start border gap-1 p-1  rounded-md bg-white h-48 absolute w-[90%] mx-auto z-[50]"
               >
-                <div className="flex flex-col flex-1 text-center gap-3 overflow-y-scroll scrollbar-hide">
+                <div className="flex flex-col flex-1 text-center gap-3 overflow-y-scroll h-full scrollbar-hide ">
                   {Array.from(
                     getWorkingPeriodHours(device.dispatchWindow),
                     (item, i) => (
