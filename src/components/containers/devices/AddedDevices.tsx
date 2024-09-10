@@ -12,18 +12,53 @@ import { RootState } from "@/app/store";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { clearDevice } from "@/features/assetSlice";
+import Paginate from "@/components/reusables/Paginate";
+import { PaginateProps } from "@/types/general";
+import { useEffect, useState } from "react";
 
 const AddedDevices = () => {
   const { device } = useSelector((state: RootState) => state.assets);
-
   const dispatch = useDispatch();
-
   const queryClient = useQueryClient();
 
-  const { data: userDevices, isLoading } = useQuery({
-    queryKey: ["user-devices"],
-    queryFn: () => getUserDevices(),
+  const [pagination, setPagination] = useState<
+    Omit<PaginateProps, "onPageChange">
+  >({
+    currentPage: 1,
+    limit: 20,
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
   });
+
+  const {
+    data: userDevices,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["user-devices", pagination.currentPage],
+    queryFn: () => getUserDevices(pagination.limit, pagination.currentPage),
+  });
+
+  useEffect(() => {
+    if (userDevices?.data)
+      setPagination({
+        currentPage: userDevices?.data.currentPage,
+        hasNextPage: userDevices?.data.hasNextPage,
+        hasPrevPage: userDevices?.data.hasPrevPage,
+        limit: userDevices?.data.limit,
+        totalPages: userDevices?.data.totalPages,
+      });
+  }, [userDevices?.data]);
+
+  const handlePageChange = (pgNo: number) => {
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: pgNo,
+    }));
+
+    refetch();
+  };
 
   const DispatchDevice = useMutation({
     mutationKey: ["dispatch-device"],
@@ -77,6 +112,11 @@ const AddedDevices = () => {
         {Array.from(userDevices.data.devices as Device[], (it, i) => (
           <DeviceCard {...it} key={i} />
         ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="mt-8 pr-12 w-fit mx-auto">
+        <Paginate {...pagination} onPageChange={handlePageChange} />
       </div>
 
       {Boolean((device.deviceId as string).length) && (

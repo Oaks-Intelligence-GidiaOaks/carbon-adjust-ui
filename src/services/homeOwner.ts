@@ -162,8 +162,14 @@ export const dispatchDevice = async (input: IDispatchData) => {
   return data;
 };
 
-export const getUserDevices = async () => {
-  const { data } = await axiosInstance.get("/devices/user-devices");
+export const getUserDevices = async (limit: number = 5, page: number = 1) => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("limit", limit.toString());
+  queryParams.append("page", page.toString());
+
+  const url = `/devices/user-devices?${queryParams.toString()}`;
+
+  const { data } = await axiosInstance.get(url);
 
   return data;
 };

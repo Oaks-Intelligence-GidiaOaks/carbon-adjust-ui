@@ -392,3 +392,12 @@ export type LineChartProps = {
     }[];
   };
 };
+
+export type PaginateProps = {
+  currentPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  limit: number;
+  onPageChange: (page: number) => void;
+};

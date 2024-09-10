@@ -1,24 +1,48 @@
 import Search from "@/components/ui/Search";
 import DeviceHistoryCard from "./DeviceHistoryCard";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/CardPagination";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "@/components/reusables/Loading";
 import { getDispatchedDevices } from "@/services/homeOwner";
 import { IDispatchDevice } from "@/interfaces/device.interface";
+import Paginate from "@/components/reusables/Paginate";
+import { PaginateProps } from "@/types/general";
+import { useEffect, useState } from "react";
 
 const DispatchHistory = () => {
-  const { data, isLoading } = useQuery({
+  const [pagination, setPagination] = useState<
+    Omit<PaginateProps, "onPageChange">
+  >({
+    currentPage: 1,
+    limit: 20,
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+  });
+
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["dispatch-devices"],
     queryFn: () => getDispatchedDevices(),
   });
+
+  useEffect(() => {
+    if (data?.data)
+      setPagination({
+        currentPage: data?.data.currentPage,
+        hasNextPage: data?.data.hasNextPage,
+        hasPrevPage: data?.data.hasPrevPage,
+        limit: data?.data.limit,
+        totalPages: data?.data.totalPages,
+      });
+  }, [data?.data]);
+
+  const handlePageChange = (pgNo: number) => {
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: pgNo,
+    }));
+
+    refetch();
+  };
 
   if (isLoading) {
     return (
@@ -44,31 +68,8 @@ const DispatchHistory = () => {
         )}
       </div>
 
-      <div className="mt-4 w-fit ml-auto">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+      <div className="mt-8 pr-12 w-fit mx-auto">
+        <Paginate {...pagination} onPageChange={handlePageChange} />
       </div>
     </div>
   );

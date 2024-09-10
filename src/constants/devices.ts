@@ -1,15 +1,15 @@
 export const types = [
   { label: "Washing Machine", value: "Washing Machine" },
   { label: "Washing Dryer", value: "Washing Dryer" },
-  { label: "Fridge", value: "Fridge" },
-  { label: "Freezer", value: "Freezer" },
   { label: "Dish Washer", value: "Dish Washer" },
-  { label: "Gas Cooker", value: "Gas Cooker" },
-  { label: "Electric Cooker", value: "Electric Cooker" },
-  { label: "Electric Iron", value: "Electric Iron" },
-  { label: "Air Fryer", value: "Air Fryer" },
-  { label: "Vacuum Cleaner", value: "Vacuum Cleaner" },
-  { label: "Electric OVEN", value: "Electric OVEN" },
+  // { label: "Fridge", value: "Fridge" },
+  // { label: "Freezer", value: "Freezer" },
+  // { label: "Gas Cooker", value: "Gas Cooker" },
+  // { label: "Electric Cooker", value: "Electric Cooker" },
+  // { label: "Electric Iron", value: "Electric Iron" },
+  // { label: "Air Fryer", value: "Air Fryer" },
+  // { label: "Vacuum Cleaner", value: "Vacuum Cleaner" },
+  // { label: "Electric OVEN", value: "Electric OVEN" },
 ];
 
 export const energySources = [
