@@ -134,12 +134,12 @@ const DeviceGrid = (props: {
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <div
               className={`flex-center gap-2 p-[6px] rounded-3xl px-4 border w-[120px] ${
-                getStatusColor[info.getValue()].main
+                getStatusColor[info.getValue()]?.main
               }`}
             >
               <span
                 className={`h-[6px] w-[6px] rounded-full border-[0.5px] ${
-                  getStatusColor[info.getValue()].dot
+                  getStatusColor[info.getValue()]?.dot
                 }`}
               />
 

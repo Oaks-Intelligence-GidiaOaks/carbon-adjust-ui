@@ -266,3 +266,10 @@ export const updateLimits = async (iData: Array<IPowerLimit>) => {
 
   return data;
 };
+
+// WALLET
+export const getWalletBalance = async () => {
+  const { data } = await axiosInstance.get(`/devices/wallet`);
+
+  return data;
+};

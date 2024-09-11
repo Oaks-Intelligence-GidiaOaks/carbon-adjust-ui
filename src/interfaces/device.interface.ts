@@ -54,6 +54,8 @@ export interface IDispatchDevice {
   dispatchWindow: string;
   workingPeriod: string;
   startTime: string;
+  estimatedCC: number;
+  actualCC: number;
 }
 
 export interface IAsset {

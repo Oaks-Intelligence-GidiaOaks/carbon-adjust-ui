@@ -8,7 +8,7 @@ import Paginate from "@/components/reusables/Paginate";
 import { PaginateProps } from "@/types/general";
 import { useEffect, useState } from "react";
 
-const DispatchHistory = () => {
+const DispatchDevices = (props: { status: string }) => {
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
   >({
@@ -20,9 +20,13 @@ const DispatchHistory = () => {
   });
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["dispatch-history", pagination.currentPage],
+    queryKey: ["dispatch-devices", pagination.currentPage],
     queryFn: () =>
-      getDispatchedDevices(pagination.limit, pagination.currentPage),
+      getDispatchedDevices(
+        pagination.limit,
+        pagination.currentPage,
+        props.status
+      ),
   });
 
   useEffect(() => {
@@ -76,4 +80,4 @@ const DispatchHistory = () => {
   );
 };
 
-export default DispatchHistory;
+export default DispatchDevices;

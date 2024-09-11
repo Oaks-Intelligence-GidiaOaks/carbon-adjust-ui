@@ -6,6 +6,7 @@ import NoDevices from "@/components/containers/devices/NoDevices";
 import DispatchHistory from "@/components/containers/devices/DispatchHistory";
 import { IComponentMap } from "@/types/general";
 import AddedDevices from "@/components/containers/devices/AddedDevices";
+import DispatchDevices from "@/components/containers/devices/DispatchedDevices";
 
 const Devices = () => {
   const tabs: DeviceTabs[] = [
@@ -22,7 +23,7 @@ const Devices = () => {
 
   const activeComponent: IComponentMap = {
     [DeviceTabs.AddedDevices]: <AddedDevices />,
-    [DeviceTabs.DispatchedDevices]: <DispatchHistory />,
+    [DeviceTabs.DispatchedDevices]: <DispatchDevices status="processed" />,
     [DeviceTabs.DispatchHistory]: <DispatchHistory />,
   };
 

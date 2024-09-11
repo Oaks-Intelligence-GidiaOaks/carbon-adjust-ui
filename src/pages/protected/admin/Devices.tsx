@@ -1,11 +1,11 @@
 // @ts-ignore
 import { LineChart } from "@/components/charts";
 import AdminDeviceChart from "@/components/containers/devices/AdminDeviceChart";
+import WalletTabs from "@/components/containers/devices/WalletTabs";
 import DeviceGrid from "@/components/grid/admin/DeviceGrid";
 import Loading from "@/components/reusables/Loading";
 // @ts-ignore
 import { Button, Input } from "@/components/ui";
-import WalletCard from "@/components/ui/WalletCard";
 import { handleTableDownload } from "@/lib/utils";
 import { getDispatchedDevices } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
@@ -45,7 +45,7 @@ const Devices = () => {
       {/* <h2>Devices</h2> */}
 
       {/* Wallet */}
-      <WalletCard />
+      <WalletTabs />
 
       <AdminDeviceChart />
 
@@ -60,7 +60,7 @@ const Devices = () => {
           </Button>
         </div>
 
-        <DeviceGrid data={data.data.dispatchDevices} isUpdating />
+        <DeviceGrid data={data?.data?.dispatchDevices || []} isUpdating />
       </div>
     </div>
   );

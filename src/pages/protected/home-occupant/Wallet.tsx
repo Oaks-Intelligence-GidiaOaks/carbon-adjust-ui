@@ -1,28 +1,54 @@
 import DeviceHistoryCard from "@/components/containers/devices/DeviceHistoryCard";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/CardPagination";
-import WalletCard from "@/components/ui/WalletCard";
+import WalletTabs from "@/components/containers/devices/WalletTabs";
+import Loading from "@/components/reusables/Loading";
+import Paginate from "@/components/reusables/Paginate";
+import { IDispatchDevice } from "@/interfaces/device.interface";
+import { getDispatchedDevices } from "@/services/homeOwner";
+import { PaginateProps } from "@/types/general";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+// import WalletCard from "@/components/ui/WalletCard";
 
 const Wallet = () => {
+  const [pagination, setPagination] = useState<
+    Omit<PaginateProps, "onPageChange">
+  >({
+    currentPage: 1,
+    limit: 20,
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+  });
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["dispatch-devices"],
+    queryFn: () =>
+      getDispatchedDevices(pagination.limit, pagination.currentPage),
+  });
+
+  useEffect(() => {
+    if (data?.data)
+      setPagination({
+        currentPage: data?.data.currentPage,
+        hasNextPage: data?.data.hasNextPage,
+        hasPrevPage: data?.data.hasPrevPage,
+        limit: data?.data.limit,
+        totalPages: data?.data.totalPages,
+      });
+  }, [data?.data]);
+
+  const handlePageChange = (pgNo: number) => {
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: pgNo,
+    }));
+
+    refetch();
+  };
+
   return (
     <div className="p-6 bg-[#F9FCFD]">
-      <div>
-        <h2 className="text-[#333333] font-[600] text-[24px]">Wallet</h2>
-        <p className="text-[#575757] text-base ">
-          Manage your payments and transactions
-        </p>
-      </div>
-
-      <div className="mt-[40px]">
-        <WalletCard />
-      </div>
+      <WalletTabs WalletTitle={""} />
 
       <div>
         <div className="flex-center justify-between mt-10 pb-6 ">
@@ -31,38 +57,23 @@ const Wallet = () => {
           </h2>
         </div>
 
-        <div className="space-y-5">
-          {Array.from({ length: 3 }, (_, i) => (
-            // @ts-ignore
-            <DeviceHistoryCard key={i} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="h-32 grid place-items-center">
+            <Loading message="loading" />
+          </div>
+        ) : (
+          <div className="space-y-5">
+            {Array.from(
+              data?.data?.dispatchDevices as IDispatchDevice[],
+              (item) => (
+                <DeviceHistoryCard key={item._id} {...item} />
+              )
+            )}
+          </div>
+        )}
 
-        <div className="mt-4 w-fit ml-auto">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious href="#" />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">1</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#" isActive>
-                  2
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">3</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href="#" />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+        <div className="mt-8 pr-12 w-fit mx-auto">
+          <Paginate {...pagination} onPageChange={handlePageChange} />
         </div>
       </div>
     </div>

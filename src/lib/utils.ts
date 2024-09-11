@@ -379,3 +379,11 @@ export const getTimeWithDay = (inputTime: string): string => {
     return `${inputTime} (tomorrow)`;
   }
 };
+
+export const roundNumber = (
+  value: number,
+  decimalPlaces: number = 2
+): number => {
+  const factor = Math.pow(10, decimalPlaces);
+  return Math.round(value * factor) / factor;
+};

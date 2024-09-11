@@ -181,14 +181,19 @@ export const deviceMetaData = async () => {
 };
 
 export const getDispatchedDevices = async (
-  limit: number = 100,
-  page: number = 1
+  limit: number = 20,
+  page: number = 1,
+  status?: string
 ) => {
   const queryParams = new URLSearchParams();
   queryParams.append("limit", limit.toString());
   queryParams.append("page", page.toString());
 
-  const url = `devices/dispatch?${queryParams.toString()}`;
+  if (status) {
+    queryParams.append("status", status.toString());
+  }
+
+  const url = `/devices/dispatch?${queryParams.toString()}`;
   const { data } = await axiosInstance.get(url);
 
   return data;

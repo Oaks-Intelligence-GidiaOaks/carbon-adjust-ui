@@ -1,5 +1,6 @@
 import ListTile from "@/components/reusables/device/ListTile";
 import { IDispatchDevice } from "@/interfaces/device.interface";
+import { roundNumber } from "@/lib/utils";
 import { useState } from "react";
 import { GoDotFill, GoDownload } from "react-icons/go";
 import {
@@ -64,14 +65,18 @@ const DeviceHistoryCard = (props: IDispatchDevice) => {
 
           <div className="space-y-3 ">
             <h4 className="text-[#212121] font-[500]">Projected Schedule</h4>
-            <h4 className="text-light">789 tCO2e</h4>
+            <h4 className="text-light">
+              {roundNumber(props?.estimatedCC ?? 0)} tCO2e
+            </h4>
           </div>
 
           <div className="space-y-3 ">
             <h4 className="text-[#212121] font-[500]">
               Achieved Carbon-credit
             </h4>
-            <h4 className="text-light">789 tCO2e</h4>
+            <h4 className="text-light">
+              {roundNumber(props?.actualCC ?? 0)} tCO2e
+            </h4>
           </div>
         </div>
 
