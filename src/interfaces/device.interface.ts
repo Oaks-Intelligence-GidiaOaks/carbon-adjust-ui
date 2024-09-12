@@ -24,6 +24,14 @@ export enum DeviceStatus {
   DeActivated = "deactivated",
 }
 
+export enum DeviceDispatchStatus {
+  DISPATCH = "dispatched",
+  SCHEDULE = "scheduled",
+  PROCESSED = "processed",
+  CANCELLED = "cancelled",
+  RECEIVED = "received",
+}
+
 export interface IDevice {
   id?: string;
   name: string;
@@ -52,10 +60,12 @@ export interface ICreateDevice {
 export interface IDispatchDevice {
   deviceId: string;
   dispatchWindow: string;
+  device: Device;
   workingPeriod: string;
   startTime: string;
   estimatedCC: number;
   actualCC: number;
+  status: DeviceDispatchStatus;
 }
 
 export interface IAsset {
@@ -111,7 +121,7 @@ export interface IDispatchDevice {
   dispatchTimeline: Array<IDispatchTimeline>;
   dispatchWindowInHours: number;
   notificationTimes: Array<INotificationTimes>;
-  status: string;
+  status: DeviceDispatchStatus;
   taskId: string;
   updatedAt: Date;
   wpInHours: string;

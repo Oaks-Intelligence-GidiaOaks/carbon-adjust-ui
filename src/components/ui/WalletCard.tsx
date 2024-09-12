@@ -1,5 +1,7 @@
+import { RootState } from "@/app/store";
 import { WalletBg } from "@/assets/images";
 import { roundNumber } from "@/lib/utils";
+import { useSelector } from "react-redux";
 
 type Props = {
   actualBalance: number;
@@ -8,6 +10,8 @@ type Props = {
 };
 
 const WalletCard = (props: Props) => {
+  const { user } = useSelector((state: RootState) => state.user);
+
   return (
     <div className=" max-w-[512px] rounded-[20px] bg-[#2C5C9F] px-8 py-8 text-white font-poppins relative overflow-hidden">
       <WalletBg className="absolute  w-full rounded-[20px] h-full -right-10 top-0 z-[5]" />
@@ -16,7 +20,7 @@ const WalletCard = (props: Props) => {
         <div className="flex items-start justify-between">
           <div className="space-y-2">
             <h2 className="text-[#DEDEDE] font-[400] ">
-              {props?.organisation || ""}
+              {props?.organisation || user?.name || ""}
             </h2>
             <h4 className="text-[#F1F1F1] font-[500] text-sm">
               Carbon Credit Wallet
@@ -29,8 +33,8 @@ const WalletCard = (props: Props) => {
             <h1 className="text-[#F1F1F1] text-[25.4px] font-[400] font-inter">
               {roundNumber(
                 Boolean(props?.actualBalance) ? props.actualBalance : 0
-              )}
-              tCO2e
+              )}{" "}
+              KgCO2e
             </h1>
           </div>
         </div>
@@ -41,8 +45,8 @@ const WalletCard = (props: Props) => {
             <h4>
               {roundNumber(
                 Boolean(props?.ledgerBalance) ? props.ledgerBalance : 0
-              )}
-              tCO2e
+              )}{" "}
+              KgCO2e
             </h4>
           </div>
 

@@ -91,7 +91,7 @@ const AdminDeviceChart = () => {
           position: "right",
           title: {
             display: true,
-            text: "Emission (CO2e)",
+            text: "Emission (KgCO2e)",
           },
           grid: {
             drawOnChartArea: false,
@@ -112,7 +112,7 @@ const AdminDeviceChart = () => {
           yAxisID: "y",
         },
         {
-          label: "Emission (C02e)",
+          label: "Emission (KgCO2e)",
           data: sss ? getEmissionDataSet(deviceGraphD) : [],
           lineTension: 0.4,
           borderColor: "#FFE7BF",

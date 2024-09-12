@@ -1,6 +1,10 @@
 import ListTile from "@/components/reusables/device/ListTile";
-import { IDispatchDevice } from "@/interfaces/device.interface";
+import {
+  DeviceDispatchStatus,
+  IDispatchDevice,
+} from "@/interfaces/device.interface";
 import { roundNumber } from "@/lib/utils";
+import { IComponentMap } from "@/types/general";
 import { useState } from "react";
 import { GoDotFill, GoDownload } from "react-icons/go";
 import {
@@ -20,9 +24,17 @@ const DeviceHistoryCard = (props: IDispatchDevice) => {
     e.stopPropagation();
   };
 
+  const getStatusColor: IComponentMap = {
+    [DeviceDispatchStatus.PROCESSED]: "text-[#139EEC] bg-[#139EEC30]",
+    [DeviceDispatchStatus.SCHEDULE]: "text-[#] bg-[#F2F2F2]",
+    [DeviceDispatchStatus.RECEIVED]: "text-[#8AC926] bg-[#8AC92630]",
+    [DeviceDispatchStatus.CANCELLED]: "text-[#ff7646] bg-[#ff764630]",
+    [DeviceDispatchStatus.DISPATCH]: "text-[#8AC926] bg-[#8AC92630]",
+  };
+
   return (
     <div
-      className="bg-white border-[0.5px] rounded-md shadow-sm flex-center p-3 lg:px-5 text-sm lg:text-base py-5 cursor-pointer "
+      className="bg-white border-[0.5px] rounded-md shadow-sm flex-center p-3 lg:px-5 text-sm lg:text-base py-5 cursor-pointer"
       onClick={toggleChecked}
     >
       <input
@@ -43,9 +55,26 @@ const DeviceHistoryCard = (props: IDispatchDevice) => {
           <div className="space-y-3">
             <h4>Status</h4>
 
-            <button className="flex-center text-sm gap-1 bg-[#F2F2F2] rounded-[14px] py-[2px] px-2">
-              <GoDotFill />
-              <span>{props?.status}</span>
+            <button
+              className={`flex-center text-sm gap-1 rounded-[14px] py-[2px] px-2 ${
+                getStatusColor[props?.status]
+                  ? getStatusColor[props?.status]?.toString()?.split(" ")[1]
+                  : "bg-[#F2F2F2]"
+              }`}
+            >
+              <GoDotFill
+                className={`${
+                  getStatusColor[props?.status]?.toString()?.split(" ")[0]
+                }`}
+              />
+
+              <span
+                className={`${
+                  getStatusColor[props?.status]?.toString()?.split(" ")[0]
+                }`}
+              >
+                {props?.status}
+              </span>
             </button>
           </div>
         </div>
@@ -66,7 +95,7 @@ const DeviceHistoryCard = (props: IDispatchDevice) => {
           <div className="space-y-3 ">
             <h4 className="text-[#212121] font-[500]">Projected Schedule</h4>
             <h4 className="text-light">
-              {roundNumber(props?.estimatedCC ?? 0)} tCO2e
+              {roundNumber(props?.estimatedCC ?? 0)} KgCO2e
             </h4>
           </div>
 
@@ -75,7 +104,7 @@ const DeviceHistoryCard = (props: IDispatchDevice) => {
               Achieved Carbon-credit
             </h4>
             <h4 className="text-light">
-              {roundNumber(props?.actualCC ?? 0)} tCO2e
+              {roundNumber(props?.actualCC ?? 0)} KgCO2e
             </h4>
           </div>
         </div>
