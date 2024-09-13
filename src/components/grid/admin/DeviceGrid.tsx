@@ -14,7 +14,7 @@ import {
 import { formDateWithTime, formatDate } from "@/lib/utils";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
 
-// child   components
+// child components
 import TablePagination from "@/components/reusables/TablePagination";
 
 import DeleteUserModal from "@/components/dialogs/DeleteUserModal";
@@ -105,15 +105,17 @@ const DeviceGrid = (props: {
       id: "wpInHours",
       cell: (info) => (
         <div className="line-clamp-1 pr-4 text-ellipsis w-64">
-          <span className="">{info.getValue()} hrs</span>
+          <span className="">{info.getValue()}</span>
         </div>
       ),
-      header: () => <div className="w-52 text-left">Device Duration</div>,
+      header: () => (
+        <div className="w-32 text-left">Device Duration (HH:MM)</div>
+      ),
     }),
 
     // Start Time
-    columnHelper.accessor((row: any) => row?.wpInHoursTimestamp, {
-      id: "wpInHoursTimestamp",
+    columnHelper.accessor((row: any) => row?.dispatchTime, {
+      id: "dispatchTime",
       cell: (info) => {
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
@@ -121,7 +123,58 @@ const DeviceGrid = (props: {
           </div>
         );
       },
-      header: () => <div className="w-44 text-left">Start Time</div>,
+      header: () => <div className="w-32 text-left">Initial Time</div>,
+    }),
+
+    // Best Dispatch Time
+    columnHelper.accessor((row: any) => row?.bestDispatchStartTime, {
+      id: "bestDispatchStartTime",
+      cell: (info: any) => {
+        return (
+          <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
+            <span className="">
+              {Boolean(info?.row?.original?.bestDispatchStartTime)
+                ? formDateWithTime(info.getValue(), true)
+                : "----------------"}
+            </span>
+          </div>
+        );
+      },
+      header: () => <div className="w-32 text-left">Scheduled Time</div>,
+    }),
+
+    // Projected Offset
+    columnHelper.accessor((row: any) => row?.estimatedCC, {
+      id: "estimatedCC",
+      cell: (info: any) => {
+        return (
+          <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
+            <span className="">
+              {Boolean(info?.row?.original?.estimatedCC)
+                ? info.getValue()
+                : "-----------"}
+            </span>
+          </div>
+        );
+      },
+      header: () => <div className="w-32 text-left">Projected Offset</div>,
+    }),
+
+    // Actual Offset
+    columnHelper.accessor((row: any) => row?.actualCC, {
+      id: "actualCC",
+      cell: (info: any) => {
+        return (
+          <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
+            <span className="">
+              {info?.row?.original?.actualCC !== undefined
+                ? info.getValue()
+                : "-----------"}
+            </span>
+          </div>
+        );
+      },
+      header: () => <div className="w-32 text-left">Actual Offset</div>,
     }),
 
     // Emissions
@@ -133,7 +186,7 @@ const DeviceGrid = (props: {
         return (
           <div className="flex justify-start w-full line-clamp-1 pr-4 text-ellipsis max-w-60">
             <div
-              className={`flex-center gap-2 p-[6px] rounded-3xl px-4 border w-[120px] ${
+              className={`flex-center gap-2 p-[3px]  rounded-3xl px-4 border w-[120px] ${
                 getStatusColor[info.getValue()]?.main
               }`}
             >
@@ -143,7 +196,7 @@ const DeviceGrid = (props: {
                 }`}
               />
 
-              <span>{info.getValue()}</span>
+              <span className="">{info.getValue()}</span>
             </div>
           </div>
         );
@@ -189,7 +242,7 @@ const DeviceGrid = (props: {
                   >
                     {headerGroup.headers.map((header, i) => (
                       <th
-                        className={`font-poppins font-bold px-3 cursor-pointer py-3 text-main text-sm text-left sticky top-0 ${
+                        className={`font-poppins font-bold px-3 cursor-pointer py-3 text-main text-xs text-left sticky top-0 ${
                           i === 0 ? "rounded-l-xl" : ""
                         }${
                           i === headerGroup.headers.length - 1
@@ -225,7 +278,7 @@ const DeviceGrid = (props: {
                     >
                       {row.getVisibleCells().map((cell) => (
                         <td
-                          className="px-3 py-3 poppins-4 text-main text-sm even:bg-white odd: bg-[#F8F9FA]"
+                          className="px-3 py-3 poppins-4 text-main text-xs even:bg-white odd: bg-[#F8F9FA]"
                           key={cell.id}
                         >
                           {flexRender(

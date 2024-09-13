@@ -13,7 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 const Devices = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["get-devices-dispatch"],
-    queryFn: () => getDispatchedDevices(),
+    queryFn: () => getDispatchedDevices(150),
   });
 
   const tData = data
