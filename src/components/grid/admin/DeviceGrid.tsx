@@ -177,7 +177,7 @@ const DeviceGrid = (props: {
       header: () => <div className="w-32 text-left">Actual Offset</div>,
     }),
 
-    // Emissions
+    // Emissionssss
 
     // Status
     columnHelper.accessor((row: any) => row?.status, {
