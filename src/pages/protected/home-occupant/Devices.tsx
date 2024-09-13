@@ -1,8 +1,7 @@
 import TabToggler from "@/components/containers/TabToggler";
 import { DeviceTabs } from "@/interfaces/device.interface";
 import { useState } from "react";
-// @ts-ignore
-import NoDevices from "@/components/containers/devices/NoDevices";
+
 import DispatchHistory from "@/components/containers/devices/DispatchHistory";
 import { IComponentMap } from "@/types/general";
 import AddedDevices from "@/components/containers/devices/AddedDevices";

@@ -1,5 +1,6 @@
 import { BiSearch } from "react-icons/bi";
 import DeviceCard from "./DeviceCard";
+import NoDevices from "@/components/containers/devices/NoDevices";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui";
 import { PlusIcon } from "@/assets/icons";
@@ -83,6 +84,14 @@ const AddedDevices = () => {
     return (
       <div className="h-32 grid place-items-center">
         <Loading message="loading" />
+      </div>
+    );
+  }
+
+  if (userDevices?.data?.devices.length === 0) {
+    return (
+      <div className="h-32 grid place-items-center">
+        <NoDevices link="/dashboard/devices/add" />
       </div>
     );
   }
