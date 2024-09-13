@@ -66,7 +66,14 @@ type Props = {
 };
 
 const LineChart = (props: Props) => {
-  return <Line options={props.options} data={props.data} />;
+  return (
+    <Line
+      width={"100%"}
+      height={"100%"}
+      options={props.options}
+      data={props.data}
+    />
+  );
 };
 
 export default LineChart;

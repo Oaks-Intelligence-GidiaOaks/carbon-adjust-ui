@@ -1,4 +1,6 @@
 import axiosInstance from "@/api/axiosInstance";
+import { IDispatchData } from "@/interfaces/device.interface";
+import { formatNumber } from "@/lib/utils";
 
 export const getAllPackageCategories = async () => {
   const { data } = await axiosInstance.get(`/packages/categories`);
@@ -132,6 +134,67 @@ export const changeProfileDp = async (formData: any) => {
       "Content-Type": "multipart/form-data",
     },
   });
+
+  return data;
+};
+
+// DEVICES
+export const addDevice = async (formData: FormData) => {
+  const { data } = await axiosInstance.post("/devices", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+};
+
+export const dispatchDevice = async (input: IDispatchData) => {
+  const newInput = {
+    ...input,
+    workingPeriod: `${formatNumber(input.workingPeriod.hh)}:${formatNumber(
+      input.workingPeriod.mm
+    )}`,
+  };
+
+  const { data } = await axiosInstance.post("/devices/dispatch", newInput);
+
+  return data;
+};
+
+export const getUserDevices = async (limit: number = 5, page: number = 1) => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("limit", limit.toString());
+  queryParams.append("page", page.toString());
+
+  const url = `/devices/user-devices?${queryParams.toString()}`;
+
+  const { data } = await axiosInstance.get(url);
+
+  return data;
+};
+
+export const deviceMetaData = async () => {
+  const { data } = await axiosInstance.get("applications/metadata");
+
+  return data;
+};
+
+export const getDispatchedDevices = async (
+  limit: number = 20,
+  page: number = 1,
+  status?: string
+) => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("limit", limit.toString());
+  queryParams.append("page", page.toString());
+
+  if (status) {
+    queryParams.append("status", status.toString());
+  }
+
+  const url = `/devices/dispatch?${queryParams.toString()}`;
+  const { data } = await axiosInstance.get(url);
 
   return data;
 };

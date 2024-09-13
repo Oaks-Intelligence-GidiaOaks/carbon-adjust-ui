@@ -13,3 +13,4 @@ export { default as AdminOrders } from "./Orders";
 export { default as AdminOrderDetails } from "./OrderDetails";
 export { default as AdminStaff } from "./Staff";
 export { default as AdminAddStaff } from "./AddStaff";
+export { default as AdminDevices } from "./Devices";
