@@ -198,3 +198,21 @@ export const getDispatchedDevices = async (
 
   return data;
 };
+
+//Reviews
+export const getPackagesReviews = async ({ packageId }: { packageId: string }) => {
+  const { data } = await axiosInstance.get(`/packages/${packageId}/reviews`);
+
+  return data;
+};
+
+export const addReview = async (formData: FormData) => {
+  const { data } = await axiosInstance.post("packages/review", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+};
+
