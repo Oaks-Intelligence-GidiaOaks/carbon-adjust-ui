@@ -211,8 +211,9 @@ const Login = () => {
                 </p>
                 <LogoAndBrandVertical className="max-h-[100px]" />
               </div> */}
+
               <div className="flex flex-col items-center gap-y-2">
-                <p className="max-w-[95%] text-center ">
+                <p className="max-w-[95%] text-center font-bold">
                   “We have been funded by the UK government (DESNZ) to build a
                   platform where homeowners can find renewable service providers
                   (merchant)".
