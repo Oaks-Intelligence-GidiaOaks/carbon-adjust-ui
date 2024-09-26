@@ -212,14 +212,13 @@ const Login = () => {
                 <LogoAndBrandVertical className="max-h-[100px]" />
               </div> */}
 
-              <div className="flex flex-col items-center gap-y-2">
+              <div className="flex flex-col items-center gap-y-2 font-bold">
                 <p className="max-w-[95%] text-center font-bold">
-                  “We have been funded by the UK government (DESNZ) to build a
-                  platform where homeowners can find renewable service providers
-                  (merchant)".
+                  “Our platform, funded by the UK government (DESNZ), connects
+                  homeowners with renewable energy service providers.".
                 </p>
 
-                <p>So are you a homeowner or a merchant ?</p>
+                <p>Are you a homeowner or a service provider?</p>
 
                 <p>Register now !</p>
               </div>
