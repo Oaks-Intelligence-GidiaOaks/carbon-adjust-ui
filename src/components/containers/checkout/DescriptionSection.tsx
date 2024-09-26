@@ -13,7 +13,6 @@ import {
 } from "@/interfaces/events.interface";
 import Rating from "../../reusables/Rating";
 
-
 const DescriptionSection = (props: {
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
@@ -71,7 +70,6 @@ const DescriptionSection = (props: {
     eventName: SubLevelEvent.ORDER_SUMMARY_EVENT,
   };
 
- 
   return (
     <div className="lg:max-w-[60vw] xl:max-w-[55vw] lg:ml-auto">
       <div className="flex-center gap-3 justify-between w-full  border-b py-4 px-5 sticky top-0 z-20 bg-white">
@@ -149,9 +147,7 @@ const DescriptionSection = (props: {
 
             <p className="font-[500] text-sm">{prod?.description}</p>
 
-            <Rating />
-
-
+            {/* <Rating /> */}
 
             <div className="flex-center gap-1 pt-2 !mt-auto">
               <button
