@@ -11,6 +11,7 @@ import {
   MonitoringEvent,
   SubLevelEvent,
 } from "@/interfaces/events.interface";
+// import Rating from "../../reusables/Rating";
 
 const DescriptionSection = (props: {
   setStage: Dispatch<SetStateAction<number>>;
@@ -145,6 +146,8 @@ const DescriptionSection = (props: {
             </h2>
 
             <p className="font-[500] text-sm">{prod?.description}</p>
+
+            {/* <Rating /> */}
 
             <div className="flex-center gap-1 pt-2 !mt-auto">
               <button

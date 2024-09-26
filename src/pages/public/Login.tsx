@@ -1,4 +1,4 @@
-import { LogoAndBrandVertical, RegisterGraphic } from "@/assets/icons";
+// import { LogoAndBrandVertical, RegisterGraphic } from "@/assets/icons";
 import { Input } from "../../components/ui";
 import { Button } from "@/components/ui/Button";
 import { useEffect, useState } from "react";
@@ -203,16 +203,45 @@ const Login = () => {
         </div>
         <div className="mt-8 flex justify-center mx-auto">
           <div className="flex justify-between px-4 md:px-14 py-3 w-full max-w-[1440px]">
-            <div className="hidden md:flex justify-start min-h-screen flex-[0.55] flex-col relative">
-              <div className="flex flex-col items-center gap-y-7 pt-10">
+            <div className="hidden md:flex justify-start min-h-screen flex-[0.55] flex-col gap-4 relative">
+              {/* <div className="flex flex-col items-center gap-y-7 pt-10">
                 <p className="max-w-[342px] text-center">
                   In need of Carbon Credit?
                   <br /> Get it with
                 </p>
                 <LogoAndBrandVertical className="max-h-[100px]" />
+              </div> */}
+
+              <div className="flex flex-col items-center gap-y-2">
+                <p className="max-w-[95%] text-center font-bold">
+                  “We have been funded by the UK government (DESNZ) to build a
+                  platform where homeowners can find renewable service providers
+                  (merchant)".
+                </p>
+
+                <p>So are you a homeowner or a merchant ?</p>
+
+                <p>Register now !</p>
               </div>
-              <RegisterGraphic className="absolute bottom-0 right-0 w-[120%] flex justify-center -z-10 min-h-[720px]" />
+
+              <div className="relative  w-full">
+                <img
+                  src={"/assets/graphics/hero-graphic.svg"}
+                  alt=""
+                  className="h-auto max-w-[80%] xl:max-w-[68%] 2xl:max-w-[72%] mx-auto animate-spin-slow"
+                />
+
+                <img
+                  src="/assets/graphics/hero-house.svg"
+                  alt=""
+                  className=" absolute top-[43%] right-[5%] left-[5%] max-w-[80%] xl:max-w-[68%] 2xl:max-w-[72%] mx-auto "
+                />
+              </div>
+
+              {/* 
+              <RegisterGraphic className="absolute bottom-0 right-0 w-[120%] flex justify-center -z-10 min-h-[720px]" /> */}
             </div>
+
             <div className="bg-glass h-fit flex-1 md:flex-[0.45] py-9 px-4 md:px-12 rounded-xl max-w-[600px]">
               <p className="text-3xl font-bold">Login</p>
               <p className="pt-2">Welcome back, please enter your details.</p>

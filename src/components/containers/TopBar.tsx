@@ -7,7 +7,6 @@ import { SideBarBtn } from "@/assets/icons";
 // import BellIcon from "../../assets/icons/bell.svg";
 import UserIcon from "../../assets/icons/User.svg";
 import { Link, useLocation } from "react-router-dom";
-// import SelectInput from "../ui/SelectInput";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { cn } from "@/utils";
@@ -29,7 +28,10 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
 
   const merchant = "MERCHANT";
   const admin = "ADMIN";
+  const homeOwner = "HOME_OCCUPANT";
+
   const isMerchant = user?.roles.includes(merchant);
+  const isHomeOwner = user?.roles.includes(homeOwner);
   const isAdmin = user?.roles.includes(admin);
   const isAdminStaff = user?.roles.includes(UserRole.ADMIN_STAFF);
 
@@ -124,17 +126,9 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
             <h2 className="font-[400] text-sm">{getActiveTab()}</h2>
           </Link>
 
-          {/* {!isMerchant && (
+          {isHomeOwner && (
             <div className="hidden lg:flex items-center flex-1  justify-center gap-3 mx-auto">
-              <div className="w-[180px] ">
-                <SelectInput
-                  options={categories}
-                  placeholder=""
-                  className="text-xs"
-                />
-              </div>
-
-              <div className="flex-center">
+              <div className="flex-center border p-3 px-5 rounded-lg">
                 <img
                   src="/assets/icons/clarity_search-line.svg"
                   alt=""
@@ -143,12 +137,12 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
 
                 <input
                   type="text"
-                  placeholder="Purchases"
+                  placeholder="Search"
                   className="flex-1 text-sm outline-none active:outline-none active:border-none "
                 />
               </div>
             </div>
-          )} */}
+          )}
 
           <div className="flex-center gap-[18px] ml-auto ">
             {/* {role === "HOME_OCCUPANT" && ( */}
