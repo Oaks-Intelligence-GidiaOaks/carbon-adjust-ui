@@ -11,7 +11,7 @@ import {
   MonitoringEvent,
   SubLevelEvent,
 } from "@/interfaces/events.interface";
-import Rating from "../../reusables/Rating";
+// import Rating from "../../reusables/Rating";
 
 const DescriptionSection = (props: {
   setStage: Dispatch<SetStateAction<number>>;
