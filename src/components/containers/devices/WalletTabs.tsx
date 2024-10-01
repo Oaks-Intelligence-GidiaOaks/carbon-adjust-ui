@@ -6,6 +6,7 @@ import TabToggler from "../TabToggler";
 import { useQuery } from "@tanstack/react-query";
 import { getWalletBalance } from "@/services/adminService";
 import Loading from "@/components/reusables/Loading";
+import RestrictedWalletCard from "@/components/ui/RestrictedWalletCard";
 
 type Props = {
   WalletTitle?: string;
@@ -30,10 +31,9 @@ const WalletTabs = (props: Props) => {
     "Carbon-Credit wallet": (
       <WalletCard
         {...walletData}
-        organisation={props?.WalletTitle ?? "Admin"}
-      />
+        organisation={props?.WalletTitle ?? "Admin"} />
     ),
-    "Cash Wallet": <ComingSoon height="h-[200px]" />,
+    "Cash Wallet":  <RestrictedWalletCard />,
     "Coin Wallet": <ComingSoon height="h-[200px]" />,
   };
 
