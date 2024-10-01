@@ -29,7 +29,6 @@ const Rating = ({ packageId }: { packageId: string }) => {
     queryFn: () => getPackagesReviews({ packageId }),
   });
 
-
   if (isLoading) {
     return <p>Loading reviews...</p>;
   }
@@ -38,23 +37,17 @@ const Rating = ({ packageId }: { packageId: string }) => {
     return <p>Error fetching reviews. Please try again later.</p>;
   }
 
-
-//  if (data) {
-//   console.log("Package ID:", packageId);
-//   console.log("Fetched reviews data:", data);
-// }
-
-// Safeguard: Default values for reviews and stats
-const reviews: Review[] = data?.reviews?.map((review: any) => ({
+const reviews: Review[] = data?.data?.reviews?.map((review: any) => ({
   name: review.user?.name || "Anonymous",
   rating: review.rating,
   date: new Date(review.createdAt).toLocaleDateString(),
   comment: review.description || "No comment provided.",
 })) || [];
 
-const stats: Stats | null = data?.stats || null;
+const stats: Stats | null = data?.data?.stats || null;
 const averageRating = stats?.averageRating || 0;
 const totalReviews = stats?.totalReviews || 0;
+
 
   const toggleAccordion = () => {
     setIsAccordionOpen(!isAccordionOpen);

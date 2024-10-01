@@ -71,8 +71,6 @@ const DescriptionSection = (props: {
     eventName: SubLevelEvent.ORDER_SUMMARY_EVENT,
   };
 
-  console.log('hi', prod._id)
-
  
   return (
     <div className="lg:max-w-[60vw] xl:max-w-[55vw] lg:ml-auto">

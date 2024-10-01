@@ -2,9 +2,11 @@ import { IOrderActivity, IPackageOrder } from "@/interfaces/order.interface";
 import { formatDate } from "@/lib/utils";
 import { IComponentMap } from "@/types/general";
 import { IoIosCheckmarkCircle } from "react-icons/io";
+import { useState } from "react";
 
 import { FaTimesCircle } from "react-icons/fa";
 import { GoDownload } from "react-icons/go";
+import AddReviewModal from "./AddReview";
 // import toast from "react-hot-toast";
 
 type AProps = {
@@ -13,6 +15,10 @@ type AProps = {
 
 const OrderCard = (props: IPackageOrder) => {
   // const cleanedUrl = props.aiOrderResponse?.replace(/^"|"$/g, "").trim();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const cleanedUrl = props.aiOrderResponse
     ?.replace(/^"+|"+$/g, "") // Remove leading/trailing quotes
@@ -129,6 +135,19 @@ const OrderCard = (props: IPackageOrder) => {
                   isBorder={true}
                 />
               </div>
+
+              <button
+                onClick={openModal}
+                className=" text-blue-400 text-xs text-start cursor-pointer"
+              >
+                Review this package
+              </button>
+              <AddReviewModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                packageId={props?.package?._id} 
+                image={props.package?.attachments?.[0] || "/assets/graphics/user1.svg"}
+              />
 
               <div className="flex-center gap-6">
                 {/* <span className="text-xs font-[400] text-[#4C5563]">

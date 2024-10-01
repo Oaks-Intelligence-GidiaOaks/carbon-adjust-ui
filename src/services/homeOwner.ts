@@ -1,5 +1,6 @@
 import axiosInstance from "@/api/axiosInstance";
 import { IDispatchData } from "@/interfaces/device.interface";
+import { IAddReview } from "@/interfaces/product.interface";
 import { formatNumber } from "@/lib/utils";
 
 export const getAllPackageCategories = async () => {
@@ -202,16 +203,11 @@ export const getDispatchedDevices = async (
 //Reviews
 export const getPackagesReviews = async ({ packageId }: { packageId: string }) => {
   const { data } = await axiosInstance.get(`/packages/${packageId}/reviews`);
-
   return data;
 };
 
-export const addReview = async (formData: FormData) => {
-  const { data } = await axiosInstance.post("packages/review", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+export const addReview = async (formData: IAddReview) => {
+  const { data } = await axiosInstance.post("packages/review", formData );
 
   return data;
 };
