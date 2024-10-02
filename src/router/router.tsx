@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Calendar, Home, Login, Register } from "@/pages/public";
+import { Calendar, Home, Login, Register, _404 } from "@/pages/public";
 import AccountSetup from "@/pages/protected/shared/account-setup/AccountSetup";
 import Layout from "@/layouts/Layout";
 
@@ -441,6 +441,10 @@ const Router = createBrowserRouter([
         element: <AdminStaffOrders />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <_404 />,
   },
 ]);
 
