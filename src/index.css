@@ -80,7 +80,7 @@
 
 @layer utilities {
   .scrollbar-thin {
-    scrollbar-width: thin;
+    scrollbar-width: 0;
     scrollbar-color: #888 #f1f1f1;
   }
 
@@ -99,38 +99,26 @@
   }
 }
 
-@layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-}
-
 html,
 body {
   scrollbar-width: thin; /* For Firefox */
   scrollbar-color: #888 #f1f1f1; /* For Firefox */
 }
 
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Hide scrollbars for WebKit-based browsers (Chrome, Safari, and Opera) */
+*::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
 }
 
-html::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
+*::-webkit-scrollbar-thumb {
+  background: transparent;
 }
 
-html::-webkit-scrollbar-track,
-body::-webkit-scrollbar-track {
-  background: #f1f1f1;
+*::-webkit-scrollbar-track {
+  background: transparent;
 }
+
 
 .gradient-text {
   background-image: linear-gradient(to right, #2e599a 0%, #0b8dff 100%);

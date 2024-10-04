@@ -17,6 +17,7 @@ module.exports = {
       xl: "1280px",
       max: "1440px",
       ds: { min: "280px", max: "600px" },
+      "2xl": "1440px",
     },
     extend: {
       fontFamily: {
