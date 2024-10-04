@@ -16,6 +16,8 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import SocketService from "@/repository/socket";
+import GrantProductCheckout from "@/components/reusables/GrantCheckout";
+import GrantCard from "@/components/reusables/GrantCard";
 
 type Props = {};
 
@@ -59,20 +61,29 @@ const MarketGroup = (_: Props) => {
 
   const catProducts: IProduct[] = isSuccess ? data.data.packages : [];
 
+  // Check if the category is "Grant"
+  const isGrant = categoryName.toLowerCase() === "grant";
+
   return (
-    <div className="relative ">
+    <div className="relative">
       <div className="h-[150px] bg-[#F5FAFF] flex items-center pl-5 md:pl-[50px]">
         <h2 className="font-[500] text-xl">{categoryName}</h2>
       </div>
 
-      <div className="mt-[40px] flex items-stretch overflow-x-scroll pb-5 gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[95%]   xl:max-w-[90%]">
+      <div className="mt-[40px] flex items-stretch overflow-x-scroll pb-5 gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[95%] xl:max-w-[90%]">
         {isLoading ? (
           <CategoriesLoading />
         ) : (
           Boolean(catProducts.length) &&
-          Array.from(catProducts.slice(0, 4), (item) => (
-            <ProductCard {...item} key={item._id} />
-          ))
+          Array.from(catProducts.slice(0, 4), (item) =>
+            isGrant ? (
+              <GrantCard
+              {...item} key={item._id}
+              />
+            ) : (
+              <ProductCard {...item} key={item._id} />
+            )
+          )
         )}
       </div>
 
@@ -80,28 +91,39 @@ const MarketGroup = (_: Props) => {
         <Promotion />
       </div>
 
-      <div
-        className="mt-[40px] flex items-stretch overflow-x-scroll pb-5 
-      
-      gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[850px] lg:mx-0  xl:max-w-[1100px] md:!ml-auto
-      "
-      >
+      <div className="mt-[40px] flex items-stretch overflow-x-scroll pb-5 gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[850px] lg:mx-0 xl:max-w-[1100px] md:!ml-auto">
         {isLoading ? (
           <CategoriesLoading />
         ) : (
           Boolean(catProducts.length) &&
-          Array.from(catProducts.slice(6), (item) => (
-            <ProductCard {...item} key={item._id} />
-          ))
+          Array.from(catProducts.slice(6), (item) =>
+            isGrant ? (
+              <GrantCard
+              {...item} key={item._id}
+              />
+            ) : (
+              <ProductCard {...item} key={item._id} />
+            )
+          )
         )}
       </div>
 
       {pid && (
-        <ProductCheckout
-          categoryName={categoryName}
-          setShowcheckout={closeModal}
-          showCheckout={true}
-        />
+        <>
+          {isGrant ? (
+            <GrantProductCheckout
+              categoryName={categoryName}
+              setShowcheckout={closeModal}
+              showCheckout={true}
+            />
+          ) : (
+            <ProductCheckout
+              categoryName={categoryName}
+              setShowcheckout={closeModal}
+              showCheckout={true}
+            />
+          )}
+        </>
       )}
     </div>
   );

@@ -2,8 +2,13 @@ import { IProdCategory } from "@/interfaces/product.interface";
 import ProductCard from "./ProductCard";
 import { GrLinkNext } from "react-icons/gr";
 import { Link } from "react-router-dom";
+import GrantCard from "./GrantCard";
 
 const ProductsCategory = (props: IProdCategory) => {
+  console.log('cat', props.packages);
+
+  const isGrantCategory = props.category.name.toLowerCase() === "grant";
+
   return (
     <div className="flex flex-col w-full gap-[48px] mx-auto max-w-[90vw] md:max-w-[650px] pr-3 lg:max-w-[850px] xl:max-w-[1100px] md:ml-auto">
       <div className="flex-center justify-between">
@@ -22,10 +27,14 @@ const ProductsCategory = (props: IProdCategory) => {
         </Link>
       </div>
 
-      <div className="flex items-stretch gap-[24px] w-full overflow-x-scroll pb-5 ">
+      <div className="flex items-stretch gap-[24px] w-full overflow-x-scroll pb-5 no-scrollbar">
         {props.packages &&
           props.packages.map((pkg) => (
-            <ProductCard {...pkg} key={pkg._id} category={pkg.category} />
+            isGrantCategory ? (
+              <GrantCard {...pkg} key={pkg._id} category={pkg.category} />
+            ) : (
+              <ProductCard {...pkg} key={pkg._id} category={pkg.category} />
+            )
           ))}
       </div>
     </div>

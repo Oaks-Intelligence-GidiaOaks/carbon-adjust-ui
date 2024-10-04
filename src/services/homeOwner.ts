@@ -5,13 +5,11 @@ import { formatNumber } from "@/lib/utils";
 
 export const getAllPackageCategories = async () => {
   const { data } = await axiosInstance.get(`/packages/categories`);
-
   return data;
 };
 
 export const getHomePagePackages = async () => {
   const { data } = await axiosInstance.get(`/packages/store/home`);
-
   return data;
 };
 
@@ -38,6 +36,10 @@ export const getHoOrders = async () => {
   const { data } = await axiosInstance.get(`application/orders`);
 
   return data;
+
+
+
+
 };
 
 export const createNewOrder = async (iData: any) => {

@@ -26,6 +26,7 @@ export enum SubLevelEvent {
   ORDER_SUCCESS_EVENT = "Order Success",
   ORDER_FAILURE_EVENT = "Order Failure",
   ORDER_BOOKING_EVENT = "Order Booking",
+  APPLY_FOR_GRANT_EVENT = "Apply for grant"
 }
 
 export interface IPageViewPayload {

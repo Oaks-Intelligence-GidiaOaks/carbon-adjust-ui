@@ -3,9 +3,7 @@ import { IProduct } from "@/interfaces/product.interface";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GrFavorite } from "react-icons/gr";
-import { MdStarRate } from "react-icons/md";
 import { getPackagesReviews } from "@/services/homeOwner";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import GrantCard from './GrantCard'
 import { RootState } from "@/app/store";
@@ -56,22 +54,15 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
   const stats: Stats | null = data?.data?.stats || null;
   const averageRating = stats?.averageRating || 0;
 
+
   // Conditionally render GrantCard if the product is a grant
   const isGrant = props?.category?.name === "Grant"; 
 
   return (
     <>
-      {isGrant ? (
-        <GrantCard
-          grantName={props.title}
-          rating={averageRating}
-          minAmount={props?.minAmount} 
-          maxAmount={props?.maxAmount}
-          placeholder={props?.attachments?.[0] || placeholder}
-        />
-      ) : (
+
         <div className="min-w-[228px] group">
-          <div className="relative">
+          <div className="relative ">
             <div className="absolute top-[10px] right-[10px] rounded-full w-[32px] h-[32px] bg-white grid place-items-center z-[10]">
               <GrFavorite />
             </div>
@@ -112,7 +103,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
 
             <div className="gap-[3px] mt-1 flex flex-col">
               <div className="flex-center gap-2">
-                <span className="text-xs font-[400]">
+                <span className="text-[12.5px] font-[400]">
                   {/* @ts-ignore */}
                   {props?.owner?.name!}
                 </span>
@@ -129,20 +120,19 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
               </div>
 
               <h2
-                className={`text-xs font-[600] ${
+                className={`text-base font-inter font-[600] ${
                   props?.wrapText ? "text-wrap" : "truncate"
                 }  max-w-[228px]`}
               >
                 {props?.title}
               </h2>
 
-              <h2 className="text-xs font-[600] ">{` ${props?.currency} ${
+              <h2 className="text-sm font-inter font-[600] ">{` ${props?.currency} ${
                 props.price ?? 0
               }`}</h2>
             </div>
           </div>
         </div>
-      )}
     </>
   );
 };
