@@ -7,6 +7,7 @@ import { useState } from "react";
 import { FaTimesCircle } from "react-icons/fa";
 import { GoDownload } from "react-icons/go";
 import AddReviewModal from "./AddReview";
+import AcceptGrantModal from "./AcceptGrant";
 // import toast from "react-hot-toast";
 
 type AProps = {
@@ -94,6 +95,22 @@ const OrderCard = (props: IPackageOrder) => {
     return item[status];
   };
 
+  const [isAcceptModalOpen, setAcceptModalOpen] = useState(false);
+  const [isConfirmed, setConfirmed] = useState(false);
+
+  const handleOpenModal = () => {
+    setAcceptModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setAcceptModalOpen(false);
+    setConfirmed(false); // Reset state when modal closes
+  };
+
+  const handleAccept = () => {
+    setConfirmed(true); // Set confirmation state
+  };
+
   return (
     <div>
       <div className="flex flex-col text-sm">
@@ -145,8 +162,24 @@ const OrderCard = (props: IPackageOrder) => {
               <AddReviewModal
                 isOpen={isModalOpen}
                 onClose={closeModal}
-                packageId={props?.package?._id} 
-                image={props.package?.attachments?.[0] || "/assets/graphics/user1.svg"}
+                packageId={props?.package?._id}
+                image={
+                  props.package?.attachments?.[0] ||
+                  "/assets/graphics/user1.svg"
+                }
+              />
+
+              <button
+                onClick={handleOpenModal}
+                className="px-4 py-2 blue-gradient text-white rounded-2xl hover:bg-blue-700"
+              >
+                Accept
+              </button>
+              <AcceptGrantModal
+                isOpen={isAcceptModalOpen}
+                isConfirmed={isConfirmed}
+                onClose={handleCloseModal}
+                onAccept={handleAccept}
               />
 
               <div className="flex-center gap-6">
