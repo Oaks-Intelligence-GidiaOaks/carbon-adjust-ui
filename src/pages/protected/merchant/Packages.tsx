@@ -71,7 +71,7 @@ const Packages = (_: Props) => {
 
   return (
     <div className="px-3 lg:px-4 sm:max-w-[calc(100vw-280px)]">
-      <div className="flex-center justify-between">
+      <div className="flex-center justify-between max-w-[95%] md:max-w-full">
         <div className="flex flex-col gap-[6px] my-4">
           <h2 className="font-[600] text-lg ">Packages</h2>
 

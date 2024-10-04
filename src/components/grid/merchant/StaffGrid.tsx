@@ -208,7 +208,7 @@ const StaffGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
 
   return (
     <div className="">
-      <div className="mb-4 flex overflow-x-auto">
+      <div className="mb-4 flex overflow-x-auto w-full">
         <div className="w-auto flex-1 overflow-visible">
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 flex-wrap gap-4 mt-10">
             <table className="text-center w-full font-poppins">
@@ -237,7 +237,7 @@ const StaffGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext()
+                                header.getContext(),
                               )}
                           {
                             // {
@@ -273,7 +273,7 @@ const StaffGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                         </td>
                       ))}

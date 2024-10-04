@@ -49,7 +49,7 @@ const Dashboard = (_: Props) => {
     {
       queryKey: ["get-all-applications"],
       queryFn: () => getAllApplications(),
-    }
+    },
   );
 
   const { data: applicationsChart } = useQuery({
@@ -127,11 +127,9 @@ const Dashboard = (_: Props) => {
       </div>
 
       {/* chart - Applications */}
-      <div className="my-4">
+      <div className="my-10">
         <div className="flex justify-between">
-          <p className="font-poppins font-bold pb-8 text-main text-xl">
-            Applications
-          </p>
+          <p className="font-poppins font-bold pb-8 text-xl">Applications</p>
           <Dropdown
             name="yearSelector"
             wrapperClassName={"w-20 border border-gray-500 shadow-lg"}

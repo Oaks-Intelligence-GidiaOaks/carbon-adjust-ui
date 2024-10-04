@@ -55,7 +55,7 @@ const Sidebar = ({
       {/* desktop sidebar */}
       <div
         className={cn(
-          "w-[20%] min-w-[260px] max-w-[302px] max-h-screen px-4 sm:sticky bg-white overflow-y-scroll pb-10 z-10 border-r border-[hsla(110,49%,88%,1)] top-0 hidden sm:block "
+          "w-[20%] min-w-[260px] max-w-[302px] max-h-screen px-4 sm:sticky bg-white overflow-y-scroll pb-10 z-10 border-r border-[hsla(110,49%,88%,1)] top-0 hidden sm:block ",
         )}
       >
         <div className="flex justify-between items-center sticky top-0 pt-10 pb-2 z-10 bg-white">
@@ -71,7 +71,7 @@ const Sidebar = ({
               fontSize={20}
               width={20}
               className={cn(
-                "text-[#139EEC_!important] hover:bg-gray-200 rounded sm:hidden"
+                "text-[#139EEC_!important] hover:bg-gray-200 rounded sm:hidden",
               )}
               onClick={() => setMobileMenuIsOpen(false)}
             />
@@ -89,18 +89,18 @@ const Sidebar = ({
                   "flex gap-4 py-3 px-2 pl-4 items-center font-manrope rounded-full",
                   pathname === `${item.href}`
                     ? "bg-gradient-to-r from-blue-secondary to-blue-main"
-                    : "hover:bg-[#D6F2DE]"
+                    : "hover:bg-[#D6F2DE]",
                 )}
               >
                 <Icon
                   className={cn(
-                    pathname === `${item.href}` ? "invert brightness-0" : ""
+                    pathname === `${item.href}` ? "invert brightness-0" : "",
                   )}
                 />
                 <span
                   className={cn(
                     "text-sm",
-                    pathname === `${item.href}` ? "text-white" : ""
+                    pathname === `${item.href}` ? "text-white" : "",
                   )}
                 >
                   {item.title}
@@ -114,7 +114,7 @@ const Sidebar = ({
                   "flex gap-4 py-3 px-2 pl-4 items-center font-manrope rounded-full",
                   pathname === `${item.href}`
                     ? "bg-gradient-to-r from-blue-secondary to-blue-main"
-                    : "hover:bg-[#D6F2DE]"
+                    : "hover:bg-[#D6F2DE]",
                 )}
                 onClick={() => {
                   persistor.pause();
@@ -127,7 +127,7 @@ const Sidebar = ({
 
                     SocketService.emit(
                       MonitoringEvent.NEW_SUBLEVEL_EVENT,
-                      logoutPayload
+                      logoutPayload,
                     );
                     return persistor.purge();
                   });
@@ -136,13 +136,13 @@ const Sidebar = ({
               >
                 <Icon
                   className={cn(
-                    pathname === `${item.href}` ? "invert brightness-0" : ""
+                    pathname === `${item.href}` ? "invert brightness-0" : "",
                   )}
                 />
                 <span
                   className={cn(
                     "text-sm",
-                    pathname === `${item.href}` ? "text-white" : ""
+                    pathname === `${item.href}` ? "text-white" : "",
                   )}
                 >
                   {item.title}
@@ -180,7 +180,7 @@ const Sidebar = ({
       <div
         className={cn(
           "w-[20%] min-w-[260px] max-w-[302px] overflow-y-scroll h-screen px-4 pt-10 sm:sticky bg-white z-[100] border-r border-[hsla(110,49%,88%,1)] fixed left-0 top-0 sm:hidden",
-          mobileMenuIsOpen ? "translate-x-0" : "-translate-x-full"
+          mobileMenuIsOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex justify-between items-center">
@@ -196,7 +196,7 @@ const Sidebar = ({
               fontSize={20}
               width={20}
               className={cn(
-                "text-[#139EEC_!important] hover:bg-gray-200 rounded sm:hidden"
+                "text-[#139EEC_!important] hover:bg-gray-200 rounded sm:hidden",
               )}
               onClick={() => setMobileMenuIsOpen(false)}
             />
@@ -210,22 +210,23 @@ const Sidebar = ({
               <Link
                 key={i}
                 to={`${item.href}`}
+                onClick={() => setMobileMenuIsOpen(false)}
                 className={cn(
                   "flex gap-4 py-3 px-2 pl-4 items-center font-manrope rounded-full",
                   pathname === `${item.href}`
                     ? "bg-gradient-to-r from-blue-secondary to-blue-main"
-                    : "hover:bg-[#D6F2DE]"
+                    : "hover:bg-[#D6F2DE]",
                 )}
               >
                 <Icon
                   className={cn(
-                    pathname === `${item.href}` ? "invert brightness-0" : ""
+                    pathname === `${item.href}` ? "invert brightness-0" : "",
                   )}
                 />
                 <span
                   className={cn(
                     "text-sm",
-                    pathname === `${item.href}` ? "text-white" : ""
+                    pathname === `${item.href}` ? "text-white" : "",
                   )}
                 >
                   {item.title}
@@ -239,7 +240,7 @@ const Sidebar = ({
                   "flex gap-4 cursor-pointer py-3 px-2 pl-4 items-center font-manrope rounded-full",
                   pathname === `${item.href}`
                     ? "bg-gradient-to-r from-blue-secondary to-blue-main"
-                    : "hover:bg-[#D6F2DE]"
+                    : "hover:bg-[#D6F2DE]",
                 )}
                 onClick={() => {
                   persistor.pause();
@@ -251,13 +252,13 @@ const Sidebar = ({
               >
                 <Icon
                   className={cn(
-                    pathname === `${item.href}` ? "invert brightness-0" : ""
+                    pathname === `${item.href}` ? "invert brightness-0" : "",
                   )}
                 />
                 <span
                   className={cn(
                     "text-sm",
-                    pathname === `${item.href}` ? "text-white" : ""
+                    pathname === `${item.href}` ? "text-white" : "",
                   )}
                 >
                   {item.title}
