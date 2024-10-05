@@ -11,9 +11,6 @@ interface AddReviewModalProps {
   image?: string;
 }
 
-
-
-
 const AddReviewModal: React.FC<AddReviewModalProps> = ({
   isOpen,
   onClose,

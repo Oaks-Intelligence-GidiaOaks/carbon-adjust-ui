@@ -1,18 +1,40 @@
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
-import { CheckCircle2Icon } from 'lucide-react';
-import React from 'react';
-import { BiCheckCircle } from 'react-icons/bi';
+import React, { useState } from 'react';
+import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { acceptGrant } from '@/services/homeOwner';
 
 
-interface ModalProps {
+
+interface AcceptGrantProps {
   isOpen: boolean;
-  isConfirmed: boolean; 
+  applicationId: string;
   onClose: () => void;
   onAccept: () => void;
 }
 
-const AcceptGrantModal: React.FC<ModalProps> = ({ isOpen, isConfirmed, onClose, onAccept }) => {
+const AcceptGrantModal: React.FC<AcceptGrantProps> = ({ isOpen, applicationId, onClose, onAccept }) => {
   if (!isOpen) return null;
+  const queryClient = useQueryClient();
+  
+  const [isLoading, setisLoading] = useState(false); 
+  const [isConfirmed, setIsConfirmed] = useState(false);
+
+  const { mutate: handleAccept } = useMutation({
+    mutationFn: () => acceptGrant(applicationId),
+    mutationKey: ['accept-grant', applicationId], 
+    onError: (error: any) => {
+      toast.error(error?.message || 'Something went wrong');
+    },
+    onSuccess: () => {
+      // Invalidate queries if needed to update data
+    //   queryClient.invalidateQueries(['get-user-grants']);
+      setisLoading(true);
+      toast.success('Grant offer accepted successfully');
+      setIsConfirmed(true); // Mark the grant as accepted
+    },
+  });
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
@@ -42,12 +64,13 @@ const AcceptGrantModal: React.FC<ModalProps> = ({ isOpen, isConfirmed, onClose, 
               >
                 Cancel
               </button>
-              <button
-                onClick={onAccept}
-                className="px-4 py-2 w-full blue-gradient text-white rounded-lg hover:bg-blue-700"
-              >
-                Accept
-              </button>
+            <button
+            onClick={() => handleAccept()}
+            disabled={isLoading}
+            className={`px-4 py-2 w-full blue-gradient text-white rounded-lg ${isLoading ? 'cursor-not-allowed' : 'hover:bg-blue-700'}`}
+          >
+            {isLoading ? "Processing..." : "Accept"}
+          </button>
             </div>
           </>
         )}

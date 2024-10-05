@@ -214,3 +214,15 @@ export const addReview = async (formData: IAddReview) => {
   return data;
 };
 
+//Accept Grant
+export const acceptGrant = async (applicationId: string) => {
+  const { data } = await axiosInstance.put("application/accept", { applicationId });
+  return data;
+};
+
+//Reject Grant
+export const rejectGrant = async (applicationId: string) => {
+  const { data } = await axiosInstance.put("application/decline", { applicationId });
+  return data;
+};
+
