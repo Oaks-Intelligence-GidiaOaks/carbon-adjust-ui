@@ -34,7 +34,7 @@ const OrderCard = (props: IPackageOrder) => {
         props.isBorder && "border-l pl-[10px] border-[#4C5563]"
       } p-0 `}
     >
-      <span className="text-xs p-0 font-[400] text-[#4C5563]">
+      <span className="text-[15px] p-0 font-[400] text-[#4C5563]">
         {props.text}
       </span>
     </div>
@@ -113,8 +113,6 @@ const OrderCard = (props: IPackageOrder) => {
     console.log("Grant accepted successfully");
   };
 
-  // const applicationId = '66f704d137df015ec255eac1'; // Example application ID
-
   const handleOpenRejectModal = () => {
     setRejectModalOpen(true);
   };
@@ -134,7 +132,7 @@ const OrderCard = (props: IPackageOrder) => {
     if (isGrantPackage) {
       if (props?.grantStatus === "approved") {
         return (
-          <div className="flex gap-3 flex-col">
+          <div className="flex gap-3 flex-col justify-end items-end">
             <span className="bg-[#ECFDF3] pr-3 rounded-2xl font-poppins text-[#027A48] w-fit text-sm flex items-center justify-center">
               {" "}
               <Dot className="size-7" /> Approved
@@ -167,7 +165,7 @@ const OrderCard = (props: IPackageOrder) => {
         );
       } else if (props?.grantStatus === "accepted") {
         return (
-          <div className="flex gap-3 flex-col">
+          <div className="flex gap-3 flex-col justify-end items-end">
             <span className="bg-[#ECFDF3] pr-3 rounded-2xl font-poppins text-[#027A48] w-fit text-sm flex items-center justify-center">
               {" "}
               <Dot className="size-7" /> Approved
@@ -179,7 +177,7 @@ const OrderCard = (props: IPackageOrder) => {
         );
       } else if (props?.grantStatus === "applied") {
         return (
-          <div className="flex gap-3 flex-col">
+          <div className="flex gap-3 flex-col justify-end items-end">
             <span className="">
               {props?.package?.currency}
               {props?.price}
@@ -197,7 +195,7 @@ const OrderCard = (props: IPackageOrder) => {
         );
       } else if (props?.grantStatus === "rejected") {
         return (
-          <div className="flex gap-3 flex-col">
+          <div className="flex gap-3 flex-col justify-end items-end">
             <span className="bg-[#FFE7E7] pr-3 rounded-2xl font-poppins text-[#EC2222] w-fit flex items-center justify-center">
               {" "}
               <Dot className="size-7" /> Rejected
@@ -215,7 +213,7 @@ const OrderCard = (props: IPackageOrder) => {
         );
       } else if (props?.grantStatus === "declined") {
         return (
-          <div className="flex gap-3 flex-col">
+          <div className="flex gap-3 flex-col justify-end items-end">
             <span className="bg-[#FFE7E7] pr-3 rounded-2xl font-poppins text-[#EC2222] w-fit flex items-center justify-center">
               {" "}
               <Dot className="size-7" /> Declined
@@ -228,24 +226,6 @@ const OrderCard = (props: IPackageOrder) => {
     return null;
   };
 
-  // Render grant details based on status
-  const renderGrantDetails = () => {
-    const isGrantPackage = props?.domain === "Grant_Package";
-    if (isGrantPackage && props?.grantStatus === "accepted") {
-      return (
-        <div className="flex flex-col gap-3">
-          <ListTile text={`Approved Grant: ${props?.approvedGrant}`} />
-          {/* Uncomment the following lines if you want to include the contract document */}
-          {/* <ListTile text={`Contract Document: `}>
-            <a href={props?.grantContractDoc} target="_blank" rel="noopener noreferrer">
-              Download Contract
-            </a>
-          </ListTile> */}
-        </div>
-      );
-    }
-    return null;
-  };
 
   return (
     <div>
@@ -265,37 +245,64 @@ const OrderCard = (props: IPackageOrder) => {
 
             {/*  */}
             <div className="flex flex-col justify-between pl-4">
-              <h2 className="text-lg font-[600] font-poppins">
+              <h2 className="text-xl font-[600] font-poppins">
                 {props?.package?.title}
               </h2>
 
               <div className="flex-center gap-[10px]">
-                <ListTile
-                  text={`Applied Date: ${formatDate(props?.createdAt)} `}
-                  key={1}
-                  isBorder={true}
-                />
+                {/* Grant Package rendering */}
+                {props?.domain === "Grant_Package" ? (
+                  <>
+                    <ListTile
+                      text={`Applied Date: ${formatDate(props?.createdAt)} `}
+                      key={1}
+                      isBorder={true}
+                    />
 
-                <ListTile
-                  text={`${props?.package?.title || ""}`}
-                  key={1}
-                  isBorder={true}
-                />
+                    <ListTile
+                      text={`${props?.package?.title || ""} (${
+                        props?.package?.currency}${props?.package?.minAmount || "N/A"
+                      } - ${props?.package?.currency}${props?.package?.maxAmount || "N/A"})`}
+                      key={2}
+                      isBorder={true}
+                    />
 
-                <ListTile
-                  text={props?.package?.country}
-                  key={1}
-                  isBorder={true}
-                />
+                    <ListTile
+                      text={props?.package?.country}
+                      key={3}
+                      isBorder={true}
+                    />
+                  </>
+                ) : (
+                  /* Non-Grant Package rendering */
+                  <>
+                    <ListTile
+                      text={`Applied Date: ${formatDate(props?.createdAt)} `}
+                      key={1}
+                      isBorder={true}
+                    />
+
+                    <ListTile
+                      text={`${props?.package?.title || ""}`}
+                      key={2}
+                      isBorder={true}
+                    />
+
+                    <ListTile
+                      text={props?.package?.country}
+                      key={3}
+                      isBorder={true}
+                    />
+                  </>
+                )}
               </div>
 
-              {renderGrantDetails()}
 
               <button
                 onClick={openModal}
-                className=" text-blue-400 text-xs text-start cursor-pointer"
+                className=" text-blue-400 text-[10px] text-start cursor-pointer"
               >
-                Review this package
+                Review service
               </button>
               <AddReviewModal
                 isOpen={isModalOpen}
@@ -327,18 +334,18 @@ const OrderCard = (props: IPackageOrder) => {
               renderGrantButtons()
             ) : (
               // Default button for non-grant packages
-              <div className="flex flex-col gap-3"> 
-              <h2 className="text-sm font-[600] ">{` ${
-                props?.package?.currency ?? "£"
-              } ${props.price}`}</h2>
-  
-              <button
-                className={`${getStatusBg(
-                  props.status
-                )}  font-dm-sans px-4 py-2 rounded-2xl grid place-items-center text-white font-[400] text-xs`}
-              >
-                <span>{props?.status}</span>
-              </button>
+              <div className="flex flex-col gap-3">
+                <h2 className="text-base font-[600] ">{` ${
+                  props?.package?.currency ?? "£"
+                } ${props.price}`}</h2>
+
+                <button
+                  className={`${getStatusBg(
+                    props.status
+                  )}  font-dm-sans px-4 py-2 rounded-2xl grid place-items-center text-white font-[400] text-xs`}
+                >
+                  <span>{props?.status}</span>
+                </button>
               </div>
             )}
           </div>
@@ -347,60 +354,131 @@ const OrderCard = (props: IPackageOrder) => {
         <hr className="mt-[35px]" />
 
         <div className="hidden md:flex flex-center md:flex-center gap-[] py-3 font-dm-sans text-sm text-[#A5A5A5]">
-          {/* stop here */}
+  {/* Check if the package is a grant package */}
+  {props?.domain === "Grant_Package" ? (
+    <>
+      {/* Grant Package Logic */}
+      {props?.grantStatus === "approved" && (
+        <div className="flex flex-col gap-3">
           <ActivityItems activities={props.orderActivities} />
 
-          {/* <div className="px-[10px] text-[#4C5563]">|</div> */}
-
           <div className="flex-center gap-2">
-            <span className="font-[500] text-[#2B2A2A]">
-              Payment: {props?.paymentStatus?.toUpperCase()}
-            </span>
+            <span className="font-[500] text-[blue]">Approved Grant: {props?.approvedGrant}</span>
+            <span className="font-[500] text-[#2B2A2A]">Approved Date: {formatDate(props?.updatedAt)}</span>
 
-            {paymentStatusIcon(props?.paymentStatus)}
-
-            <div>
-              {/* downloadable icon */}
-              {props.package?.media && props.package.media?.length > 0 && (
-                <a target="__blank" href={props.package?.media?.[0]}>
-                  <GoDownload color="#575757" size={18} />
-                </a>
-              )}
-            </div>
-          </div>
-
-          <div className="ml-auto w-fit flex-center gap-6">
-            {props.adminReport?.length && (
-              <a
-                target="__blank"
-                href={props.adminReport}
-                rel="noopener noreferrer"
-                className="flex-center gap-1 cursor-pointer p-1 rounded border bg-teal-50"
-              >
-                <span>
-                  <GoDownload color="#4CAF50" size={18} />
-                </span>
-
-                <span className="text-gray-600">Download Report</span>
-              </a>
-            )}
-
-            {cleanedUrl && cleanedUrl.length > 0 && (
-              <a
-                target="__blank"
-                href={cleanedUrl}
-                rel="noopener noreferrer"
-                className="flex-center gap-1  cursor-pointer rounded border bg-teal-50 p-1"
-              >
-                <span>
-                  <GoDownload color="#4CAF50" size={18} />
-                </span>
-
-                <span className="text-gray-600">Download AI Package</span>
+            {props.hasContractDoc === true && (
+              <a target="__blank" href={props.grantContractDoc}>
+                <GoDownload color="#575757" size={18} />
               </a>
             )}
           </div>
         </div>
+      )}
+
+      {props?.grantStatus === "declined" && (
+        <div className="flex flex-col gap-3">
+          <ActivityItems activities={props.orderActivities} />
+
+          <div className="flex-center gap-2">
+            <span className="font-[500] text-[#2B2A2A]">Declined Date: {formatDate(props?.updatedAt)}</span>
+
+            {props.hasContractDoc === true && (
+              <a target="__blank" href={props.grantContractDoc}>
+                <GoDownload color="#575757" size={18} />
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+
+      {props?.grantStatus === "rejected" && (
+        <div className="flex flex-col gap-3">
+          <ActivityItems activities={props.orderActivities} />
+
+          <div className="flex-center gap-2">
+            <span className="font-[500] text-[#2B2A2A]">Rejected Date: {formatDate(props?.updatedAt)}</span>
+
+            {props.hasContractDoc === true && (
+              <a target="__blank" href={props.grantContractDoc}>
+                <GoDownload color="#575757" size={18} />
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+
+      {props?.grantStatus === "applied" && (
+        <div className="flex flex-col gap-3">
+          <ActivityItems activities={props.orderActivities} />
+
+          <div className="flex-center gap-2">
+            <span className="font-[500] text-[#2B2A2A]">Scheduled Date: {''}</span>
+            <span className="font-[500] text-[#2B2A2A]">Call: {''}</span>
+            <span className="font-[500] text-[#2B2A2A]">Payment Status: {props?.paymentStatus?.toUpperCase()}</span>
+
+            {paymentStatusIcon(props?.paymentStatus)}
+
+            {props.hasContractDoc === true && (
+              <a target="__blank" href={props.grantContractDoc}>
+                <GoDownload color="#575757" size={18} />
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  ) : (
+    <>
+      {/* Non-Grant Package Logic */}
+      <ActivityItems activities={props.orderActivities} />
+
+      <div className="flex-center gap-2">
+        <span className="font-[500] text-[#2B2A2A]">Payment: {props?.paymentStatus?.toUpperCase()}</span>
+
+        {paymentStatusIcon(props?.paymentStatus)}
+
+        {props.hasContractDoc === true && (
+              <a target="__blank" href={props.grantContractDoc}>
+                <GoDownload color="#575757" size={18} />
+              </a>
+            )}
+      </div>
+
+      <div className="ml-auto w-fit flex-center gap-6">
+        {props.adminReport?.length && (
+          <a
+            target="__blank"
+            href={props.adminReport}
+            rel="noopener noreferrer"
+            className="flex-center gap-1 cursor-pointer p-1 rounded border bg-teal-50"
+          >
+            <span>
+              <GoDownload color="#4CAF50" size={18} />
+            </span>
+
+            <span className="text-gray-600">Download Report</span>
+          </a>
+        )}
+
+        {cleanedUrl && cleanedUrl.length > 0 && (
+          <a
+            target="__blank"
+            href={cleanedUrl}
+            rel="noopener noreferrer"
+            className="flex-center gap-1  cursor-pointer rounded border bg-teal-50 p-1"
+          >
+            <span>
+              <GoDownload color="#4CAF50" size={18} />
+            </span>
+
+            <span className="text-gray-600">Download AI Package</span>
+          </a>
+        )}
+      </div>
+    </>
+  )}
+</div>
+
       </div>
     </div>
   );
