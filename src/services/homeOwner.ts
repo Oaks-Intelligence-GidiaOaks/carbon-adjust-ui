@@ -1,16 +1,15 @@
 import axiosInstance from "@/api/axiosInstance";
 import { IDispatchData } from "@/interfaces/device.interface";
+import { IAddReview } from "@/interfaces/product.interface";
 import { formatNumber } from "@/lib/utils";
 
 export const getAllPackageCategories = async () => {
   const { data } = await axiosInstance.get(`/packages/categories`);
-
   return data;
 };
 
 export const getHomePagePackages = async () => {
   const { data } = await axiosInstance.get(`/packages/store/home`);
-
   return data;
 };
 
@@ -37,6 +36,10 @@ export const getHoOrders = async () => {
   const { data } = await axiosInstance.get(`application/orders`);
 
   return data;
+
+
+
+
 };
 
 export const createNewOrder = async (iData: any) => {
@@ -198,3 +201,40 @@ export const getDispatchedDevices = async (
 
   return data;
 };
+
+//REVIEWS
+export const getPackagesReviews = async ({ packageId }: { packageId: string }) => {
+  const { data } = await axiosInstance.get(`/packages/${packageId}/reviews`);
+  return data;
+};
+
+export const addReview = async (formData: IAddReview) => {
+  const { data } = await axiosInstance.post("packages/review", formData );
+
+  return data;
+};
+
+//ACCEPT GRANT
+export const acceptGrant = async (applicationId: string) => {
+  const { data } = await axiosInstance.put("application/accept", { applicationId });
+  return data;
+};
+
+//REJECT GRANT
+export const rejectGrant = async (applicationId: string) => {
+  const { data } = await axiosInstance.put("application/decline", { applicationId });
+  return data;
+};
+
+//CANCEL GRANT APPLICATION
+export const cancelApplication = async (applicationId: string) => {
+  const { data } = await axiosInstance.put("/application/cancel", { applicationId });
+  return data;
+};
+
+//GET SUBPACKAGES
+export const getGrantSubCategory= async ({packageId }: { packageId: string }) => {
+  const { data } = await axiosInstance.get(`application/marketplace/${packageId}`);
+  return data;
+};
+

@@ -37,7 +37,7 @@ const Input = ({
         <Label
           htmlFor={props.id}
           className={cn(
-            `mb-1 block text-[#888888] group-valid:text-[#171717] group-has-[:valid]:text-[#171717]`,
+            `mb-1 block text-sm font-poppins text-[#575757] group-valid:text-[#171717] group-has-[:valid]:text-[#171717]`,
             labelClassName
           )}
         >

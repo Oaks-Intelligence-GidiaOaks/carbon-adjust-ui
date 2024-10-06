@@ -11,7 +11,9 @@ import {
   MonitoringEvent,
   SubLevelEvent,
 } from "@/interfaces/events.interface";
-// import Rating from "../../reusables/Rating";
+import Rating from "../../reusables/Rating";
+import GrantCard from "@/components/reusables/GrantCard";
+import SubGrantCard from "@/components/reusables/SubGrantCard";
 
 const DescriptionSection = (props: {
   setStage: Dispatch<SetStateAction<number>>;
@@ -21,8 +23,13 @@ const DescriptionSection = (props: {
   const prod = useSelector((state: RootState) => state.product);
   const { user } = useSelector((state: RootState) => state.user);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [inDescriptionSection, setInDescriptionSection] = useState<boolean>(false);
   const scrollRef = useRef();
 
+     // Track whether the user is in the description section
+  useEffect(() => {
+    setInDescriptionSection(true);
+  }, []);
   // @ts-ignore
   const isVideo = Boolean(prod.videoUrl);
 
@@ -69,6 +76,8 @@ const DescriptionSection = (props: {
     userId: user?._id as string,
     eventName: SubLevelEvent.ORDER_SUMMARY_EVENT,
   };
+  // Conditionally render GrantCard if the product is a grant
+  const isGrant = prod?.category?.name === "Grant";
 
   return (
     <div className="lg:max-w-[60vw] xl:max-w-[55vw] lg:ml-auto">
@@ -131,10 +140,21 @@ const DescriptionSection = (props: {
             Checkout
           </h2>
 
-          <div className=" mx-auto">
-            <ProductCard {...prod!} isMerchant wrapText />
-          </div>
 
+          <div className="mx-auto">
+            {/* Conditionally render GrantCard based on isGrant */}
+            {prod.discount ? (
+              <SubGrantCard {...prod!} isMerchant wrapText />
+            ) : isGrant ? (
+              <GrantCard {...prod!} isMerchant wrapText />
+            ) : (
+              <ProductCard {...prod!} isMerchant wrapText />
+            )}
+          </div>
+          
+
+          
+          
           <div className="gap-y-3 font-inter flex-1 flex flex-col">
             <h2 className="font-[600] text-base text-[#141718]">
               Product Description
@@ -142,7 +162,20 @@ const DescriptionSection = (props: {
 
             <p className="font-[500] text-sm">{prod?.description}</p>
 
-            {/* <Rating /> */}
+            {/* {isGrant && (
+              <div>
+                <p className="text-[#838383] pt-5 text-sm font-poppins">Contract Details</p>
+                <div className="bg-[#FAFAFA] w-full h-10 p-2 mt-2">
+                  <div className="flex justify-between items-center">
+                  <p className="flex gap-1 font-poppins "><File className="text-[#0E89F7] size-5"/> Dousign.pdf</p>
+                  <Download  className="size-4 text-[#BDBDBD]"/>
+                  </div>
+                </div>
+              </div>
+            )} */}
+
+            {/* Passing the package ID to the Rating component */}
+            <Rating packageId={prod._id} />
 
             <div className="flex-center gap-1 pt-2 !mt-auto">
               <button
@@ -158,13 +191,14 @@ const DescriptionSection = (props: {
               >
                 <span>Proceed</span>
               </button>
-
-              <button
-                onClick={() => props.setShowCancel(true)}
-                className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px] text-sm "
-              >
-                <span>Cancel</span>
-              </button>
+              {!isGrant && !inDescriptionSection && (
+                <button
+                  onClick={() => props.setShowCancel(true)}
+                  className="rounded-[12px] font-poppins w-full blue-gradient text-center text-white hover:bg-gradient-to-t h-[46px] text-sm "
+                >
+                  <span>Cancel</span>
+                </button>
+              )}
             </div>
           </div>
         </div>

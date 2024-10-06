@@ -47,7 +47,7 @@ InputProps) => {
       {label && (
         <Label
           htmlFor={props.id}
-          className={`mb-1 block ${labelClassName} text-[#888888] group-valid:text-[#171717] group-has-[:valid]:text-[#171717]`}
+          className={`mb-1 block ${labelClassName} text-sm font-poppins text-[#575757] group-valid:text-[#171717] group-has-[:valid]:text-[#171717]`}
         >
           {label}
           {required && <span className="text-red-500 pl-1">*</span>}
