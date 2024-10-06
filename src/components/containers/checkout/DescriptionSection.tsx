@@ -13,6 +13,7 @@ import {
 } from "@/interfaces/events.interface";
 import Rating from "../../reusables/Rating";
 import GrantCard from "@/components/reusables/GrantCard";
+import SubGrantCard from "@/components/reusables/SubGrantCard";
 
 const DescriptionSection = (props: {
   setStage: Dispatch<SetStateAction<number>>;
@@ -147,13 +148,18 @@ const DescriptionSection = (props: {
 
           <div className="mx-auto">
             {/* Conditionally render GrantCard based on isGrant */}
-            {isGrant ? (
+            {prod.discount ? (
+              <SubGrantCard {...prod!} isMerchant wrapText />
+            ) : isGrant ? (
               <GrantCard {...prod!} isMerchant wrapText />
             ) : (
               <ProductCard {...prod!} isMerchant wrapText />
             )}
           </div>
+          
 
+          
+          
           <div className="gap-y-3 font-inter flex-1 flex flex-col">
             <h2 className="font-[600] text-base text-[#141718]">
               Product Description

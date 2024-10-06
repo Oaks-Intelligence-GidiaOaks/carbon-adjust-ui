@@ -9,6 +9,10 @@ import AddReviewModal from "./AddReview";
 import AcceptGrantModal from "./AcceptGrant";
 import RejectGrantModal from "./RejectGrant";
 import { Dot } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { cancelApplication } from "@/services/homeOwner";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
 
 type AProps = {
   activities: IOrderActivity[];
@@ -17,6 +21,7 @@ type AProps = {
 const OrderCard = (props: IPackageOrder) => {
   // const cleanedUrl = props.aiOrderResponse?.replace(/^"|"$/g, "").trim();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -115,6 +120,26 @@ const OrderCard = (props: IPackageOrder) => {
     setRejectModalOpen(false);
   };
 
+  const { mutate: handleCancel } = useMutation({
+    mutationFn: () => cancelApplication(props?._id), 
+    mutationKey: ['cancel-application', props?._id], 
+    onError: (error: any) => {
+      toast.error(error?.message || 'Something went wrong while cancelling the application');
+    },
+    onSuccess: () => {
+      // Optionally, invalidate queries if you want to update the data
+      // queryClient.invalidateQueries(['get-user-applications']);
+      toast.success('Application cancelled successfully');
+    },
+  });
+
+  // Utility function to format the category name
+const formatSlug = (name: string) => {
+  return name.toLowerCase().replace(/ /g, '-');
+};
+
+const formattedCategory = formatSlug(props.package.title);
+
   const renderGrantButtons = () => {
     const isGrantPackage = props?.domain === "Grant_Package";
 
@@ -158,7 +183,11 @@ const OrderCard = (props: IPackageOrder) => {
               {" "}
               <Dot className="size-7" /> Approved
             </span>
-            <button className="px-4 py-2 bg-[#257FCA] text-white rounded-2xl">
+            <button 
+            onClick={() => {
+              navigate(`/dashboard/marketplace/${formattedCategory}`);
+            }}
+            className="px-4 py-2 bg-[#257FCA] text-white rounded-2xl">
               Proceed to Marketplace
             </button>
           </div>
@@ -171,10 +200,7 @@ const OrderCard = (props: IPackageOrder) => {
               {props?.price}
             </span>
             <button
-              onClick={() => {
-                // Logic to cancel the application
-                console.log("Application cancelled");
-              }}
+              onClick={() => handleCancel()}
               className="px-4 py-2 bg-[#257FCA] text-white rounded-2xl"
             >
               Cancel
@@ -190,8 +216,7 @@ const OrderCard = (props: IPackageOrder) => {
             </span>
             <button
               onClick={() => {
-                // Logic to reapply for the grant
-                console.log("Reapplication initiated");
+                navigate(`/dashboard/marketplace/grant`);
               }}
               className="px-4 py-2 bg-[#257FCA] text-white rounded-2xl"
             >
@@ -351,7 +376,7 @@ const OrderCard = (props: IPackageOrder) => {
           <ActivityItems activities={props.orderActivities} />
 
           <div className="flex-center gap-2">
-            <span className="font-[500] text-[blue]">Approved Grant: {props?.approvedGrant}</span>
+            <span className="font-[500] text-[#2B2A2A]">Approved Grant: {props?.approvedGrant}</span>
             <span className="font-[500] text-[#2B2A2A]">Approved Date: {formatDate(props?.updatedAt)}</span>
 
             {props.hasContractDoc === true && (

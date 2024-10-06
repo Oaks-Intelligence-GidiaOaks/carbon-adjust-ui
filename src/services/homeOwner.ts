@@ -202,7 +202,7 @@ export const getDispatchedDevices = async (
   return data;
 };
 
-//Reviews
+//REVIEWS
 export const getPackagesReviews = async ({ packageId }: { packageId: string }) => {
   const { data } = await axiosInstance.get(`/packages/${packageId}/reviews`);
   return data;
@@ -214,15 +214,27 @@ export const addReview = async (formData: IAddReview) => {
   return data;
 };
 
-//Accept Grant
+//ACCEPT GRANT
 export const acceptGrant = async (applicationId: string) => {
   const { data } = await axiosInstance.put("application/accept", { applicationId });
   return data;
 };
 
-//Reject Grant
+//REJECT GRANT
 export const rejectGrant = async (applicationId: string) => {
   const { data } = await axiosInstance.put("application/decline", { applicationId });
+  return data;
+};
+
+//CANCEL GRANT APPLICATION
+export const cancelApplication = async (applicationId: string) => {
+  const { data } = await axiosInstance.put("/application/cancel", { applicationId });
+  return data;
+};
+
+//GET SUBPACKAGES
+export const getGrantSubCategory= async ({packageId }: { packageId: string }) => {
+  const { data } = await axiosInstance.get(`application/marketplace/${packageId}`);
   return data;
 };
 
