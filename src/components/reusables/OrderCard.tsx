@@ -3,13 +3,11 @@ import { formatDate } from "@/lib/utils";
 import { IComponentMap } from "@/types/general";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { useState } from "react";
-
 import { FaTimesCircle } from "react-icons/fa";
 import { GoDownload } from "react-icons/go";
 import AddReviewModal from "./AddReview";
 import AcceptGrantModal from "./AcceptGrant";
 import RejectGrantModal from "./RejectGrant";
-import toast from "react-hot-toast";
 import { Dot } from "lucide-react";
 
 type AProps = {
@@ -108,10 +106,6 @@ const OrderCard = (props: IPackageOrder) => {
     setAcceptModalOpen(false);
   };
 
-  const handleAccept = () => {
-    // Logic to handle successful grant acceptance, like updating UI or data
-    console.log("Grant accepted successfully");
-  };
 
   const handleOpenRejectModal = () => {
     setRejectModalOpen(true);
@@ -119,10 +113,6 @@ const OrderCard = (props: IPackageOrder) => {
 
   const handleCloseRejectModal = () => {
     setRejectModalOpen(false);
-  };
-
-  const handleReject = () => {
-    // Perform any additional reject logic here (e.g., API call)
   };
 
   const renderGrantButtons = () => {
@@ -152,13 +142,11 @@ const OrderCard = (props: IPackageOrder) => {
             <AcceptGrantModal
               isOpen={isAcceptModalOpen}
               onClose={handleCloseModal}
-              onAccept={handleAccept}
               applicationId={props._id}
             />
             <RejectGrantModal
               isOpen={isRejectModalOpen}
               onClose={handleCloseRejectModal}
-              onReject={handleReject}
               applicationId={props._id}
             />
           </div>

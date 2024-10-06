@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { GrFavorite } from "react-icons/gr";
 import { getPackagesReviews } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
-import GrantCard from './GrantCard'
 import { RootState } from "@/app/store";
 import {
   IAddToBasketEventPayload,
@@ -13,7 +12,7 @@ import {
   SubLevelEvent,
 } from "@/interfaces/events.interface";
 import SocketService from "@/repository/socket";
-import placeholder from "@/assets/icons/grant-placeholder.svg"
+
 
 interface Props extends IProduct {
   wrapText?: boolean;
@@ -53,10 +52,6 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
 
   const stats: Stats | null = data?.data?.stats || null;
   const averageRating = stats?.averageRating || 0;
-
-
-  // Conditionally render GrantCard if the product is a grant
-  const isGrant = props?.category?.name === "Grant"; 
 
   return (
     <>

@@ -6,7 +6,7 @@ import { IPackageOrder } from "@/interfaces/order.interface";
 import { getHoOrders } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
 import OrdersLoading from "@/components/reusables/OrdersLoading";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearOrder } from "@/features/orderSlice";
 import { clearProduct } from "@/features/productSlice";

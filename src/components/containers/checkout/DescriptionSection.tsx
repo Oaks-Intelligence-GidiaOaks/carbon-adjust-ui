@@ -12,7 +12,6 @@ import {
   SubLevelEvent,
 } from "@/interfaces/events.interface";
 import Rating from "../../reusables/Rating";
-import { Download, File } from "lucide-react";
 import GrantCard from "@/components/reusables/GrantCard";
 
 const DescriptionSection = (props: {

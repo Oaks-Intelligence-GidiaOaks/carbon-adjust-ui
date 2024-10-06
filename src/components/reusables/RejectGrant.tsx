@@ -8,10 +8,9 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   applicationId: string;
-  onReject: () => void;
 }
 
-const RejectGrantModal: React.FC<ModalProps> = ({ isOpen, onClose, applicationId, onReject }) => {
+const RejectGrantModal: React.FC<ModalProps> = ({ isOpen, onClose, applicationId }) => {
   const [isLoading, setIsLoading] = useState(false); 
 
 
@@ -22,7 +21,6 @@ const RejectGrantModal: React.FC<ModalProps> = ({ isOpen, onClose, applicationId
     },
     onSuccess: () => {
       toast.error('Grant rejected successfully');
-      onReject();
       onClose(); 
       setIsLoading(false); 
     },

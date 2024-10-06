@@ -1,7 +1,7 @@
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import React, { useState } from 'react';
 import toast from "react-hot-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation} from "@tanstack/react-query";
 import { acceptGrant } from '@/services/homeOwner';
 
 
@@ -10,13 +10,12 @@ interface AcceptGrantProps {
   isOpen: boolean;
   applicationId: string;
   onClose: () => void;
-  onAccept: () => void;
 }
 
-const AcceptGrantModal: React.FC<AcceptGrantProps> = ({ isOpen, applicationId, onClose, onAccept }) => {
+const AcceptGrantModal: React.FC<AcceptGrantProps> = ({ isOpen, applicationId, onClose }) => {
   if (!isOpen) return null;
-  const queryClient = useQueryClient();
-  
+ 
+
   const [isLoading, setisLoading] = useState(false); 
   const [isConfirmed, setIsConfirmed] = useState(false);
 
