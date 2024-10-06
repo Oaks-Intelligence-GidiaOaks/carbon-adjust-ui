@@ -35,6 +35,9 @@ export interface IProduct {
   isMerchant?: boolean;
   videoUrl?: string;
   __v: number;
+  minAmount?: number,
+  maxAmount?: number,
+  hasGrantDoc?: boolean,
 }
 
 export interface ICategory {
@@ -48,4 +51,10 @@ export interface IProdCategory {
     slug: string;
   };
   packages: IProduct[];
+}
+
+export interface IAddReview {  
+  packageId: string;
+  description: string;
+  rating: number;
 }

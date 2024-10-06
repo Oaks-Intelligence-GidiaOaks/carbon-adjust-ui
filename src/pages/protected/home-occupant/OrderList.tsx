@@ -3,8 +3,8 @@
 import OrderCard from "@/components/reusables/OrderCard";
 // import Pagination from "@/components/reusables/Pagination";
 import { IPackageOrder } from "@/interfaces/order.interface";
-import { getHoOrders } from "@/services/homeOwner";
-import { useQuery } from "@tanstack/react-query";
+import {  getHoOrders } from "@/services/homeOwner";
+import {  useQuery } from "@tanstack/react-query";
 import OrdersLoading from "@/components/reusables/OrdersLoading";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,10 +19,13 @@ import {
   PageEvent,
 } from "@/interfaces/events.interface";
 
+
 type Props = {};
 
 const OrderList = (_: Props) => {
   // const [currentPage, setCurrentPage] = useState(1);
+
+
 
   const { user } = useSelector((state: RootState) => state.user);
 
@@ -47,12 +50,16 @@ const OrderList = (_: Props) => {
     queryFn: () => getHoOrders(),
   });
 
+  console.log('new', data)
+
   const hoOrders: IPackageOrder[] = isSuccess ? data.data.orders : [];
 
   useEffect(() => {
     dispatch(clearOrder());
     dispatch(clearProduct());
   }, []);
+
+
 
   // useEffect(() => {
   //   refetch();
