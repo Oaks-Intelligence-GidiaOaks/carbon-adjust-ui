@@ -196,6 +196,12 @@ export type IComponentMap = {
   [key: string | number]: JSX.Element | [] | string;
 };
 
+export type IComponentNestedMap = {
+  [key: string | number]: {
+    [key: string | number]: JSX.Element | [] | string;
+  };
+};
+
 export type IStateMap = {
   [key: string]: number;
 };

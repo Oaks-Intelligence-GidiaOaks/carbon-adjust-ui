@@ -17,6 +17,7 @@ import {
   PackageIcon,
   DeviceIcon,
   WalletIcon,
+  ClaimIcon,
   // ProjectIcon,
 } from "@/assets/icons";
 import { DropdownOption, Finance, Payment } from "@/types/general";
@@ -152,6 +153,17 @@ export const merchantSideBarItems = [
     icon: ApplicationsIcon,
     title: "Applications",
     href: "/merchant/applications",
+  },
+  {
+    icon: ClaimIcon,
+    title: "Claims",
+    href: "/merchant/claims",
+  },
+
+  {
+    icon: WalletIcon,
+    title: "Wallet",
+    href: "/merchant/wallet",
   },
   {
     icon: ProfileIcon,

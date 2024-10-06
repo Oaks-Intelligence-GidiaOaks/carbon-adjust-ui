@@ -1,60 +1,19 @@
-import ApplicationsGrid from "@/components/grid/merchant/ApplicationsGrid";
-import { getAllApplications } from "@/services/merchantService";
-import { transformApplicationsGridData } from "@/utils/reshape";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { RootState } from "@/app/store";
+import RegularApplications from "@/components/containers/merchant/RegularApplications";
+import SuperMerchantApplications from "@/components/containers/merchant/SuperMerchantApplications";
+import { UserRole } from "@/interfaces/user.interface";
+import { useSelector } from "react-redux";
 
 type Props = {};
 
 const Applications = (_: Props) => {
-  // @ts-ignore
-  const [params, setParams] = useState({
-    page: 1,
-    limit: 100,
-  });
+  const { user } = useSelector((state: RootState) => state.user);
 
-  const { data, isSuccess } = useQuery({
-    queryKey: ["get-applications"],
-    queryFn: () => getAllApplications(params.page, params.limit),
-  });
-
-  const NoApplications = () => (
-    <div className="h-[80vh] grid place-items-center">
-      <h2 className="text-lg font-[600] mr-auto text-[#333333]">
-        Applications
-      </h2>
-
-      <div className=" h-fit w-fit text-[#575757] font-[400] flex flex-col gap-3 items-center ">
-        <img src="/assets/graphics/no-package.svg" className="" alt="" />
-
-        <h2 className="font-[600] text-lg ">No Applications yet</h2>
-
-        <p className="text-sm font-[400] w-2/5 text-center">
-          Looks like you don’t any applications yet. Your orders will appear
-          here when users request your service.
-        </p>
-      </div>
-    </div>
-  );
-
-  if (false) {
-    return <NoApplications />;
+  if (user?.roles.includes(UserRole.SUPER_MERCHANT)) {
+    return <SuperMerchantApplications />;
   }
 
-  const tableApps = isSuccess
-    ? transformApplicationsGridData(data.data.orders)
-    : [];
-
-  return (
-    <div className="px-3 lg:px-4">
-      <h2 className="font-[600] text-lg pt-2 ">Applications</h2>
-
-      {/* table */}
-      <div className="-mt-3">
-        <ApplicationsGrid isUpdating data={tableApps} />
-      </div>
-    </div>
-  );
+  return <RegularApplications />;
 };
 
 export default Applications;

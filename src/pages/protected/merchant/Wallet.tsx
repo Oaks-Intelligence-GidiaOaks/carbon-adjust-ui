@@ -1,51 +1,26 @@
 import { FC, useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { BsArrowUp, BsDatabase } from "react-icons/bs";
-import { Button } from "@/components/ui";
-import { cn } from "@/utils";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-// import CarbonCreditChart from "../../components/charts/CarbonCreditChart";
+
+// import { useSelector } from "react-redux";
+// import { RootState } from "@/app/store";
 
 const Wallet: FC = () => {
   const [eyeState, setEyeState] = useState(false);
-
-  const [currentTab, setCurrentTab] = useState("history");
-
-  const tabs = ["1M", "3M", "6M", "9M", "1Y", "All"];
-
-  // const [startDate, setStartDate] = useState(new Date());
 
   const toggleEye = () => {
     setEyeState((prev) => !prev);
   };
 
-  const userData = useSelector((state: RootState) => state.user.user);
+  // const userData = useSelector((state: RootState) => state.user.user);
 
   return (
     <div className="px-6">
-      <p className="font-poppins text-2xl mt-10 text-blue-950">
-        Carbon credit wallet
-      </p>
-      <div className="flex items-center gap-10 mt-10">
-        <div>
-          <h1 className="text-[15px] leading-[19.53px] font-medium font-poppins text-[#139EEC]">
-            Wallet Number
-          </h1>
-          <span className="text-[#212121] leading-[19.53px] font-normal font-poppins text-[14px]">
-            34572753638
-          </span>
-        </div>
-        <div>
-          <h1 className="text-[15px] leading-[19.53px] font-medium font-poppins text-[#139EEC]">
-            Name
-          </h1>
-          <span className="text-[#212121] leading-[19.53px] font-normal font-poppins text-[14px]">
-            {userData?.name}
-          </span>
-        </div>
+      <p className="font-poppins text-2xl mt-10 text-blue-950">Wallet</p>
+      <div className="flex items-center gap-10 mt-2">
+        <h2 className="text-[#212121] leading-[19.53px] font-normal font-poppins text-[14px]">
+          Manage your payments and transactions
+        </h2>
       </div>
 
       <div className="mt-10 flex justify-between flex-wrap">
@@ -168,44 +143,6 @@ const Wallet: FC = () => {
           </div>
         </div>
       </div>
-
-      {/* <CarbonCreditChart /> */}
-      <>
-        <div className="mt-10 h-[250px] border rounded-lg p-4">
-          <div className="flex gap-3 items-center">
-            <h1 className="text-[16px] leading-[19.53px] font-medium font-poppins text-[#139EEC] px-2">
-              Carbon Credit Overview
-            </h1>
-            <div className="flex justify-between flex-1">
-              <Button
-                variant={currentTab === "history" ? "default" : "outline"}
-                onClick={() => setCurrentTab("history")}
-                className={cn(
-                  "font-poppins font-normal h-[31px] hover:bg-gray-100",
-                  currentTab === "history" ? "text-white" : ""
-                )}
-              >
-                History
-              </Button>
-              <div className="flex gap-x-2">
-                {tabs.map((tab, i) => (
-                  <Button
-                    key={i}
-                    variant={currentTab === tab ? "default" : "outline"}
-                    onClick={() => setCurrentTab(tab)}
-                    className={cn(
-                      "font-poppins font-normal h-[31px] hover:bg-gray-100 px-2",
-                      currentTab === tab ? "text-white" : ""
-                    )}
-                  >
-                    {tab}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
     </div>
   );
 };

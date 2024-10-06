@@ -18,6 +18,9 @@ import Loading from "@/components/reusables/Loading";
 import { IoImageOutline } from "react-icons/io5";
 import MediaViewer from "@/components/merchants/MediaViewer";
 import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@/assets/icons";
+import { SubUserCard } from "@/components/reusables/SubUserCard";
+import { PackageDomain } from "@/interfaces/product.interface";
 
 type Props = {};
 
@@ -35,8 +38,19 @@ const PackageDetails = (_: Props) => {
     queryFn: () => getPackageSchedules(packageId as string),
   });
 
-  console.log(packageDetails.data?.data.package);
-  console.log(packageSchedules.data?.data);
+  const isGrantPackage =
+    packageDetails.data?.data.package.packageDomain ===
+    PackageDomain.GRANT_PACKAGE;
+
+  const subMerchants =
+    isGrantPackage && Boolean(packageDetails.data?.data.package.merchant)
+      ? packageDetails.data?.data.package.merchant
+      : null;
+
+  const facilitators =
+    isGrantPackage && Boolean(packageDetails.data?.data.package.facilitators)
+      ? packageDetails.data?.data.package.facilitators
+      : null;
 
   const detail = [
     {
@@ -263,6 +277,64 @@ const PackageDetails = (_: Props) => {
                 )}
               </div>
             </div>
+
+            {isGrantPackage && (
+              <div className="gap-8 flex flex-col md:flex-row ">
+                <div className="flex-1">
+                  <div className="flex-center justify-between">
+                    <h2>Merchants</h2>
+
+                    <Button
+                      variant={"outline"}
+                      size={"sm"}
+                      className="flex-center gap-3"
+                    >
+                      <span>Add Merchant</span>
+
+                      <PlusIcon className="" />
+                    </Button>
+                  </div>
+
+                  <div className="flex flex-col gap-2 mt-4">
+                    {subMerchants.map((it: any, i: number) => (
+                      <SubUserCard
+                        {...it}
+                        key={i}
+                        email="jenniferlopez@gmail.com"
+                        name="Jennifer Alfonsus"
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex-1">
+                  <div className="flex-center justify-between">
+                    <h2>Facilitator</h2>
+
+                    <Button
+                      variant={"outline"}
+                      size={"sm"}
+                      className="flex-center gap-3"
+                    >
+                      <span>Add Facilitator</span>
+
+                      <PlusIcon className="" />
+                    </Button>
+                  </div>
+
+                  <div className="flex flex-col gap-2 mt-4">
+                    {facilitators?.map((it: any, i: number) => (
+                      <SubUserCard
+                        {...it}
+                        key={i}
+                        email="jenniferlopez@gmail.com"
+                        name="Jennifer Alfonsus"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -30,6 +30,7 @@ import {
   MerchantApplications,
   MerchantBookings,
   MerchantDashboard,
+  MerchantNewGrantPackage,
   MerchantNewPackage,
   MerchantOrderDetails,
   MerchantPackageDetails,
@@ -38,6 +39,8 @@ import {
   MerchantStaff,
   MerchantWallet,
   StaffDetails,
+  SuperMerchantClaims,
+  SuperMerchantSubApplications,
   UpdatePackageDetails,
 } from "@/pages/protected/merchant";
 import {
@@ -240,6 +243,23 @@ const Router = createBrowserRouter([
         ],
       },
       {
+        path: "grant-applications",
+        children: [
+          {
+            path: "",
+            element: <MerchantApplications />,
+          },
+          {
+            path: ":applicationId",
+            element: <SuperMerchantSubApplications />,
+          },
+        ],
+      },
+      {
+        path: "claims",
+        element: <SuperMerchantClaims />,
+      },
+      {
         path: "bookings",
         element: <MerchantBookings />,
       },
@@ -273,6 +293,15 @@ const Router = createBrowserRouter([
           {
             path: "update/:packageId",
             element: <UpdatePackageDetails />,
+          },
+        ],
+      },
+      {
+        path: "grant-packages",
+        children: [
+          {
+            path: "new",
+            element: <MerchantNewGrantPackage />,
           },
         ],
       },

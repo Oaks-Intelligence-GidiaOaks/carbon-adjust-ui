@@ -15,7 +15,7 @@ type Props = {};
 const Applications = (_: Props) => {
   const { data, isSuccess } = useQuery({
     queryKey: ["get-applications"],
-    queryFn: () => getAllApplications(),
+    queryFn: () => getAllApplications("Regular_Package"),
   });
 
   // console.log(data.data);
