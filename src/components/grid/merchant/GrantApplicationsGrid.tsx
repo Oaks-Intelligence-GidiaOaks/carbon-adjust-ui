@@ -21,6 +21,7 @@ import { formatDate } from "@/lib/utils";
 
 import ViewGrantApplicationModal from "@/components/dialogs/ViewGrantApplicationModal";
 import { useNavigate } from "react-router-dom";
+import { formatNumberWithCommas } from "@/utils";
 
 const GrantApplicationsGrid = ({
   data,
@@ -89,7 +90,7 @@ const GrantApplicationsGrid = ({
       header: () => <div className="w-44 text-left">Customer Name</div>,
     }),
 
-    columnHelper.accessor((row: any) => row?.package.name, {
+    columnHelper.accessor((row: any) => row?.package.title, {
       id: "packageName",
       cell: (info) => (
         <div className="w-60 mx-auto text-left">
@@ -113,7 +114,7 @@ const GrantApplicationsGrid = ({
       cell: (info: any) => (
         <div>
           {(info.row.original as any).approvedGrant
-            ? info.getValue()
+            ? `£${formatNumberWithCommas(info.getValue())}`
             : "--------------------"}
         </div>
       ),
@@ -122,191 +123,16 @@ const GrantApplicationsGrid = ({
 
     // Amount Spent
 
-    columnHelper.accessor((row: any) => row?.status, {
-      id: "status",
+    columnHelper.accessor((row: any) => row?.grantStatus, {
+      id: "grantStatus",
       cell: (info: any) => (
         <div className="w-44 relative text-center grid place-items-center items-center text-sm gap-x-2">
-          <span>
-            {(info.row.original as any).status === "pending" ? (
-              <span
-                style={{ color: "#139EEC", background: "#139EEC30" }}
-                className="w-36 py-1 rounded-full inline-flex gap-x-2 justify-center mx-auto"
-              >
-                <div>
-                  {(info.row.original as any).status === "pending" ? (
-                    <span
-                      style={{ color: "#139EEC", background: "#139EEC" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "completed" ? (
-                    <span
-                      style={{ color: "#8AC926", background: "#8AC926" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "cancelled" ? (
-                    <span
-                      style={{ color: "#FF595E", background: "#FF595E" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "processing" ? (
-                    <span
-                      style={{ color: "#7c4804", background: "#7c4804" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (
-                    <span
-                      style={{ color: "#FF595E", background: "#FF595E" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  )}
-                </div>
-                Pending
-              </span>
-            ) : (info.row.original as any).status === "completed" ? (
-              <span
-                style={{ color: "#8AC926", background: "#8AC92630" }}
-                className="w-36 py-1 rounded-full inline-flex gap-x-2 justify-center mx-auto"
-              >
-                <div>
-                  {(info.row.original as any).status === "pending" ? (
-                    <span
-                      style={{ color: "#139EEC", background: "#139EEC" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "completed" ? (
-                    <span
-                      style={{ color: "#8AC926", background: "#8AC926" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "cancelled" ? (
-                    <span
-                      style={{ color: "#FF595E", background: "#FF595E" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "processing" ? (
-                    <span
-                      style={{ color: "#7c4804", background: "#7c4804" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (
-                    <span
-                      style={{ color: "#FF595E", background: "#FF595E" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  )}
-                </div>
-                Completed
-              </span>
-            ) : (info.row.original as any).status === "cancelled" ? (
-              <span
-                style={{ color: "#FF595E", background: "#FF595E30" }}
-                className="w-36 py-1 rounded-full inline-flex gap-x-2 justify-center mx-auto"
-              >
-                <div>
-                  {(info.row.original as any).status === "pending" ? (
-                    <span
-                      style={{ color: "#139EEC", background: "#139EEC" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "completed" ? (
-                    <span
-                      style={{ color: "#8AC926", background: "#8AC926" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "cancelled" ? (
-                    <span
-                      style={{ color: "#FF595E", background: "#FF595E" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "processing" ? (
-                    <span
-                      style={{ color: "#7c4804", background: "#7c4804" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (
-                    <span
-                      style={{ color: "#FF595E", background: "#FF595E" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  )}
-                </div>
-                Declined
-              </span>
-            ) : (info.row.original as any).status === "processing" ? (
-              <span
-                style={{ color: "#7c4804", background: "#7c480430" }}
-                className="w-36 py-1 rounded-full inline-flex gap-x-2 justify-center mx-auto"
-              >
-                <div>
-                  {(info.row.original as any).status === "pending" ? (
-                    <span
-                      style={{ color: "#139EEC", background: "#139EEC" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "completed" ? (
-                    <span
-                      style={{ color: "#8AC926", background: "#8AC926" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "cancelled" ? (
-                    <span
-                      style={{ color: "#FF595E", background: "#FF595E" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "processing" ? (
-                    <span
-                      style={{ color: "#7c4804", background: "#7c4804" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (
-                    <span
-                      style={{ color: "#FF595E", background: "#FF595E" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  )}
-                </div>
-                Disabled
-              </span>
-            ) : (
-              <span
-                style={{ color: "#FF595E", background: "#FF595E30" }}
-                className="w-36 py-1 rounded-full inline-flex gap-x-2 justify-center mx-auto"
-              >
-                <div>
-                  {(info.row.original as any).status === "pending" ? (
-                    <span
-                      style={{ color: "#139EEC", background: "#139EEC" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "completed" ? (
-                    <span
-                      style={{ color: "#8AC926", background: "#8AC926" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "cancelled" ? (
-                    <span
-                      style={{ color: "#FF595E", background: "#FF595E" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (info.row.original as any).status === "processing" ? (
-                    <span
-                      style={{ color: "#7c4804", background: "#7c4804" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  ) : (
-                    <span
-                      style={{ color: "#FF595E", background: "#FF595E" }}
-                      className="size-2 py-1 rounded-full inline-block mx-auto"
-                    ></span>
-                  )}
-                </div>
-                Rejected
-              </span>
-            )}
-          </span>
+          <span>{info.getValue()}</span>
         </div>
       ),
-      header: () => <div className="w-32 whitespace-nowrap">Status</div>,
+      header: () => (
+        <div className="w-32 whitespace-nowrap text-center">Status</div>
+      ),
     }),
 
     //

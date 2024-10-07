@@ -17,3 +17,4 @@ export { default as AddStaff } from "./AddStaff";
 export { default as StaffDetails } from "./StaffDetails";
 export { default as SuperMerchantSubApplications } from "./SubApplications";
 export { default as SuperMerchantClaims } from "./Claims";
+export { default as MerchantNewClaim } from "./NewClaim";

@@ -12,3 +12,10 @@ export interface IClaim {
   summaryReport: string[];
   status: ClaimStatus;
 }
+
+export interface IClaimDataForm {
+  name: string;
+  description: string;
+  category: { label: string; value: string };
+  amount: number;
+}

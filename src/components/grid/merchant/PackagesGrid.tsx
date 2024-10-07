@@ -27,8 +27,16 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 // @ts-ignore
 import { UserRole } from "@/interfaces/user.interface";
+import { formatNumberWithCommas } from "@/utils";
 
-const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
+const PackagesGrid = ({
+  data,
+  isGrant,
+}: {
+  data: any[];
+  isUpdating: boolean;
+  isGrant?: boolean;
+}) => {
   // @ts-ignore
   const { user } = useSelector((state: RootState) => state.user);
 
@@ -154,9 +162,11 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
             {Boolean(
               (info.row.original as any).packageDomain === "Grant_Package"
             )
-              ? `£${(info.row.original as any).minAmount} - £${
+              ? `£${formatNumberWithCommas(
+                  (info.row.original as any).minAmount
+                )} - £${formatNumberWithCommas(
                   (info.row.original as any).maxAmount
-                }`
+                )}`
               : info.getValue()}
           </div>
         </>
@@ -238,7 +248,7 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     //
   ];
 
-  if (isSuperMerchant && true) {
+  if (isSuperMerchant && isGrant) {
     columns.splice(
       3,
       0,

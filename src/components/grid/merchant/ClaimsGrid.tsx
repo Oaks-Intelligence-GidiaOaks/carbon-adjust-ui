@@ -18,23 +18,49 @@ import { useRef, useState } from "react";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdDone } from "react-icons/md";
+import GridDocField from "@/components/reusables/GridDocField";
+import { formatDate } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateClaimStatus } from "@/services/merchantService";
+import toast from "react-hot-toast";
 
 const ClaimsGrid = ({
   data,
-}: //   isSuperMerchant,
-{
+  hideAction,
+}: {
   data: IClaim[];
-  isSuperMerchant?: boolean;
+  hideAction?: boolean;
 }) => {
+  const queryClient = useQueryClient();
+
   const [showModal, setShowModal] = useState(false);
   const [currentRowId, setCurrentRowId] = useState<string | null>(null);
   const actionButtonsRef = useRef<HTMLDivElement>(null);
+
+  const UpdateClaimStatus = useMutation({
+    mutationKey: ["update-claim-status"],
+    mutationFn: (arg: { claimId: string; status: string }) =>
+      updateClaimStatus(arg),
+    onSuccess: (sx) => {
+      toast.success(sx.message);
+      setShowModal(false);
+    },
+    onError: (ex: any) => {
+      toast.error(ex.response.data.message);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["get-customer-claims"],
+      });
+    },
+  });
 
   const handleActionClick = (id: any) => {
     if (currentRowId === id) {
       setShowModal((prevState) => !prevState);
     } else {
       setCurrentRowId(id);
+      ``;
       setShowModal(true);
     }
   };
@@ -43,73 +69,94 @@ const ClaimsGrid = ({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterQuery, setFilterQuery] = useState("");
 
-  const columns = [
+  let columns = [
     columnHelper.accessor((_, rowIndex) => ({ serialNumber: rowIndex + 1 }), {
       id: "serialNumber",
       cell: (info) => (
-        <div className="w-14 mx-auto text-center">
+        <div className="w-24 mx-auto text-center">
           {info.getValue().serialNumber}{" "}
         </div>
       ),
-      header: () => <div className="w-14 px-1 text-center">S/N</div>,
+      header: () => <div className="w-24 px-1 text-center">S/N</div>,
     }),
 
     columnHelper.accessor((row: any) => row._id, {
       id: "_id",
       cell: (info) => (
-        <div className="w-24 mx-auto text-center">{info.getValue()}</div>
+        <div className="w-60 mx-auto text-center">{info.getValue()}</div>
       ),
-      header: () => <div className="w-14 px-1 text-center">Claim ID</div>,
+      header: () => <div className="w-48 px-1 text-center">Claim ID</div>,
     }),
 
     columnHelper.accessor((row: any) => row.packageName, {
       id: "packageName",
       cell: (info) => (
-        <div className="w-24 mx-auto text-center">{info.getValue()}</div>
+        <div className="w-60 mx-auto text-center">{info.getValue()}</div>
       ),
-      header: () => <div className="w-14 px-1 text-center">Package Name</div>,
+      header: () => <div className="w-48 px-1 text-center">Package Name</div>,
     }),
 
     columnHelper.accessor((row: any) => row.grants, {
       id: "grants",
       cell: (info) => (
-        <div className="w-24 mx-auto text-center">{info.getValue()}</div>
+        <div className="w-60 mx-auto text-center">
+          {(info.row.original as any).category || info.getValue()}
+        </div>
       ),
-      header: () => <div className="w-14 px-1 text-center">Category</div>,
+      header: () => <div className="w-48 px-1 text-center">Category</div>,
     }),
 
     columnHelper.accessor((row: any) => row.bookingDate, {
       id: "bookingDate",
       cell: (info) => (
-        <div className="w-24 mx-auto text-center">{info.getValue()}</div>
+        <div className="w-60 mx-auto text-center">
+          {formatDate(info.getValue())}
+        </div>
       ),
-      header: () => <div className="w-14 px-1 text-center">Booking Date</div>,
+      header: () => <div className="w-48 px-1 text-center">Booking Date</div>,
     }),
 
     columnHelper.accessor((row: any) => row.claim, {
       id: "claim",
       cell: (info) => (
-        <div className="w-24 mx-auto text-center">{info.getValue()}</div>
+        <div className="w-60 mx-auto text-center">
+          {(info.row.original as any).amount || info.getValue()}
+        </div>
       ),
-      header: () => <div className="w-14 px-1 text-center">Claim Amount</div>,
+      header: () => <div className="w-48 px-1 text-center">Claim Amount</div>,
     }),
 
     columnHelper.accessor((row: any) => row.summaryReport, {
       id: "summaryReport",
-      cell: (info) => (
-        <div className="w-24 mx-auto text-center">{info.getValue()}</div>
-      ),
+      cell: (info) => {
+        const docs = [];
+
+        if ((info.row.original as any).summaryReport?.length) {
+          for (let i of info.getValue()) {
+            docs.push({
+              url: i,
+              idType: "Merchant Report",
+            });
+          }
+        }
+
+        return (
+          <div>
+            <GridDocField docs={docs || []} />;
+          </div>
+        );
+      },
       header: () => (
-        <div className="w-14 px-1 text-center">Summary Report </div>
+        <div className="w-48 px-1 text-center">Summary Report </div>
       ),
     }),
 
     columnHelper.accessor((row: any) => row.status, {
       id: "status",
       cell: (info) => (
-        <div className="w-24 mx-auto text-center">{info.getValue()}</div>
+        <div className="w-60 mx-auto text-center">{info.getValue()}</div>
       ),
-      header: () => <div className="w-14 px-1 text-center">Status</div>,
+      header: () => <div className="w-48 px-1 text-center">Status</div>,
     }),
 
     columnHelper.accessor((row: any) => row._id, {
@@ -131,9 +178,9 @@ const ClaimsGrid = ({
               <div
                 key={info.getValue()}
                 ref={actionButtonsRef}
-                className="absolute top-[-30px] flex flex-col gap-y-2 z-10 right-[40px] bg-white border border-gray-300  rounded p-2"
+                className="absolute top-[-30px] flex flex-col gap-y-3 z-10 right-[40px] bg-white border border-gray-300  rounded p-2"
               >
-                <div
+                {/* <div
                   onClick={() => {}}
                   className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
                 >
@@ -142,6 +189,22 @@ const ClaimsGrid = ({
                   </div>
 
                   <span>View Details</span>
+                </div> */}
+
+                <div
+                  onClick={() =>
+                    UpdateClaimStatus.mutateAsync({
+                      claimId: info.getValue(),
+                      status: "complete",
+                    })
+                  }
+                  className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
+                >
+                  <div className="rounded-full bg-blue-500 p-1">
+                    <MdDone className="text-white text-base size-3" />
+                  </div>
+
+                  <span>Approve</span>
                 </div>
               </div>
             )}
@@ -151,6 +214,10 @@ const ClaimsGrid = ({
       header: () => <div className="">Action</div>,
     }),
   ];
+
+  if (hideAction) {
+    columns = columns.slice(0, -1);
+  }
 
   const table = useReactTable({
     data: data || [],

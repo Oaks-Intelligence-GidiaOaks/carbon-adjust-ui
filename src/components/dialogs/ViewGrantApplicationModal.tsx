@@ -18,6 +18,7 @@ import {
 } from "@/services/merchantService";
 import { formatNumberWithCommas } from "@/utils";
 import { MdDownload } from "react-icons/md";
+import { Button } from "../ui";
 
 const ViewGrantApplicationModal = (props: {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -235,14 +236,11 @@ const ViewGrantApplicationModal = (props: {
 
             {!props?.rowData?.approvedGrant && (
               <>
-                <button
+                <Button
                   disabled={false}
                   onClick={() => handleSubmit("approve")}
-                  className={`${
-                    false ? "bg-gray-300" : "blue-gradient"
-                  } rounded-[12px] mt-[40px] font-poppins w-full  hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px] grid place-items-center`}
                 >
-                  {false ? (
+                  {ApproveGrant.isPending ? (
                     <Oval
                       visible={true}
                       height="20"
@@ -255,16 +253,14 @@ const ViewGrantApplicationModal = (props: {
                   ) : (
                     <span>Approve</span>
                   )}
-                </button>
+                </Button>
 
-                <button
-                  disabled={false}
+                <Button
+                  variant={"destructive"}
+                  disabled={RejectGrant.isPending}
                   onClick={() => handleSubmit("reject")}
-                  className={`${
-                    false ? "bg-gray-300" : "blue-gradient"
-                  } rounded-[12px] font-poppins w-full  text-center text-white border-red-300 h-[46px] grid place-items-center`}
                 >
-                  {false ? (
+                  {RejectGrant.isPending ? (
                     <Oval
                       visible={true}
                       height="20"
@@ -277,7 +273,7 @@ const ViewGrantApplicationModal = (props: {
                   ) : (
                     <span>Reject</span>
                   )}
-                </button>
+                </Button>
               </>
             )}
           </div>

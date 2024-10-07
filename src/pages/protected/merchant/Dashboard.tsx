@@ -91,7 +91,7 @@ const Dashboard = (_: Props) => {
           <img src="/assets/icons/org-dashboard/project.svg" />
         </div>
       ),
-      viewAllUrl: "/merchant/packages/all",
+      viewAllUrl: "/merchant/applications",
     },
     {
       title: "Total Earnings",
@@ -114,7 +114,7 @@ const Dashboard = (_: Props) => {
           <GrantIcon />
         </div>
       ),
-      viewAllUrl: "/merchant/grant/all",
+      viewAllUrl: "/merchant/packages",
     },
   ];
 

@@ -1,16 +1,23 @@
 import ApplicationsGrid from "@/components/grid/merchant/ApplicationsGrid";
 import Search from "@/components/ui/Search";
 import { getSuperMerchantSubApplications } from "@/services/merchantService";
+import { transformApplicationsGridData } from "@/utils/reshape";
 import { useQuery } from "@tanstack/react-query";
 import { MdOutlineArrowBack } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const SubApplications = () => {
+  const { applicationId } = useParams();
+
   // @ts-ignore
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ["get-sub-applications"],
-    queryFn: () => getSuperMerchantSubApplications(),
+    queryFn: () => getSuperMerchantSubApplications(applicationId!),
   });
+
+  const tableApps = isSuccess ? transformApplicationsGridData(data.data) : [];
+
+  const customerName = tableApps[0]?.customer.name;
 
   return (
     <div className=" px-6 py-4`">
@@ -21,7 +28,7 @@ const SubApplications = () => {
         </Link>
 
         <h2 className="font-[600] text-2xl tracking-tight">
-          Mathew Daniels Applications
+          {customerName || ""} Applications
         </h2>
       </div>
 
@@ -30,7 +37,7 @@ const SubApplications = () => {
         <Search />
 
         <div className="">
-          <ApplicationsGrid data={[]} isUpdating />
+          <ApplicationsGrid data={tableApps} isUpdating />
         </div>
       </div>
     </div>

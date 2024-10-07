@@ -1,16 +1,22 @@
+import { RootState } from "@/app/store";
 import ChoosePackageType from "@/components/dialogs/ChoosePackageType";
 import PackagesGrid from "@/components/grid/merchant/PackagesGrid";
 import MerchantGrantCard from "@/components/reusables/MerchantGrantCard";
+import { UserRole } from "@/interfaces/user.interface";
 import { getGrantPackages } from "@/services/merchantService";
 import { transformGrantPackages } from "@/utils/reshape";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 const GrantPackages = () => {
+  const { user } = useSelector((state: RootState) => state.user);
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const {
     data: grantPkgs,
@@ -25,6 +31,14 @@ const GrantPackages = () => {
     ? transformGrantPackages(grantPkgs.data.packages)
     : [];
 
+  const handleCreatePackageClick = () => {
+    if (user?.roles.includes(UserRole.SUPER_MERCHANT)) {
+      setShowModal(true);
+    } else {
+      navigate("/merchant/packages/new");
+    }
+  };
+
   return (
     <div className="px-3 lg:px-4 sm:max-w-[calc(100vw-280px)]">
       <div className="flex-center justify-between">
@@ -33,7 +47,7 @@ const GrantPackages = () => {
         </div>
 
         <button
-          onClick={() => {}}
+          onClick={handleCreatePackageClick}
           className=" flex-center gap-3 h-[46px] text-sm bg-[#2196F3] rounded-[10px] text-white px-4"
         >
           <span className="hidden md:inline-flex">Create package</span>
@@ -68,7 +82,7 @@ const GrantPackages = () => {
 
         {/* table */}
         <div className="-mt-3">
-          <PackagesGrid data={tablePkgs} isUpdating />
+          <PackagesGrid data={tablePkgs} isUpdating isGrant />
         </div>
       </div>
 

@@ -30,6 +30,7 @@ import {
   MerchantApplications,
   MerchantBookings,
   MerchantDashboard,
+  MerchantNewClaim,
   MerchantNewGrantPackage,
   MerchantNewPackage,
   MerchantOrderDetails,
@@ -257,7 +258,16 @@ const Router = createBrowserRouter([
       },
       {
         path: "claims",
-        element: <SuperMerchantClaims />,
+        children: [
+          {
+            path: "",
+            element: <SuperMerchantClaims />,
+          },
+          {
+            path: "new",
+            element: <MerchantNewClaim />,
+          },
+        ],
       },
       {
         path: "bookings",

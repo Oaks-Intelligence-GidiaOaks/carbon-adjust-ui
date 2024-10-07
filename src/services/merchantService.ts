@@ -119,8 +119,10 @@ export const getApplicationsChart = async (year: number) => {
 };
 
 // Get SubApplications by PackageID
-export const getSuperMerchantSubApplications = async () => {
-  const { data } = await axiosInstance.get(`/`);
+export const getSuperMerchantSubApplications = async (
+  applicationId: string
+) => {
+  const { data } = await axiosInstance.get(`/application/ho/${applicationId}`);
 
   return data;
 };
@@ -200,6 +202,47 @@ export const uploadReport = async (orderId: string, formData: FormData) => {
       },
     }
   );
+
+  return data;
+};
+
+// CLAIM
+export const createClaim = async (arg: {
+  inputData: FormData;
+  packageId: string;
+}) => {
+  const { data } = await axiosInstance.post(
+    `/claims/${arg.packageId}`,
+    arg.inputData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return data;
+};
+
+export const grantMerchantClaims = async () => {
+  const { data } = await axiosInstance.get(`/claims/get-claims`);
+
+  return data;
+};
+
+export const getCustomerClaims = async () => {
+  const { data } = await axiosInstance.get(`/claims/customer-claims`);
+
+  return data;
+};
+
+export const updateClaimStatus = async (arg: {
+  claimId: string;
+  status: string;
+}) => {
+  const { data } = await axiosInstance.patch(`claims/${arg.claimId}/status`, {
+    status: arg.status,
+  });
 
   return data;
 };

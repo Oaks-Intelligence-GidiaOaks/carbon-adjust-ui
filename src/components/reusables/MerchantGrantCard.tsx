@@ -29,7 +29,7 @@ const MerchantGrantCard = (
     onSuccess: () => {
       toast.success("Package published successfully");
       queryClient.invalidateQueries({
-        queryKey: ["get-packages"],
+        queryKey: ["get-grant-packages"],
       });
     },
     onError: () => {
