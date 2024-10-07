@@ -156,10 +156,7 @@ const DescriptionSection = (props: {
               <ProductCard {...prod!} isMerchant wrapText />
             )}
           </div>
-          
-
-          
-          
+        
           <div className="gap-y-3 font-inter flex-1 flex flex-col">
             <h2 className="font-[600] text-base text-[#141718]">
               Product Description

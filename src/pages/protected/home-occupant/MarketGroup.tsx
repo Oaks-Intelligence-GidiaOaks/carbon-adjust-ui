@@ -19,6 +19,7 @@ import SocketService from "@/repository/socket";
 import GrantProductCheckout from "@/components/reusables/GrantCheckout";
 import GrantCard from "@/components/reusables/GrantCard";
 import SubGrantCard from "@/components/reusables/SubGrantCard";
+import SubGrantCheckout from "@/components/reusables/SubGrantCheckout";
 
 type Props = {};
 
@@ -66,7 +67,7 @@ const MarketGroup = (_: Props) => {
   // Check if the category is "Grant"
   const isGrant = categoryName.toLowerCase() === "grant";
 
-  console.log("Category Data:", categoryData);
+  console.log("Category Data:", categoryData?.data?.packages?.[0]?.discount);
 
   return (
     <div className="relative">
@@ -101,7 +102,7 @@ const MarketGroup = (_: Props) => {
         ) : (
           Boolean(catProducts.length) &&
           catProducts.slice(6).map((item) =>
-            pid ? (
+            item.discount ? (
               <SubGrantCard {...item} key={item._id} />
             ) : isGrant ? (
               <GrantCard {...item} key={item._id} />
@@ -113,22 +114,33 @@ const MarketGroup = (_: Props) => {
       </div>
 
       {pid && (
-        <>
-          {isGrant ? (
-            <GrantProductCheckout
-              categoryName={categoryName}
-              setShowcheckout={closeModal}
-              showCheckout={true}
-            />
-          ) : (
-            <ProductCheckout
-              categoryName={categoryName}
-              setShowcheckout={closeModal}
-              showCheckout={true}
-            />
-          )}
-        </>
-      )}
+  <>
+    {categoryData?.data?.packages?.discount ? (
+      <SubGrantCheckout
+        categoryName={categoryName}
+        setShowcheckout={closeModal}
+        showCheckout={true}
+      />
+    ) :  isGrant ? ( 
+      <GrantProductCheckout
+        categoryName={categoryName}
+        setShowcheckout={closeModal}
+        showCheckout={true}
+      />
+    ) : (
+      // <ProductCheckout
+      //   categoryName={categoryName}
+      //   setShowcheckout={closeModal}
+      //   showCheckout={true}
+      // />
+      <SubGrantCheckout
+        categoryName={categoryName}
+        setShowcheckout={closeModal}
+        showCheckout={true}
+      />
+    )}
+  </>
+)}
     </div>
   );
 };

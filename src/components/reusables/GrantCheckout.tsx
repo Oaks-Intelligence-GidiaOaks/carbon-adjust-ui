@@ -69,27 +69,6 @@ const GrantProductCheckout = (props: {
         setShowcheckout={cancelCheckout}
       />
     ),
-    3: (
-      <OrderSummary
-        setShowCancel={setShowCancel}
-        setStage={setStage}
-        setShowcheckout={cancelCheckout}
-      />
-    ),
-    4: (
-      <ProcessingPayment
-        setShowCancel={setShowCancel}
-        setStage={setStage}
-        setShowcheckout={cancelCheckout}
-      />
-    ),
-    5: (
-      <PaymentSuccessful
-        setShowCancel={setShowCancel}
-        setStage={setStage}
-        setShowcheckout={cancelCheckout}
-      />
-    ),
   };
 
   // Component - component

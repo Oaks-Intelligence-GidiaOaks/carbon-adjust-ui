@@ -3,8 +3,6 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 import { IComponentMap } from "@/types/general";
 import DescriptionSection from "../containers/checkout/DescriptionSection";
-
-import OrderSummary from "../containers/checkout/OrderSummary";
 import PaymentSuccessful from "../containers/checkout/PaymentSuccessful";
 import ProcessingPayment from "../containers/checkout/ProcessingPayment";
 import CloseModal from "./CloseModal";
@@ -19,9 +17,10 @@ import {
   SubLevelEvent,
 } from "@/interfaces/events.interface";
 import { RootState } from "@/app/store";
-import GrantProductForm from "../containers/checkout/GrantProductForm";
+import GrantOrderSummary from "../containers/checkout/GrantOrderSummary";
 
-const GrantProductCheckout = (props: {
+
+const SubGrantCheckout = (props: {
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
   showCheckout: boolean;
   categoryName: string;
@@ -63,27 +62,20 @@ const GrantProductCheckout = (props: {
       />
     ),
     2: (
-      <GrantProductForm
+      <GrantOrderSummary
         setShowCancel={setShowCancel}
         setStage={setStage}
         setShowcheckout={cancelCheckout}
       />
     ),
     3: (
-      <OrderSummary
-        setShowCancel={setShowCancel}
-        setStage={setStage}
-        setShowcheckout={cancelCheckout}
-      />
-    ),
-    4: (
       <ProcessingPayment
         setShowCancel={setShowCancel}
         setStage={setStage}
         setShowcheckout={cancelCheckout}
       />
     ),
-    5: (
+    4: (
       <PaymentSuccessful
         setShowCancel={setShowCancel}
         setStage={setStage}
@@ -129,4 +121,4 @@ const GrantProductCheckout = (props: {
   );
 };
 
-export default GrantProductCheckout;
+export default SubGrantCheckout;
