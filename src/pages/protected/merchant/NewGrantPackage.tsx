@@ -134,7 +134,6 @@ const NewGrantPackage = (_: Props) => {
                   [`questions[${index}][isRequired]`]: q.isRequired,
                   [`questions[${index}][questionType]`]: q.questionType.value,
                 };
-
                 // Handle options for each question
                 const options =
                   !Boolean(q.options?.length) &&
@@ -398,7 +397,7 @@ const NewGrantPackage = (_: Props) => {
             </div>
           </div>
 
-          <div className="flex-center gap-[11px]">
+          {/* <div className="flex-center gap-[11px]">
             <input
               type="checkbox"
               name=""
@@ -422,7 +421,7 @@ const NewGrantPackage = (_: Props) => {
             />
 
             <p>Additional Questions</p>
-          </div>
+          </div> */}
 
           {packageState.hasQuestion && (
             <div className="mt-4 flex flex-col gap-y-6">
