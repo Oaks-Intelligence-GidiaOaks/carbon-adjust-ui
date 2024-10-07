@@ -26,6 +26,8 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
     setRating(index);
   };
 
+  
+
   const { mutate: submitReview } = useMutation({
     mutationFn: (reviewData: any) => addReview(reviewData),
     mutationKey: ["package-review-submission"],

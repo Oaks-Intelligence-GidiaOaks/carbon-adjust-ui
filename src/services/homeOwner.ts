@@ -238,3 +238,8 @@ export const getGrantSubCategory= async ({packageId }: { packageId: string }) =>
   return data;
 };
 
+//RESTRICTED CARDS
+export const getRestrictedWallet = async () => {
+  const { data } = await axiosInstance.get(`wallet/info?walletType=RESTRICTED`); 
+  return data;
+};
