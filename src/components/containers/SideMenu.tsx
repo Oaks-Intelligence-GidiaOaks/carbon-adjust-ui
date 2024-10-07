@@ -35,7 +35,7 @@ const SideMenu = ({
       {/* desktop sidebar */}
       <div
         className={cn(
-          "lg:w-fit max-w-[100px] min-w-[50px] w-fit h-screen px-4 sm:sticky  pb-10 z-10 border-r top-0 hidden md:block fixed bg-white",
+          "lg:w-fit max-w-[100px] min-w-[50px] w-fit h-screen px-4 sm:sticky  pb-10 z-10 border-r top-0 hidden md:block fixed bg-white"
         )}
       >
         <div className="grid place-items-center pt-12 pb-2 z-10">
@@ -70,14 +70,14 @@ const SideMenu = ({
                         " gap-4 items-center font-manrope rounded-full h-12 w-12 grid place-items-center",
                         pathname === `${item.href}`
                           ? "bg-gradient-to-r from-blue-secondary to-blue-main"
-                          : "hover:bg-[#D6F2DE]",
+                          : "hover:bg-[#D6F2DE]"
                       )}
                     >
                       <Icon
                         className={cn(
                           pathname === `${item.href}`
                             ? "invert brightness-0"
-                            : "",
+                            : ""
                         )}
                       />
                     </Link>
@@ -94,29 +94,46 @@ const SideMenu = ({
                 </Tooltip.Root>
               </Tooltip.Provider>
             ) : (
-              <div
-                key={i}
-                role="button"
-                className={cn(
-                  "flex gap-4 py-3 px-2 pl-4 items-center font-manrope rounded-full",
-                  pathname === `${item.href}`
-                    ? "bg-gradient-to-r from-blue-secondary to-blue-main"
-                    : "hover:bg-[#D6F2DE]",
-                )}
-                onClick={() => {
-                  persistor.pause();
-                  persistor.flush().then(() => {
-                    return persistor.purge();
-                  });
-                  window.location.assign("/");
-                }}
-              >
-                <Icon
-                  className={cn(
-                    pathname === `${item.href}` ? "invert brightness-0" : "",
-                  )}
-                />
-              </div>
+              <Tooltip.Provider>
+                <Tooltip.Root>
+                  <Tooltip.Trigger asChild>
+                    <div
+                      key={i}
+                      role="button"
+                      className={cn(
+                        "flex gap-4 py-3 px-2 pl-4 items-center font-manrope rounded-full",
+                        pathname === `${item.href}`
+                          ? "bg-gradient-to-r from-blue-secondary to-blue-main"
+                          : "hover:bg-[#D6F2DE]"
+                      )}
+                      onClick={() => {
+                        persistor.pause();
+                        persistor.flush().then(() => {
+                          return persistor.purge();
+                        });
+                        window.location.assign("/");
+                      }}
+                    >
+                      <Icon
+                        className={cn(
+                          pathname === `${item.href}`
+                            ? "invert brightness-0"
+                            : ""
+                        )}
+                      />
+                    </div>
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal>
+                    <Tooltip.Content
+                      className="data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade max-w-[240px] z-50 data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade text-violet11 select-none rounded-[4px] bg-white px-[15px] py-[10px] text-[15px] leading-none shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity]"
+                      sideOffset={5}
+                    >
+                      Logout
+                      <Tooltip.Arrow className="fill-white" />
+                    </Tooltip.Content>
+                  </Tooltip.Portal>
+                </Tooltip.Root>
+              </Tooltip.Provider>
             );
           })}
         </div>
@@ -140,7 +157,7 @@ const SideMenu = ({
               fontSize={20}
               width={20}
               className={cn(
-                "text-[#139EEC_!important] hover:bg-gray-200 rounded sm:hidden",
+                "text-[#139EEC_!important] hover:bg-gray-200 rounded sm:hidden"
               )}
               onClick={() => setMobileMenuIsOpen(false)}
             />
@@ -154,22 +171,23 @@ const SideMenu = ({
               <Link
                 key={i}
                 to={`${item.href}`}
+                onClick={() => setMobileMenuIsOpen(false)}
                 className={cn(
                   "flex gap-4 py-3 px-2 pl-4 items-center font-manrope rounded-full",
                   pathname === `${item.href}`
                     ? "bg-gradient-to-r from-blue-secondary to-blue-main"
-                    : "hover:bg-[#D6F2DE]",
+                    : "hover:bg-[#D6F2DE]"
                 )}
               >
                 <Icon
                   className={cn(
-                    pathname === `${item.href}` ? "invert brightness-0" : "",
+                    pathname === `${item.href}` ? "invert brightness-0" : ""
                   )}
                 />
                 <span
                   className={cn(
                     "text-sm",
-                    pathname === `${item.href}` ? "text-white" : "",
+                    pathname === `${item.href}` ? "text-white" : ""
                   )}
                 >
                   {item.title}
@@ -183,7 +201,7 @@ const SideMenu = ({
                   "flex gap-4 cursor-pointer py-3 px-2 pl-4 items-center font-manrope rounded-full",
                   pathname === `${item.href}`
                     ? "bg-gradient-to-r from-blue-secondary to-blue-main"
-                    : "hover:bg-[#D6F2DE]",
+                    : "hover:bg-[#D6F2DE]"
                 )}
                 onClick={() => {
                   persistor.pause();
@@ -195,13 +213,13 @@ const SideMenu = ({
               >
                 <Icon
                   className={cn(
-                    pathname === `${item.href}` ? "invert brightness-0" : "",
+                    pathname === `${item.href}` ? "invert brightness-0" : ""
                   )}
                 />
                 <span
                   className={cn(
                     "text-sm",
-                    pathname === `${item.href}` ? "text-white" : "",
+                    pathname === `${item.href}` ? "text-white" : ""
                   )}
                 >
                   {item.title}
