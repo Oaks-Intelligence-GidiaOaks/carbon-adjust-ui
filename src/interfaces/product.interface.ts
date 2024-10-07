@@ -1,3 +1,10 @@
+import { MultiValue } from "react-select";
+
+export enum PackageDomain {
+  GRANT_PACKAGE = "Grant_Package",
+  REGULAR_PACKAGE = "Regular_Package",
+}
+
 export interface IQuestion {
   title: string;
   _id: string;
@@ -35,9 +42,9 @@ export interface IProduct {
   isMerchant?: boolean;
   videoUrl?: string;
   __v: number;
-  minAmount?: number,
-  maxAmount?: number,
-  hasGrantDoc?: boolean,
+  minAmount?: number;
+  maxAmount?: number;
+  hasGrantDoc?: boolean;
 }
 
 export interface ICategory {
@@ -53,7 +60,66 @@ export interface IProdCategory {
   packages: IProduct[];
 }
 
-export interface IAddReview {  
+export type QuestionType = {
+  label:
+    | ""
+    | "Binary Response Question"
+    | "Open-Ended Question"
+    | "Single-Choice Question"
+    | "Multiple-Choice Question"
+    | "File Upload Response"
+    | string;
+  value:
+    | ""
+    | "Binary Response Question"
+    | "Open-Ended Question"
+    | "Single-Choice Question"
+    | "Multiple-Choice Question"
+    | "File Upload Response"
+    | string;
+};
+
+export interface Question {
+  title: string;
+  questionType: QuestionType;
+  options?: string[];
+  isRequired: boolean;
+  _id?: string;
+}
+
+export interface PackageState {
+  title: string;
+  category: {
+    label: string;
+    value: string;
+  };
+  packageType: {
+    label: string;
+    value: string;
+  };
+  description: string;
+  country: {
+    label: string;
+    value: string;
+  };
+  price: string;
+  discount: string;
+  regions: MultiValue<any>;
+  allowPartPayment: boolean;
+  percentPayment: string;
+  hasSchedule: boolean;
+  hasQuestion: boolean;
+  questions: Question[];
+  askPurchaserQuote: boolean;
+  hasDownloadedableFile: boolean;
+  isAiEnergyPackage: boolean;
+  aiPackageType: {
+    label: string;
+    value: string;
+  };
+}
+
+export interface IAddReview {
   packageId: string;
   description: string;
   rating: number;
