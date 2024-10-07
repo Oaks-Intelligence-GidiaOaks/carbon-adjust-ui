@@ -28,8 +28,6 @@ const Sidebar = ({
 
   const user = useSelector((state: RootState) => state.user.user);
 
-  // console.log(user, "user state");
-
   const merchant = "MERCHANT";
   const isMerchant = user?.roles.includes(merchant);
 
