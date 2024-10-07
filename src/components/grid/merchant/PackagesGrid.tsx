@@ -23,8 +23,25 @@ import { BsPeople, BsThreeDotsVertical } from "react-icons/bs";
 import { publishPackage, unPublishPackage } from "@/services/merchantService";
 import { useNavigate } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+// @ts-ignore
+import { UserRole } from "@/interfaces/user.interface";
+import { formatNumberWithCommas } from "@/utils";
 
-const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
+const PackagesGrid = ({
+  data,
+  isGrant,
+}: {
+  data: any[];
+  isUpdating: boolean;
+  isGrant?: boolean;
+}) => {
+  // @ts-ignore
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const isSuperMerchant = user?.roles.includes(UserRole.SUPER_MERCHANT);
+
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
@@ -141,8 +158,17 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
       id: "price",
       cell: (info) => (
         <>
-          {/* {console.log("gbfhwrjgflahrfg", info.getValue())} */}
-          <div className="w-24 mx-auto text-left">{info.getValue()}</div>
+          <div className="w-40 mx-auto text-left">
+            {Boolean(
+              (info.row.original as any).packageDomain === "Grant_Package"
+            )
+              ? `£${formatNumberWithCommas(
+                  (info.row.original as any).minAmount
+                )} - £${formatNumberWithCommas(
+                  (info.row.original as any).maxAmount
+                )}`
+              : info.getValue()}
+          </div>
         </>
       ),
       header: () => <div className="w-36 text-left">Amount</div>,
@@ -221,6 +247,24 @@ const PackagesGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     }),
     //
   ];
+
+  if (isSuperMerchant && isGrant) {
+    columns.splice(
+      3,
+      0,
+      columnHelper.accessor((row: any) => row.grantCode, {
+        id: "grantCode",
+        cell: (info: any) => {
+          return (
+            <>
+              <div className="w-40 mx-auto text-left">{info.getValue()}</div>
+            </>
+          );
+        },
+        header: () => <div className="w-44">Grant Code</div>,
+      })
+    );
+  }
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterQuery, setFilterQuery] = useState("");

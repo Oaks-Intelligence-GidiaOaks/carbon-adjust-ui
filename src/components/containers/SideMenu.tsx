@@ -125,8 +125,8 @@ const SideMenu = ({
       {/* mobile sidebar */}
       <div
         className={cn(
-          "w-[20%] min-w-[260px] max-w-[302px] overflow-y-scroll h-screen px-4 pt-10 sm:sticky bg-white z-[100] border-r border-[hsla(110,49%,88%,1)] fixed left-0 top-0 sm:hidden",
-          mobileMenuIsOpen ? "translate-x-0" : "-translate-x-full",
+          "w-[20%] min-w-[260px] max-w-[302px] overflow-y-scroll no-scrollbar h-screen px-4 pt-10 sm:sticky bg-white z-[100] border-r border-[hsla(110,49%,88%,1)] fixed left-0 top-0 sm:hidden",
+          mobileMenuIsOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="flex justify-between items-center">
@@ -147,7 +147,7 @@ const SideMenu = ({
           </button>
         </div>
 
-        <div className="flex flex-col gap-y-4 mt-10 overflow-y-scroll">
+        <div className="flex flex-col gap-y-4 mt-10 overflow-y-scroll no-scrollbar">
           {identifyUserSideBar(accountType).map((item, i) => {
             const Icon = item.icon;
             return item.title !== "Logout" ? (

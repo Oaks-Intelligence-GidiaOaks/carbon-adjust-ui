@@ -1,4 +1,5 @@
 import axiosInstance from "@/api/axiosInstance";
+import { UserRole } from "@/interfaces/user.interface";
 
 export const getPackageCategories = () => {
   return axiosInstance.get("/packages/categories");
@@ -22,6 +23,16 @@ export const createPackageQuery = (data: FormData) => {
       "Content-Type": "multipart/form-data",
     },
   });
+};
+
+export const createGrantPackage = async (fData: FormData) => {
+  const { data } = await axiosInstance.post(`packages/grant-packages`, fData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
 };
 
 export const updatePackageQuery = (data: FormData, packageId: string) => {
@@ -118,4 +129,55 @@ export const addStaff = (data: {
   accessLevel: string;
 }) => {
   return axiosInstance.post(`/users/staffs`, data);
+};
+
+// Merchants
+export const getUserByRole = async ({
+  page = 1,
+  limit = 5,
+  role,
+}: {
+  page: number;
+  limit: number;
+  role: UserRole;
+}) => {
+  let url = `/users/by-role`;
+  const params: any = {};
+
+  if (limit) {
+    params.limit = limit;
+  }
+
+  if (page) {
+    params.page = page;
+  }
+
+  if (role) {
+    params.role = role;
+  }
+
+  const queryString = new URLSearchParams(params).toString();
+
+  if (queryString) {
+    url += `?${queryString}`;
+  }
+
+  const { data } = await axiosInstance.get(url);
+
+  return data;
+};
+
+export const inviteMerchant = async (dt: { name: string; email: string }) => {
+  const { data } = await axiosInstance.post(`/users/invite-merchant`, dt);
+
+  return data;
+};
+
+export const createFacilitator = async (dt: {
+  name: string;
+  email: string;
+}) => {
+  const { data } = await axiosInstance.post(`users/create-facilitator`, dt);
+
+  return data;
 };

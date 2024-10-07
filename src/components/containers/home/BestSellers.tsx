@@ -27,7 +27,7 @@ const BestSellers = () => {
     <div className="pb-[70px] pt-[37px]">
       <ProductsCategory category={category} packages={pkgs} />
     </div>
-  );
+  ); 
 };
 
 export default BestSellers;

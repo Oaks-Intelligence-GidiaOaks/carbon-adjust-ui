@@ -34,8 +34,27 @@ import DeviceIcon from "./deviceIcon.svg?react";
 import PlusIcon from "./plusIcon.svg?react";
 import BoxIcon from "./mega-box.svg?react";
 import WalletIcon from "./wallet-icon.svg?react";
+import AccountTypeIcon1 from "./account-type-1.svg?react";
+import AccountTypeIcon2 from "./account-type-2.svg?react";
+import AccountTypeIcon3 from "./account-type-3.svg?react";
+import GrantIcon from "./grant-icon.svg?react";
+import RegularPkgIcon from "./regular-pkg-icon.svg?react";
+import GrantPkgIcon from "./grant-pkg-icon.svg?react";
+import UserIcon from "./userIcon.svg?react";
+import DeleteIcon from "./deleteIcon.svg?react";
+import EditIcon from "./editIcon.svg?react";
+import ClaimIcon from "./claim-icon.svg?react";
+import ApprovedClaimIcon from "./approved-claim-icon.svg?react";
+import RejectedClaimIcon from "./rejected-claim-icon.svg?react";
+import TotalClaimIcon from "./total-claim-icon.svg?react";
+import UntreatedClaimIcon from "./untreated-claims-icon.svg?react";
 
 export {
+  ApprovedClaimIcon,
+  RejectedClaimIcon,
+  TotalClaimIcon,
+  UntreatedClaimIcon,
+  ClaimIcon,
   WalletIcon,
   BoxIcon,
   PlusIcon,
@@ -72,4 +91,13 @@ export {
   ProjectIcon,
   HomeIcon,
   SideBarBtn,
+  AccountTypeIcon1,
+  AccountTypeIcon2,
+  AccountTypeIcon3,
+  GrantIcon,
+  RegularPkgIcon,
+  GrantPkgIcon,
+  UserIcon,
+  DeleteIcon,
+  EditIcon,
 };

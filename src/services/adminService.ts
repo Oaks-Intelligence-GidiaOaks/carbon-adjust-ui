@@ -100,6 +100,14 @@ export const makeReportMerchant = async (id: string) => {
   return data;
 };
 
+export const makeSuperMerchant = async (id: string) => {
+  const { data } = await axiosInstance.patch(`/users/merchant/super`, {
+    merchantId: id,
+  });
+
+  return data;
+};
+
 // ADMIN ADVERTS
 
 export const createAd = async (adData: {
