@@ -128,12 +128,7 @@ const MarketGroup = (_: Props) => {
         showCheckout={true}
       />
     ) : (
-      // <ProductCheckout
-      //   categoryName={categoryName}
-      //   setShowcheckout={closeModal}
-      //   showCheckout={true}
-      // />
-      <SubGrantCheckout
+      <ProductCheckout
         categoryName={categoryName}
         setShowcheckout={closeModal}
         showCheckout={true}

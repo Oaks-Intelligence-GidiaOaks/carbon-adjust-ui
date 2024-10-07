@@ -4,9 +4,6 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { IComponentMap } from "@/types/general";
 import DescriptionSection from "../containers/checkout/DescriptionSection";
 
-import OrderSummary from "../containers/checkout/OrderSummary";
-import PaymentSuccessful from "../containers/checkout/PaymentSuccessful";
-import ProcessingPayment from "../containers/checkout/ProcessingPayment";
 import CloseModal from "./CloseModal";
 import { clearProduct } from "@/features/productSlice";
 import { useDispatch, useSelector } from "react-redux";
