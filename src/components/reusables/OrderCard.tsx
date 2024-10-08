@@ -34,11 +34,11 @@ const OrderCard = (props: IPackageOrder) => {
   const ListTile = (props: { text: string; isBorder?: boolean }) => (
     <div
       className={`${
-        props.isBorder && "border-l pl-[10px] border-[#4C5563]"
+        props?.isBorder && "border-l pl-[10px] border-[#4C5563]"
       } p-0 `}
     >
       <span className="text-[15px] p-0 font-[400] text-[#4C5563]">
-        {props.text}
+        {props?.text}
       </span>
     </div>
   );
@@ -138,7 +138,7 @@ const formatSlug = (name: string) => {
   return name?.toLowerCase().replace(/ /g, '-');
 };
 
-const formattedCategory = formatSlug(props.package?.title);
+const formattedCategory = formatSlug(props?.package?.title);
 
   const renderGrantButtons = () => {
     const isGrantPackage = props?.domain === "Grant_Package";
@@ -395,7 +395,7 @@ const formattedCategory = formatSlug(props.package?.title);
           <div className="flex-center gap-2">
             <span className="font-[500] text-[#2B2A2A]">Declined Date: {formatDate(props?.updatedAt)}</span>
 
-            {props.hasContractDoc === true && (
+            {props?.hasContractDoc === true && (
               <a target="__blank" href={props?.grantContractDoc}>
                 <GoDownload color="#575757" size={18} />
               </a>
@@ -406,13 +406,13 @@ const formattedCategory = formatSlug(props.package?.title);
 
       {props?.grantStatus === "rejected" && (
         <div className="flex flex-col gap-3">
-          <ActivityItems activities={props.orderActivities} />
+          <ActivityItems activities={props?.orderActivities} />
 
           <div className="flex-center gap-2">
             <span className="font-[500] text-[#2B2A2A]">Rejected Date: {formatDate(props?.updatedAt)}</span>
 
             {props.hasContractDoc === true && (
-              <a target="__blank" href={props.grantContractDoc}>
+              <a target="__blank" href={props?.grantContractDoc}>
                 <GoDownload color="#575757" size={18} />
               </a>
             )}
@@ -422,17 +422,17 @@ const formattedCategory = formatSlug(props.package?.title);
 
       {props?.grantStatus === "applied" && (
         <div className="flex flex-col gap-3">
-          <ActivityItems activities={props.orderActivities} />
+          <ActivityItems activities={props?.orderActivities} />
 
           <div className="flex-center gap-2">
-            <span className="font-[500] text-[#2B2A2A]">Scheduled Date: {''}</span>
-            <span className="font-[500] text-[#2B2A2A]">Call: {''}</span>
+            {/* <span className="font-[500] text-[#2B2A2A]">Scheduled Date: {''}</span>
+            <span className="font-[500] text-[#2B2A2A]">Call: {''}</span> */}
             <span className="font-[500] text-[#2B2A2A]">Payment Status: {props?.paymentStatus?.toUpperCase()}</span>
 
             {paymentStatusIcon(props?.paymentStatus)}
 
-            {props.hasContractDoc === true && (
-              <a target="__blank" href={props.grantContractDoc}>
+            {props?.hasContractDoc === true && (
+              <a target="__blank" href={props?.grantContractDoc}>
                 <GoDownload color="#575757" size={18} />
               </a>
             )}
@@ -443,25 +443,25 @@ const formattedCategory = formatSlug(props.package?.title);
   ) : (
     <>
       {/* Non-Grant Package Logic */}
-      <ActivityItems activities={props.orderActivities} />
+      <ActivityItems activities={props?.orderActivities} />
 
       <div className="flex-center gap-2">
         <span className="font-[500] text-[#2B2A2A]">Payment: {props?.paymentStatus?.toUpperCase()}</span>
 
         {paymentStatusIcon(props?.paymentStatus)}
 
-        {props.hasContractDoc === true && (
-              <a target="__blank" href={props.grantContractDoc}>
+        {props?.hasContractDoc === true && (
+              <a target="__blank" href={props?.grantContractDoc}>
                 <GoDownload color="#575757" size={18} />
               </a>
             )}
       </div>
 
       <div className="ml-auto w-fit flex-center gap-6">
-        {props.adminReport?.length && (
+        {props?.adminReport?.length && (
           <a
             target="__blank"
-            href={props.adminReport}
+            href={props?.adminReport}
             rel="noopener noreferrer"
             className="flex-center gap-1 cursor-pointer p-1 rounded border bg-teal-50"
           >
