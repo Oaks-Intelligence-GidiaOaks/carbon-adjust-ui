@@ -34,11 +34,11 @@ const OrderCard = (props: IPackageOrder) => {
   const ListTile = (props: { text: string; isBorder?: boolean }) => (
     <div
       className={`${
-        props.isBorder && "border-l pl-[10px] border-[#4C5563]"
+        props?.isBorder && "border-l pl-[10px] border-[#4C5563]"
       } p-0 `}
     >
       <span className="text-[15px] p-0 font-[400] text-[#4C5563]">
-        {props.text}
+        {props?.text}
       </span>
     </div>
   );
@@ -137,7 +137,7 @@ const OrderCard = (props: IPackageOrder) => {
 
   // Utility function to format the category name
   const formatSlug = (name: string) => {
-    return name.toLowerCase().replace(/ /g, "-");
+    return name?.toLowerCase().replace(/ /g, "-");
   };
 
   const formattedCategory = formatSlug(props?.package?.title);
@@ -169,12 +169,12 @@ const OrderCard = (props: IPackageOrder) => {
             <AcceptGrantModal
               isOpen={isAcceptModalOpen}
               onClose={handleCloseModal}
-              applicationId={props._id}
+              applicationId={props?._id}
             />
             <RejectGrantModal
               isOpen={isRejectModalOpen}
               onClose={handleCloseRejectModal}
-              applicationId={props._id}
+              applicationId={props?._id}
             />
           </div>
         );
@@ -318,7 +318,7 @@ const OrderCard = (props: IPackageOrder) => {
                 onClick={openModal}
                 className=" text-blue-400 text-[10px] text-start cursor-pointer"
               >
-                Rate {props?.package.packageType || "package"}
+                Rate {props?.package?.packageType || "package"}
               </button>
               <AddReviewModal
                 isOpen={isModalOpen}
@@ -328,7 +328,7 @@ const OrderCard = (props: IPackageOrder) => {
                   props.package?.attachments?.[0] ||
                   "/assets/graphics/user1.svg"
                 }
-                packageType={props?.package.packageType}
+                packageType={props?.package?.packageType}
               />
 
               <div className="flex-center gap-6">
@@ -354,11 +354,11 @@ const OrderCard = (props: IPackageOrder) => {
               <div className="flex flex-col gap-3">
                 <h2 className="text-base font-[600] ">{` ${
                   props?.package?.currency ?? "£"
-                } ${props.price}`}</h2>
+                } ${props?.price}`}</h2>
 
                 <button
                   className={`${getStatusBg(
-                    props.status
+                    props?.status
                   )}  font-dm-sans px-4 py-2 rounded-2xl grid place-items-center text-white font-[400] text-xs`}
                 >
                   <span>{props?.status}</span>
@@ -378,14 +378,14 @@ const OrderCard = (props: IPackageOrder) => {
               {(props?.grantStatus === "approved" ||
                 props?.grantStatus === "accepted") && (
                 <div className="flex flex-col gap-3">
-                  <ActivityItems activities={props.orderActivities} />
+                  <ActivityItems activities={props?.orderActivities} />
 
                   <div className="flex-center gap-2">
                     <span className="font-[500] text-[#A5A5A5]">
                       Dousign.pdf
                     </span>
-                    {props.hasContractDoc === true && (
-                      <a target="__blank" href={props.grantContractDoc}>
+                    {props?.hasContractDoc === true && (
+                      <a target="__blank" href={props?.grantContractDoc}>
                         <GoDownload color="#575757" size={18} />
                       </a>
                     )}
@@ -403,14 +403,14 @@ const OrderCard = (props: IPackageOrder) => {
 
               {props?.grantStatus === "declined" && (
                 <div className="flex flex-col gap-3">
-                  <ActivityItems activities={props.orderActivities} />
+                  <ActivityItems activities={props?.orderActivities} />
 
                   <div className="flex-center gap-2">
                     <span className="font-[500] text-[#A5A5A5]">
                       Dousign.pdf
                     </span>
-                    {props.hasContractDoc === true && (
-                      <a target="__blank" href={props.grantContractDoc}>
+                    {props?.hasContractDoc === true && (
+                      <a target="__blank" href={props?.grantContractDoc}>
                         <GoDownload color="#575757" size={18} />
                       </a>
                     )}
@@ -424,14 +424,14 @@ const OrderCard = (props: IPackageOrder) => {
 
               {props?.grantStatus === "rejected" && (
                 <div className="flex flex-col gap-3">
-                  <ActivityItems activities={props.orderActivities} />
+                  <ActivityItems activities={props?.orderActivities} />
 
                   <div className="flex-center gap-2">
                     <span className="font-[500] text-[#A5A5A5]">
                       Dousign.pdf
                     </span>
-                    {props.hasContractDoc === true && (
-                      <a target="__blank" href={props.grantContractDoc}>
+                    {props?.hasContractDoc === true && (
+                      <a target="__blank" href={props?.grantContractDoc}>
                         <GoDownload color="#575757" size={18} />
                       </a>
                     )}
