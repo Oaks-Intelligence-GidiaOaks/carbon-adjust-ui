@@ -135,10 +135,10 @@ const OrderCard = (props: IPackageOrder) => {
 
   // Utility function to format the category name
 const formatSlug = (name: string) => {
-  return name.toLowerCase().replace(/ /g, '-');
+  return name?.toLowerCase().replace(/ /g, '-');
 };
 
-const formattedCategory = formatSlug(props.package.title);
+const formattedCategory = formatSlug(props.package?.title);
 
   const renderGrantButtons = () => {
     const isGrantPackage = props?.domain === "Grant_Package";
@@ -167,12 +167,12 @@ const formattedCategory = formatSlug(props.package.title);
             <AcceptGrantModal
               isOpen={isAcceptModalOpen}
               onClose={handleCloseModal}
-              applicationId={props._id}
+              applicationId={props?._id}
             />
             <RejectGrantModal
               isOpen={isRejectModalOpen}
               onClose={handleCloseRejectModal}
-              applicationId={props._id}
+              applicationId={props?._id}
             />
           </div>
         );
@@ -248,7 +248,7 @@ const formattedCategory = formatSlug(props.package.title);
             <div className=" hidden md:px-4 bg-[#F3F5F7] w-[100px] h-[100px] md:grid place-items-center rounded-lg">
               <img
                 src={
-                  props.package?.attachments?.[0] ||
+                  props?.package?.attachments?.[0] ||
                   "/assets/graphics/user1.svg"
                 }
                 alt=""
@@ -322,7 +322,7 @@ const formattedCategory = formatSlug(props.package.title);
                 onClose={closeModal}
                 packageId={props?.package?._id}
                 image={
-                  props.package?.attachments?.[0] ||
+                  props?.package?.attachments?.[0] ||
                   "/assets/graphics/user1.svg"
                 }
               />
@@ -350,7 +350,7 @@ const formattedCategory = formatSlug(props.package.title);
               <div className="flex flex-col gap-3">
                 <h2 className="text-base font-[600] ">{` ${
                   props?.package?.currency ?? "£"
-                } ${props.price}`}</h2>
+                } ${props?.price}`}</h2>
 
                 <button
                   className={`${getStatusBg(
@@ -373,14 +373,14 @@ const formattedCategory = formatSlug(props.package.title);
       {/* Grant Package Logic */}
       {props?.grantStatus === "approved" && (
         <div className="flex flex-col gap-3">
-          <ActivityItems activities={props.orderActivities} />
+          <ActivityItems activities={props?.orderActivities} />
 
           <div className="flex-center gap-2">
             <span className="font-[500] text-[#2B2A2A]">Approved Grant: {props?.approvedGrant}</span>
             <span className="font-[500] text-[#2B2A2A]">Approved Date: {formatDate(props?.updatedAt)}</span>
 
-            {props.hasContractDoc === true && (
-              <a target="__blank" href={props.grantContractDoc}>
+            {props?.hasContractDoc === true && (
+              <a target="__blank" href={props?.grantContractDoc}>
                 <GoDownload color="#575757" size={18} />
               </a>
             )}
@@ -390,13 +390,13 @@ const formattedCategory = formatSlug(props.package.title);
 
       {props?.grantStatus === "declined" && (
         <div className="flex flex-col gap-3">
-          <ActivityItems activities={props.orderActivities} />
+          <ActivityItems activities={props?.orderActivities} />
 
           <div className="flex-center gap-2">
             <span className="font-[500] text-[#2B2A2A]">Declined Date: {formatDate(props?.updatedAt)}</span>
 
             {props.hasContractDoc === true && (
-              <a target="__blank" href={props.grantContractDoc}>
+              <a target="__blank" href={props?.grantContractDoc}>
                 <GoDownload color="#575757" size={18} />
               </a>
             )}
