@@ -55,6 +55,9 @@ const orderSlice = createSlice({
     updateResponses: (state, action) => {
       state.responses = action.payload;
     },
+    updateReason: (state, action) => {
+      state.reasonForApplying = action.payload;
+    },
     clearOrder: () => {
       return initialState;
     },
@@ -72,6 +75,7 @@ export const {
   updateCity,
   updatepPostCode,
   updateResponses,
+  updateReason
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

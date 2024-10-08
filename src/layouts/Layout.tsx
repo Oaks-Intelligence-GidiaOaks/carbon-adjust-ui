@@ -214,7 +214,7 @@ const Layout = (props: Props) => {
   return (
     <ProtectedRoute role={user?.roles[0]}>
       <InactivityWrapper onLogout={() => handleLogout()}>
-        <div className="flex max-h-screen max-w-screen overflow-hidden overflow-y-scroll">
+        <div className="flex max-h-screen max-w-screen overflow-hidden overflow-y-scroll no-scrollbar">
           {props.sidebarType === "home-occupant" ? (
             <SideMenu
               accountType={props.sidebarType}

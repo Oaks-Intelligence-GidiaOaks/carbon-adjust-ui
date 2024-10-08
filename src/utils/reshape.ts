@@ -115,8 +115,6 @@ export const transformAdminOrdersGridData = (data: any) => {
 export const transformPackageCards = (data: any) => {
   let newData: any[] = [];
 
-  console.log(data);
-
   Array.from(data, (item: any) => {
     const { category, ...rest } = item;
 
@@ -126,6 +124,21 @@ export const transformPackageCards = (data: any) => {
     });
   });
 
+  return newData;
+};
+
+export const transformGrantPackages = (data: any) => {
+  let newData: any[] = [];
+
+  Array.from(data, (item: any) => {
+    const { category, ...rest } = item;
+
+    newData.push({
+      category: category.name,
+      ...rest,
+    });
+  });
+  console.log(newData, "new data");
   return newData;
 };
 

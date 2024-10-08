@@ -23,7 +23,7 @@ const Dashboard = (_: Props) => {
   const { data: applicationsData, isSuccess: isApplicationsSuccess } = useQuery(
     {
       queryKey: ["get-all-applications"],
-      queryFn: () => getAllApplications(),
+      queryFn: () => getAllApplications("Regular_Package"),
     }
   );
 

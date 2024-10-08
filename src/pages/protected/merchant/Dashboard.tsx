@@ -18,6 +18,10 @@ import { transformPackagesGridData } from "@/utils/reshape";
 import { formatNumberWithCommas, getLastFiveYears } from "@/utils";
 import { useState } from "react";
 import { Dropdown } from "@/components/ui";
+import { GrantIcon } from "@/assets/icons";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { UserRole } from "@/interfaces/user.interface";
 
 type Props = {};
 
@@ -31,6 +35,8 @@ type ChartType = {
 };
 
 const Dashboard = (_: Props) => {
+  const { user } = useSelector((state: RootState) => state.user);
+
   const [yearSelector, setYearSelector] = useState({
     label: new Date().getFullYear(),
     value: new Date().getFullYear(),
@@ -48,7 +54,7 @@ const Dashboard = (_: Props) => {
   const { data: applicationsData, isSuccess: isApplicationsSuccess } = useQuery(
     {
       queryKey: ["get-all-applications"],
-      queryFn: () => getAllApplications(),
+      queryFn: () => getAllApplications("Regular_Package"),
     }
   );
 
@@ -85,7 +91,7 @@ const Dashboard = (_: Props) => {
           <img src="/assets/icons/org-dashboard/project.svg" />
         </div>
       ),
-      viewAllUrl: "/merchant/packages/all",
+      viewAllUrl: "/merchant/applications",
     },
     {
       title: "Total Earnings",
@@ -98,6 +104,25 @@ const Dashboard = (_: Props) => {
       viewAllUrl: "/merchant/packages/all",
     },
   ];
+
+  const superMerchantCards = [
+    {
+      title: "Total Grants",
+      value: `£${formatNumberWithCommas("0")}`,
+      icon: (
+        <div className="size-7 flex justify-center items-center bg-purple-100 rounded-lg">
+          <GrantIcon />
+        </div>
+      ),
+      viewAllUrl: "/merchant/packages",
+    },
+  ];
+
+  if (user?.roles.includes(UserRole.SUPER_MERCHANT)) {
+    for (let i of superMerchantCards) {
+      cardItems.push(i);
+    }
+  }
 
   const activePackageComponent: IComponentMap = {
     // "loading": "",

@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Calendar, Home, Login, Register } from "@/pages/public";
+import { Calendar, Home, Login, Register, _404 } from "@/pages/public";
 import AccountSetup from "@/pages/protected/shared/account-setup/AccountSetup";
 import Layout from "@/layouts/Layout";
 
@@ -30,6 +30,8 @@ import {
   MerchantApplications,
   MerchantBookings,
   MerchantDashboard,
+  MerchantNewClaim,
+  MerchantNewGrantPackage,
   MerchantNewPackage,
   MerchantOrderDetails,
   MerchantPackageDetails,
@@ -38,6 +40,8 @@ import {
   MerchantStaff,
   MerchantWallet,
   StaffDetails,
+  SuperMerchantClaims,
+  SuperMerchantSubApplications,
   UpdatePackageDetails,
 } from "@/pages/protected/merchant";
 import {
@@ -240,6 +244,32 @@ const Router = createBrowserRouter([
         ],
       },
       {
+        path: "grant-applications",
+        children: [
+          {
+            path: "",
+            element: <MerchantApplications />,
+          },
+          {
+            path: ":applicationId",
+            element: <SuperMerchantSubApplications />,
+          },
+        ],
+      },
+      {
+        path: "claims",
+        children: [
+          {
+            path: "",
+            element: <SuperMerchantClaims />,
+          },
+          {
+            path: "new",
+            element: <MerchantNewClaim />,
+          },
+        ],
+      },
+      {
         path: "bookings",
         element: <MerchantBookings />,
       },
@@ -273,6 +303,15 @@ const Router = createBrowserRouter([
           {
             path: "update/:packageId",
             element: <UpdatePackageDetails />,
+          },
+        ],
+      },
+      {
+        path: "grant-packages",
+        children: [
+          {
+            path: "new",
+            element: <MerchantNewGrantPackage />,
           },
         ],
       },
@@ -441,6 +480,10 @@ const Router = createBrowserRouter([
         element: <AdminStaffOrders />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <_404 />,
   },
 ]);
 

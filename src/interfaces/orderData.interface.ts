@@ -25,5 +25,6 @@ export interface IOrder {
   quantity?: number | string;
   requiredExtraProd?: boolean;
   responses: IResponse[];
+  reasonForApplying?: string
   _id?: string;
 }

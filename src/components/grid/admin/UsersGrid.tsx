@@ -27,6 +27,7 @@ import {
   makeMerchantInternal,
 } from "@/services/adminService";
 import DeleteUserModal from "@/components/dialogs/DeleteUserModal";
+import { UserRole } from "@/interfaces/user.interface";
 
 const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
   const [showModal, setShowModal] = useState(false);
@@ -271,7 +272,10 @@ const UsersGrid = (props: { data: any[]; isUpdating: boolean }) => {
                 </div>
 
                 {!info.row.original.isInternalMerchant &&
-                  info.row.original.merchantType && (
+                  info.row.original.merchantType &&
+                  !info.row.original.roles.includes(
+                    UserRole.SUPER_MERCHANT
+                  ) && (
                     <div
                       className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-yellow-500 text-xs whitespace-nowrap px-1"
                       onClick={() => handleMakeMerchantInternal(currentRowId)}

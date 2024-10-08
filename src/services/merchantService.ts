@@ -54,13 +54,39 @@ export const getAllPackages = async () => {
   return data;
 };
 
+export const getGrantPackages = async ({
+  page = 1,
+  limit = 100,
+}: {
+  page?: number;
+  limit?: number;
+}) => {
+  let url = `/packages/grant-packages`;
+
+  const queryParams = new URLSearchParams();
+
+  queryParams.append("page", page.toString());
+  queryParams.append("limit", limit.toString());
+
+  // url += `?${queryParams.toString()}`;
+
+  const { data } = await axiosInstance.get(url);
+
+  return data;
+};
+
 export const getEarnings = async () => {
   const { data } = await axiosInstance.get(`/application/merchant/earnings`);
 
   return data;
 };
 
-export const getAllApplications = async (page?: number, limit?: number) => {
+// Applications
+export const getAllApplications = async (
+  q: string,
+  page?: number,
+  limit?: number
+) => {
   const queryParams = new URLSearchParams();
 
   if (page !== undefined) {
@@ -70,6 +96,8 @@ export const getAllApplications = async (page?: number, limit?: number) => {
   if (limit !== undefined) {
     queryParams.append("limit", limit.toString());
   }
+
+  queryParams.append("q", q);
 
   const queryString = queryParams.toString()
     ? `?${queryParams.toString()}`
@@ -86,6 +114,35 @@ export const getApplicationsChart = async (year: number) => {
   const { data } = await axiosInstance.get(
     `/application/merchant/monthly-chart?year=${year}`
   );
+
+  return data;
+};
+
+// Get SubApplications by PackageID
+export const getSuperMerchantSubApplications = async (
+  applicationId: string
+) => {
+  const { data } = await axiosInstance.get(`/application/ho/${applicationId}`);
+
+  return data;
+};
+
+export const approveGrantApplication = async (inputData: FormData) => {
+  const { data } = await axiosInstance.put(`/application/approve`, inputData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+};
+
+export const rejectGrantApplication = async (inputData: FormData) => {
+  const { data } = await axiosInstance.put(`/application/reject`, inputData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
   return data;
 };
@@ -145,6 +202,47 @@ export const uploadReport = async (orderId: string, formData: FormData) => {
       },
     }
   );
+
+  return data;
+};
+
+// CLAIM
+export const createClaim = async (arg: {
+  inputData: FormData;
+  packageId: string;
+}) => {
+  const { data } = await axiosInstance.post(
+    `/claims/${arg.packageId}`,
+    arg.inputData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return data;
+};
+
+export const grantMerchantClaims = async () => {
+  const { data } = await axiosInstance.get(`/claims/get-claims`);
+
+  return data;
+};
+
+export const getCustomerClaims = async () => {
+  const { data } = await axiosInstance.get(`/claims/customer-claims`);
+
+  return data;
+};
+
+export const updateClaimStatus = async (arg: {
+  claimId: string;
+  status: string;
+}) => {
+  const { data } = await axiosInstance.patch(`claims/${arg.claimId}/status`, {
+    status: arg.status,
+  });
 
   return data;
 };

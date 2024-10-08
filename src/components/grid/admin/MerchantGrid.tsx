@@ -26,6 +26,7 @@ import {
   declineUserRegistration,
   makeMerchantInternal,
   makeReportMerchant,
+  makeSuperMerchant,
 } from "@/services/adminService";
 import GridDocField from "@/components/reusables/GridDocField";
 import { UserRole } from "@/interfaces/user.interface";
@@ -61,6 +62,10 @@ const MerchantGrid = (props: { data: any[] }) => {
 
   const handleMakeReportMerchant = (userId: string) => {
     reportMerchantMutation.mutate(userId);
+  };
+
+  const handleMakeSuperMerchant = (userId: string) => {
+    superMerchantMutation.mutate(userId);
   };
 
   const columnHelper = createColumnHelper();
@@ -258,6 +263,12 @@ const MerchantGrid = (props: { data: any[] }) => {
               Internal
             </span>
           ) : (info.row.original as any).roles.includes(
+              UserRole.SUPER_MERCHANT
+            ) ? (
+            <span className="w-36 bg-cyan-600 text-gray-200 py-1 rounded-full inline-block mx-auto">
+              Super
+            </span>
+          ) : (info.row.original as any).roles.includes(
               UserRole.REPORT_MERCHANT
             ) ? (
             <span className="w-36 bg-teal-600 text-gray-200 py-1 rounded-full inline-block mx-auto">
@@ -312,7 +323,11 @@ const MerchantGrid = (props: { data: any[] }) => {
                 )}
 
                 {!info.row.original.isInternalMerchant &&
-                  info.row.original.merchantType && (
+                  info.row.original.merchantType &&
+                  info.row.original.status === "completed" &&
+                  !info.row.original.roles.includes(
+                    UserRole.SUPER_MERCHANT
+                  ) && (
                     <div
                       className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-yellow-500 text-xs whitespace-nowrap px-1"
                       onClick={() => handleMakeMerchantInternal(currentRowId)}
@@ -326,7 +341,10 @@ const MerchantGrid = (props: { data: any[] }) => {
                   )}
 
                 {!info.row.original.roles.includes(UserRole.REPORT_MERCHANT) &&
-                  info.row.original.merchantType && (
+                  !info.row.original.roles.includes(UserRole.SUPER_MERCHANT) &&
+                  !info.row.original.isInternalMerchant &&
+                  info.row.original.merchantType &&
+                  info.row.original.status === "completed" && (
                     <div
                       className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-green-500 text-xs whitespace-nowrap px-1"
                       onClick={() => handleMakeReportMerchant(currentRowId)}
@@ -336,6 +354,23 @@ const MerchantGrid = (props: { data: any[] }) => {
                       </div>
 
                       <span> Make report merchant</span>
+                    </div>
+                  )}
+
+                {!info.row.original.roles.includes(UserRole.SUPER_MERCHANT) &&
+                  !info.row.original.roles.includes(UserRole.REPORT_MERCHANT) &&
+                  info.row.original.merchantType &&
+                  !info.row.original.isInternalMerchant &&
+                  info.row.original.status === "completed" && (
+                    <div
+                      className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-cyan-500 text-xs whitespace-nowrap px-1"
+                      onClick={() => handleMakeSuperMerchant(currentRowId)}
+                    >
+                      <div className="rounded-full bg-cyan-500 p-1">
+                        <IoClose className="text-white text-base size-3" />
+                      </div>
+
+                      <span> Make super merchant</span>
                     </div>
                   )}
 
@@ -440,6 +475,18 @@ const MerchantGrid = (props: { data: any[] }) => {
     },
   });
 
+  const superMerchantMutation = useMutation({
+    mutationKey: ["super-merchant"],
+    mutationFn: (id: string) => makeSuperMerchant(id),
+    onSuccess: (_: any) => {
+      toast.success("Merchant updated succesfully");
+      queryClient.invalidateQueries({ queryKey: ["users-registration"] });
+    },
+    onError: (ex: any) => {
+      toast.error(ex.response.data.message);
+    },
+  });
+
   return (
     <div className="">
       <div className="mb-4 flex overflow-x-auto">
@@ -521,6 +568,10 @@ const MerchantGrid = (props: { data: any[] }) => {
           setShowDeleteModal={setShowDeleteModal}
           showUDeleteModal={showDeleteModal}
         />
+      )}
+
+      {superMerchantMutation.isPending && (
+        <LoadingModal text="Updating Merchant Status" />
       )}
 
       {/* pagination */}
