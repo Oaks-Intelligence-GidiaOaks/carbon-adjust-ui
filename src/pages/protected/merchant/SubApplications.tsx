@@ -37,7 +37,7 @@ const SubApplications = () => {
         <Search />
 
         <div className="">
-          <ApplicationsGrid data={tableApps} isUpdating />
+          <ApplicationsGrid data={tableApps} isUpdating isGrant />
         </div>
       </div>
     </div>

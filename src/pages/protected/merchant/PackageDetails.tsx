@@ -18,7 +18,7 @@ import Loading from "@/components/reusables/Loading";
 import { IoImageOutline } from "react-icons/io5";
 import MediaViewer from "@/components/merchants/MediaViewer";
 import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
-import { PlusIcon } from "@/assets/icons";
+// import { PlusIcon } from "@/assets/icons";
 import { SubUserCard } from "@/components/reusables/SubUserCard";
 import { PackageDomain } from "@/interfaces/product.interface";
 
@@ -282,9 +282,9 @@ const PackageDetails = (_: Props) => {
               <div className="gap-8 flex flex-col md:flex-row ">
                 <div className="flex-1">
                   <div className="flex-center justify-between">
-                    <h2>Merchants</h2>
+                    <h2 className="font-[600] text-xl">Merchants</h2>
 
-                    <Button
+                    {/* <Button
                       variant={"outline"}
                       size={"sm"}
                       className="flex-center gap-3"
@@ -292,26 +292,21 @@ const PackageDetails = (_: Props) => {
                       <span>Add Merchant</span>
 
                       <PlusIcon className="" />
-                    </Button>
+                    </Button> */}
                   </div>
 
                   <div className="flex flex-col gap-2 mt-4">
-                    {subMerchants.map((it: any, i: number) => (
-                      <SubUserCard
-                        {...it}
-                        key={i}
-                        email="jenniferlopez@gmail.com"
-                        name="Jennifer Alfonsus"
-                      />
+                    {subMerchants?.map((it: any, i: number) => (
+                      <SubUserCard {...it} key={i} />
                     ))}
                   </div>
                 </div>
 
                 <div className="flex-1">
                   <div className="flex-center justify-between">
-                    <h2>Facilitator</h2>
+                    <h2 className="font-[600] text-xl">Facilitator</h2>
 
-                    <Button
+                    {/* <Button
                       variant={"outline"}
                       size={"sm"}
                       className="flex-center gap-3"
@@ -319,17 +314,12 @@ const PackageDetails = (_: Props) => {
                       <span>Add Facilitator</span>
 
                       <PlusIcon className="" />
-                    </Button>
+                    </Button> */}
                   </div>
 
                   <div className="flex flex-col gap-2 mt-4">
                     {facilitators?.map((it: any, i: number) => (
-                      <SubUserCard
-                        {...it}
-                        key={i}
-                        email="jenniferlopez@gmail.com"
-                        name="Jennifer Alfonsus"
-                      />
+                      <SubUserCard {...it} key={i} />
                     ))}
                   </div>
                 </div>

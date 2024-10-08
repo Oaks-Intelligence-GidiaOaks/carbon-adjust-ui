@@ -23,6 +23,7 @@ import { formatDate } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateClaimStatus } from "@/services/merchantService";
 import toast from "react-hot-toast";
+import LoadingModal from "@/components/reusables/LoadingModal";
 
 const ClaimsGrid = ({
   data,
@@ -307,6 +308,13 @@ const ClaimsGrid = ({
           </div>
         </div>
       </div>
+
+      {UpdateClaimStatus.isPending && (
+        <LoadingModal
+          key={Math.random() * 354546576}
+          text={"Updating Claim status"}
+        />
+      )}
 
       {/* pagination */}
       <TablePagination table={table} />
