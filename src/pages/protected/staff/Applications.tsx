@@ -18,8 +18,6 @@ const Applications = (_: Props) => {
     queryFn: () => getAllApplications("Regular_Package"),
   });
 
-  // console.log(data.data);
-
   const NoApplications = () => (
     <div className="h-[80vh] grid place-items-center">
       <h2 className="text-lg font-[600] mr-auto text-[#333333]">

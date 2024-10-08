@@ -218,17 +218,20 @@ const PackagesGrid = ({
                   </div>
                 )}
 
-                <div
-                  className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
-                  onClick={() =>
-                    navigate(`/merchant/packages/update/${currentRowId}`)
-                  }
-                >
-                  <div className="rounded-full bg-green-500 p-1">
-                    <BiEdit className="text-white text-base size-3" />
+                {!isGrant && (
+                  <div
+                    className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
+                    onClick={() =>
+                      navigate(`/merchant/packages/update/${currentRowId}`)
+                    }
+                  >
+                    <div className="rounded-full bg-green-500 p-1">
+                      <BiEdit className="text-white text-base size-3" />
+                    </div>
+                    <span> Edit Package</span>
                   </div>
-                  <span> Edit Package</span>
-                </div>
+                )}
+
                 <div
                   className="cursor-pointer flex items-center gap-1 font-poppins hover:text-ca-blue text-xs whitespace-nowrap px-1"
                   onClick={() => navigate(`/merchant/packages/${currentRowId}`)}

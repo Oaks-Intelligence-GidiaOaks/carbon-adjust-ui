@@ -34,7 +34,14 @@ import { UserRole } from "@/interfaces/user.interface";
 import { IoDocumentText } from "react-icons/io5";
 import GridDocField from "@/components/reusables/GridDocField";
 
-const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
+const ApplicationsGrid = ({
+  data,
+  isGrant,
+}: {
+  data: any[];
+  isUpdating: boolean;
+  isGrant?: boolean;
+}) => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
 
@@ -551,6 +558,10 @@ const ApplicationsGrid = ({ data }: { data: any[]; isUpdating: boolean }) => {
     }),
     //
   ];
+
+  if (isGrant) {
+    columns.pop();
+  }
 
   if (hasReportAccess) {
     columns.splice(

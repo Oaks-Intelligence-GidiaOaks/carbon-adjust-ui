@@ -83,7 +83,7 @@ const MerchantGrantCard = (
             <MdMoreVert size={24} />
           </div>
 
-          {showPopup && (
+          {false && (
             <div
               ref={closerRef}
               className=" absolute z-[20] right-[80%] flex flex-col border  bg-white shadow-md"
