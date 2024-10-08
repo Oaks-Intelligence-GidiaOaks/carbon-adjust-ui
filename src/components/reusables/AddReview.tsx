@@ -9,6 +9,7 @@ interface AddReviewModalProps {
   onClose: () => void;
   packageId: string;
   image?: string;
+  packageType?: string;
 }
 
 const AddReviewModal: React.FC<AddReviewModalProps> = ({
@@ -16,6 +17,7 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
   onClose,
   packageId,
   image,
+  packageType
 }) => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
@@ -82,7 +84,7 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({
           ✕
         </button>
         <h3 className="text-xl font-medium text-[#2e599a] text-center mb-5 font-poppins">
-          Rate this product
+          Rate this {packageType || 'package'}
         </h3>
         {/* Product Image */}
         <div className="flex justify-center items-center">

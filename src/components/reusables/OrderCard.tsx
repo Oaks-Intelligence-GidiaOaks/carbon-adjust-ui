@@ -1,5 +1,5 @@
 import { IOrderActivity, IPackageOrder } from "@/interfaces/order.interface";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formDateWithTime } from "@/lib/utils";
 import { IComponentMap } from "@/types/general";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { useState } from "react";
@@ -111,7 +111,6 @@ const OrderCard = (props: IPackageOrder) => {
     setAcceptModalOpen(false);
   };
 
-
   const handleOpenRejectModal = () => {
     setRejectModalOpen(true);
   };
@@ -121,24 +120,27 @@ const OrderCard = (props: IPackageOrder) => {
   };
 
   const { mutate: handleCancel } = useMutation({
-    mutationFn: () => cancelApplication(props?._id), 
-    mutationKey: ['cancel-application', props?._id], 
+    mutationFn: () => cancelApplication(props?._id),
+    mutationKey: ["cancel-application", props?._id],
     onError: (error: any) => {
-      toast.error(error?.message || 'Something went wrong while cancelling the application');
+      toast.error(
+        error?.message ||
+          "Something went wrong while cancelling the application"
+      );
     },
     onSuccess: () => {
       // Optionally, invalidate queries if you want to update the data
       // queryClient.invalidateQueries(['get-user-applications']);
-      toast.success('Application cancelled successfully');
+      toast.success("Application cancelled successfully");
     },
   });
 
   // Utility function to format the category name
-const formatSlug = (name: string) => {
-  return name.toLowerCase().replace(/ /g, '-');
-};
+  const formatSlug = (name: string) => {
+    return name.toLowerCase().replace(/ /g, "-");
+  };
 
-const formattedCategory = formatSlug(props.package.title);
+  const formattedCategory = formatSlug(props?.package?.title);
 
   const renderGrantButtons = () => {
     const isGrantPackage = props?.domain === "Grant_Package";
@@ -183,11 +185,12 @@ const formattedCategory = formatSlug(props.package.title);
               {" "}
               <Dot className="size-7" /> Approved
             </span>
-            <button 
-            onClick={() => {
-              navigate(`/dashboard/marketplace/${formattedCategory}`);
-            }}
-            className="px-4 py-2 bg-[#257FCA] text-white rounded-2xl">
+            <button
+              onClick={() => {
+                navigate(`/dashboard/marketplace/${formattedCategory}`);
+              }}
+              className="px-4 py-2 bg-[#257FCA] text-white rounded-2xl"
+            >
               Proceed to Marketplace
             </button>
           </div>
@@ -239,7 +242,6 @@ const formattedCategory = formatSlug(props.package.title);
     return null;
   };
 
-
   return (
     <div>
       <div className="flex flex-col text-sm">
@@ -274,8 +276,10 @@ const formattedCategory = formatSlug(props.package.title);
 
                     <ListTile
                       text={`${props?.package?.title || ""} (${
-                        props?.package?.currency}${props?.package?.minAmount || "N/A"
-                      } - ${props?.package?.currency}${props?.package?.maxAmount || "N/A"})`}
+                        props?.package?.currency
+                      }${props?.package?.minAmount || "N/A"} - ${
+                        props?.package?.currency
+                      }${props?.package?.maxAmount || "N/A"})`}
                       key={2}
                       isBorder={true}
                     />
@@ -310,12 +314,11 @@ const formattedCategory = formatSlug(props.package.title);
                 )}
               </div>
 
-
               <button
                 onClick={openModal}
                 className=" text-blue-400 text-[10px] text-start cursor-pointer"
               >
-                Review service
+                Rate {props?.package.packageType || "package"}
               </button>
               <AddReviewModal
                 isOpen={isModalOpen}
@@ -325,6 +328,7 @@ const formattedCategory = formatSlug(props.package.title);
                   props.package?.attachments?.[0] ||
                   "/assets/graphics/user1.svg"
                 }
+                packageType={props?.package.packageType}
               />
 
               <div className="flex-center gap-6">
@@ -367,131 +371,157 @@ const formattedCategory = formatSlug(props.package.title);
         <hr className="mt-[35px]" />
 
         <div className="hidden md:flex flex-center md:flex-center gap-[] py-3 font-dm-sans text-sm text-[#A5A5A5]">
-  {/* Check if the package is a grant package */}
-  {props?.domain === "Grant_Package" ? (
-    <>
-      {/* Grant Package Logic */}
-      {props?.grantStatus === "approved" && (
-        <div className="flex flex-col gap-3">
-          <ActivityItems activities={props.orderActivities} />
+          {/* Check if the package is a grant package */}
+          {props?.domain === "Grant_Package" ? (
+            <>
+              {/* Grant Package Logic */}
+              {(props?.grantStatus === "approved" ||
+                props?.grantStatus === "accepted") && (
+                <div className="flex flex-col gap-3">
+                  <ActivityItems activities={props.orderActivities} />
 
-          <div className="flex-center gap-2">
-            <span className="font-[500] text-[#2B2A2A]">Approved Grant: {props?.approvedGrant}</span>
-            <span className="font-[500] text-[#2B2A2A]">Approved Date: {formatDate(props?.updatedAt)}</span>
+                  <div className="flex-center gap-2">
+                    <span className="font-[500] text-[#A5A5A5]">
+                      Dousign.pdf
+                    </span>
+                    {props.hasContractDoc === true && (
+                      <a target="__blank" href={props.grantContractDoc}>
+                        <GoDownload color="#575757" size={18} />
+                      </a>
+                    )}
+                    <span className="font-[500] text-[#A5A5A5] flex gap-2 border-l border-black-main pl-3">
+                      <p className="text-[#257FCA]">Approved Grant:</p>{" "}
+                      {props?.approvedGrant}
+                    </span>
+                    <span className="font-[500] text-[#A5A5A5] flex gap-2 border-l border-black-main pl-3">
+                      <p className="text-[#257FCA]">Approved Date:</p>{" "}
+                      {formDateWithTime(props?.updatedAt)}
+                    </span>
+                  </div>
+                </div>
+              )}
 
-            {props.hasContractDoc === true && (
-              <a target="__blank" href={props.grantContractDoc}>
-                <GoDownload color="#575757" size={18} />
-              </a>
-            )}
-          </div>
+              {props?.grantStatus === "declined" && (
+                <div className="flex flex-col gap-3">
+                  <ActivityItems activities={props.orderActivities} />
+
+                  <div className="flex-center gap-2">
+                    <span className="font-[500] text-[#A5A5A5]">
+                      Dousign.pdf
+                    </span>
+                    {props.hasContractDoc === true && (
+                      <a target="__blank" href={props.grantContractDoc}>
+                        <GoDownload color="#575757" size={18} />
+                      </a>
+                    )}
+                    <span className="font-[500] text-[#A5A5A5] flex gap-2 border-l border-black-main pl-3">
+                      <p className="text-[#257FCA]">Declined Date: </p>
+                      {formDateWithTime(props?.updatedAt)}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {props?.grantStatus === "rejected" && (
+                <div className="flex flex-col gap-3">
+                  <ActivityItems activities={props.orderActivities} />
+
+                  <div className="flex-center gap-2">
+                    <span className="font-[500] text-[#A5A5A5]">
+                      Dousign.pdf
+                    </span>
+                    {props.hasContractDoc === true && (
+                      <a target="__blank" href={props.grantContractDoc}>
+                        <GoDownload color="#575757" size={18} />
+                      </a>
+                    )}
+                    <span className="font-[500] text-[#A5A5A5] flex gap-2 border-l border-black-main pl-3">
+                      <p className="text-[#257FCA]">Rejected Date: </p>
+                      {formDateWithTime(props?.updatedAt)}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {props?.grantStatus === "applied" && (
+                <div className="flex flex-col gap-3">
+                  <ActivityItems activities={props.orderActivities} />
+
+                  <div className="flex-center gap-2">
+                    <span className="font-[500] text-[#2B2A2A]">
+                      Scheduled Date: {""}
+                    </span>
+                    <span className="font-[500] text-[#2B2A2A]">
+                      Call: {""}
+                    </span>
+                    <span className="font-[500] text-[#2B2A2A]">
+                      Payment Status: {props?.paymentStatus?.toUpperCase()}
+                    </span>
+
+                    {paymentStatusIcon(props?.paymentStatus)}
+
+                    {props.hasContractDoc === true && (
+                      <a target="__blank" href={props.grantContractDoc}>
+                        <GoDownload color="#575757" size={18} />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {/* Non-Grant Package Logic */}
+              <ActivityItems activities={props.orderActivities} />
+
+              <div className="flex-center gap-2">
+                <span className="font-[500] text-[#2B2A2A]">
+                  Payment: {props?.paymentStatus?.toUpperCase()}
+                </span>
+
+                {paymentStatusIcon(props?.paymentStatus)}
+
+                {props.hasContractDoc === true && (
+                  <a target="__blank" href={props.grantContractDoc}>
+                    <GoDownload color="#575757" size={18} />
+                  </a>
+                )}
+              </div>
+
+              <div className="ml-auto w-fit flex-center gap-6">
+                {props.adminReport?.length && (
+                  <a
+                    target="__blank"
+                    href={props.adminReport}
+                    rel="noopener noreferrer"
+                    className="flex-center gap-1 cursor-pointer p-1 rounded border bg-teal-50"
+                  >
+                    <span>
+                      <GoDownload color="#4CAF50" size={18} />
+                    </span>
+
+                    <span className="text-gray-600">Download Report</span>
+                  </a>
+                )}
+
+                {cleanedUrl && cleanedUrl.length > 0 && (
+                  <a
+                    target="__blank"
+                    href={cleanedUrl}
+                    rel="noopener noreferrer"
+                    className="flex-center gap-1  cursor-pointer rounded border bg-teal-50 p-1"
+                  >
+                    <span>
+                      <GoDownload color="#4CAF50" size={18} />
+                    </span>
+
+                    <span className="text-gray-600">Download AI Package</span>
+                  </a>
+                )}
+              </div>
+            </>
+          )}
         </div>
-      )}
-
-      {props?.grantStatus === "declined" && (
-        <div className="flex flex-col gap-3">
-          <ActivityItems activities={props.orderActivities} />
-
-          <div className="flex-center gap-2">
-            <span className="font-[500] text-[#2B2A2A]">Declined Date: {formatDate(props?.updatedAt)}</span>
-
-            {props.hasContractDoc === true && (
-              <a target="__blank" href={props.grantContractDoc}>
-                <GoDownload color="#575757" size={18} />
-              </a>
-            )}
-          </div>
-        </div>
-      )}
-
-      {props?.grantStatus === "rejected" && (
-        <div className="flex flex-col gap-3">
-          <ActivityItems activities={props.orderActivities} />
-
-          <div className="flex-center gap-2">
-            <span className="font-[500] text-[#2B2A2A]">Rejected Date: {formatDate(props?.updatedAt)}</span>
-
-            {props.hasContractDoc === true && (
-              <a target="__blank" href={props.grantContractDoc}>
-                <GoDownload color="#575757" size={18} />
-              </a>
-            )}
-          </div>
-        </div>
-      )}
-
-      {props?.grantStatus === "applied" && (
-        <div className="flex flex-col gap-3">
-          <ActivityItems activities={props.orderActivities} />
-
-          <div className="flex-center gap-2">
-            <span className="font-[500] text-[#2B2A2A]">Scheduled Date: {''}</span>
-            <span className="font-[500] text-[#2B2A2A]">Call: {''}</span>
-            <span className="font-[500] text-[#2B2A2A]">Payment Status: {props?.paymentStatus?.toUpperCase()}</span>
-
-            {paymentStatusIcon(props?.paymentStatus)}
-
-            {props.hasContractDoc === true && (
-              <a target="__blank" href={props.grantContractDoc}>
-                <GoDownload color="#575757" size={18} />
-              </a>
-            )}
-          </div>
-        </div>
-      )}
-    </>
-  ) : (
-    <>
-      {/* Non-Grant Package Logic */}
-      <ActivityItems activities={props.orderActivities} />
-
-      <div className="flex-center gap-2">
-        <span className="font-[500] text-[#2B2A2A]">Payment: {props?.paymentStatus?.toUpperCase()}</span>
-
-        {paymentStatusIcon(props?.paymentStatus)}
-
-        {props.hasContractDoc === true && (
-              <a target="__blank" href={props.grantContractDoc}>
-                <GoDownload color="#575757" size={18} />
-              </a>
-            )}
-      </div>
-
-      <div className="ml-auto w-fit flex-center gap-6">
-        {props.adminReport?.length && (
-          <a
-            target="__blank"
-            href={props.adminReport}
-            rel="noopener noreferrer"
-            className="flex-center gap-1 cursor-pointer p-1 rounded border bg-teal-50"
-          >
-            <span>
-              <GoDownload color="#4CAF50" size={18} />
-            </span>
-
-            <span className="text-gray-600">Download Report</span>
-          </a>
-        )}
-
-        {cleanedUrl && cleanedUrl.length > 0 && (
-          <a
-            target="__blank"
-            href={cleanedUrl}
-            rel="noopener noreferrer"
-            className="flex-center gap-1  cursor-pointer rounded border bg-teal-50 p-1"
-          >
-            <span>
-              <GoDownload color="#4CAF50" size={18} />
-            </span>
-
-            <span className="text-gray-600">Download AI Package</span>
-          </a>
-        )}
-      </div>
-    </>
-  )}
-</div>
-
       </div>
     </div>
   );
