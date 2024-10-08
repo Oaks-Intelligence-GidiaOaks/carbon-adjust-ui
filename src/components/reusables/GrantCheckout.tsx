@@ -4,9 +4,6 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { IComponentMap } from "@/types/general";
 import DescriptionSection from "../containers/checkout/DescriptionSection";
 
-import OrderSummary from "../containers/checkout/OrderSummary";
-import PaymentSuccessful from "../containers/checkout/PaymentSuccessful";
-import ProcessingPayment from "../containers/checkout/ProcessingPayment";
 import CloseModal from "./CloseModal";
 import { clearProduct } from "@/features/productSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -64,27 +61,6 @@ const GrantProductCheckout = (props: {
     ),
     2: (
       <GrantProductForm
-        setShowCancel={setShowCancel}
-        setStage={setStage}
-        setShowcheckout={cancelCheckout}
-      />
-    ),
-    3: (
-      <OrderSummary
-        setShowCancel={setShowCancel}
-        setStage={setStage}
-        setShowcheckout={cancelCheckout}
-      />
-    ),
-    4: (
-      <ProcessingPayment
-        setShowCancel={setShowCancel}
-        setStage={setStage}
-        setShowcheckout={cancelCheckout}
-      />
-    ),
-    5: (
-      <PaymentSuccessful
         setShowCancel={setShowCancel}
         setStage={setStage}
         setShowcheckout={cancelCheckout}

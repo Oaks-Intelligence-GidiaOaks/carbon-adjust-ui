@@ -3,7 +3,7 @@ import { RootState } from "@/app/store";
 import { IResponse } from "@/interfaces/orderData.interface";
 import { createNewOrder } from "@/services/homeOwner";
 import { useMutation } from "@tanstack/react-query";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 import { GrClose } from "react-icons/gr";
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -17,6 +17,7 @@ import {
   MonitoringEvent,
   SubLevelEvent,
 } from "@/interfaces/events.interface";
+import RadioGroupComponent from "@/components/ui/RadioGroup";
 
 type IAddress = {
   country: string;
@@ -37,12 +38,15 @@ type IOrder = {
   _id?: string;
 };
 
-const OrderSummary = (props: {
+const GrantOrderSummary = (props: {
   setShowCancel: Dispatch<SetStateAction<boolean>>;
   setStage: Dispatch<SetStateAction<number>>;
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { order, product, user } = useSelector((state: RootState) => state);
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const options = ["Restricted wallet"];
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -108,6 +112,7 @@ const OrderSummary = (props: {
         zipcode: order.customerAddress.zipcode,
       },
     };
+
     createOrder.mutate(newOrder);
   };
 
@@ -128,69 +133,27 @@ const OrderSummary = (props: {
         <h2 className="font-[600] text-lg mt-3">Order Summary</h2>
 
         <div className="flex-start">
-          <span className="font-[600] text-sm w-1/2"> Price (£): </span>
+          <span className="font-[600] text-sm w-1/2 "> Category : </span>
           <span className="font-[400] text-sm w-1/2 pl-2">
-            {product.price || 0}
+            {product.category?.name}
           </span>
         </div>
-
         <div className="flex-start">
           <span className="font-[600] text-sm w-1/2 "> Package : </span>
           <span className="font-[400] text-sm w-1/2 pl-2">{product.title}</span>
         </div>
 
         <div className="flex-start">
-          <span className="font-[600] text-sm w-1/2">
-            First Line of Address:{" "}
-          </span>
-          <span className="font-[400] text-sm w-1/2 pl-2">
-            {order.customerAddress.firstLineAddress}
-          </span>
+          <span className="font-[600] text-sm w-1/2 "> Created by : </span>
+          <span className="font-[400] text-sm w-1/2 pl-2"></span>
         </div>
 
         <div className="flex-start">
-          <span className="font-[600] text-sm w-1/2">Country:</span>
+          <span className="font-[600] text-sm w-1/2"> Amount (£): </span>
           <span className="font-[400] text-sm w-1/2 pl-2">
-            {order.customerAddress.country.label}
+            {product.price || 0}
           </span>
         </div>
-
-        <div className="flex-start">
-          <span className="font-[600] text-sm w-1/2">City/Province: </span>
-          <span className="font-[400] text-sm w-1/2 pl-2">
-            {order.customerAddress.cityOrProvince.label}
-          </span>
-        </div>
-
-        <div className="flex-start">
-          <span className="font-[600] text-sm w-1/2"> Email Address: </span>
-          <span className="font-[400] text-sm  truncate w-1/2 pl-2">
-            {user.user?.email}
-          </span>
-        </div>
-
-        <div className="flex-start">
-          <span className="font-[600] text-sm w-1/2">Zip code: </span>
-          <span className="font-[400] text-sm w-1/2 pl-2">
-            {order.customerAddress.zipcode}
-          </span>
-        </div>
-
-        <div className="flex-start">
-          <span className="font-[600] text-sm w-1/2"> Phone Number: </span>
-          <span className="font-[400] text-sm w-1/2 pl-2">
-            {order.customerPhone}
-          </span>
-        </div>
-
-        {product.packageType === "Product" && (
-          <div className="flex-start">
-            <span className="font-[600] text-sm w-1/2"> Quantity</span>
-            <span className="font-[400] text-sm w-1/2 pl-2">
-              {order.quantity}
-            </span>
-          </div>
-        )}
 
         <div className="flex flex-col gap-3">
           {product.questions.map((it, i) => (
@@ -205,6 +168,19 @@ const OrderSummary = (props: {
               </span>
             </div>
           ))}
+        </div>
+
+           {/* RadioGroup for Payment Option */}
+        <div>
+          <h2 className="text-lg font-bold">Payment option</h2>
+          <RadioGroupComponent
+            options={options}
+            value={selectedOption}
+            setValue={setSelectedOption}
+            showCheckMark={false}
+            wrapperClassName="custom-radio-wrapper" 
+            size="w-[20px] h-[20px]"
+          />
         </div>
 
         <button
@@ -233,4 +209,9 @@ const OrderSummary = (props: {
   );
 };
 
-export default OrderSummary;
+export default GrantOrderSummary;
+
+
+
+
+    

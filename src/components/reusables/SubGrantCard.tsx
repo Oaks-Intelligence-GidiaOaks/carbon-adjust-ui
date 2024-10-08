@@ -59,7 +59,7 @@ const SubGrantCard = ({ isMerchant = false, ...props }: Props) => {
     <div className="max-w-[250px] group">
       <div className="relative bg-gray-100 p-4 rounded-lg">
         {/* "New" Label */}
-        <div className="absolute font-inter top-2 left-2 bg-[##FEFEFE] text-[#0E89F7] text-xs font-semibold px-4 py-1 rounded-md">
+        <div className="absolute font-inter top-2 left-2 bg-[#FEFEFE] text-[#0E89F7] text-xs font-semibold px-4 py-1 rounded-md">
           NEW
         </div>
 
