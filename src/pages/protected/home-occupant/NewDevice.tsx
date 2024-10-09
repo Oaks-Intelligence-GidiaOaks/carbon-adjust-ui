@@ -167,7 +167,7 @@ const NewDevice = () => {
 
       {/* device image upload */}
       <form action="" onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-8 lg:w-3/4 xl:w-2/3 mx-auto mt-10 text-sm">
+        <div className="flex flex-col gap-8 lg:w-3/4 xl:w-2/3 w-full mx-auto mt-10 text-sm">
           <div className="space-y-2">
             <h2 className="">Device photo</h2>
 

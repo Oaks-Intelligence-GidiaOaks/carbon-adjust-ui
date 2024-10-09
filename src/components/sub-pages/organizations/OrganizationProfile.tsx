@@ -148,7 +148,7 @@ const OrganizationProfile = (_: Props) => {
     console.log(formState.address.cityOrProvince);
   }
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen p-5 sm:p-0">
       {/* banner */}
       <div className="p-6 flex justify-center h-40 bg-gradient-to-r relative from-[hsla(224,76%,18%,1)] from-80% to-[hsla(224,76%,41%,1)]">
         <AccountSetupScribbleRight className="absolute bottom-0 right-0" />

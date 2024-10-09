@@ -1,5 +1,7 @@
 import { IDevice, IDeviceChartData } from "@/interfaces/device.interface";
+import { UserRole } from "@/interfaces/user.interface";
 import { SelectItem } from "@/types/formSelect";
+import { IComponentMap } from "@/types/general";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as XLSX from "xlsx";
@@ -386,4 +388,11 @@ export const roundNumber = (
 ): number => {
   const factor = Math.pow(10, decimalPlaces);
   return Math.round(value * factor) / factor;
+};
+
+export const getMerchantRoleColor: IComponentMap = {
+  [UserRole.MERCHANT]: "bg-teal-900",
+  [UserRole.REPORT_MERCHANT]: "bg-teal-700",
+  [UserRole.SUPER_MERCHANT]: "bg-teal-500",
+  [UserRole.GRANT_MERCHANT]: "bg-teal-400",
 };

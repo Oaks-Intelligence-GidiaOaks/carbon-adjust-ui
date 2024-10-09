@@ -29,7 +29,7 @@ const Tab: FC<tabProps> = ({ isActive, text, onClick, variant }) => {
             ? activeUnderlineStyle
             : activeStyleDefault
           : " text-[#667085] "
-      } font-[500] text-sm  min-w-[100px] flex-1 h-full text-center grid place-items-center  cursor-pointer`}
+      } font-[500] text-sm  max-w-[98%] flex-1 h-full text-center grid place-items-center  cursor-pointer`}
     >
       <span className="text-[10px] px-[2px]">{text.replace(/_/g, " ")}</span>
     </div>
@@ -44,7 +44,7 @@ const TabToggler: FC<Props> = ({
 }) => {
   return (
     <div
-      className={`  h-[46px] ${
+      className={`  min-h-[46px] ${
         variant === "default" && "bg-[#F2F4F7] border"
       }  flex-center py-[6px] md:px-2 px-1 rounded-lg gap-2 `}
     >

@@ -35,7 +35,7 @@ const Staff = (_: Props) => {
       </div>
 
       {/* table */}
-      <div className="-mt-3 px-4 w-fit">
+      <div className="-mt-3 px-4 w-full">
         <StaffGrid data={tableStaff} isUpdating />
       </div>
     </div>

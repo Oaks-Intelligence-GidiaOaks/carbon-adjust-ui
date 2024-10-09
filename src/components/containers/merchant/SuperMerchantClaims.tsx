@@ -9,8 +9,9 @@ const SuperMerchantClaims = () => {
     queryFn: () => getCustomerClaims(),
   });
 
-  const claims = isSuccess ? data.data : [];
+  const claims = isSuccess ? data?.data?.claimsData : [];
 
+  console.log(claims, "claims");
   return (
     <div className="space-y-4 px-6 py-4">
       <div className="">

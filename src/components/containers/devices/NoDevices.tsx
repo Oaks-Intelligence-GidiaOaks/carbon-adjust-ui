@@ -24,11 +24,11 @@ const NoDevices = (props: { link?: string }) => {
         </Link>
       </div>
 
-      <p className="mt-[60px] font-[400] italic text-sm text-[#0E72CB] text-center">
+      <div className="mt-[60px] font-[400] italic text-sm text-[#0E72CB] text-center pr-10">
         “From 1990 to 2019, the total warming effect from greenhouse gases added
         by humans to the Earth's atmosphere increased by 45 percent. The warming
         effect associated with carbon dioxide alone increased by 36 percent.”
-      </p>
+      </div>
     </div>
   );
 };

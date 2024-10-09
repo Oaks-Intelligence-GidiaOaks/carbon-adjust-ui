@@ -90,7 +90,7 @@ const AddedDevices = () => {
 
   if (userDevices?.data?.devices.length === 0) {
     return (
-      <div className="h-32 grid place-items-center">
+      <div className="h-32 grid place-items-center max-w-[98%]">
         <NoDevices link="/dashboard/devices/add" />
       </div>
     );
@@ -99,7 +99,7 @@ const AddedDevices = () => {
   return (
     <div>
       <div className="flex-center mt-[15px]">
-        <div className="relative border border-border rounded-lg h-10 p-0 bg-white md:w-[350px]">
+        <div className="relative border border-border rounded-lg h-10 p-0 bg-white md:w-[350px] w-[300px]">
           <BiSearch className="absolute top-2 left-2.5 opacity-40" size={24} />
           <input
             name="search"
@@ -111,7 +111,7 @@ const AddedDevices = () => {
 
         <Link className="ml-auto" to="/dashboard/devices/add">
           <Button className="rounded-[20px] flex-center gap-1 ">
-            <span>Add device</span>
+            <span className="md:block hidden">Add device</span>
             <PlusIcon />
           </Button>
         </Link>
