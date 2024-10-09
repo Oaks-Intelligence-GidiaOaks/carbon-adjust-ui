@@ -19,11 +19,13 @@ const RestrictedWalletCard = () => {
   }
 
   const walletData = data?.data;
+
+
   if (!walletData) {
     return <p>No wallet data available.</p>;
   }
 
-  const { numberOfGrants, numberOfPackages, balance, grantUsed } = walletData;
+  const { numberOfGrants, numberOfPackages, balance, grantUsed, name } = walletData;
 
   return (
     <div className="w-full max-w-[512px] rounded-[20px] bg-[url('@/assets/icons/res-card-bg.svg')] bg-cover bg-no-repeat text-white shadow-lg p-6 relative mx-auto sm:w-[512px] sm:mx-0">
@@ -31,7 +33,7 @@ const RestrictedWalletCard = () => {
       <div className="flex justify-between mt-4">
         <div className="">
           <h2 className="text-sm font-poppins">Restricted wallet</h2>
-          <p className="font-inter font-medium">Emmanuel Otunoye</p>
+          <p className="font-inter font-medium">{name}</p>
         </div>
         <div>
           <p className="text-xs font-poppins">Number of packages</p>

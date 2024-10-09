@@ -17,14 +17,10 @@ interface Props extends IProduct {
   wrapText?: boolean;
 }
 
-interface Stats {
-  averageRating: number;
-}
 
 const SubGrantCard = ({ isMerchant = false, ...props }: Props) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.user);
-  const packageId = props._id;
 
   const handleInitiateCheckout = () => {
     dispatch(addProduct({ ...props }));
@@ -45,8 +41,8 @@ const SubGrantCard = ({ isMerchant = false, ...props }: Props) => {
 
    const averageRating = props?.rating || 0;
 
-//   // Calculate discount price
-//   const discountPrice = props.price - (props.price * (props.discount / 100));
+
+   console.log('liw', props)
 
   return (
     <div className="max-w-[250px] group">
