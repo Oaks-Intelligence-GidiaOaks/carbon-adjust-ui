@@ -9,6 +9,7 @@ import { SideBarItem, SideBarProps } from "@/types/general";
 import { cn } from "@/utils";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { Link, useLocation } from "react-router-dom";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 const SideMenu = ({
   accountType,
@@ -59,46 +60,80 @@ const SideMenu = ({
           {identifyUserSideBar(accountType).map((item, i) => {
             const Icon = item.icon;
             return item.title !== "Logout" ? (
-              <Link
-                key={i}
-                to={`${item.href}`}
-                className={cn(
-                  " gap-4 items-center font-manrope rounded-full h-12 w-12 grid place-items-center",
-                  pathname === `${item.href}`
-                    ? "bg-gradient-to-r from-blue-secondary to-blue-main"
-                    : "hover:bg-[#D6F2DE]"
-                )}
-              >
-                <Icon
-                  className={cn(
-                    pathname === `${item.href}` ? "invert brightness-0" : ""
-                  )}
-                />
-              </Link>
+              <Tooltip.Provider>
+                <Tooltip.Root>
+                  <Tooltip.Trigger asChild>
+                    <Link
+                      key={i}
+                      to={`${item.href}`}
+                      className={cn(
+                        " gap-4 items-center font-manrope rounded-full h-12 w-12 grid place-items-center",
+                        pathname === `${item.href}`
+                          ? "bg-gradient-to-r from-blue-secondary to-blue-main"
+                          : "hover:bg-[#D6F2DE]"
+                      )}
+                    >
+                      <Icon
+                        className={cn(
+                          pathname === `${item.href}`
+                            ? "invert brightness-0"
+                            : ""
+                        )}
+                      />
+                    </Link>
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal>
+                    <Tooltip.Content
+                      className="data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade max-w-[240px] z-50 data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade text-violet11 select-none rounded-[4px] bg-white px-[15px] py-[10px] text-[15px] leading-none shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity]"
+                      sideOffset={5}
+                    >
+                      {item.title}
+                      <Tooltip.Arrow className="fill-white" />
+                    </Tooltip.Content>
+                  </Tooltip.Portal>
+                </Tooltip.Root>
+              </Tooltip.Provider>
             ) : (
-              <div
-                key={i}
-                role="button"
-                className={cn(
-                  "flex gap-4 py-3 px-2 pl-4 items-center font-manrope rounded-full",
-                  pathname === `${item.href}`
-                    ? "bg-gradient-to-r from-blue-secondary to-blue-main"
-                    : "hover:bg-[#D6F2DE]"
-                )}
-                onClick={() => {
-                  persistor.pause();
-                  persistor.flush().then(() => {
-                    return persistor.purge();
-                  });
-                  window.location.assign("/");
-                }}
-              >
-                <Icon
-                  className={cn(
-                    pathname === `${item.href}` ? "invert brightness-0" : ""
-                  )}
-                />
-              </div>
+              <Tooltip.Provider>
+                <Tooltip.Root>
+                  <Tooltip.Trigger asChild>
+                    <div
+                      key={i}
+                      role="button"
+                      className={cn(
+                        "flex gap-4 py-3 px-2 pl-4 items-center font-manrope rounded-full",
+                        pathname === `${item.href}`
+                          ? "bg-gradient-to-r from-blue-secondary to-blue-main"
+                          : "hover:bg-[#D6F2DE]"
+                      )}
+                      onClick={() => {
+                        persistor.pause();
+                        persistor.flush().then(() => {
+                          return persistor.purge();
+                        });
+                        window.location.assign("/");
+                      }}
+                    >
+                      <Icon
+                        className={cn(
+                          pathname === `${item.href}`
+                            ? "invert brightness-0"
+                            : ""
+                        )}
+                      />
+                    </div>
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal>
+                    <Tooltip.Content
+                      className="data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade max-w-[240px] z-50 data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade text-violet11 select-none rounded-[4px] bg-white px-[15px] py-[10px] text-[15px] leading-none shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity]"
+                      sideOffset={5}
+                    >
+                      Logout
+                      <Tooltip.Arrow className="fill-white" />
+                    </Tooltip.Content>
+                  </Tooltip.Portal>
+                </Tooltip.Root>
+              </Tooltip.Provider>
             );
           })}
         </div>
@@ -136,6 +171,7 @@ const SideMenu = ({
               <Link
                 key={i}
                 to={`${item.href}`}
+                onClick={() => setMobileMenuIsOpen(false)}
                 className={cn(
                   "flex gap-4 py-3 px-2 pl-4 items-center font-manrope rounded-full",
                   pathname === `${item.href}`

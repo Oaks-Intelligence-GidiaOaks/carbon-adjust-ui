@@ -95,7 +95,7 @@ const ProductCheckout = (props: {
   const CancelModal = () => {
     return (
       <Backdrop setShow={props.setShowcheckout} show={showCancel}>
-        <div className="z-[100] top-[40%] left-[20%] w-[400px] absolute border grid place-items-center cursor-pointer">
+        <div className="z-[100] top-[40%] left-[2%] md:left-[20%] w-[400px] absolute border grid place-items-center cursor-pointer">
           <CloseModal
             cancelCheckout={cancelCheckout}
             removeModal={() => setShowCancel(false)}
