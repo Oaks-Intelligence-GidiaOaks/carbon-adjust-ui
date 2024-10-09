@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import GrantCard from "./GrantCard";
 
 const ProductsCategory = (props: IProdCategory) => {
-  console.log('cat', props.packages);
+
 
   const isGrantCategory = props.category.name.toLowerCase() === "grant";
 

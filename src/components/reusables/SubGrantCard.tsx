@@ -43,14 +43,7 @@ const SubGrantCard = ({ isMerchant = false, ...props }: Props) => {
     SocketService.emit(MonitoringEvent.NEW_SUBLEVEL_EVENT, basketPayload);
   };
 
-  // Fetch package reviews
-  const { data } = useQuery({
-    queryKey: ["package-review", packageId],
-    queryFn: () => getPackagesReviews({ packageId }),
-  });
-
-  const stats: Stats | null = data?.data?.stats || null;
-  const averageRating = stats?.averageRating || 0;
+   const averageRating = props?.rating || 0;
 
 //   // Calculate discount price
 //   const discountPrice = props.price - (props.price * (props.discount / 100));

@@ -45,6 +45,7 @@ export interface IProduct {
   minAmount?: number;
   maxAmount?: number;
   hasGrantDoc?: boolean;
+  rating?: number;
 }
 
 export interface ICategory {
