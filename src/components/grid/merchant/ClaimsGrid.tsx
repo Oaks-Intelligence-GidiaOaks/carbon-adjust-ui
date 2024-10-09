@@ -143,7 +143,7 @@ const ClaimsGrid = ({
 
         return (
           <div>
-            <GridDocField docs={docs || []} />;
+            <GridDocField docs={docs || []} />
           </div>
         );
       },
