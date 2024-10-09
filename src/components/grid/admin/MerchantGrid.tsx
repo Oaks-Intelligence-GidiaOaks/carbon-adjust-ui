@@ -13,8 +13,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
 
-//   util functions
-import { formatDate } from "@/lib/utils";
+// util functions
+import { formatDate, getMerchantRoleColor } from "@/lib/utils";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
 
 // child   components
@@ -253,38 +253,33 @@ const MerchantGrid = (props: { data: any[] }) => {
     // Is Merchant Internal
     columnHelper.accessor((row: any) => row?.status, {
       id: "isInternalMerchant",
-      cell: (info: any) => (
-        <div className="w-44 relative flex items-center text-sm">
-          {(info.row.original as any).isInternalMerchant ? (
-            <span
-              style={{ color: "#8AC926", background: "#8AC92630" }}
-              className="w-36 py-1 rounded-full inline-block mx-auto"
-            >
-              Internal
-            </span>
-          ) : (info.row.original as any).roles.includes(
-              UserRole.SUPER_MERCHANT
-            ) ? (
-            <span className="w-36 bg-cyan-600 text-gray-200 py-1 rounded-full inline-block mx-auto">
-              Super
-            </span>
-          ) : (info.row.original as any).roles.includes(
-              UserRole.REPORT_MERCHANT
-            ) ? (
-            <span className="w-36 bg-teal-600 text-gray-200 py-1 rounded-full inline-block mx-auto">
-              Report
-            </span>
-          ) : (
-            <span
-              style={{ color: "#139EEC", background: "#139EEC30" }}
-              className="w-36 py-1 rounded-full inline-block mx-auto"
-            >
-              Default
-            </span>
-          )}
-        </div>
+      cell: (info: any) => {
+        const roles = info.row.original.roles || [];
+
+        return (
+          <div className="flex flex-col gap-1">
+            {roles?.map((it: UserRole, i: number) => (
+              <span
+                key={i}
+                className={`w-36 ${getMerchantRoleColor[it]} text-white py-1 rounded-full text-xs inline-block mx-auto`}
+              >
+                {it.replace("_", " ")}
+              </span>
+            ))}
+
+            {info.row.original.isInternalMerchant && (
+              <span
+                className={`w-36 bg-teal-300 text-white py-1 rounded-full text-xs inline-block mx-auto`}
+              >
+                IINTERNAL MERCHANT
+              </span>
+            )}
+          </div>
+        );
+      },
+      header: () => (
+        <div className="w-32 whitespace-nowrap">Merchant Roles</div>
       ),
-      header: () => <div className="w-32 whitespace-nowrap">Merchant Role</div>,
     }),
 
     // Actions
@@ -324,10 +319,7 @@ const MerchantGrid = (props: { data: any[] }) => {
 
                 {!info.row.original.isInternalMerchant &&
                   info.row.original.merchantType &&
-                  info.row.original.status === "completed" &&
-                  !info.row.original.roles.includes(
-                    UserRole.SUPER_MERCHANT
-                  ) && (
+                  info.row.original.status === "completed" && (
                     <div
                       className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-yellow-500 text-xs whitespace-nowrap px-1"
                       onClick={() => handleMakeMerchantInternal(currentRowId)}
@@ -340,11 +332,11 @@ const MerchantGrid = (props: { data: any[] }) => {
                     </div>
                   )}
 
-                {!info.row.original.roles.includes(UserRole.REPORT_MERCHANT) &&
-                  !info.row.original.roles.includes(UserRole.SUPER_MERCHANT) &&
-                  !info.row.original.isInternalMerchant &&
-                  info.row.original.merchantType &&
-                  info.row.original.status === "completed" && (
+                {info.row.original.merchantType &&
+                  info.row.original.status === "completed" &&
+                  !info.row.original.roles.includes(
+                    UserRole.REPORT_MERCHANT
+                  ) && (
                     <div
                       className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-green-500 text-xs whitespace-nowrap px-1"
                       onClick={() => handleMakeReportMerchant(currentRowId)}
@@ -358,9 +350,7 @@ const MerchantGrid = (props: { data: any[] }) => {
                   )}
 
                 {!info.row.original.roles.includes(UserRole.SUPER_MERCHANT) &&
-                  !info.row.original.roles.includes(UserRole.REPORT_MERCHANT) &&
                   info.row.original.merchantType &&
-                  !info.row.original.isInternalMerchant &&
                   info.row.original.status === "completed" && (
                     <div
                       className="cursor-pointer flex items-center gap-1 font-poppins  hover:text-cyan-500 text-xs whitespace-nowrap px-1"
