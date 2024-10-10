@@ -3,6 +3,7 @@ import { MultiValue } from "react-select";
 export enum PackageDomain {
   GRANT_PACKAGE = "Grant_Package",
   REGULAR_PACKAGE = "Regular_Package",
+  SUB_PACKAGE = "Sub_Package",
 }
 
 export interface IQuestion {
@@ -33,6 +34,7 @@ export interface IProduct {
   discount: number;
   hasQuestion: boolean;
   hasSchedule: boolean;
+  packageDomain?: PackageDomain;
   allowPartPayment: boolean;
   currency: string;
   description?: string;
