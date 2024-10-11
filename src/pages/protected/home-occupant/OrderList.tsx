@@ -50,7 +50,8 @@ const OrderList = (_: Props) => {
     queryFn: () => getHoOrders(),
   });
 
-  console.log('new', data)
+  console.log('data', data)
+
 
   const hoOrders: IPackageOrder[] = isSuccess ? data.data.orders : [];
 
