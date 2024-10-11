@@ -2,8 +2,6 @@ import { addProduct } from "@/features/productSlice";
 import { IProduct } from "@/interfaces/product.interface";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getPackagesReviews } from "@/services/homeOwner";
-import { useQuery } from "@tanstack/react-query";
 import { RootState } from "@/app/store";
 import {
   IAddToBasketEventPayload,
@@ -17,14 +15,10 @@ interface Props extends IProduct {
   wrapText?: boolean;
 }
 
-interface Stats {
-  averageRating: number;
-}
 
 const SubGrantCard = ({ isMerchant = false, ...props }: Props) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.user);
-  const packageId = props._id;
 
   const handleInitiateCheckout = () => {
     dispatch(addProduct({ ...props }));
@@ -43,23 +37,13 @@ const SubGrantCard = ({ isMerchant = false, ...props }: Props) => {
     SocketService.emit(MonitoringEvent.NEW_SUBLEVEL_EVENT, basketPayload);
   };
 
-  // Fetch package reviews
-  const { data } = useQuery({
-    queryKey: ["package-review", packageId],
-    queryFn: () => getPackagesReviews({ packageId }),
-  });
-
-  const stats: Stats | null = data?.data?.stats || null;
-  const averageRating = stats?.averageRating || 0;
-
-//   // Calculate discount price
-//   const discountPrice = props.price - (props.price * (props.discount / 100));
+   const averageRating = props?.rating || 0;
 
   return (
     <div className="max-w-[250px] group">
       <div className="relative bg-gray-100 p-4 rounded-lg">
         {/* "New" Label */}
-        <div className="absolute font-inter top-2 left-2 bg-[##FEFEFE] text-[#0E89F7] text-xs font-semibold px-4 py-1 rounded-md">
+        <div className="absolute font-inter top-2 left-2 bg-[#FEFEFE] text-[#0E89F7] text-xs font-semibold px-4 py-1 rounded-md">
           NEW
         </div>
 
