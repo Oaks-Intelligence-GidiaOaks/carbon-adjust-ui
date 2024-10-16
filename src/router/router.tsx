@@ -71,6 +71,9 @@ import ComingSoon from "@/components/reusables/ComingSoon";
 import ZohoPage from "@/pages/public/test";
 import BuildingEmptyState from "@/components/reusables/EmptyStateBuildings";
 import BuildingManager from "@/components/reusables/Buildings";
+import BuildingHistoryCard from "@/components/containers/buildings/BuildingHistoryCard";
+import BuildingList from "@/components/containers/buildings/BuildingList";
+
 
 const Router = createBrowserRouter([
   {
@@ -183,7 +186,7 @@ const Router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <BuildingManager />,
+            element: <BuildingList />,
           },
         ],
       },

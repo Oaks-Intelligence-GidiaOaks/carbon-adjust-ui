@@ -238,3 +238,9 @@ export const getGrantSubCategory= async ({packageId }: { packageId: string }) =>
   return data;
 };
 
+// GET BUILDINGS
+export const getBuildingData = async () => {
+  const { data } = await axiosInstance.get(`/building`);
+  return data;
+};
+
