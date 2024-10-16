@@ -4,6 +4,7 @@ import Footer from "@/components/containers/Footer";
 import SideMenu from "@/components/containers/SideMenu";
 import Sidebar from "@/components/containers/Sidebar";
 import TopBar from "@/components/containers/TopBar";
+import ChatBot from "@/components/dialogs/ChatBot";
 import InactivityWrapper from "@/components/hoc/InactivityWrapper";
 import { setUser } from "@/features/userSlice";
 import ProtectedRoute from "@/guards/ProtectedRoute";
@@ -246,6 +247,7 @@ const Layout = (props: Props) => {
               <div className="relative ">
                 <div className="relative z-10">
                   <Outlet />
+                  <ChatBot />
                 </div>
                 <Footer />
               </div>
