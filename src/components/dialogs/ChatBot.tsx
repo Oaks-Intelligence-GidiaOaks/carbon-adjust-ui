@@ -1,12 +1,37 @@
+import { LoadingGif } from "@/assets";
+import { useChatbotInput } from "@/hooks/useChatBotInput";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
-import { FormEvent, useRef, useState } from "react";
+import { StopCircle } from "lucide-react";
+import { useEffect, useRef, useState, useTransition } from "react";
+import { FaMicrophone } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
 
 const ChatBot = () => {
   const [openChat, setOpenChat] = useState<boolean>(false);
   const ref = useRef<HTMLImageElement | null>(null);
+  const [_, startTransition] = useTransition();
 
-  const ChatMessage = (props: { isLoggedInUser?: boolean }) => {
+  const [messages, setMessages] = useState<string[]>([]);
+  const [isStreaming, setIsStreaming] = useState<boolean>(false);
+
+  const {
+    inputText,
+    isRecording,
+    isTranscribing,
+    setInputText,
+    // @ts-ignore
+    handleSend,
+    toggleRecording,
+  } = useChatbotInput();
+
+  useEffect(() => {
+    console.log(inputText);
+  }, [isRecording, isTranscribing]);
+
+  const ChatMessage = (props: {
+    isLoggedInUser?: boolean;
+    message?: string;
+  }) => {
     return (
       <div
         className={`${
@@ -16,16 +41,11 @@ const ChatBot = () => {
         <img src="/assets/graphics/earth-01.svg" alt="" className=" w-6" />
 
         <p className="tracking-tighter text-[11px] font-[300] leading-tight text-[#212121]">
-          What impact will artificial intelligence have on human work?
+          {props?.message ||
+            "What impact will artificial intelligence have on human work?"}
         </p>
       </div>
     );
-  };
-
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault();
-
-    return;
   };
 
   const toggle = () => {
@@ -33,6 +53,19 @@ const ChatBot = () => {
   };
 
   useOutsideCloser(ref, openChat, setOpenChat);
+
+  const handleSendText = (txt: string) => {
+    setIsStreaming(true);
+
+    startTransition(() => {
+      setInputText("");
+
+      setTimeout(() => {
+        setIsStreaming(false);
+        setMessages((prevMsgs) => [...prevMsgs, txt]);
+      }, 3000);
+    });
+  };
 
   return (
     <div ref={ref} className=" fixed bottom-4 right-3 z-[50] ">
@@ -47,30 +80,48 @@ const ChatBot = () => {
 
         <div className=" bg-[#F7F7F7] flex flex-col">
           <div className="flex flex-col gap-2 px-4 py-5 pb-6 border max-h-[290px] overflow-y-scroll scrollbar-hide">
-            <ChatMessage />
-            <ChatMessage isLoggedInUser />
-            <ChatMessage />
-            <ChatMessage isLoggedInUser />
-            <ChatMessage />
-            <ChatMessage isLoggedInUser />
-            <ChatMessage />
-            <ChatMessage isLoggedInUser />
+            {Array.from({ length: 4 }, (_, i) => (
+              <ChatMessage isLoggedInUser={i % 2 === 0} />
+            ))}
+
+            {Array.from(messages, (msg, i) => (
+              <ChatMessage key={i} message={msg} isLoggedInUser={i % 2 === 0} />
+            ))}
+
+            {isStreaming && <img src={LoadingGif} className="w-16" alt="" />}
           </div>
 
-          <form
-            onSubmit={onSubmit}
-            className="flex-center gap-3 border-t w-full justify-between py-[16px] px-1"
-          >
+          <div className="flex-center gap-3 border-t w-full justify-between py-[16px] px-1">
             <input
               type="text"
-              name=""
-              id=""
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              name="text"
+              id="text"
               placeholder="Write your message...."
               className="flex-1 px-3 py-1  outline-none bg-transparent text-[#2E599A] placeholder-[#2E599A] text-xs tracking-tight font-poppins"
             />
 
-            <IoSend className="flex-[0.1]" color="#2E599A" size={25} />
-          </form>
+            <button>
+              {isRecording || isTranscribing ? (
+                <StopCircle size={20} onClick={toggleRecording} />
+              ) : inputText.length > 0 ? (
+                <IoSend
+                  onClick={() => handleSendText(inputText)}
+                  className="flex-[0.1]"
+                  color="#2E599A"
+                  size={25}
+                />
+              ) : (
+                <FaMicrophone
+                  onClick={toggleRecording}
+                  className="flex-[0.1]"
+                  color="#2E599A"
+                  size={25}
+                />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
