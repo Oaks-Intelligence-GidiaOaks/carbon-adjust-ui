@@ -4,3 +4,4 @@ export { default as FinanceApplicationSuccess } from "./FinanceApplicationSucces
 export { default as VerifyEmail } from "./VerifyEmail";
 export { default as VerifyPhoneNumber } from "./VerifyPhoneNumber";
 export { default as StaffModal } from "./StaffModal";
+export { default as OptimizeModal } from "../containers/transport/OptimizeModal";

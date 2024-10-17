@@ -238,3 +238,26 @@ export const getGrantSubCategory= async ({packageId }: { packageId: string }) =>
   return data;
 };
 
+//TRANSPORT
+export const getTransports = async () => {
+  const queryParams = new URLSearchParams();
+  // queryParams.append("limit", limit.toString());
+  // queryParams.append("page", page.toString());
+
+  const url = `/transportation?${queryParams.toString()}`;
+
+  const { data } = await axiosInstance.get(url);
+
+  return data;
+};
+
+
+export const addTransport = async (formData: FormData) => {
+  const { data } = await axiosInstance.post("/transportation", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+};
