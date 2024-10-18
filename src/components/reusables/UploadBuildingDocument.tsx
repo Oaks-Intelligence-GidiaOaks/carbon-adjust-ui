@@ -25,10 +25,10 @@ const UploadDocumentsModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     mutationFn: (formData: FormData) => uploadBuildingData(formData),
     onSuccess: () => {
       toast.success("Building data uploaded successfully.");
-      onClose(); // Close the modal after successful upload
+      onClose(); 
     },
-    onError: () => {
-      toast.error("Error uploading building data.");
+    onError: (err: any) => {
+      toast.error(`Error uploading building data: ${err.message || "Unknown error"}`);
     },
     onSettled: () => {
       // Invalidate queries after the mutation has settled (success or error)
