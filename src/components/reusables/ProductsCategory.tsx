@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import GrantCard from "./GrantCard";
 
 const ProductsCategory = (props: IProdCategory) => {
-  console.log('cat', props.packages);
-
   const isGrantCategory = props.category.name.toLowerCase() === "grant";
 
   return (
@@ -29,13 +27,13 @@ const ProductsCategory = (props: IProdCategory) => {
 
       <div className="flex items-stretch gap-[24px] w-full overflow-x-scroll pb-5 no-scrollbar">
         {props.packages &&
-          props.packages.map((pkg) => (
+          props.packages.map((pkg) =>
             isGrantCategory ? (
               <GrantCard {...pkg} key={pkg._id} category={pkg.category} />
             ) : (
               <ProductCard {...pkg} key={pkg._id} category={pkg.category} />
             )
-          ))}
+          )}
       </div>
     </div>
   );

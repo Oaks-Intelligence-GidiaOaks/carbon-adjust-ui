@@ -17,6 +17,7 @@ import {
   MonitoringEvent,
   SubLevelEvent,
 } from "@/interfaces/events.interface";
+import { PackageDomain } from "@/interfaces/product.interface";
 
 type IAddress = {
   country: string;
@@ -53,24 +54,17 @@ const OrderSummary = (props: {
     onSuccess: (sx: any) => {
       dispatch(updateOrderId(sx.data._id));
       dispatch(updatePrice(sx.data.price));
-      // console.log(sx.data, "order data");
 
-      // console.log(product, "product");
-
-      // redirect to process payment page
-      if (product.price && Number(product.price) > 0) {
+      if (product.packageDomain === PackageDomain.SUB_PACKAGE) {
+        props.setStage(5);
+      } else if (product.price && Number(product.price) > 0) {
+        // redirect to process payment page
         navigate(`/dashboard/payment/${sx.data._id}`);
       } else {
         props.setStage(5);
       }
-
-      // props.setStage(4);
-      // toast.loading("order processing", {
-      //   duration: 1000,
-      // });
     },
     onError: (ex: any) => {
-      // console.log(ex);
       toast.error(ex.response.data.message);
     },
   });

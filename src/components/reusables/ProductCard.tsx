@@ -13,7 +13,6 @@ import {
 } from "@/interfaces/events.interface";
 import SocketService from "@/repository/socket";
 
-
 interface Props extends IProduct {
   wrapText?: boolean;
 }
@@ -29,6 +28,8 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
 
   const handleInitiateCheckout = () => {
     dispatch(addProduct({ ...props }));
+
+    console.log(props);
 
     const basketPayload: IAddToBasketEventPayload = {
       packageId: props?._id,
@@ -55,79 +56,78 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
 
   return (
     <>
+      <div className="min-w-[228px] group">
+        <div className="relative ">
+          <div className="absolute top-[10px] right-[10px] rounded-full w-[32px] h-[32px] bg-white grid place-items-center z-[10]">
+            <GrFavorite />
+          </div>
 
-        <div className="min-w-[228px] group">
-          <div className="relative ">
-            <div className="absolute top-[10px] right-[10px] rounded-full w-[32px] h-[32px] bg-white grid place-items-center z-[10]">
-              <GrFavorite />
+          <div className="absolute top-[13px] left-[13px] z-[10] flex flex-col gap-2">
+            <span className="w-[55px] h-[20px] grid place-items-center bg-white text-[13.94px] font-[700] rounded-[3.31px]">
+              <span>New</span>
+            </span>
+
+            <span className=" w-[55px] h-[20px] grid place-items-center bg-[#BE0B0D] text-white text-[13.94px] font-[700] rounded-[13.31px]">
+              <span>Hot</span>
+            </span>
+          </div>
+
+          <div className="relative h-[304px] border border-[#F3F5F7] grid place-items-center rounded-xl bg-[#F3F5F7]">
+            <div className="hidden group-hover:flex flex-col absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 rounded-lg">
+              {!isMerchant && (
+                <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
+                  <Link
+                    onClick={handleInitiateCheckout}
+                    className="w-5/6"
+                    to={`/dashboard/marketplace/${props?.category?.slug}?pid=${props._id}`}
+                  >
+                    <button className=" blue-gradient w-full rounded-[24px] h-[40px] text-center text-white text-base font-[500]">
+                      Add to basket
+                    </button>
+                  </Link>
+                </div>
+              )}
             </div>
 
-            <div className="absolute top-[13px] left-[13px] z-[10] flex flex-col gap-2">
-              <span className="w-[55px] h-[20px] grid place-items-center bg-white text-[13.94px] font-[700] rounded-[3.31px]">
-                <span>New</span>
+            <img
+              src={props?.attachments?.[0]}
+              alt=""
+              className="w-[228px] h-[304px] rounded-lg object-cover"
+            />
+          </div>
+
+          <div className="gap-[3px] mt-1 flex flex-col">
+            <div className="flex-center gap-2">
+              <span className="text-[12.5px] font-[400]">
+                {/* @ts-ignore */}
+                {props?.owner?.name!}
               </span>
-
-              <span className=" w-[55px] h-[20px] grid place-items-center bg-[#BE0B0D] text-white text-[13.94px] font-[700] rounded-[13.31px]">
-                <span>Hot</span>
-              </span>
-            </div>
-
-            <div className="relative h-[304px] border border-[#F3F5F7] grid place-items-center rounded-xl bg-[#F3F5F7]">
-              <div className="hidden group-hover:flex flex-col absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 rounded-lg">
-                {!isMerchant && (
-                  <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
-                    <Link
-                      onClick={handleInitiateCheckout}
-                      className="w-5/6"
-                      to={`/dashboard/marketplace/${props?.category?.slug}?pid=${props._id}`}
-                    >
-                      <button className=" blue-gradient w-full rounded-[24px] h-[40px] text-center text-white text-base font-[500]">
-                        Add to basket
-                      </button>
-                    </Link>
-                  </div>
-                )}
-              </div>
-
-              <img
-                src={props?.attachments?.[0]}
-                alt=""
-                className="w-[228px] h-[304px] rounded-lg object-cover"
-              />
-            </div>
-
-            <div className="gap-[3px] mt-1 flex flex-col">
-              <div className="flex-center gap-2">
-                <span className="text-[12.5px] font-[400]">
-                  {/* @ts-ignore */}
-                  {props?.owner?.name!}
+              {[...Array(averageRating)].map((_, idx) => (
+                <span key={idx} className="text-[#F7871B]">
+                  ★
                 </span>
-                {[...Array(averageRating)].map((_, idx) => (
-                  <span key={idx} className="text-[#F7871B]">
-                    ★
-                  </span>
-                ))}
-                {[...Array(5 - averageRating)].map((_, idx) => (
-                  <span key={idx} className="text-[#6C6C6C]">
-                    ★
-                  </span>
-                ))}
-              </div>
-
-              <h2
-                className={`text-base font-inter font-[600] ${
-                  props?.wrapText ? "text-wrap" : "truncate"
-                }  max-w-[228px]`}
-              >
-                {props?.title}
-              </h2>
-
-              <h2 className="text-sm font-inter font-[600] ">{` ${props?.currency} ${
-                props.price ?? 0
-              }`}</h2>
+              ))}
+              {[...Array(5 - averageRating)].map((_, idx) => (
+                <span key={idx} className="text-[#6C6C6C]">
+                  ★
+                </span>
+              ))}
             </div>
+
+            <h2
+              className={`text-base font-inter font-[600] ${
+                props?.wrapText ? "text-wrap" : "truncate"
+              }  max-w-[228px]`}
+            >
+              {props?.title}
+            </h2>
+
+            <h2 className="text-sm font-inter font-[600] ">{` ${
+              props?.currency
+            } ${props.price ?? 0}`}</h2>
           </div>
         </div>
+      </div>
     </>
   );
 };

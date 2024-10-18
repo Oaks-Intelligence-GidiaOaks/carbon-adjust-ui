@@ -26,7 +26,7 @@ import { SelectItem } from "@/types/formSelect";
 import { Country, State } from "country-state-city";
 import Phoneinput from "@/components/ui/PhoneInput";
 import { MdArrowBack } from "react-icons/md";
-import { IQuestion } from "@/interfaces/product.interface";
+import { IQuestion, PackageDomain } from "@/interfaces/product.interface";
 
 const ProductForm = (props: {
   setStage: Dispatch<SetStateAction<number>>;
@@ -353,7 +353,11 @@ const ProductForm = (props: {
   });
 
   const handleProceed = () => {
-    props.setStage(3);
+    if (product.packageDomain === PackageDomain.SUB_PACKAGE) {
+      props.setStage(6);
+    } else {
+      props.setStage(3);
+    }
   };
 
   return (

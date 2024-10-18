@@ -19,6 +19,7 @@ import {
   SubLevelEvent,
 } from "@/interfaces/events.interface";
 import { RootState } from "@/app/store";
+import SubPackageSummary from "../containers/checkout/SubPackageSummary";
 
 const ProductCheckout = (props: {
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
@@ -84,6 +85,13 @@ const ProductCheckout = (props: {
     ),
     5: (
       <PaymentSuccessful
+        setShowCancel={setShowCancel}
+        setStage={setStage}
+        setShowcheckout={cancelCheckout}
+      />
+    ),
+    6: (
+      <SubPackageSummary
         setShowCancel={setShowCancel}
         setStage={setStage}
         setShowcheckout={cancelCheckout}
