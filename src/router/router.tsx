@@ -71,6 +71,8 @@ import { AdminStaffOrders } from "@/pages/protected/staffAdmin";
 import AssetsLayout from "@/layouts/AssetsLayout";
 import ComingSoon from "@/components/reusables/ComingSoon";
 import ZohoPage from "@/pages/public/test";
+import BuildingList from "@/components/containers/buildings/BuildingList";
+
 
 const Router = createBrowserRouter([
   {
@@ -183,7 +185,7 @@ const Router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <ComingSoon />,
+            element: <BuildingList />,
           },
         ],
       },
