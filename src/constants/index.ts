@@ -123,7 +123,7 @@ export const homeOwnerSideBarItems = [
   },
   {
     icon: DeviceIcon,
-    title: "Devices",
+    title: "Assets",
     href: "/dashboard/devices",
   },
   {
