@@ -5,19 +5,54 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui";
 import { PlusIcon } from "@/assets/icons";
 import TransportCard from "./TransportCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OptimizeModal from "./OptimizeModal";
 import { getTransports } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
 import { Transport } from "@/interfaces/transport.interface";
+import Paginate from "@/components/reusables/Paginate";
+import { PaginateProps } from "@/types/general";
 
 const Vehicles = () => {
   const [showModal, setShowModal] = useState(false);
+  const [pagination, setPagination] = useState<
+    Omit<PaginateProps, "onPageChange">
+  >({
+    currentPage: 1,
+    limit: 20,
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+  });
 
-  const { data: transports, isLoading } = useQuery({
+  const {
+    data: transports,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["transports"],
     queryFn: () => getTransports(),
   });
+
+  useEffect(() => {
+    if (transports?.data) console.log(transports.data);
+    setPagination({
+      currentPage: transports?.data.page,
+      hasNextPage: transports?.data.hasNextPage,
+      hasPrevPage: transports?.data.hasPrevPage,
+      limit: transports?.data.limit,
+      totalPages: transports?.data.totalPages,
+    });
+  }, [transports?.data]);
+
+  const handlePageChange = (pgNo: number) => {
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: pgNo,
+    }));
+
+    refetch();
+  };
 
   if (isLoading) {
     return (
@@ -84,9 +119,9 @@ const Vehicles = () => {
 
       {showModal && <OptimizeModal onClick={() => setShowModal(false)} />}
       {/* Pagination */}
-      {/* <div className="mt-8 pr-12 w-fit mx-auto">
+      <div className="mt-8 pr-12 w-fit mx-auto">
         <Paginate {...pagination} onPageChange={handlePageChange} />
-      </div> */}
+      </div>
     </div>
   );
 };

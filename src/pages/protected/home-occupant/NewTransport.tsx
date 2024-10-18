@@ -280,7 +280,7 @@ const NewTransport = () => {
             </div>
 
             <div className="space-y-2 w-full ">
-              <h2 className="pl-2">Year of purchase</h2>
+              <h2 className="pl-5">Year of purchase</h2>
 
               <Input
                 className="border rounded-xl px-2 text-sm"
@@ -293,7 +293,7 @@ const NewTransport = () => {
           </div>
           <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 mt-1 sm:mt-5">
             <div className="space-y-2 w-full">
-              <h2 className="pl-2">Address</h2>
+              <h2 className="pl-5">Address</h2>
 
               <Input
                 className="border rounded-xl px-2 text-sm"
@@ -305,7 +305,7 @@ const NewTransport = () => {
             </div>
 
             <div className="space-y-2 w-full">
-              <h2 className="pl-2">City</h2>
+              <h2 className="pl-5">City</h2>
 
               <Input
                 className="border rounded-xl px-2 text-sm"

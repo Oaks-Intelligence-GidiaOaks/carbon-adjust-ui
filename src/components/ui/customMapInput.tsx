@@ -1,4 +1,4 @@
-import React from "react";
+//@ts-nocheck
 import Input from "./Input";
 
 interface Option {
@@ -13,7 +13,7 @@ interface CustomMapInputProps {
   isShow: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   options?: Option[];
-  handleOptionClick?: (id: string) => void;
+  handleOptionClick?: (option: typeof option) => void;
   icon?: React.ReactNode | string;
 }
 
@@ -53,8 +53,10 @@ const CustomMapInput: React.FC<CustomMapInputProps> = ({
               <li
                 key={index}
                 className="py-2 px-4 text-sm cursor-pointer hover:bg-gray-100"
+                
                 onClick={() => handleOptionClick(option)}
               >
+                
                 {option.address.freeformAddress}
               </li>
             ))}

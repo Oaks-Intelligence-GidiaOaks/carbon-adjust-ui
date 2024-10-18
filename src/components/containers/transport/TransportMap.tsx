@@ -58,6 +58,7 @@ const TransportMap: React.FC<{ positions: any[] }> = ({ positions }) => {
 
       // Add a Line Layer to display the line on the map
       map.layers.add(
+        // @ts-ignore
         new atlas.layer.LineLayer(lineDataSource, null, {
           strokeColor: "dodgerblue", // Color of the line
           strokeWidth: 2, // Line width
@@ -88,6 +89,7 @@ const TransportMap: React.FC<{ positions: any[] }> = ({ positions }) => {
 
           // Add a SymbolLayer to display the arrow on the map
           map.layers.add(
+            // @ts-ignore
             new atlas.layer.SymbolLayer(arrowDataSource, null, {
               iconOptions: {
                 image: "arrow-icon", // Reference the custom arrow icon

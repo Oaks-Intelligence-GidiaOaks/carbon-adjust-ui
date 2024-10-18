@@ -3,7 +3,7 @@ import { FaLocationDot, FaLocationCrosshairs } from "react-icons/fa6";
 import { TbArrowsExchange2 } from "react-icons/tb";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import Modal from "../../dialogs/Modal";
-import {  useState } from "react";
+import { useState } from "react";
 import TransportMap from "./TransportMap";
 import taxi from "../../../assets/taxi3.png";
 import train from "../../../assets/emojione_train.png";
@@ -11,7 +11,6 @@ import bus from "../../../assets/noto_bus.png";
 import axios from "axios";
 import CustomMapInput from "@/components/ui/customMapInput";
 import SelectInput from "@/components/ui/SelectInput";
-import { energySources } from "@/constants/devices";
 // import arrows from "../../../assets/arrows.png";
 
 const Modes = [
@@ -20,6 +19,12 @@ const Modes = [
   { name: "bus", Icon: bus },
 ];
 
+type Position = {
+  name: "start" | "destination";
+  text: string;
+  position: [number, number];
+  address: string;
+};
 
 type OptimizeModalProps = {
   onClick: () => void;
@@ -34,9 +39,10 @@ const OptimizeModal = ({ onClick }: OptimizeModalProps) => {
   const [positions, setPositions] = useState([]);
   const [isShow, setIsShow] = useState(false);
 
-  
-
-  const fetchSuggestions = async (query, setSuggestions) => {
+  const fetchSuggestions = async (
+    query: string,
+    setSuggestions: React.Dispatch<React.SetStateAction<never[]>>
+  ) => {
     try {
       const requestUrl = import.meta.env.VITE_GEO_CODE_URL.replace(
         "{query}",
@@ -61,29 +67,34 @@ const OptimizeModal = ({ onClick }: OptimizeModalProps) => {
 
   const handleOptionClick = (
     type: "start" | "destination",
-    location: any
-    // closeModal: () => void
+    location: {
+      address: {
+        freeformAddress: string;
+      };
+      position: {
+        lon: number;
+        lat: number;
+      };
+    }
   ) => {
     setIsShow(false);
-    
+
     if (type === "start") {
       setStart(location.address.freeformAddress);
     } else {
       setDestination(location.address.freeformAddress);
     }
 
-  
-    const newPosition = {
+    const newPosition: Position = {
       name: type,
       text: type === "start" ? "S" : "D",
       position: [location.position.lon, location.position.lat],
       address: location.address.freeformAddress,
     };
-
-    
-    setPositions((prev) => {
-      const updatedPositions = prev.filter((p) => p.name !== type); 
-      return [...updatedPositions, newPosition]; 
+    // @ts-ignore
+    setPositions((prev: Position[]) => {
+      const updatedPositions = prev.filter((p) => p.name !== type);
+      return [...updatedPositions, newPosition];
     });
   };
 
