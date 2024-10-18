@@ -1,5 +1,5 @@
 import { CameraIcon } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import uploadfileIcon2 from "@/assets/icons/uploaded-file.svg";
 
 interface FileUploadProps {
@@ -16,15 +16,13 @@ const FileUpload: React.FC<FileUploadProps> = ({
   acceptedFileTypes,
   multiple = false, 
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
     if (files.length) {
       onFileUpload(multiple ? files : files[0]);
-      setIsLoading(true);
-      setTimeout(() => setIsLoading(false), 2000); 
     }
   };
 
@@ -32,8 +30,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
     const files = Array.from(e.target.files!);
     if (files.length) {
       onFileUpload(multiple ? files : files[0]); 
-      setIsLoading(true);
-      setTimeout(() => setIsLoading(false), 2000); 
     }
   };
 

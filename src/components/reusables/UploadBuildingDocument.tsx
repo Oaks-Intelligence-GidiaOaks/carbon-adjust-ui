@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import FileUpload from "./FileUpload";
 import { uploadBuildingData } from "@/services/homeOwner";
 import { FaSpinner } from "react-icons/fa"; // Add spinner icon
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation} from "@tanstack/react-query";
 import uploadfileIcon from "@/assets/icons/upload-file.svg";
 import { FaTrashCan } from "react-icons/fa6";
 
@@ -17,7 +17,7 @@ const UploadDocumentsModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [commercialFile, setCommercialFile] = useState<File | null>(null);
   const [residentialFile, setResidentialFile] = useState<File | null>(null);
 
-  const queryClient = useQueryClient(); // Initialize queryClient to invalidate queries
+  // const queryClient = useQueryClient(); // Initialize queryClient to invalidate queries
 
   // Mutation to upload building data
   const uploadBuildingDataMutation = useMutation({
