@@ -50,8 +50,10 @@ import {
   UserMarketGroup,
   UserMarketPlace,
   UserNewDevice,
+  UserNewTransport,
   UserOrderList,
   UserProfile,
+  UserTransport,
   UserWallet,
 } from "@/pages/protected/home-occupant";
 
@@ -193,7 +195,11 @@ const Router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <ComingSoon />,
+            element: <UserTransport />,
+          },
+          {
+            path: "add",
+            element: <UserNewTransport />,
           },
         ],
       },
