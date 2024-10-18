@@ -3,7 +3,7 @@ import BarChart from "@/components/charts/BarChart";
 
 const UsageSummary = () => {
     const data = {
-        labels: ["Electricity", "Gas"], 
+        labels: ["Electricity", "Gas"], // X-axis labels
         datasets: [
           {
             label: "Demand", 
@@ -15,7 +15,7 @@ const UsageSummary = () => {
             label: "Charges", 
             data: [251.72, 731.47], 
             backgroundColor: "rgba(255, 206, 86) ", 
-            yAxisID: "y1", 
+            yAxisID: "y1", // Attach to the secondary y-axis
           },
         ],
       };
@@ -75,7 +75,7 @@ const UsageSummary = () => {
       
 
   return (
-    <div>
+    <div className="h-[400px] w-[90%]" >
       <BarChart data={data} options={options} />
     </div>
   );

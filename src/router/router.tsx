@@ -69,9 +69,6 @@ import { AdminStaffOrders } from "@/pages/protected/staffAdmin";
 import AssetsLayout from "@/layouts/AssetsLayout";
 import ComingSoon from "@/components/reusables/ComingSoon";
 import ZohoPage from "@/pages/public/test";
-import BuildingEmptyState from "@/components/reusables/EmptyStateBuildings";
-import BuildingManager from "@/components/reusables/Buildings";
-import BuildingHistoryCard from "@/components/containers/buildings/BuildingHistoryCard";
 import BuildingList from "@/components/containers/buildings/BuildingList";
 
 

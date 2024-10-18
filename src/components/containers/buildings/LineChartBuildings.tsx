@@ -1,7 +1,9 @@
 import LineChart from "@/components/charts/LineChart";
 
 
+
 const TrendingProjections = () => {
+    
     const data = {
         labels: ["Short", "Medium", "Long"], // X-axis labels
         datasets: [
@@ -85,10 +87,18 @@ const TrendingProjections = () => {
           },
         },
       };
+
+// // Function to download chart as an image
+//   const downloadChart = () => {
+//     const link = document.createElement("a");
+//     link.href = chartRef.current.toDataURL("image/png"); // Convert canvas to image
+//     link.download = "chart.png"; // Set the download file name
+//     link.click(); // Trigger the download
+//   };
       
 
   return (
-    <div style={{ height: '400px', width: '100%' }}> {/* Set a fixed height for the chart */}
+    <div className="h-[400px] w-[90%]"> 
       <LineChart data={data} options={options} />
     </div>
   );

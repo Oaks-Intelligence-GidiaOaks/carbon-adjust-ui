@@ -5,28 +5,35 @@ import uploadfileIcon2 from "@/assets/icons/uploaded-file.svg";
 interface FileUploadProps {
   title: string;
   uploadedFile: File | null;
-  onFileUpload: (file: File | null) => void;
+  onFileUpload: (file: File | File[] | null) => void; // Handles both single and multiple files
+  acceptedFileTypes: string;
+  multiple?: boolean;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ title, onFileUpload }) => {
+const FileUpload: React.FC<FileUploadProps> = ({
+  title,
+  onFileUpload,
+  acceptedFileTypes,
+  multiple = false, 
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      onFileUpload(file);
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length) {
+      onFileUpload(multiple ? files : files[0]);
       setIsLoading(true);
-      setTimeout(() => setIsLoading(false), 2000); // Simulate file upload
+      setTimeout(() => setIsLoading(false), 2000); 
     }
   };
 
   const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0];
-    if (file) {
-      onFileUpload(file);
+    const files = Array.from(e.target.files!);
+    if (files.length) {
+      onFileUpload(multiple ? files : files[0]); 
       setIsLoading(true);
-      setTimeout(() => setIsLoading(false), 2000); // Simulate file upload
+      setTimeout(() => setIsLoading(false), 2000); 
     }
   };
 
@@ -54,11 +61,13 @@ const FileUpload: React.FC<FileUploadProps> = ({ title, onFileUpload }) => {
                 name="file-upload"
                 type="file"
                 className="sr-only"
+                accept={acceptedFileTypes} 
                 onChange={handleBrowse}
+                multiple={multiple} 
               />
             </label>
           </div>
-          <p className="text-xs text-gray-500">Support jpg, png, pdf, docx</p>
+          <p className="text-xs text-gray-500">Support {acceptedFileTypes}</p>
           <CameraIcon className="text-[#4C5563] size-5 mt-3" />
         </div>
       </div>

@@ -36,10 +36,6 @@ export const getHoOrders = async () => {
   const { data } = await axiosInstance.get(`application/orders`);
 
   return data;
-
-
-
-
 };
 
 export const createNewOrder = async (iData: any) => {
@@ -244,3 +240,33 @@ export const getBuildingData = async () => {
   return data;
 };
 
+// GET UPLOADED BUILDINGS DATA
+export const uploadBuildingData = async (formData: FormData) => {
+  const { data } = await axiosInstance.post(`/building/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data;
+};
+
+
+//UPLOAD BUILDING IMAGE
+export const uploadBuildingImage = async (buildingId: string, formData: FormData) => {
+  const { data } = await axiosInstance.put(`/building/${buildingId}/image`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return data;
+};
+
+//UPLOAD ENERGY biLLS
+export const uploadEnergyBills = async (buildingId: string, formData: FormData) => {
+  const { data } = await axiosInstance.put(`/building/${buildingId}/energy-bills`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return data;
+};
