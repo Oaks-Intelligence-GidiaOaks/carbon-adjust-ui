@@ -36,10 +36,6 @@ export const getHoOrders = async () => {
   const { data } = await axiosInstance.get(`application/orders`);
 
   return data;
-
-
-
-
 };
 
 export const createNewOrder = async (iData: any) => {
@@ -238,3 +234,62 @@ export const getGrantSubCategory= async ({packageId }: { packageId: string }) =>
   return data;
 };
 
+// GET BUILDINGS
+export const getBuildingData = async () => {
+  const { data } = await axiosInstance.get(`/building`);
+  return data;
+};
+
+// GET UPLOADED BUILDINGS DATA
+export const uploadBuildingData = async (formData: FormData) => {
+  const { data } = await axiosInstance.post(`/building/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data;
+};
+
+
+//UPLOAD BUILDING IMAGE
+export const uploadBuildingImage = async (buildingId: string, formData: FormData) => {
+  const { data } = await axiosInstance.put(`/building/${buildingId}/image`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return data;
+};
+
+//UPLOAD ENERGY biLLS
+export const uploadEnergyBills = async (buildingId: string, formData: FormData) => {
+  const { data } = await axiosInstance.put(`/building/${buildingId}/energy-bills`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return data;
+};
+//TRANSPORT
+export const getTransports = async () => {
+  const queryParams = new URLSearchParams();
+  // queryParams.append("limit", limit.toString());
+  // queryParams.append("page", page.toString());
+
+  const url = `/transportation?${queryParams.toString()}`;
+
+  const { data } = await axiosInstance.get(url);
+
+  return data;
+};
+
+
+export const addTransport = async (formData: FormData) => {
+  const { data } = await axiosInstance.post("/transportation", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+};
