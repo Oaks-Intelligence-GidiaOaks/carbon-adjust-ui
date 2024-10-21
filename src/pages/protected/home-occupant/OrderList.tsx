@@ -5,7 +5,7 @@ import { IPackageOrder } from "@/interfaces/order.interface";
 import { getHoOrders } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
 import OrdersLoading from "@/components/reusables/OrdersLoading";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearOrder } from "@/features/orderSlice";
 import { clearProduct } from "@/features/productSlice";
@@ -25,6 +25,8 @@ type Props = {};
 const OrderList = (_: Props) => {
   const { user } = useSelector((state: RootState) => state.user);
   const { browser, os } = getBrowserAndOS();
+
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
@@ -73,6 +75,12 @@ const OrderList = (_: Props) => {
       });
   }, [data?.data]);
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [pagination.currentPage]);
+
   const handlePageChange = (pgNo: number) => {
     setPagination((prev) => ({
       ...prev,
@@ -87,7 +95,10 @@ const OrderList = (_: Props) => {
       </div>
 
       {/* flat list */}
-      <div className="px-2 md:px-4 lg:w-5/6 mx-auto mt-[79px] space-y-[38px]">
+      <div
+        ref={scrollRef}
+        className="px-2 md:px-4 lg:w-5/6 mx-auto mt-[79px] space-y-[38px]"
+      >
         {isLoading ? (
           <OrdersLoading />
         ) : (
