@@ -1,10 +1,12 @@
 import { IDevice, IDeviceChartData } from "@/interfaces/device.interface";
 import { UserRole } from "@/interfaces/user.interface";
+import Joi from "joi";
 import { SelectItem } from "@/types/formSelect";
 import { IComponentMap } from "@/types/general";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as XLSX from "xlsx";
+import { ITransport } from "@/interfaces/transport.interface";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -240,6 +242,33 @@ export const validateDeviceInputs = (formData: IDevice) => {
       break;
   }
   return error;
+};
+
+//TRANSPORT VALIDATION
+const transportSchema = Joi.object({
+  transportPhoto: Joi.object().required().messages({
+    "any.required": "Transport photo must be uploaded",
+  }),
+  transportId: Joi.object().required().messages({
+    "any.required": "Transport ID must be uploaded",
+  }),
+  driversLicense: Joi.object().required().messages({
+    "any.required": "Driver's license must be uploaded",
+  }),
+  licensePlateNumber: Joi.string().required().messages({
+    "string.empty": "License plate number is required",
+  }),
+  address: Joi.string().required().messages({
+    "string.empty": "Address is required",
+  }),
+  city: Joi.string().required().messages({
+    "string.empty": "City is required",
+  }),
+});
+
+export const validateTransportInputs = (formData: ITransport) => {
+  const { error } = transportSchema.validate(formData);
+  return error ? error.details[0].message : null;
 };
 
 export const getRemainingHours = (): string[] => {

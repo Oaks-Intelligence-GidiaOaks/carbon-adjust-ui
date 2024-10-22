@@ -8,9 +8,11 @@ import TransportMap from "./TransportMap";
 import taxi from "../../../assets/taxi3.png";
 import train from "../../../assets/emojione_train.png";
 import bus from "../../../assets/noto_bus.png";
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import CustomMapInput from "@/components/ui/customMapInput";
 import SelectInput from "@/components/ui/SelectInput";
+import { useDebounce } from "@/utils/debounce";
+import { getSuggestions } from "@/services/homeOwner";
 // import arrows from "../../../assets/arrows.png";
 
 const Modes = [
@@ -32,38 +34,26 @@ type OptimizeModalProps = {
 
 const OptimizeModal = ({ onClick }: OptimizeModalProps) => {
   const [mode, setMode] = useState<string | undefined>("car");
-  const [startSuggestions, setStartSuggestions] = useState([]);
-  const [destinationSuggestions, setDestinationSuggestions] = useState([]);
   const [start, setStart] = useState("");
   const [destination, setDestination] = useState("");
   const [positions, setPositions] = useState([]);
-  const [isShow, setIsShow] = useState(false);
 
-  const fetchSuggestions = async (
-    query: string,
-    setSuggestions: React.Dispatch<React.SetStateAction<never[]>>
-  ) => {
-    try {
-      const requestUrl = import.meta.env.VITE_GEO_CODE_URL.replace(
-        "{query}",
-        encodeURIComponent(query)
-      )
-        .replace("{language}", "en-US")
-        .replace("{subKey}", import.meta.env.VITE_AZURE_KEY);
+  const debouncedStart = useDebounce(start, 500);
+  const debouncedDestination = useDebounce(destination, 500);
 
-      const response = await axios.get(requestUrl, {
-        headers: {
-          // "x-ms-client-id": clientId,
-          // Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json; charset=utf-8",
-        },
-      });
+  const { data: startSuggestions } = useQuery({
+    queryKey: ["suggestions", debouncedStart],
+    queryFn: () => getSuggestions(debouncedStart),
+    enabled: debouncedStart.length >= 3,
+    staleTime: 5 * 60 * 1000,
+  });
 
-      setSuggestions(response.data.results || []);
-    } catch (err) {
-      console.error("Error fetching suggestions:", err);
-    }
-  };
+  const { data: destinationSuggestions } = useQuery({
+    queryKey: ["suggestions", debouncedDestination],
+    queryFn: () => getSuggestions(debouncedDestination),
+    enabled: debouncedDestination.length >= 3,
+    staleTime: 5 * 60 * 1000,
+  });
 
   const handleOptionClick = (
     type: "start" | "destination",
@@ -77,8 +67,6 @@ const OptimizeModal = ({ onClick }: OptimizeModalProps) => {
       };
     }
   ) => {
-    setIsShow(false);
-
     if (type === "start") {
       setStart(location.address.freeformAddress);
     } else {
@@ -118,18 +106,11 @@ const OptimizeModal = ({ onClick }: OptimizeModalProps) => {
                   label="start"
                   value={start}
                   icon={<FaLocationDot size={20} color="#3465AF" />}
-                  isShow={isShow}
-                  onChange={(e) => {
-                    setIsShow(!isShow);
-                    setStart(e.target.value);
-                    if (e.target.value.length >= 3) {
-                      fetchSuggestions(e.target.value, setStartSuggestions);
-                    }
-                  }}
+                  onChange={(e) => setStart(e.target.value)}
                   options={startSuggestions}
-                  handleOptionClick={(location) =>
-                    handleOptionClick("start", location)
-                  }
+                  handleOptionClick={(location: any) => {
+                    handleOptionClick("start", location);
+                  }}
                 />
 
                 <div className="sm:flex hidden items-center justify-center mt-10 text-gray-600">
@@ -143,22 +124,12 @@ const OptimizeModal = ({ onClick }: OptimizeModalProps) => {
                   inputName="destination"
                   label="destination"
                   value={destination}
-                  isShow={isShow}
                   icon={<FaLocationCrosshairs size={20} color="#3465AF" />}
-                  onChange={(e) => {
-                    setIsShow(!isShow);
-                    setDestination(e.target.value);
-                    if (e.target.value.length >= 3) {
-                      fetchSuggestions(
-                        e.target.value,
-                        setDestinationSuggestions
-                      );
-                    }
-                  }}
+                  onChange={(e) => setDestination(e.target.value)}
                   options={destinationSuggestions}
-                  handleOptionClick={(location) =>
-                    handleOptionClick("destination", location)
-                  }
+                  handleOptionClick={(location:any) => {
+                    handleOptionClick("destination", location);
+                  }}
                 />
               </div>
 
