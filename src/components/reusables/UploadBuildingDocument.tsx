@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import FileUpload from "./FileUpload";
 import { uploadBuildingData } from "@/services/homeOwner";
 import { FaSpinner } from "react-icons/fa"; // Add spinner icon
-import { useMutation} from "@tanstack/react-query";
+import { useMutation, useQueryClient} from "@tanstack/react-query";
 import uploadfileIcon from "@/assets/icons/upload-file.svg";
 import { FaTrashCan } from "react-icons/fa6";
 
@@ -17,7 +17,7 @@ const UploadDocumentsModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [commercialFile, setCommercialFile] = useState<File | null>(null);
   const [residentialFile, setResidentialFile] = useState<File | null>(null);
 
-  // const queryClient = useQueryClient(); // Initialize queryClient to invalidate queries
+  const queryClient = useQueryClient(); // Initialize queryClient to invalidate queries
 
   // Mutation to upload building data
   const uploadBuildingDataMutation = useMutation({
@@ -32,7 +32,7 @@ const UploadDocumentsModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     },
     onSettled: () => {
       // Invalidate queries after the mutation has settled (success or error)
-      // queryClient.invalidateQueries({ queryKey: const const [activeTab] });
+      queryClient.invalidateQueries({ queryKey: ["upload-building-document"] });
     },
   });
 
@@ -76,7 +76,7 @@ const UploadDocumentsModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-slate-500 bg-opacity-50 z-50">
-      <div className="relative bg-white rounded-lg shadow-lg w-full max-w-lg max-h-full">
+      <div className="relative bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-full">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -170,10 +170,10 @@ const UploadDocumentsModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         <div className="px-6 pb-6">
           <button
             onClick={handleSubmit}
-            className={`mt-8 w-full text-white py-2 rounded-lg hover:bg-blue-700 flex justify-center items-center ${
+            className={`mt-8 w-full text-white py-2 rounded-lg flex justify-center items-center ${
               isMutating || (!commercialFile && !residentialFile)
                 ? "bg-gray-300 cursor-not-allowed"
-                : "blue-gradient text-white hover:bg-blue-700"
+                : "blue-gradient text-white "
             }`}
             disabled={isMutating || (!commercialFile && !residentialFile)}
           >

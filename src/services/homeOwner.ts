@@ -293,3 +293,25 @@ export const addTransport = async (formData: FormData) => {
 
   return data;
 };
+
+
+//GET ENERGY BILLS
+export const getEnergyBills = async (buildingId: string) => {
+  const { data } = await axiosInstance.get(`/building/${buildingId}/energy-bills`);
+  return data;
+};
+
+
+// DELETE ENERGY BILLS
+export const deleteEnergyBill = async (buildingId: string, energyBillsId: string) => {
+  const { data } = await axiosInstance.delete(`/building/${buildingId}/energy-bills/${energyBillsId}`);
+  return data;
+};
+
+
+//GET ENERGY CHART
+export const getEnergyChart = async (buildingId: string) => {
+  const { data } = await axiosInstance.get(`/building/${buildingId}/charts`);
+  return data;
+};
+
