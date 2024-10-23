@@ -41,7 +41,6 @@ const NewDevice = () => {
     mutationKey: ["create-device"],
     mutationFn: (deviceData: FormData) => addDevice(deviceData),
     onSuccess: (sx: any) => {
-      console.log(sx);
       toast.success(sx.message);
       resetForm();
 
@@ -81,17 +80,28 @@ const NewDevice = () => {
   ) => {
     const { name, value, type } = e.target;
 
+    const regex = /^[a-zA-Z0-9]*$/;
+
     if (type === "checkbox") {
       const { checked } = e.target as HTMLInputElement;
       setFormData((prev) => ({
         ...prev,
         [name]: checked,
       }));
-    } else {
+    } else if (type === "number") {
+      const sanitisedValue = value.replace(/[+-]/g, "");
+
       setFormData((prev) => ({
         ...prev,
-        [name]: value,
+        [name]: sanitisedValue,
       }));
+    } else if (type === "text") {
+      if (regex.test(value)) {
+        setFormData((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+      }
     }
   };
 
