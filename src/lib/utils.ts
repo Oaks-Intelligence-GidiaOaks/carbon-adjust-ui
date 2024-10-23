@@ -1,10 +1,12 @@
 import { IDevice, IDeviceChartData } from "@/interfaces/device.interface";
 import { UserRole } from "@/interfaces/user.interface";
+import Joi from "joi";
 import { SelectItem } from "@/types/formSelect";
 import { IComponentMap } from "@/types/general";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as XLSX from "xlsx";
+import { ITransport } from "@/interfaces/transport.interface";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,6 +34,42 @@ export const formatDate = (createdDate: string) => {
 
   return date.toLocaleDateString("en-US", options as any);
 };
+
+export const formatTimeToISO = (input: string): string => {
+  // Check if the input is in ISO format (starting with 'T')
+  if (input.includes("T")) {
+    // Parse the time from the ISO string (format: 'YYYY-MM-DDTHH:MM:SSZ')
+    const date = new Date(input);
+
+    // Extract hours and minutes
+    const hours = date.getUTCHours().toString().padStart(2, "0");
+    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+
+    // Return the time in 'HH:MM' format
+    return `${hours}:${minutes}`;
+  } else {
+    // If input is in 'HH:MM' format, convert to ISO
+    // Get the current date
+    const currentDate = new Date();
+
+    // Extract hours and minutes from the time string
+    const [hours, minutes] = input.split(":").map(Number);
+
+    // Set hours and minutes in the current date
+    currentDate.setUTCHours(hours, minutes, 0, 0);
+
+    // Return the date in the ISO 8601 format
+    return currentDate.toISOString();
+  }
+};
+
+export function convertNumberToTimeFormat(hours: any) {
+  // Ensure hours is a two-digit string
+  const formattedHours = String(hours).padStart(2, "0");
+
+  // Return the formatted time
+  return `${formattedHours}:00:00`;
+}
 
 export const formDateWithTime = (
   createdDate: string,
@@ -240,6 +278,33 @@ export const validateDeviceInputs = (formData: IDevice) => {
       break;
   }
   return error;
+};
+
+//TRANSPORT VALIDATION
+const transportSchema = Joi.object({
+  transportPhoto: Joi.object().required().messages({
+    "any.required": "Transport photo must be uploaded",
+  }),
+  transportId: Joi.object().required().messages({
+    "any.required": "Transport ID must be uploaded",
+  }),
+  driversLicense: Joi.object().required().messages({
+    "any.required": "Driver's license must be uploaded",
+  }),
+  licensePlateNumber: Joi.string().required().messages({
+    "string.empty": "License plate number is required",
+  }),
+  address: Joi.string().required().messages({
+    "string.empty": "Address is required",
+  }),
+  city: Joi.string().required().messages({
+    "string.empty": "City is required",
+  }),
+});
+
+export const validateTransportInputs = (formData: ITransport) => {
+  const { error } = transportSchema.validate(formData);
+  return error ? error.details[0].message : null;
 };
 
 export const getRemainingHours = (): string[] => {

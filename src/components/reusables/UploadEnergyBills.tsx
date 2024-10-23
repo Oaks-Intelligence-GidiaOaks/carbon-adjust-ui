@@ -3,7 +3,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import FileUpload from "./FileUpload";
 import { FaSpinner } from "react-icons/fa"; 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadEnergyBills } from "@/services/homeOwner";
 import uploadfileIcon from "@/assets/icons/upload-file.svg";
 import { FaTrashCan } from "react-icons/fa6";
@@ -16,6 +16,7 @@ interface ModalProps {
 
 const UploadEnergyBillsModal: React.FC<ModalProps> = ({ isOpen, onClose, buildingId }) => {
   const [energyBills, setEnergyBills] = useState<File[]>([]);
+  const queryClient = useQueryClient();
 
   // Mutation to upload energy bills
   const uploadEnergyBillsMutation = useMutation({
@@ -23,6 +24,7 @@ const UploadEnergyBillsModal: React.FC<ModalProps> = ({ isOpen, onClose, buildin
     mutationFn: (formData: FormData) => uploadEnergyBills(buildingId, formData),
     onSuccess: () => {
       toast.success("Energy bills uploaded successfully.");
+      queryClient.invalidateQueries({ queryKey: ["upload-energy-bills"] });
       onClose(); 
     },
     onError: () => {
@@ -33,7 +35,7 @@ const UploadEnergyBillsModal: React.FC<ModalProps> = ({ isOpen, onClose, buildin
   const handleSubmit = () => {
     if (energyBills.length > 0) {
       const formData = new FormData();
-      energyBills.forEach((bill) => formData.append("files", bill));
+      energyBills.forEach((bill) => formData.append("file", bill));
 
       uploadEnergyBillsMutation.mutate(formData, {
         onError: (error) => {

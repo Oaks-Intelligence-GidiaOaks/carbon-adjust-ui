@@ -306,13 +306,10 @@ export const uploadEnergyBills = async (
   );
   return data;
 };
+
 //TRANSPORT
 export const getTransports = async () => {
-  const queryParams = new URLSearchParams();
-  // queryParams.append("limit", limit.toString());
-  // queryParams.append("page", page.toString());
-
-  const url = `/transportation?${queryParams.toString()}`;
+  const url = `/transportation`;
 
   const { data } = await axiosInstance.get(url);
 
@@ -325,6 +322,59 @@ export const addTransport = async (formData: FormData) => {
       "Content-Type": "multipart/form-data",
     },
   });
+
+  return data;
+};
+
+
+//GET ENERGY BILLS
+export const getEnergyBills = async (buildingId: string) => {
+  const { data } = await axiosInstance.get(`/building/${buildingId}/energy-bills`);
+  return data;
+};
+
+
+// DELETE ENERGY BILLS
+export const deleteEnergyBill = async (buildingId: string, energyBillsId: string) => {
+  const { data } = await axiosInstance.delete(`/building/${buildingId}/energy-bills/${energyBillsId}`);
+  return data;
+};
+
+
+//GET ENERGY CHART
+export const getEnergyChart = async (buildingId: string) => {
+  const { data } = await axiosInstance.get(`/building/${buildingId}/charts`);
+  return data;
+};
+
+
+
+export const getSuggestions = async (query: string) => {
+  const requestUrl = import.meta.env.VITE_GEO_CODE_URL.replace(
+    "{query}",
+    encodeURIComponent(query)
+  )
+    .replace("{language}", "en-US")
+    .replace("{subKey}", import.meta.env.VITE_AZURE_KEY);
+
+  const { data } = await axiosInstance.get(requestUrl);
+
+  return data.results;
+};
+
+export const Optimize = async (formData: FormData) => {
+  const { data } = await axiosInstance.post(
+    "/transportation/optimize-trip",
+    formData
+  );
+
+  return data;
+};
+
+export const getTransportsHistory = async () => {
+  const url = `/transportation/travel-history`;
+
+  const { data } = await axiosInstance.get(url);
 
   return data;
 };

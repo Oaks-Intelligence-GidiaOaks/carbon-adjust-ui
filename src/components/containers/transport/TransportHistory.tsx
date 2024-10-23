@@ -1,40 +1,74 @@
 // import Loading from "@/components/reusables/Loading";
+import { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { IoFilterSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui";
 import { PlusIcon } from "@/assets/icons";
-import { useState } from "react";
-import OptimizeModal from "./OptimizeModal";
 import TransportHistoryCard from "./TransportHistoryCard";
+import TransportChartCard from "./TransportChartCard";
+import { PaginateProps } from "@/types/general";
+import { getTransportsHistory } from "@/services/homeOwner";
+import { useQuery } from "@tanstack/react-query";
+import { Trips } from "@/interfaces/transport.interface";
+import Paginate from "@/components/reusables/Paginate";
+import NoDevices from "../devices/NoDevices";
+import Loading from "@/components/reusables/Loading";
 
 const TransportHistory = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [pagination, setPagination] = useState<
+    Omit<PaginateProps, "onPageChange">
+  >({
+    currentPage: 1,
+    limit: 20,
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+  });
 
-  // const {
-  //   data: transports,
-  //   isLoading,
-  //   refetch,
-  // } = useQuery({
-  //   queryKey: ["transports"],
-  //   queryFn: () => getTransports(),
-  // });
+  const {
+    data: transportsHistory,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["transportsHistory"],
+    queryFn: () => getTransportsHistory(),
+  });
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="h-32 grid place-items-center">
-  //       <Loading message="loading" />
-  //     </div>
-  //   );
-  // }
+  useEffect(() => {
+    setPagination({
+      currentPage: transportsHistory?.data.page,
+      hasNextPage: transportsHistory?.data.hasNextPage,
+      hasPrevPage: transportsHistory?.data.hasPrevPage,
+      limit: transportsHistory?.data.limit,
+      totalPages: transportsHistory?.data.totalPages,
+    });
+  }, [transportsHistory?.data]);
 
-  // if (transports?.data?.transportationRecords.length === 0) {
-  //   return (
-  //     <div className="h-32 grid place-items-center max-w-[98%]">
-  //       <NoDevices link="/dashboard/devices/add" />
-  //     </div>
-  //   );
-  // }
+  const handlePageChange = (pgNo: number) => {
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: pgNo,
+    }));
+
+    refetch();
+  };
+
+  if (isLoading) {
+    return (
+      <div className="h-32 grid place-items-center">
+        <Loading message="loading" />
+      </div>
+    );
+  }
+
+  if (transportsHistory.data.trips.length === 0) {
+    return (
+      <div className="h-32 grid place-items-center max-w-[98%]">
+        <NoDevices link="/dashboard/transport/add" text="Transport History" />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -67,22 +101,16 @@ const TransportHistory = () => {
         </div>
       </div>
       <div className=" mt-[20px] space-y-[38px]">
-        {/* {Array.from(
-          transports.data.transportationRecords,
-          (it, i) => (
-            <TransportHistoryCard {...it} key={i} />
-          )
-        )} */}
-        <TransportHistoryCard />
-        <TransportHistoryCard />
-        <TransportHistoryCard />
+        {Array.from(transportsHistory.data.trips as Trips[], (it, i) => (
+          <TransportHistoryCard {...it} key={i} />
+        ))}
+        <TransportChartCard />
       </div>
 
-      {showModal && <OptimizeModal onClick={() => setShowModal(false)} />}
       {/* Pagination */}
-      {/* <div className="mt-8 pr-12 w-fit mx-auto">
+      <div className="mt-8 pr-12 w-fit mx-auto">
         <Paginate {...pagination} onPageChange={handlePageChange} />
-      </div> */}
+      </div>
     </div>
   );
 };
