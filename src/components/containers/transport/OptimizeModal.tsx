@@ -11,8 +11,8 @@ import bus from "../../../assets/noto_bus.png";
 import { useQuery } from "@tanstack/react-query";
 import CustomMapInput from "@/components/ui/customMapInput";
 import SelectInput from "@/components/ui/SelectInput";
-import { useDebounce } from "@/utils/debounce";
 import { getSuggestions } from "@/services/homeOwner";
+import { useDebounce } from "@/hooks/useDebounce";
 // import arrows from "../../../assets/arrows.png";
 
 const Modes = [
