@@ -50,7 +50,7 @@ const Paginate = ({
   }
 
   return (
-    <div className="mt-4 w-fit ml-auto">
+    <div className="mt-4 w-fit ">
       <Pagination>
         <PaginationContent>
           <PaginationItem onClick={handlePrevClick}>

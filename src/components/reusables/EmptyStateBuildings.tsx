@@ -8,9 +8,9 @@ interface BuildingEmptyStateProps {
 
 const BuildingEmptyState: React.FC<BuildingEmptyStateProps> = ({ onAddBuilding }) => {
   return (
-    <div className="flex flex-col items-center justify-center bg-white">
+    <div className="flex flex-col items-center justify-center ">
       {/* Image */}
-      <div className="mb-6">
+      <div className="mb-6 mt-5">
         <img
           src={Building}
           alt="No building"

@@ -10,6 +10,7 @@ import { getBuildingData } from "@/services/homeOwner";
 import Loading from "@/components/reusables/Loading";
 import BuildingEmptyState from "@/components/reusables/EmptyStateBuildings";
 import RegisterBuilding from "@/components/reusables/RegisterBuilding";
+import PaginationButtons from "@/components/reusables/PageButtons";
 
 const BuildingList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,6 +19,9 @@ const BuildingList = () => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false); 
   const [isRegisterBuildingVisible, setIsRegisterBuildingVisible] =
     useState(false);
+  const [selectedBuildings, setSelectedBuildings] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 10; 
 
   // Fetch building data
   const { data, isLoading, error } = useQuery({
@@ -25,11 +29,7 @@ const BuildingList = () => {
     queryFn: getBuildingData,
   });
 
-
-    // const buildingData: any[] = [];
   const buildingData = data?.data || [];
-
-
 
   if (error) return <div>Error loading buildings data</div>;
 
@@ -40,6 +40,7 @@ const BuildingList = () => {
       </div>
     );
   }
+
   const handleAddBuilding = () => {
     setIsRegisterBuildingVisible(true);
   };
@@ -82,6 +83,24 @@ const BuildingList = () => {
     }
   );
 
+  // Function to toggle selection of buildings
+  const handleSelectBuilding = (buildingId: string) => {
+    setSelectedBuildings((prev) => (prev === buildingId ? '' : buildingId));
+  };
+
+ 
+
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredBuildingData.length / itemsPerPage);
+  const paginatedData = filteredBuildingData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+
+  
+
   return (
     <div className="py-6">
       {/* Search, Filter, and Upload Section */}
@@ -91,21 +110,21 @@ const BuildingList = () => {
           <div className="relative">
             <button
               className="bg-white text-[#575757] border p-2 rounded-lg flex items-center space-x-2"
-              onClick={() => setIsDatePickerVisible((prev) => !prev)} // Toggle date picker visibility
+              onClick={() => setIsDatePickerVisible((prev) => !prev)}
             >
               <MdFilterList className="w-4 h-4" />
-              <span className="text-sm font-medium text-[#575757]">
+              <span className=" hidden md:block text-sm font-medium text-[#575757]">
                 Filter by date
               </span>
             </button>
 
-            {/* Date Picker (shown when toggled) */}
+            {/* Date Picker */}
             {isDatePickerVisible && (
               <input
                 type="date"
                 value={filterDate}
                 onChange={(e) => setFilterDate(e.target.value)}
-                className=" absolute border text-sm font-inter p-1.5 shadow-lg w-full"
+                className="absolute border text-sm font-inter p-1.5 shadow-lg w-full"
               />
             )}
           </div>
@@ -117,9 +136,9 @@ const BuildingList = () => {
               placeholder="Search here"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="border w-[130px] sm:w-[200px] bg-white text-sm text-[#575757] rounded-lg py-1.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border w-[200px] lg:w-[300px] bg-white text-sm text-[#575757] rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <Search className="absolute top-2 text-[#575757] left-4 size-4" />
+            <Search className="absolute top-3 text-[#575757] left-4 size-4" />
           </div>
         </div>
 
@@ -134,8 +153,8 @@ const BuildingList = () => {
       </div>
 
       {/* Building History or No Data Found */}
-      {filteredBuildingData.length > 0 ? (
-        filteredBuildingData.map((building: any) => (
+      {paginatedData.length > 0 ? (
+        paginatedData.map((building: any) => (
           <BuildingHistoryCard
             key={building._id}
             serialNumber={building.serialNumber}
@@ -149,19 +168,31 @@ const BuildingList = () => {
             floors={building.numberOfFloors}
             postCode={building.address.postalCode}
             city={building.address.cityOrProvince}
+            onSelect={handleSelectBuilding} // Pass the function to the card
+            isSelected={selectedBuildings.includes(building._id)} // Pass selection state
           />
         ))
       ) : (
         <div className="text-center text-gray-500 mt-4">No data found.</div>
       )}
 
+      {/* Pagination Controls */}
+      {filteredBuildingData.length > itemsPerPage && (
+        <PaginationButtons 
+          totalPages={totalPages} 
+          onPageChange={setCurrentPage} 
+          currentPage={currentPage} 
+        />
+      )}
+
       {/* Charts */}
-      <div className="mt-10">
-        <UsageSummary />
+      <div className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm">
+        <UsageSummary buildingId={selectedBuildings} />
       </div>
-      <div className="mt-10">
-        <TrendingProjections />
+      <div className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm ">
+        <TrendingProjections buildingId={selectedBuildings} /> 
       </div>
+
 
       {/* Modal */}
       {isModalOpen && (
