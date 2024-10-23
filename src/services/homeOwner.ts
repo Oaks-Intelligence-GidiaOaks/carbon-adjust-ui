@@ -328,3 +328,17 @@ export const addTransport = async (formData: FormData) => {
 
   return data;
 };
+
+export const getSuggestions = async (query: string) => {
+  const requestUrl = import.meta.env.VITE_GEO_CODE_URL.replace(
+    "{query}",
+    encodeURIComponent(query)
+  )
+    .replace("{language}", "en-US")
+    .replace("{subKey}", import.meta.env.VITE_AZURE_KEY);
+
+  const { data } = await axiosInstance.get(requestUrl);
+
+  return data.results;
+};
+

@@ -4,6 +4,7 @@ import { AiOutlineDownload } from "react-icons/ai";
 import { Button } from "@/components/ui";
 import { useState } from "react";
 import { Transport } from "@/interfaces/transport.interface";
+import VehicleDetail from "./TransportDetail";
 
 const TransportCard = (props: Transport) => {
   const {
@@ -19,81 +20,99 @@ const TransportCard = (props: Transport) => {
   } = props;
 
   const [showMore, setShowMore] = useState(false);
+  const [checked, setChecked] = useState<boolean>(false);
+
+  const toggleChecked = () => {
+    setChecked(!checked);
+  };
   return (
     <>
-      <div className="flex flex-col bg-[#Fff] border rounded-lg py-5 px-10 divide-y ">
-        <div className="flex justify-between items-center ">
-          <div className="flex gap-x-4">
-            <div className="flex flex-col gap-y-2">
-              <h3 className="text-sm font-normal text-gray-700">
-                Plate Number
-              </h3>
-              <h4 className="text-sm font-semibold text-gray-600">FLM2024</h4>
+      <div className="flex  bg-[#Fff] border rounded-lg py-5 sm:px-10 px-5 ">
+        <div className="sm:flex hidden">
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={toggleChecked}
+            className="mr-4"
+          />
+        </div>
+        <div className="flex-1 sm:p-5 divide-y-2">
+          <div className="flex justify-between items-center pb-3">
+            <div className="flex gap-x-4">
+              <div className="flex flex-col gap-y-2">
+                <h3 className="text-sm font-normal text-gray-700">
+                  Plate Number
+                </h3>
+                <h4 className="text-sm font-semibold text-gray-600">FLM2024</h4>
+              </div>
+            </div>
+            <div className="sm:flex hidden">
+              <MdMoreVert />
+            </div>
+            <div className="flex sm:hidden">
+              <input
+                type="checkbox"
+                checked={checked}
+                onChange={toggleChecked}
+                className="mr-4"
+              />
             </div>
           </div>
-          <MdMoreVert />
-        </div>
 
-        <div className="flex  sm:flex-row flex-col gap-5 py-5 justify-stretch items-start">
-          <VehicleDetail
-            title_1="ID"
-            des_1={_id}
-            title_2="Vehicle manufacturer"
-            des_2={vehicleManufacturer}
-          />
-          <VehicleDetail
-            title_1="Year of purchase"
-            des_1={yearOfPurchase}
-            title_2="Car Model"
-            des_2={carModel}
-          />
-          <VehicleDetail title_1="fuel type" des_1={fuelType} />
-        </div>
-        <div
-          className={`flex flex-col sm:flex-row gap-5 my-5 py-2 sm:items-center items-start transition-all duration-500 ease-in-out overflow-hidden ${
-            showMore ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <img
-            src={transportPhoto}
-            alt=""
-            className="sm:w-[320px] w-[100%] h-[250px] rounded-md object-cover"
-          />
-
-          <div className="flex w-[300px] flex-col gap-[10px] ">
-            <VehicleDetail
-              title_1="address"
-              des_1={address}
-              title_2="city"
-              des_2={city}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 py-5">
+            <VehicleDetail title="ID" des={_id} />
+            <VehicleDetail title="Vehicle " des={vehicleManufacturer} />
+            <VehicleDetail title="Year of purchase" des={yearOfPurchase} />
+            <VehicleDetail title="Car Model" des={carModel} />
+            <VehicleDetail title="fuel type" des={fuelType} />
+          </div>
+          <div
+            className={`flex flex-col sm:flex-row gap-5  sm:items-center items-start transition-all duration-500 ease-in-out overflow-hidden ${
+              showMore
+                ? "max-h-[1000px] opacity-100 visible py-5"
+                : "max-h-0 opacity-0 invisible"
+            }`}
+            style={{ transitionProperty: "max-height, opacity" }}
+          >
+            <img
+              src={transportPhoto}
+              alt=""
+              className="sm:w-[320px] w-[100%] h-[250px] rounded-md object-cover"
             />
-            <VehicleDetail title_1="emission factor" des_1={emissionFactor} />
 
-            <Button className="rounded-[20px] flex-center gap-1 mt-2 w-[150px] h-[30px]">
-              <AiOutlineDownload />
-              <span>Download</span>
+            <div className="flex w-[250px] flex-col gap-[10px]">
+              <div className="flex  justify-between gap-5">
+                <VehicleDetail title="address" des={address} />
+                <VehicleDetail title="city" des={city} />
+              </div>
+              <VehicleDetail title="emission factor" des={emissionFactor} />
+
+              <Button className="rounded-[20px] flex-center gap-1 mt-2 w-[150px] h-[30px]">
+                <AiOutlineDownload />
+                <span>Download</span>
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex justify-center items-center p-3 ">
+            <Button
+              variant={"ghost"}
+              className="gap-2"
+              onClick={() => setShowMore(!showMore)}
+            >
+              {showMore ? (
+                <>
+                  <span>Collapse</span>
+                  <FaAngleUp />
+                </>
+              ) : (
+                <>
+                  <span>Expand</span>
+                  <FaAngleUp />
+                </>
+              )}
             </Button>
           </div>
-        </div>
-
-        <div className="flex justify-center items-center p-3 ">
-          <Button
-            variant={"ghost"}
-            className="gap-2"
-            onClick={() => setShowMore(!showMore)}
-          >
-            {showMore ? (
-              <>
-                <span>Collapse</span>
-                <FaAngleUp />
-              </>
-            ) : (
-              <>
-                <span>Expand</span>
-                <FaAngleUp />
-              </>
-            )}
-          </Button>
         </div>
       </div>
     </>
@@ -101,36 +120,3 @@ const TransportCard = (props: Transport) => {
 };
 
 export default TransportCard;
-
-type VehicleDetailProps = {
-  title_1: string;
-  des_1: string;
-  title_2?: string;
-  des_2?: string;
-};
-
-const VehicleDetail = ({
-  title_1,
-  des_1,
-  title_2,
-  des_2,
-}: VehicleDetailProps) => (
-  <div className="w-full flex flex-row gap-5 capitalize ">
-    <div className="flex w-1/2 sm:w-full  flex-col items-start justify-start gap-2.5">
-      <div className="flex w-full items-start justify-stretch text-sm font-bold text-[#212121] ">
-        <p>{title_1}</p>
-      </div>
-      <div className="text-sm font-normal text-gray-600">
-        <p> {des_1}</p>
-      </div>
-    </div>
-    <div className="flex w-1/2 sm:w-full  flex-col items-start justify-start gap-2.5">
-      <div className="flex w-full items-start justify-stretch text-sm font-bold text-[#212121]  ">
-        <p>{title_2}</p>
-      </div>
-      <div className="text-sm font-normal text-gray-600">
-        <p> {des_2}</p>
-      </div>
-    </div>
-  </div>
-);

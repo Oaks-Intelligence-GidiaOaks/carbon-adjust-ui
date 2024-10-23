@@ -19,8 +19,12 @@ export interface ITransport {
   transportPhoto: File | null;
   driversLicense: File | null;
   transportId: File | null;
-  yearOfPurchase: string;
   licensePlateNumber: string;
   address: string;
   city: string;
+}
+
+export interface VehicleDetailProps {
+  title: string;
+  des: string;
 }
