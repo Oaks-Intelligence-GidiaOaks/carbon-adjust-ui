@@ -3,7 +3,7 @@ import {
   DeviceDispatchStatus,
   IDispatchDevice,
 } from "@/interfaces/device.interface";
-import { roundNumber } from "@/lib/utils";
+import { formDateWithTime, roundNumber } from "@/lib/utils";
 import { IComponentMap } from "@/types/general";
 import { useState } from "react";
 import { GoDotFill, GoDownload } from "react-icons/go";
@@ -83,8 +83,13 @@ const DeviceHistoryCard = (props: IDispatchDevice) => {
 
         <div className="grid grid-cols-2  lg:flex items-center  justify-between w-full gap-2 text-xs lg:text-sm">
           <div className="space-y-3 ">
-            <h4 className="text-[#212121] font-[500]">Dispatch Time</h4>
-            <h4 className="text-light">{props?.dispatchStartTime}GMT</h4>
+            <h4 className="text-[#212121] font-[500]">Scheduled Time</h4>
+            <h4 className="text-light">
+              {formDateWithTime(
+                props?.bestDispatchStartTime as unknown as string,
+                true
+              )}
+            </h4>
           </div>
 
           <div className="space-y-3 ">
@@ -93,16 +98,21 @@ const DeviceHistoryCard = (props: IDispatchDevice) => {
           </div>
 
           <div className="space-y-3 ">
-            <h4 className="text-[#212121] font-[500]">Projected Schedule</h4>
+            <h4 className="text-[#212121] font-[500]">Projected Offset</h4>
             <h4 className="text-light">
               {roundNumber(props?.estimatedCC ?? 0)} KgCO2e
             </h4>
           </div>
 
           <div className="space-y-3 ">
-            <h4 className="text-[#212121] font-[500]">
-              Achieved Carbon-credit
+            <h4 className="text-[#212121] font-[500]">Achieved Offset</h4>
+            <h4 className="text-light">
+              {roundNumber(props?.actualCC ?? 0)} KgCO2e
             </h4>
+          </div>
+
+          <div className="space-y-3 ">
+            <h4 className="text-[#212121] font-[500]">Achieved Emission</h4>
             <h4 className="text-light">
               {roundNumber(props?.actualCC ?? 0)} KgCO2e
             </h4>

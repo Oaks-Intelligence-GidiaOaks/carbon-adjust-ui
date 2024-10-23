@@ -224,7 +224,7 @@ const NewDevice = () => {
 
             <Input
               className="border rounded-xl px-2 text-sm"
-              type="number"
+              // type="number"
               name="serialNos"
               value={formData.serialNos}
               onChange={handleInputChange}
