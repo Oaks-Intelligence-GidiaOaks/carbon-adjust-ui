@@ -110,14 +110,14 @@ const Vehicles = () => {
       </div>
       <div className=" mt-[20px] space-y-[38px]">
         {Array.from(
-          transports.data.transportationRecords as Transport[],
+          transports?.data?.transportationRecords as Transport[],
           (it, i) => (
             <TransportCard {...it} key={i} />
           )
         )}
       </div>
 
-      {showModal && <OptimizeModal onClick={() => setShowModal(false)} />}
+      {showModal && <OptimizeModal setShowModal={setShowModal} />}
       {/* Pagination */}
       <div className="mt-8 pr-12 w-fit mx-auto">
         <Paginate {...pagination} onPageChange={handlePageChange} />

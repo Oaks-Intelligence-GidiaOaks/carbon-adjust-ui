@@ -35,6 +35,42 @@ export const formatDate = (createdDate: string) => {
   return date.toLocaleDateString("en-US", options as any);
 };
 
+export const formatTimeToISO = (input: string): string => {
+  // Check if the input is in ISO format (starting with 'T')
+  if (input.includes("T")) {
+    // Parse the time from the ISO string (format: 'YYYY-MM-DDTHH:MM:SSZ')
+    const date = new Date(input);
+
+    // Extract hours and minutes
+    const hours = date.getUTCHours().toString().padStart(2, "0");
+    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+
+    // Return the time in 'HH:MM' format
+    return `${hours}:${minutes}`;
+  } else {
+    // If input is in 'HH:MM' format, convert to ISO
+    // Get the current date
+    const currentDate = new Date();
+
+    // Extract hours and minutes from the time string
+    const [hours, minutes] = input.split(":").map(Number);
+
+    // Set hours and minutes in the current date
+    currentDate.setUTCHours(hours, minutes, 0, 0);
+
+    // Return the date in the ISO 8601 format
+    return currentDate.toISOString();
+  }
+};
+
+export function convertNumberToTimeFormat(hours: any) {
+  // Ensure hours is a two-digit string
+  const formattedHours = String(hours).padStart(2, "0");
+
+  // Return the formatted time
+  return `${formattedHours}:00:00`;
+}
+
 export const formDateWithTime = (
   createdDate: string,
   onlyTime: boolean = false

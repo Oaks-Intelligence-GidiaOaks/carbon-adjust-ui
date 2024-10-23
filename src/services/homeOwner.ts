@@ -306,13 +306,10 @@ export const uploadEnergyBills = async (
   );
   return data;
 };
+
 //TRANSPORT
 export const getTransports = async () => {
-  const queryParams = new URLSearchParams();
-  // queryParams.append("limit", limit.toString());
-  // queryParams.append("page", page.toString());
-
-  const url = `/transportation?${queryParams.toString()}`;
+  const url = `/transportation`;
 
   const { data } = await axiosInstance.get(url);
 
@@ -365,3 +362,19 @@ export const getSuggestions = async (query: string) => {
   return data.results;
 };
 
+export const Optimize = async (formData: FormData) => {
+  const { data } = await axiosInstance.post(
+    "/transportation/optimize-trip",
+    formData
+  );
+
+  return data;
+};
+
+export const getTransportsHistory = async () => {
+  const url = `/transportation/travel-history`;
+
+  const { data } = await axiosInstance.get(url);
+
+  return data;
+};
