@@ -192,7 +192,7 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
     e.preventDefault();
 
     // Destructure transportation out of formData
-    const { transportation, ...restOfFormData } = formData;
+    const { transportation, plateNumber, ...restOfFormData } = formData;
 
     const Payload: any = {
       ...restOfFormData,
@@ -208,6 +208,10 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
     // Conditionally add 'transportation' if it's not an empty string
     if (transportation && transportation.value.trim() !== "") {
       Payload.transportation = transportation.value;
+    }
+
+    if (plateNumber !== "") {
+      Payload.plateNumber = plateNumber;
     }
 
     OptimizeTransport.mutate(Payload);
