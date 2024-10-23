@@ -141,6 +141,7 @@ const AddedDevices = () => {
               text: "Yes",
               actionType: "default",
               onClick: () => DispatchDevice.mutate(device),
+              isLoading: DispatchDevice.isPending,
             },
           ]}
           headerText="Schedule Device"

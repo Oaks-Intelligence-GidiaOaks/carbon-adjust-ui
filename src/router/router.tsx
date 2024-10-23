@@ -73,7 +73,6 @@ import ComingSoon from "@/components/reusables/ComingSoon";
 import ZohoPage from "@/pages/public/test";
 import BuildingList from "@/components/containers/buildings/BuildingList";
 
-
 const Router = createBrowserRouter([
   {
     path: "/",
@@ -171,6 +170,10 @@ const Router = createBrowserRouter([
           },
           {
             path: "add",
+            element: <UserNewDevice />,
+          },
+          {
+            path: ":deviceId/edit",
             element: <UserNewDevice />,
           },
         ],

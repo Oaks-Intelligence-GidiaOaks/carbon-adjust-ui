@@ -17,6 +17,7 @@ import {
 } from "@/lib/utils";
 import { RootState } from "@/app/store";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
+import { Link } from "react-router-dom";
 
 const DeviceCard = (props: Device) => {
   const { device } = useSelector((state: RootState) => state.assets);
@@ -194,9 +195,12 @@ const DeviceCard = (props: Device) => {
       ref={actionsRef}
       className="absolute bg-white top-8 right-2 max-w-[150px] shadow-lg border space-y-2 rounded-[10px] px-2 py-3"
     >
-      <div className="text-[#414141] cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 ">
+      <Link
+        to={`/dashboard/devices/${props._id}/edit`}
+        className="text-[#414141] cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
+      >
         <span>Edit Device</span>
-      </div>
+      </Link>
 
       <div className="text-[#E71D36] cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 ">
         <span>Delete Device</span>
@@ -210,9 +214,11 @@ const DeviceCard = (props: Device) => {
   };
 
   return (
-    <div className="border-[0.4px] rounded-xl bg-white shadow-md max-w-[392px]">
+    <div className="border-[0.4px] font-poppins rounded-xl bg-white shadow-md max-w-[392px]">
       <div className="flex-center justify-between px-[10px] border-b p-3 relative">
-        <h2 className="font-[600] text-sm font-inter pl-3">{props.name}</h2>
+        <h2 className="font-[600] text-sm font-inter pl-3 capitalize">
+          {props.name}
+        </h2>
         <MdMoreVert onClick={() => setCardActions(!cardActions)} />
         {id && <CardPopup />}
 
