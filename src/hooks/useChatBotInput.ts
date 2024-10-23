@@ -1,31 +1,51 @@
+// @ts-ignore
 import { useState, useCallback, useEffect } from "react";
-import { useSpeechToText } from "@/hooks/useSpeechToText";
+// import { useSpeechToText } from "@/hooks/useSpeechToText";
 import { useAudioRecorder } from "@/hooks/useAudioRecorder";
 
 interface ChatbotInputHook {
   inputText: string;
   isRecording: boolean;
-  isTranscribing: boolean;
+  // isTranscribing: boolean;
   audioData: Blob | null;
   setInputText: (text: string) => void;
   handleSend: () => void;
-  toggleRecording: () => Promise<void>;
+  toggleOngoingRecording: () => Promise<void>;
   clearInput: () => void;
+  pauseAudio: () => void;
+  playAudio: () => void;
+  isPlaying: boolean;
+  isPaused: boolean;
+  clearRecording: () => void;
+  discardRecording: () => void;
+  resumeRecording: () => void;
+  toggleRecordedAudio: () => void;
 }
 
 export const useChatbotInput = (): ChatbotInputHook => {
   const [inputText, setInputText] = useState<string>("");
 
-  const {
-    isListening: isTranscribing,
-    transcript,
-    startListening,
-    stopListening,
-    clearTranscript,
-  } = useSpeechToText();
+  // const {
+  //   isListening: isTranscribing,
+  //   transcript,
+  //   startListening,
+  //   stopListening,
+  //   clearTranscript,
+  // } = useSpeechToText();
 
-  const { isRecording, audioData, startRecording, stopRecording } =
-    useAudioRecorder();
+  const {
+    isRecording,
+    isPlaying,
+    audioData,
+    toggleOngoingRecording,
+    toggleRecordedAudio,
+    pauseAudio,
+    playAudio,
+    clearRecording,
+    discardRecording,
+    isPaused,
+    resumeRecording,
+  } = useAudioRecorder();
 
   const handleSend = useCallback((): void => {
     // Emit socket event here
@@ -33,46 +53,67 @@ export const useChatbotInput = (): ChatbotInputHook => {
     //
     console.log("Sending:", inputText);
     setInputText("");
-    clearTranscript();
-  }, [inputText, clearTranscript]);
-
-  const toggleRecording = useCallback(async (): Promise<void> => {
-    if (isRecording || isTranscribing) {
-      stopRecording();
-      stopListening();
-    } else {
-      setInputText("");
-      clearTranscript();
-      await startRecording();
-      startListening();
-    }
+    // clearTranscript();
   }, [
-    isRecording,
-    isTranscribing,
-    startRecording,
-    stopRecording,
-    startListening,
-    stopListening,
+    inputText,
+    // clearTranscript
   ]);
 
-  const clearInput = useCallback((): void => {
-    setInputText("");
-    clearTranscript();
-  }, [clearTranscript]);
+  // const toggleRecording = useCallback(async (): Promise<void> => {
+  //   console.log("toggle clicked...");
+  //   if (
+  //     isRecording
+
+  //     // ||    isTranscribing
+  //   ) {
+  //     stopRecording();
+  //     // stopListening();
+  //   } else {
+  //     setInputText("");
+  //     // clearTranscript();
+  //     await startRecording();
+  //     // startListening();
+  //   }
+  // }, [
+  //   isRecording,
+  //   // isTranscribing,
+  //   startRecording,
+  //   stopRecording,
+  //   // startListening,
+  //   // stopListening,
+  // ]);
+
+  const clearInput = useCallback(
+    (): void => {
+      setInputText("");
+      // clearTranscript();
+    },
+    [
+      // clearTranscript
+    ]
+  );
 
   // Update inputText when transcript changes
-  useEffect(() => {
-    setInputText(transcript);
-  }, [transcript]);
+  // useEffect(() => {
+  //   setInputText(transcript);
+  // }, [transcript]);
 
   return {
     inputText,
     isRecording,
-    isTranscribing,
+    // isTranscribing,
     audioData,
     setInputText,
     handleSend,
-    toggleRecording,
+    toggleOngoingRecording,
     clearInput,
+    clearRecording,
+    isPlaying,
+    pauseAudio,
+    playAudio,
+    discardRecording,
+    isPaused,
+    resumeRecording,
+    toggleRecordedAudio,
   };
 };

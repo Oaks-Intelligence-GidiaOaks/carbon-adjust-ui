@@ -6,20 +6,39 @@ interface AudioRecorderHook {
   audioData: Blob | null;
   startRecording: () => Promise<void>;
   stopRecording: () => void;
-  toggleRecording: () => Promise<void>;
+  toggleOngoingRecording: () => Promise<void>;
+  playAudio: () => void;
+  pauseAudio: () => void;
+  isPlaying: boolean;
+  isPaused: boolean;
+  clearRecording: () => void;
+  discardRecording: () => void;
+  resumeRecording: () => void;
+  toggleRecordedAudio: () => void;
 }
 
 export const useAudioRecorder = (): AudioRecorderHook => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
   const [audioData, setAudioData] = useState<Blob | null>(null);
 
   useEffect(() => {
-    AudioRecorderService.setOnRecordingState(setIsRecording);
-    AudioRecorderService.setOnAudioData(setAudioData);
+    const handleRecordingState = (state: boolean) => setIsRecording(state);
+    const handlePlayingState = (state: boolean) => setIsPlaying(state);
+    const handleAudioData = (audioBlob: Blob) => setAudioData(audioBlob);
+    const handlePausedState = (state: boolean) => setIsPaused(state);
+
+    AudioRecorderService.on("isRecording", handleRecordingState);
+    AudioRecorderService.on("isPlaying", handlePlayingState);
+    AudioRecorderService.on("audioData", handleAudioData);
+    AudioRecorderService.on("isPaused", handlePausedState);
 
     return () => {
-      AudioRecorderService.setOnRecordingState(null);
-      AudioRecorderService.setOnAudioData(null);
+      AudioRecorderService.off("isRecording", handleRecordingState);
+      AudioRecorderService.off("isPlaying", handlePlayingState);
+      AudioRecorderService.off("audioData", handleAudioData);
+      AudioRecorderService.off("isPaused", handlePausedState);
     };
   }, []);
 
@@ -31,19 +50,57 @@ export const useAudioRecorder = (): AudioRecorderHook => {
     AudioRecorderService.stopRecording();
   }, []);
 
-  const toggleRecording = useCallback(async (): Promise<void> => {
-    if (isRecording) {
-      stopRecording();
-    } else {
-      await startRecording();
-    }
-  }, [isRecording, startRecording, stopRecording]);
+  // const toggleRecording = useCallback(async (): Promise<void> => {
+  //   if (isRecording) {
+  //     stopRecording();
+  //   } else {
+  //     await startRecording();
+  //   }
+  // }, [isRecording, startRecording, stopRecording]);
+
+  const playAudio = useCallback((): void => {
+    AudioRecorderService.playRecordedAudio();
+  }, []);
+
+  const pauseAudio = useCallback((): void => {
+    AudioRecorderService.pauseRecordedAudio();
+    setIsPlaying(false);
+  }, []);
+
+  const clearRecording = useCallback((): void => {
+    AudioRecorderService.clearAudioChunks();
+    setAudioData(null);
+  }, []);
+
+  const discardRecording = useCallback((): void => {
+    AudioRecorderService.discardRecording();
+  }, []);
+
+  const resumeRecording = useCallback((): void => {
+    AudioRecorderService.resumeRecording();
+  }, []);
+
+  const toggleOngoingRecording = useCallback(async (): Promise<void> => {
+    await AudioRecorderService.toggleOngoingRecording();
+  }, []);
+
+  const toggleRecordedAudio = useCallback((): void => {
+    AudioRecorderService.toggleRecordedAudio();
+  }, []);
 
   return {
     isRecording,
-    audioData,
     startRecording,
     stopRecording,
-    toggleRecording,
+    toggleOngoingRecording,
+    toggleRecordedAudio,
+    clearRecording,
+    discardRecording,
+    resumeRecording,
+    audioData,
+    playAudio,
+    pauseAudio,
+    isPlaying,
+    isPaused,
   };
 };

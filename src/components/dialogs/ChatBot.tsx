@@ -2,9 +2,10 @@ import { LoadingGif } from "@/assets";
 import { useChatbotInput } from "@/hooks/useChatBotInput";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
 import { StopCircle } from "lucide-react";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { FaMicrophone } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
+import RecorderIndicator from "../ui/RecorderIndicator";
 
 const ChatBot = () => {
   const [openChat, setOpenChat] = useState<boolean>(false);
@@ -14,19 +15,41 @@ const ChatBot = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
 
+  const [time, setTime] = useState(0);
+  const interval = useRef<NodeJS.Timeout | null>(null);
+
   const {
     inputText,
     isRecording,
-    isTranscribing,
+    isPlaying,
+    // isTranscribing,
     setInputText,
     // @ts-ignore
     handleSend,
-    toggleRecording,
+    toggleOngoingRecording,
+    playAudio,
+    pauseAudio,
+    clearRecording,
+    discardRecording,
+    resumeRecording,
+    toggleRecordedAudio,
+    isPaused,
   } = useChatbotInput();
 
-  useEffect(() => {
-    console.log(inputText);
-  }, [isRecording, isTranscribing]);
+  const startTimer = () => {
+    if (!interval.current) {
+      interval.current = setInterval(() => {
+        setTime((prev) => prev + 1);
+      }, 1000);
+    }
+  };
+
+  const stopTimer = () => {
+    if (interval.current) {
+      clearInterval(interval.current);
+      interval.current = null;
+    }
+  };
 
   const ChatMessage = (props: {
     isLoggedInUser?: boolean;
@@ -67,6 +90,16 @@ const ChatBot = () => {
     });
   };
 
+  const toggleRecording = () => {
+    if (isPaused) {
+      startTimer();
+    } else {
+      stopTimer();
+    }
+
+    toggleOngoingRecording();
+  };
+
   return (
     <div ref={ref} className=" fixed bottom-4 right-3 z-[50] ">
       <div
@@ -92,18 +125,37 @@ const ChatBot = () => {
           </div>
 
           <div className="flex-center gap-3 border-t w-full justify-between py-[16px] px-1">
-            <input
-              type="text"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              name="text"
-              id="text"
-              placeholder="Write your message...."
-              className="flex-1 px-3 py-1  outline-none bg-transparent text-[#2E599A] placeholder-[#2E599A] text-xs tracking-tight font-poppins"
-            />
+            {isRecording ? (
+              <RecorderIndicator
+                isPlaying={isPlaying}
+                isRecording={isRecording}
+                playAudio={playAudio}
+                pauseAudio={pauseAudio}
+                clearRecording={clearRecording}
+                discardRecording={discardRecording}
+                resumeRecording={resumeRecording}
+                toggleRecordedAudio={toggleRecordedAudio}
+                isPaused={isPaused}
+                time={time}
+                setTime={setTime}
+                startTimer={startTimer}
+                stopTimer={stopTimer}
+                interval={interval}
+              />
+            ) : (
+              <input
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                name="text"
+                id="text"
+                placeholder="Write your message...."
+                className="flex-1 px-3 py-1  outline-none bg-transparent text-[#2E599A] placeholder-[#2E599A] text-xs tracking-tight font-poppins"
+              />
+            )}
 
             <button>
-              {isRecording || isTranscribing ? (
+              {isRecording ? (
                 <StopCircle size={20} onClick={toggleRecording} />
               ) : inputText.length > 0 ? (
                 <IoSend
@@ -114,7 +166,7 @@ const ChatBot = () => {
                 />
               ) : (
                 <FaMicrophone
-                  onClick={toggleRecording}
+                  onClick={toggleOngoingRecording}
                   className="flex-[0.1]"
                   color="#2E599A"
                   size={25}
