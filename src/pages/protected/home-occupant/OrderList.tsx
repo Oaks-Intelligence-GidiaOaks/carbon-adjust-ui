@@ -1,12 +1,11 @@
 // this page shows the list of orders
 
 import OrderCard from "@/components/reusables/OrderCard";
-// import Pagination from "@/components/reusables/Pagination";
 import { IPackageOrder } from "@/interfaces/order.interface";
-import {  getHoOrders } from "@/services/homeOwner";
-import {  useQuery } from "@tanstack/react-query";
+import { getHoOrders } from "@/services/homeOwner";
+import { useQuery } from "@tanstack/react-query";
 import OrdersLoading from "@/components/reusables/OrdersLoading";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearOrder } from "@/features/orderSlice";
 import { clearProduct } from "@/features/productSlice";
@@ -18,18 +17,26 @@ import {
   MonitoringEvent,
   PageEvent,
 } from "@/interfaces/events.interface";
-
+import Paginate from "@/components/reusables/Paginate";
+import { PaginateProps } from "@/types/general";
 
 type Props = {};
 
 const OrderList = (_: Props) => {
-  // const [currentPage, setCurrentPage] = useState(1);
-
-
-
   const { user } = useSelector((state: RootState) => state.user);
-
   const { browser, os } = getBrowserAndOS();
+
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  const [pagination, setPagination] = useState<
+    Omit<PaginateProps, "onPageChange">
+  >({
+    currentPage: 1,
+    limit: 40,
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+  });
 
   const pageEventPayload: IPageViewPayload = {
     name: PageEvent.ORDER_LIST,
@@ -46,11 +53,9 @@ const OrderList = (_: Props) => {
   const dispatch = useDispatch();
 
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ["get-user-orders"],
-    queryFn: () => getHoOrders(),
+    queryKey: ["get-user-orders", pagination.currentPage],
+    queryFn: () => getHoOrders(pagination.limit, pagination.currentPage),
   });
-
-  console.log('new', data)
 
   const hoOrders: IPackageOrder[] = isSuccess ? data.data.orders : [];
 
@@ -59,33 +64,29 @@ const OrderList = (_: Props) => {
     dispatch(clearProduct());
   }, []);
 
+  useEffect(() => {
+    if (data?.data)
+      setPagination({
+        currentPage: data?.data.currentPage,
+        hasNextPage: data?.data.hasNextPage,
+        hasPrevPage: data?.data.hasPrevPage,
+        limit: data?.data.limit,
+        totalPages: data?.data.totalPages,
+      });
+  }, [data?.data]);
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [pagination.currentPage]);
 
-  // useEffect(() => {
-  //   refetch();
-  // }, [currentPage]);
-
-  // const pagination = isSuccess && {
-  //   limit: data.data.limit,
-  //   prev: data.data.prev,
-  //   next: data.data.next,
-  //   hasPrevPage: data.data.hasPrevPage,
-  //   hasNextPage: data.data.hasNextPage,
-  //   currentPage: data.data.currentPage,
-  //   total: data.data.totalOrder,
-  //   totalPages: data.data.totalPages,
-  // };
-
-  // const handlePageChange = (page: number) => {
-  //   setCurrentPage(page);
-  // };
-
-  // console.log(pagination, "pagination");
-  // console.log(hoOrders, "ho orders");
-
-  // if (isLoading) {
-  //   return <OrdersLoading />;
-  // }
+  const handlePageChange = (pgNo: number) => {
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: pgNo,
+    }));
+  };
 
   return (
     <div className="">
@@ -94,7 +95,10 @@ const OrderList = (_: Props) => {
       </div>
 
       {/* flat list */}
-      <div className="px-2 md:px-4 lg:w-5/6 mx-auto mt-[79px] space-y-[38px]">
+      <div
+        ref={scrollRef}
+        className="px-2 md:px-4 lg:w-5/6 mx-auto mt-[79px] space-y-[38px]"
+      >
         {isLoading ? (
           <OrdersLoading />
         ) : (
@@ -104,11 +108,10 @@ const OrderList = (_: Props) => {
       </div>
 
       {/* pagination */}
-      {/* <div className="mx-auto w-fit mt-8">
-        {pagination && (
-          <Pagination onPageChange={handlePageChange} {...pagination} />
-        )}
-      </div> */}
+      {/*  */}
+      <div className="mt-8 pr-12 w-fit mx-auto">
+        <Paginate {...pagination} onPageChange={handlePageChange} />
+      </div>
     </div>
   );
 };

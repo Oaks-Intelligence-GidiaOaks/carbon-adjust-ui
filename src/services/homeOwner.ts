@@ -32,8 +32,15 @@ export const getPackagesByCategorySlug = async (slug: string) => {
 };
 
 // ORDER
-export const getHoOrders = async () => {
-  const { data } = await axiosInstance.get(`application/orders`);
+export const getHoOrders = async (limit: number = 30, page: number = 1) => {
+  const queryParams = new URLSearchParams();
+
+  queryParams.append("limit", limit.toString());
+  queryParams.append("page", page.toString());
+
+  const url = `application/orders?${queryParams.toString()}`;
+
+  const { data } = await axiosInstance.get(url);
 
   return data;
 };
@@ -199,38 +206,54 @@ export const getDispatchedDevices = async (
 };
 
 //REVIEWS
-export const getPackagesReviews = async ({ packageId }: { packageId: string }) => {
+export const getPackagesReviews = async ({
+  packageId,
+}: {
+  packageId: string;
+}) => {
   const { data } = await axiosInstance.get(`/packages/${packageId}/reviews`);
   return data;
 };
 
 export const addReview = async (formData: IAddReview) => {
-  const { data } = await axiosInstance.post("packages/review", formData );
+  const { data } = await axiosInstance.post("packages/review", formData);
 
   return data;
 };
 
 //ACCEPT GRANT
 export const acceptGrant = async (applicationId: string) => {
-  const { data } = await axiosInstance.put("application/accept", { applicationId });
+  const { data } = await axiosInstance.put("application/accept", {
+    applicationId,
+  });
   return data;
 };
 
 //REJECT GRANT
 export const rejectGrant = async (applicationId: string) => {
-  const { data } = await axiosInstance.put("application/decline", { applicationId });
+  const { data } = await axiosInstance.put("application/decline", {
+    applicationId,
+  });
   return data;
 };
 
 //CANCEL GRANT APPLICATION
 export const cancelApplication = async (applicationId: string) => {
-  const { data } = await axiosInstance.put("/application/cancel", { applicationId });
+  const { data } = await axiosInstance.put("/application/cancel", {
+    applicationId,
+  });
   return data;
 };
 
 //GET SUBPACKAGES
-export const getGrantSubCategory= async ({packageId }: { packageId: string }) => {
-  const { data } = await axiosInstance.get(`application/marketplace/${packageId}`);
+export const getGrantSubCategory = async ({
+  packageId,
+}: {
+  packageId: string;
+}) => {
+  const { data } = await axiosInstance.get(
+    `application/marketplace/${packageId}`
+  );
   return data;
 };
 
@@ -250,24 +273,37 @@ export const uploadBuildingData = async (formData: FormData) => {
   return data;
 };
 
-
 //UPLOAD BUILDING IMAGE
-export const uploadBuildingImage = async (buildingId: string, formData: FormData) => {
-  const { data } = await axiosInstance.put(`/building/${buildingId}/image`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+export const uploadBuildingImage = async (
+  buildingId: string,
+  formData: FormData
+) => {
+  const { data } = await axiosInstance.put(
+    `/building/${buildingId}/image`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
   return data;
 };
 
 //UPLOAD ENERGY biLLS
-export const uploadEnergyBills = async (buildingId: string, formData: FormData) => {
-  const { data } = await axiosInstance.put(`/building/${buildingId}/energy-bills`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+export const uploadEnergyBills = async (
+  buildingId: string,
+  formData: FormData
+) => {
+  const { data } = await axiosInstance.put(
+    `/building/${buildingId}/energy-bills`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
   return data;
 };
 //TRANSPORT
@@ -282,7 +318,6 @@ export const getTransports = async () => {
 
   return data;
 };
-
 
 export const addTransport = async (formData: FormData) => {
   const { data } = await axiosInstance.post("/transportation", formData, {
