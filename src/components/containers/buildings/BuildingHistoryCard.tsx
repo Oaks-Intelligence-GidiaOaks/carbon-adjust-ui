@@ -1,13 +1,15 @@
-import { useState } from "react"; 
+import { useState } from "react";
 import { GoDownload } from "react-icons/go";
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
-import { UploadIcon } from "lucide-react";
-import UploadEnergyBillsModal from "@/components/reusables/UploadEnergyBills"; 
+import { PencilIcon, UploadIcon } from "lucide-react";
+import UploadEnergyBillsModal from "@/components/reusables/UploadEnergyBills";
 import UploadBuildingImageModal from "./BuildingImageUpload";
+import EnergyBillsModal from "./EnergyBillsModal";
+import { FiUpload } from "react-icons/fi";
 
 const BuildingHistoryCard = ({
   serialNumber,
@@ -21,16 +23,23 @@ const BuildingHistoryCard = ({
   floors,
   postCode,
   city,
+  onSelect, // New prop
+  isSelected, // New prop
 }: any) => {
-  const [checked, setChecked] = useState<boolean>(false);
-  const [buildingShown, setBuildingShown] = useState<boolean>(false);
-  
-  const [isImageModalOpen, setIsImageModalOpen] = useState<boolean>(false); 
-  const [isEnergyModalOpen, setIsEnergyModalOpen] = useState<boolean>(false); 
 
-  const toggleChecked = () => {
-    setChecked(!checked);
-  };
+  const [checked, setChecked] = useState<boolean>(isSelected);
+  const [buildingShown, setBuildingShown] = useState<boolean>(false);
+
+  const [isImageModalOpen, setIsImageModalOpen] = useState<boolean>(false);
+  const [isEnergyModalOpen, setIsEnergyModalOpen] = useState<boolean>(false);
+  const [toggleOptions, setToggleOptions] = useState<boolean>(false);
+  const [isEnergyBillsModalOpen, setEnergyBillsModalOpen] =
+    useState<boolean>(false);
+
+    const toggleChecked = () => {
+      setChecked(!checked);
+      onSelect(id);
+    };
 
   const handleDownload = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -38,26 +47,39 @@ const BuildingHistoryCard = ({
   };
 
   const openImageModal = () => {
-    setIsImageModalOpen(true); 
+    setIsImageModalOpen(true);
+    setToggleOptions(false);
   };
 
   const closeImageModal = () => {
-    setIsImageModalOpen(false); 
+    setIsImageModalOpen(false);
   };
 
   const openEnergyModal = () => {
-    setIsEnergyModalOpen(true); 
+    setIsEnergyModalOpen(true);
   };
 
   const closeEnergyModal = () => {
-    setIsEnergyModalOpen(false); 
+    setIsEnergyModalOpen(false);
+  };
+
+  const openEnergyBillsModal = () => {
+    setEnergyBillsModalOpen(true);
+    setToggleOptions(false);
+  };
+
+  const closeEnergyBillsModal = () => setEnergyBillsModalOpen(false);
+
+  const handleToggleOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setToggleOptions((prev) => !prev);
   };
 
   return (
     <div className="bg-white border-[0.5px] mb-7 rounded-md shadow-sm flex flex-col md:flex-row p-4 lg:p-6 text-sm lg:text-base cursor-pointer">
       <input
         type="checkbox"
-        checked={checked}
+        checked={isSelected}
         onChange={toggleChecked}
         className="mr-4"
       />
@@ -72,20 +94,38 @@ const BuildingHistoryCard = ({
             </p>
           </div>
 
-          <div className="flex justify-between  w-full lg:w-fit lg:items-center lg:space-x-2 mt-2 md:mt-0">
+          <div className="relative flex justify-between w-full md:w-fit md:items-center lg:space-x-2 mt-2 md:mt-0">
             <button
-              onClick={openEnergyModal} 
+              onClick={openEnergyModal}
               className="text-[#3465AF] border border-[#3465AF] py-2 px-4 rounded-full text-xs md:text-sm font-medium flex items-center space-x-2"
             >
               <UploadIcon className="w-4 h-4" />
               <span>Upload energy bill</span>
             </button>
             <button
-              onClick={openImageModal} 
+              onClick={handleToggleOptions}
               className="text-xl text-[#5D5D5D]"
             >
               <HiDotsVertical />
             </button>
+
+            {/* Dropdown Options */}
+            {toggleOptions && (
+              <div className="absolute top-8 right-0 bg-white border rounded shadow-md z-10 py-2 w-[160px]">
+                <button
+                  onClick={openImageModal}
+                  className="flex gap-2 items-center justify-center  w-full px-4 py-2 text-left hover:bg-gray-100 text-sm"
+                >
+                 <FiUpload  size={12} /> Upload Image
+                </button>
+                <button
+                  onClick={openEnergyBillsModal}
+                  className="flex gap-2 items-center justify-center  w-full px-4 py-2 text-left hover:bg-gray-100 text-sm"
+                >
+                 <PencilIcon size={12}/> Edit Energy Bills
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -206,8 +246,8 @@ const BuildingHistoryCard = ({
       {isEnergyModalOpen && (
         <UploadEnergyBillsModal
           isOpen={isEnergyModalOpen}
-          onClose={closeEnergyModal} 
-          buildingId={id} 
+          onClose={closeEnergyModal}
+          buildingId={id}
         />
       )}
 
@@ -215,8 +255,16 @@ const BuildingHistoryCard = ({
       {isImageModalOpen && (
         <UploadBuildingImageModal
           isOpen={isImageModalOpen}
-          onClose={closeImageModal} 
-          buildingId={id}      
+          onClose={closeImageModal}
+          buildingId={id}
+        />
+      )}
+
+      {isEnergyBillsModalOpen && (
+        <EnergyBillsModal
+          isOpen={isEnergyBillsModalOpen}
+          closeModal={closeEnergyBillsModal}
+          buildingId={id}
         />
       )}
     </div>

@@ -2,7 +2,7 @@ import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadBuildingImage } from "@/services/homeOwner";
 import uploadfileIcon from "@/assets/icons/upload-file.svg";
 import { FaTrashCan } from "react-icons/fa6";
@@ -16,12 +16,14 @@ interface ModalProps {
 
 const UploadBuildingImageModal: React.FC<ModalProps> = ({ isOpen, onClose, buildingId }) => {
   const [buildingImage, setBuildingImage] = useState<File | null>(null); 
+  const queryClient = useQueryClient();
 
   const uploadBuildingImageMutation = useMutation({
     mutationKey: ["uploadBuildingImage"],
     mutationFn: (formData: FormData) => uploadBuildingImage(buildingId, formData),
     onSuccess: () => {
       toast.success("Building image uploaded successfully.");
+      queryClient.invalidateQueries({ queryKey: ["upload-building-image"] });
       onClose(); 
     },
     onError: () => {
