@@ -2,23 +2,25 @@ import { PlusIcon } from "@/assets/icons";
 import { cn } from "@/utils";
 import { Link } from "react-router-dom";
 
-const NoDevices = (props: { link?: string }) => {
+const NoDevices = (props: { link?: string; text?: string }) => {
   return (
     <div className="w-fit mx-auto mt-16 grid place-items-center gap-3 max-w-[650px]">
       <img src="/assets/graphics/deviceGrad.svg" alt="" className="" />
 
       <div className="w-fit mx-auto text-center">
         <h3 className="text-[#495057] font-[600] text-xl">
-          No device has been added
+          {`No ${props?.text ? props?.text : "device"} has been added`}
         </h3>
 
         <p className="text-[#6C6262] font-[400]">
-          You have no active DR(Demand response) application
+          {`You have no active ${
+            props?.text ? props?.text : "DR(Demand response) application"
+          }`}
         </p>
 
         <Link to={props?.link ?? "/merchant/devices/add"}>
           <button className="mt-6 mx-auto border gap-2 h-[48px] blue-gradient rounded-lg flex-center px-6 text-white font-[600] text-sm">
-            <span>Add device</span>
+            <span>{`Add ${props?.text ? props?.text : "device"}`}</span>
             <PlusIcon className={cn()} />
           </button>
         </Link>
