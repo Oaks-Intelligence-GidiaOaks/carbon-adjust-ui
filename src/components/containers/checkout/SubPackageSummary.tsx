@@ -3,7 +3,7 @@ import { RootState } from "@/app/store";
 import { IResponse } from "@/interfaces/orderData.interface";
 import { createNewOrder } from "@/services/homeOwner";
 import { useMutation } from "@tanstack/react-query";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 //   @ts-ignore
 import { GrClose } from "react-icons/gr";
@@ -21,6 +21,7 @@ import {
   SubLevelEvent,
 } from "@/interfaces/events.interface";
 import { PackageDomain } from "@/interfaces/product.interface";
+import RadioGroupComponent from "@/components/ui/RadioGroup";
 
 type IAddress = {
   country: string;
@@ -47,7 +48,9 @@ const SubPackageSummary = (props: {
   setShowcheckout: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { order, product, user } = useSelector((state: RootState) => state);
+  const [selectedOption, setSelectedOption] = useState("Restricted wallet");
 
+  const options = ["Restricted wallet"];
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -113,10 +116,94 @@ const SubPackageSummary = (props: {
 
   return (
     <div className="md:w-[380px]">
-      <p className="mx-6 mt-[10%]">
-        Add your sub package order summary here . The one containing the
-        restricted wallet
-      </p>
+      <div className="flex-center font-poppins justify-between w-full  border-b py-4 px-7 sticky top-0 z-20 bg-white">
+        <div className="flex-center gap-[13px]">
+          <IoIosArrowRoundBack onClick={() => props.setStage(2)} />
+          <h2 className="font-[600] text-lg">Check Out</h2>
+        </div>
+
+        <span onClick={() => props.setShowCancel(true)}>
+          <GrClose />
+        </span>
+      </div>
+
+      <div className="flex flex-col font-poppins gap-[22px] px-5 mx-auto">
+        <h2 className="font-[400] font-poppins text-[#333333] mt-3">Order Summary</h2>
+
+        <div className="flex-start">
+          <span className="text-sm w-1/2 text-[#8F8F8F] "> Category : </span>
+          <span className="font-[600] text-sm w-1/2 pl-2 text-[#333333]">
+            {product?.category?.name}
+          </span>
+        </div>
+        <div className="flex-start">
+          <span className=" text-sm w-1/2 text-[#8F8F8F] "> Package : </span>
+          <span className="font-[600] text-sm w-1/2 pl-2 text-[#333333]">{product?.title}</span>
+        </div>
+
+        <div className="flex-start">
+          <span className="text-sm w-1/2 text-[#8F8F8F]"> Created by : </span>
+          <span className="font-[600] text-sm w-1/2 pl-2 text-[#333333]">{product?.owner?.name}</span>
+        </div>
+
+        <div className="flex-start">
+          <span className="text-sm w-1/2 text-[#8F8F8F]"> Amount (£): </span>
+          <span className="font-[600] text-sm w-1/2 pl-2 text-[#333333]">
+            {product.price || 0}
+          </span>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {product.questions.map((it, i) => (
+            <div className="flex-start">
+              <span className="font-[600] text-sm w-1/2">
+                {/* Will you need any other product?: */}
+                {it.title}
+              </span>
+
+              <span className="font-[400] text-sm w-1/2 pl-2 truncate">
+                {order.responses[i]?.response}
+              </span>
+            </div>
+          ))}
+        </div>
+
+           {/* RadioGroup for Payment Option */}
+        <div>
+          <h2 className="font-[600] text-sm text-[#575757]">Payment option</h2>
+          <RadioGroupComponent
+            options={options}
+            value={selectedOption}
+            setValue={setSelectedOption}
+            showCheckMark={false}
+            wrapperClassName="custom-radio-wrapper" 
+            size="w-[20px] h-[20px]"
+            className="text-blue-600"
+          />
+        </div>
+
+        <button
+          disabled={isDisabled}
+          onClick={() => handleOrderPayment()}
+          className={`${
+            isDisabled ? "bg-gray-300" : "blue-gradient"
+          } rounded-[12px] mt-[40px] font-poppins w-full  hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px] grid place-items-center`}
+        >
+          {isDisabled ? (
+            <Oval
+              visible={true}
+              height="20"
+              width="20"
+              color="#ffffff"
+              ariaLabel="oval-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          ) : (
+            <span>Proceed to pay</span>
+          )}
+        </button>
+      </div>
     </div>
   );
 };
