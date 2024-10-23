@@ -152,11 +152,12 @@ const DocumentViewModal = ({ bill, closeModal }: DocumentViewModalProps) => {
         </div>
 
         <div className="mt-4 w-fit max-w-[400px] h-[300px]  max-h-[300px] overflow-auto relative">
-          <img
-            src={bill.url}
-            alt={`${bill.name} document`}
-            className="w-full h-full object-contain"
+          <iframe 
+            src={`${bill.url}#toolbar=0`} 
+            className="w-full h-full object-contain" 
+            title={`${bill.name} document`}
           />
+          
         </div>
 
         <div className="flex justify-end my-6">
