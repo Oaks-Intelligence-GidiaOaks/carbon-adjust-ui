@@ -1,14 +1,19 @@
+import EventEmitter from "eventemitter3";
+
 type TranscriptChangeCallback = (transcript: string) => void;
 type ListeningChangeCallback = (isListening: boolean) => void;
 
-class SpeechToText {
+class SpeechToText extends EventEmitter {
   private recognition: SpeechRecognition | null = null;
   private isListening: boolean = false;
   private transcript: string = "";
+  // @ts-ignore
   private onTranscriptChange: TranscriptChangeCallback | null = null;
+  // @ts-ignore
   private onListeningChange: ListeningChangeCallback | null = null;
 
   constructor() {
+    super();
     this.initializeSpeechRecognition();
   }
 
@@ -38,9 +43,8 @@ class SpeechToText {
     const transcript = event.results[current][0].transcript;
     this.transcript += transcript + " ";
 
-    if (this.onTranscriptChange) {
-      this.onTranscriptChange(this.transcript);
-    }
+    this.emit("transcriptChanged", this.transcript);
+    console.log("transcript updated...");
   }
 
   private handleRecognitionError(event: SpeechRecognitionErrorEvent): void {
@@ -67,12 +71,14 @@ class SpeechToText {
   }
 
   public startListening(): void {
+    this.clearTranscript();
+
     if (this.recognition && !this.isListening) {
       this.recognition.start();
       this.isListening = true;
-      if (this.onListeningChange) {
-        this.onListeningChange(true);
-      }
+
+      this.emit("isListening", true);
+      console.log("started listening...");
     }
   }
 
@@ -80,9 +86,9 @@ class SpeechToText {
     if (this.recognition && this.isListening) {
       this.recognition.stop();
       this.isListening = false;
-      if (this.onListeningChange) {
-        this.onListeningChange(false);
-      }
+
+      this.emit("isListening", false);
+      console.log("stopped listening...");
     }
   }
 
@@ -110,9 +116,11 @@ class SpeechToText {
 
   public clearTranscript(): void {
     this.transcript = "";
-    if (this.onTranscriptChange) {
-      this.onTranscriptChange("");
-    }
+    this.emit("transcriptChanged", "");
+
+    // if (this.onTranscriptChange) {
+    //   this.onTranscriptChange("");
+    // }
   }
 }
 

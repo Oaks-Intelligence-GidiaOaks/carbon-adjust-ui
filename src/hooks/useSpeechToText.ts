@@ -15,12 +15,15 @@ export const useSpeechToText = (): SpeechToTextHook => {
   const [transcript, setTranscript] = useState<string>("");
 
   useEffect(() => {
-    SpeechToTextService.setOnTranscriptChange(setTranscript);
-    SpeechToTextService.setOnListeningChange(setIsListening);
+    const handleTranscriptChange = (state: any) => setTranscript(state);
+    const handleListeningChange = (state: boolean) => setIsListening(state);
+
+    SpeechToTextService.on("transcriptChanged", handleTranscriptChange);
+    SpeechToTextService.on("isListening", handleListeningChange);
 
     return () => {
-      SpeechToTextService.setOnTranscriptChange(null);
-      SpeechToTextService.setOnListeningChange(null);
+      SpeechToTextService.off("transcriptChanged", handleTranscriptChange);
+      SpeechToTextService.off("isListening", handleListeningChange);
     };
   }, []);
 

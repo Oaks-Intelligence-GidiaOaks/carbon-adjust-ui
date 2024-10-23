@@ -1,3 +1,4 @@
+import axios from "axios";
 import EventEmitter from "eventemitter3";
 
 type AudioDataCallback = (audioBlob: Blob) => void;
@@ -12,6 +13,8 @@ class AudioRecorder extends EventEmitter {
   private audioPlayer: HTMLAudioElement | null = null;
   private isPlaying: boolean = false;
   private isPaused: boolean = false;
+  private isTranscribing: boolean = false;
+  // private transc
 
   constructor() {
     super(); // Initialize EventEmitter
@@ -52,7 +55,6 @@ class AudioRecorder extends EventEmitter {
 
       console.log("recording started...");
     } catch (error: any) {
-      console.error("Error starting recording:", error);
       throw new Error(error.message);
     }
   }
@@ -128,6 +130,10 @@ class AudioRecorder extends EventEmitter {
         this.isPlaying = true;
         this.emit("isPlaying", true);
 
+        this.audioPlayer.onended = () => {
+          this.pauseRecordedAudio();
+        };
+
         console.log("Playing recorded audio...");
       } else {
         console.log("No audo chunks available to play...");
@@ -201,6 +207,44 @@ class AudioRecorder extends EventEmitter {
     }
 
     this.emit("clearRecording");
+  }
+
+  public async transcribeAudio(): Promise<string> {
+    // Method: 1 send the audio file to an api
+    // Method: 2 usng azure speech to text api for the translation here
+
+    try {
+      if (this.audioChunks.length === 0 && !this.isTranscribing)
+        throw new Error("No audio data available for transcription.");
+
+      this.isTranscribing = true;
+      this.emit("isTranscribing", true);
+
+      const audioBlob = new Blob(this.audioChunks, { type: "audio/m4a" });
+
+      console.log(audioBlob, "blob file");
+
+      let formData = new FormData();
+      formData.append("audio_file", audioBlob);
+
+      const res = await axios.post(
+        `https://ai-api-staging.pollsensei.ai/v1/carbon-adjust/chat/transcribe-audio`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(res.data);
+
+      return res.data;
+    } catch (err: any) {
+      this.isTranscribing = false;
+      this.emit("isTranscribing", false);
+      throw new Error(err.message);
+    }
   }
 }
 

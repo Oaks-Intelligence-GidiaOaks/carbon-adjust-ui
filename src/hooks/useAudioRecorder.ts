@@ -15,10 +15,13 @@ interface AudioRecorderHook {
   discardRecording: () => void;
   resumeRecording: () => void;
   toggleRecordedAudio: () => void;
+  transcribeAudio: () => void;
+  isTranscribing: boolean;
 }
 
 export const useAudioRecorder = (): AudioRecorderHook => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
+  const [isTranscribing, setIsTranscribing] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [audioData, setAudioData] = useState<Blob | null>(null);
@@ -28,17 +31,21 @@ export const useAudioRecorder = (): AudioRecorderHook => {
     const handlePlayingState = (state: boolean) => setIsPlaying(state);
     const handleAudioData = (audioBlob: Blob) => setAudioData(audioBlob);
     const handlePausedState = (state: boolean) => setIsPaused(state);
+    const handleTranscribingState = (state: boolean) =>
+      setIsTranscribing(state);
 
     AudioRecorderService.on("isRecording", handleRecordingState);
     AudioRecorderService.on("isPlaying", handlePlayingState);
     AudioRecorderService.on("audioData", handleAudioData);
     AudioRecorderService.on("isPaused", handlePausedState);
+    AudioRecorderService.on("isTranscribing", handleTranscribingState);
 
     return () => {
       AudioRecorderService.off("isRecording", handleRecordingState);
       AudioRecorderService.off("isPlaying", handlePlayingState);
       AudioRecorderService.off("audioData", handleAudioData);
       AudioRecorderService.off("isPaused", handlePausedState);
+      AudioRecorderService.off("isTranscribing", handleTranscribingState);
     };
   }, []);
 
@@ -88,6 +95,10 @@ export const useAudioRecorder = (): AudioRecorderHook => {
     AudioRecorderService.toggleRecordedAudio();
   }, []);
 
+  const transcribeAudio = useCallback((): void => {
+    AudioRecorderService.transcribeAudio();
+  }, []);
+
   return {
     isRecording,
     startRecording,
@@ -102,5 +113,7 @@ export const useAudioRecorder = (): AudioRecorderHook => {
     pauseAudio,
     isPlaying,
     isPaused,
+    transcribeAudio,
+    isTranscribing,
   };
 };

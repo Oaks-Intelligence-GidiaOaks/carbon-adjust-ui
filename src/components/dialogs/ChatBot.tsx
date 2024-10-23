@@ -6,6 +6,7 @@ import { useRef, useState, useTransition } from "react";
 import { FaMicrophone } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
 import RecorderIndicator from "../ui/RecorderIndicator";
+import { MdOutlineTranscribe } from "react-icons/md";
 
 const ChatBot = () => {
   const [openChat, setOpenChat] = useState<boolean>(false);
@@ -22,7 +23,12 @@ const ChatBot = () => {
     inputText,
     isRecording,
     isPlaying,
-    // isTranscribing,
+    isTranscribing,
+    startListening,
+    stopListening,
+    isListening,
+
+    // transcribeAudio,
     setInputText,
     // @ts-ignore
     handleSend,
@@ -91,10 +97,18 @@ const ChatBot = () => {
   };
 
   const toggleRecording = () => {
-    if (isPaused) {
-      startTimer();
+    if (isRecording) {
+      if (isPaused) {
+        startTimer();
+      } else {
+        stopTimer();
+      }
+    }
+
+    if (isListening) {
+      stopListening();
     } else {
-      stopTimer();
+      startListening();
     }
 
     toggleOngoingRecording();
@@ -125,7 +139,9 @@ const ChatBot = () => {
           </div>
 
           <div className="flex-center gap-3 border-t w-full justify-between py-[16px] px-1">
-            {isRecording ? (
+            {isTranscribing ? (
+              <div className="text-xs text-center flex-1">transcribing ...</div>
+            ) : isRecording ? (
               <RecorderIndicator
                 isPlaying={isPlaying}
                 isRecording={isRecording}
@@ -154,25 +170,34 @@ const ChatBot = () => {
               />
             )}
 
-            <button>
-              {isRecording ? (
-                <StopCircle size={20} onClick={toggleRecording} />
-              ) : inputText.length > 0 ? (
-                <IoSend
-                  onClick={() => handleSendText(inputText)}
-                  className="flex-[0.1]"
-                  color="#2E599A"
-                  size={25}
-                />
-              ) : (
-                <FaMicrophone
-                  onClick={toggleOngoingRecording}
-                  className="flex-[0.1]"
-                  color="#2E599A"
-                  size={25}
-                />
-              )}
-            </button>
+            {true && (
+              <button>
+                {isRecording ? (
+                  <StopCircle size={20} onClick={toggleRecording} />
+                ) : inputText.length > 0 ? (
+                  <IoSend
+                    onClick={() => handleSendText(inputText)}
+                    className="flex-[0.1]"
+                    color="#2E599A"
+                    size={25}
+                  />
+                ) : (
+                  <FaMicrophone
+                    onClick={toggleRecording}
+                    className="flex-[0.1]"
+                    color="#2E599A"
+                    size={25}
+                  />
+                )}
+              </button>
+            )}
+          </div>
+
+          <div
+            onClick={discardRecording}
+            className="mb-3 mx-auto grid place-items-center w-fit h-fit p-3 cursor-pointer bg-gray-300 rounded-full only:"
+          >
+            <MdOutlineTranscribe size={20} color="blue" />
           </div>
         </div>
       </div>

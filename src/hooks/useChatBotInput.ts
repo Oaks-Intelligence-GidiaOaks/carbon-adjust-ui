@@ -2,11 +2,11 @@
 import { useState, useCallback, useEffect } from "react";
 // import { useSpeechToText } from "@/hooks/useSpeechToText";
 import { useAudioRecorder } from "@/hooks/useAudioRecorder";
+import { useSpeechToText } from "./useSpeechToText";
 
 interface ChatbotInputHook {
   inputText: string;
   isRecording: boolean;
-  // isTranscribing: boolean;
   audioData: Blob | null;
   setInputText: (text: string) => void;
   handleSend: () => void;
@@ -20,18 +20,20 @@ interface ChatbotInputHook {
   discardRecording: () => void;
   resumeRecording: () => void;
   toggleRecordedAudio: () => void;
+  transcribeAudio: () => void;
+  isTranscribing: boolean;
+
+  isListening: boolean;
+  transcript?: string;
+  startListening: () => void;
+  stopListening: () => void;
 }
 
 export const useChatbotInput = (): ChatbotInputHook => {
-  const [inputText, setInputText] = useState<string>("");
+  const { isListening, transcript, startListening, stopListening } =
+    useSpeechToText();
 
-  // const {
-  //   isListening: isTranscribing,
-  //   transcript,
-  //   startListening,
-  //   stopListening,
-  //   clearTranscript,
-  // } = useSpeechToText();
+  const [inputText, setInputText] = useState<string>("");
 
   const {
     isRecording,
@@ -45,6 +47,8 @@ export const useChatbotInput = (): ChatbotInputHook => {
     discardRecording,
     isPaused,
     resumeRecording,
+    transcribeAudio,
+    isTranscribing,
   } = useAudioRecorder();
 
   const handleSend = useCallback((): void => {
@@ -59,30 +63,6 @@ export const useChatbotInput = (): ChatbotInputHook => {
     // clearTranscript
   ]);
 
-  // const toggleRecording = useCallback(async (): Promise<void> => {
-  //   console.log("toggle clicked...");
-  //   if (
-  //     isRecording
-
-  //     // ||    isTranscribing
-  //   ) {
-  //     stopRecording();
-  //     // stopListening();
-  //   } else {
-  //     setInputText("");
-  //     // clearTranscript();
-  //     await startRecording();
-  //     // startListening();
-  //   }
-  // }, [
-  //   isRecording,
-  //   // isTranscribing,
-  //   startRecording,
-  //   stopRecording,
-  //   // startListening,
-  //   // stopListening,
-  // ]);
-
   const clearInput = useCallback(
     (): void => {
       setInputText("");
@@ -93,15 +73,13 @@ export const useChatbotInput = (): ChatbotInputHook => {
     ]
   );
 
-  // Update inputText when transcript changes
-  // useEffect(() => {
-  //   setInputText(transcript);
-  // }, [transcript]);
+  useEffect(() => {
+    setInputText(transcript);
+  }, [transcript]);
 
   return {
     inputText,
     isRecording,
-    // isTranscribing,
     audioData,
     setInputText,
     handleSend,
@@ -115,5 +93,11 @@ export const useChatbotInput = (): ChatbotInputHook => {
     isPaused,
     resumeRecording,
     toggleRecordedAudio,
+    transcribeAudio,
+    isTranscribing,
+
+    isListening,
+    startListening,
+    stopListening,
   };
 };
