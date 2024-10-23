@@ -111,12 +111,7 @@ const DeviceHistoryCard = (props: IDispatchDevice) => {
             </h4>
           </div>
 
-          <div className="space-y-3 ">
-            <h4 className="text-[#212121] font-[500]">Achieved Emission</h4>
-            <h4 className="text-light">
-              {roundNumber(props?.actualCC ?? 0)} KgCO2e
-            </h4>
-          </div>
+        
         </div>
 
         <hr className="" />
