@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Transport } from "@/interfaces/transport.interface";
 import Paginate from "@/components/reusables/Paginate";
 import { PaginateProps } from "@/types/general";
+import NoDevices from "../devices/NoDevices";
 
 const Vehicles = () => {
   const [showModal, setShowModal] = useState(false);
@@ -35,7 +36,6 @@ const Vehicles = () => {
   });
 
   useEffect(() => {
-    if (transports?.data) console.log(transports.data);
     setPagination({
       currentPage: transports?.data.page,
       hasNextPage: transports?.data.hasNextPage,
@@ -65,7 +65,7 @@ const Vehicles = () => {
   if (transports?.data?.transportationRecords.length === 0) {
     return (
       <div className="h-32 grid place-items-center max-w-[98%]">
-        <h1>No Transport Data</h1>
+        <NoDevices link="/dashboard/transport/add" text="Transport" />
       </div>
     );
   }
@@ -102,7 +102,7 @@ const Vehicles = () => {
 
           <Link className="ml-5" to="/dashboard/transport/add">
             <Button className="rounded-[20px] flex-center gap-1 ">
-              <span className="md:block hidden">Add Transport</span>
+              <span>Add Transport</span>
               <PlusIcon />
             </Button>
           </Link>

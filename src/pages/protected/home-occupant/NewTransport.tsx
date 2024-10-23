@@ -1,7 +1,8 @@
 import { Button, Input } from "@/components/ui";
 import ImagePreviewCard from "@/components/ui/ImagePreviewCard";
 import { ITransport } from "@/interfaces/transport.interface";
-import {  addTransport } from "@/services/homeOwner";
+import { validateTransportInputs } from "@/lib/utils";
+import { addTransport } from "@/services/homeOwner";
 import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -21,13 +22,11 @@ const NewTransport = () => {
     transportId: null,
     driversLicense: null,
     licensePlateNumber: "",
-    yearOfPurchase: "",
     address: "",
     city: "",
   };
 
   const [formData, setFormData] = useState<ITransport>(initialState);
-
 
   const [transportPhotoPreview, setTransportPhotoPreview] = useState<
     string | null
@@ -43,11 +42,10 @@ const NewTransport = () => {
     mutationKey: ["create-transport"],
     mutationFn: (transportData: FormData) => addTransport(transportData),
     onSuccess: (sx: any) => {
-      console.log(sx);
       toast.success(sx.message);
-       resetForm();
+      resetForm();
 
-       navigate(`/dashboard/transport`);
+      navigate(`/dashboard/transport`);
     },
     onError: (ex: any) => {
       toast.error(ex.response.data.message);
@@ -101,24 +99,14 @@ const NewTransport = () => {
     }
   };
 
-  //not using select for now
-
-  // const handleSelectInputChange = (e: any, fieldName: string) => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [fieldName]: e,
-  //   }));
-  // };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // validate required inputs
-    // const error = validateDeviceInputs(formData);
+    const error = validateTransportInputs(formData);
 
-    // if (error) {
-    //   return toast.error(error);
-    // }
+    if (error) {
+      return toast.error(error);
+    }
 
     const transportData = new FormData();
 
@@ -278,44 +266,32 @@ const NewTransport = () => {
                 onChange={handleInputChange}
               />
             </div>
-
-            <div className="space-y-2 w-full ">
-              <h2 className="pl-5">Year of purchase</h2>
-
-              <Input
-                className="border rounded-xl px-2 text-sm"
-                type="number"
-                name="yearOfPurchase"
-                value={formData.yearOfPurchase}
-                onChange={handleInputChange}
-              />
-            </div>
           </div>
-          <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 mt-1 sm:mt-5">
-            <div className="space-y-2 w-full">
-              <h2 className="pl-5">Address</h2>
 
-              <Input
-                className="border rounded-xl px-2 text-sm"
-                type="text"
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
-              />
-            </div>
+          <div className="space-y-2 w-full">
+            <h2 className="pl-5">Address</h2>
 
-            <div className="space-y-2 w-full">
-              <h2 className="pl-5">City</h2>
-
-              <Input
-                className="border rounded-xl px-2 text-sm"
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleInputChange}
-              />
-            </div>
+            <Input
+              className="border rounded-xl px-2 text-sm"
+              type="text"
+              name="address"
+              value={formData.address}
+              onChange={handleInputChange}
+            />
           </div>
+
+          <div className="space-y-2 w-full">
+            <h2 className="pl-5">City</h2>
+
+            <Input
+              className="border rounded-xl px-2 text-sm"
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={handleInputChange}
+            />
+          </div>
+
           <div className="w-full mx-auto ">
             <Button disabled={false} className="w-full">
               {CreateTransport.isPending ? (
