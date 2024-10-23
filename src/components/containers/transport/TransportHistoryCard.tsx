@@ -3,8 +3,20 @@ import { LuDot } from "react-icons/lu";
 import { Button } from "@/components/ui";
 import { useState } from "react";
 import VehicleDetail from "./TransportDetail";
+import { Trips } from "@/interfaces/transport.interface";
+import { formatTimeToISO } from "@/lib/utils";
 
-const TransportHistoryCard = () => {
+const TransportHistoryCard = (props: Trips) => {
+  const {
+    startLocation,
+    destinationLocation,
+    modeOfTransport,
+    transportDetails,
+    startTimeWindow,
+    durationOfTravelWindow,
+    plateNumber,
+  } = props;
+
   const [showMore, setShowMore] = useState(false);
   return (
     <>
@@ -12,7 +24,9 @@ const TransportHistoryCard = () => {
         <div className="flex justify-between items-center my-2">
           <div className="flex flex-col gap-y-2">
             <h3 className="text-sm font-normal text-gray-700">Plate Number</h3>
-            <h4 className="text-sm font-semibold text-gray-600">FLM2024</h4>
+            <h4 className="text-sm font-semibold text-gray-600">
+              {plateNumber || "N/A"}
+            </h4>
           </div>
 
           <div className="flex flex-col gap-y-2">
@@ -26,18 +40,29 @@ const TransportHistoryCard = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4  gap-4 py-5">
-          <VehicleDetail title="Start location" des="Oshodi" />
-          <VehicleDetail title="Destination" des="Ikorodu" />
-          <VehicleDetail title="Start time of travel window" des="3 Hours" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 py-5">
+          <VehicleDetail
+            title="Start location"
+            des={startLocation?.address || "N/A"}
+          />
+          <VehicleDetail
+            title="Destination"
+            des={destinationLocation?.address || "N/A"}
+          />
+          <VehicleDetail
+            title="Start time of travel window"
+            des={formatTimeToISO(startTimeWindow)}
+          />
           <VehicleDetail
             title="Duration of travel window"
-            des="12:00pm - 03:48pm"
+            des={durationOfTravelWindow}
           />
-          <VehicleDetail title="Transport type" des="Private" />
-          <VehicleDetail title="Transport" des="Mustang (7vd2hg.." />
-          <VehicleDetail title="Projected Carbon Offset" des="0.067tCO2" />
-          <VehicleDetail title="Actual Carbon Offset" des="789 tCO2e" />
+          <VehicleDetail title="Mode of transport" des={modeOfTransport} />
+          <VehicleDetail title="Transport type" des={transportDetails} />
+          <VehicleDetail title="Transport" des={"N/A"} />
+          <VehicleDetail title="Projected Carbon Offset" des={"N/A"} />
+          <VehicleDetail title="Actual Carbon Offset" des={"N/A"} />
+          <VehicleDetail title="Actual emission" des={"N/A"} />
         </div>
 
         <div
