@@ -4,13 +4,10 @@ import { IoFilterSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui";
 import { PlusIcon } from "@/assets/icons";
-import { useState } from "react";
-import OptimizeModal from "./OptimizeModal";
 import TransportHistoryCard from "./TransportHistoryCard";
+import TransportChartCard from "./TransportChartCard";
 
 const TransportHistory = () => {
-  const [showModal, setShowModal] = useState(false);
-
   // const {
   //   data: transports,
   //   isLoading,
@@ -67,18 +64,11 @@ const TransportHistory = () => {
         </div>
       </div>
       <div className=" mt-[20px] space-y-[38px]">
-        {/* {Array.from(
-          transports.data.transportationRecords,
-          (it, i) => (
-            <TransportHistoryCard {...it} key={i} />
-          )
-        )} */}
-        <TransportHistoryCard />
-        <TransportHistoryCard />
         <TransportHistoryCard />
       </div>
 
-      {showModal && <OptimizeModal onClick={() => setShowModal(false)} />}
+      <TransportChartCard />
+
       {/* Pagination */}
       {/* <div className="mt-8 pr-12 w-fit mx-auto">
         <Paginate {...pagination} onPageChange={handlePageChange} />

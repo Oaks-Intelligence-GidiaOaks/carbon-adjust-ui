@@ -2,6 +2,7 @@ import { FaAngleUp } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import { Button } from "@/components/ui";
 import { useState } from "react";
+import VehicleDetail from "./TransportDetail";
 
 const TransportHistoryCard = () => {
   const [showMore, setShowMore] = useState(false);
@@ -25,37 +26,27 @@ const TransportHistoryCard = () => {
           </div>
         </div>
 
-        <div className="flex  sm:flex-row flex-col gap-5 py-5 justify-stretch items-start">
+        <div className="grid grid-cols-2 sm:grid-cols-4  gap-4 py-5">
+          <VehicleDetail title="Start location" des="Oshodi" />
+          <VehicleDetail title="Destination" des="Ikorodu" />
+          <VehicleDetail title="Start time of travel window" des="3 Hours" />
           <VehicleDetail
-            title_1="Start location"
-            des_1="Oshodi"
-            title_2="Destination"
-            des_2="Ikorodu"
+            title="Duration of travel window"
+            des="12:00pm - 03:48pm"
           />
-          <VehicleDetail
-            title_1="Start time of travel window"
-            des_1="3 Hours"
-            title_2="Duration of travel window"
-            des_2="12:00pm - 03:48pm"
-          />
-          <VehicleDetail
-            title_1="Transport type"
-            des_1="Private"
-            title_2="Transport"
-            des_2="Mustang (7vd2hg.."
-          />
-          <VehicleDetail
-            title_1="Projected Carbon Offset"
-            des_1="0.067tCO2"
-            title_2="Actual Carbon Offset"
-            des_2="789 tCO2e"
-          />
+          <VehicleDetail title="Transport type" des="Private" />
+          <VehicleDetail title="Transport" des="Mustang (7vd2hg.." />
+          <VehicleDetail title="Projected Carbon Offset" des="0.067tCO2" />
+          <VehicleDetail title="Actual Carbon Offset" des="789 tCO2e" />
         </div>
 
         <div
-          className={`flex flex-col sm:flex-row gap-5 my-5 py-2 sm:items-center items-start transition-all duration-500 ease-in-out overflow-hidden ${
-            showMore ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+          className={`flex flex-col sm:flex-row gap-5 my-5  sm:items-center items-start transition-all duration-500 ease-in-out overflow-hidden ${
+            showMore
+              ? "max-h-[1000px] opacity-100 py-2 visible"
+              : "max-h-0 opacity-0 invisible"
           }`}
+          style={{ transitionProperty: "max-height, opacity" }}
         >
           <img
             src={"https://placehold.co/100x150"}
@@ -89,36 +80,3 @@ const TransportHistoryCard = () => {
 };
 
 export default TransportHistoryCard;
-
-type VehicleDetailProps = {
-  title_1: string;
-  des_1: string;
-  title_2?: string;
-  des_2?: string;
-};
-
-const VehicleDetail = ({
-  title_1,
-  des_1,
-  title_2,
-  des_2,
-}: VehicleDetailProps) => (
-  <div className="w-full flex flex-row gap-5 capitalize sm:flex-wrap">
-    <div className="flex w-1/2 sm:w-full  flex-col items-start justify-start gap-2.5">
-      <div className="flex w-full items-start justify-stretch text-sm font-bold text-[#212121] ">
-        <p>{title_1}</p>
-      </div>
-      <div className="text-sm font-normal text-gray-600">
-        <p> {des_1}</p>
-      </div>
-    </div>
-    <div className="flex w-1/2 sm:w-full  flex-col items-start justify-start gap-2.5">
-      <div className="flex w-full items-start justify-stretch text-sm font-bold text-[#212121]  ">
-        <p>{title_2}</p>
-      </div>
-      <div className="text-sm font-normal text-gray-600">
-        <p> {des_2}</p>
-      </div>
-    </div>
-  </div>
-);
