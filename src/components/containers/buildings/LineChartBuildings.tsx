@@ -37,7 +37,8 @@ const TrendingProjections = ({ buildingId }: LineChartProps) => {
 
 
   const transitionScore = response?.data?.[0]?.transitionScore || {};
-
+  console.log("hello", response)
+  
   const data = {
     labels: ["Short", "Medium", "Long"], // X-axis labels
     datasets: [
