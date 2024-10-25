@@ -21,7 +21,10 @@ export interface IProduct {
   attachments: string[];
   media?: string[];
   hasDownloadedableFile?: boolean;
-  owner: string;
+  owner?: {
+    name: string;
+    _id: string;
+  };
   category?: {
     name: string;
     slug: string;
@@ -34,7 +37,6 @@ export interface IProduct {
   discount: number;
   hasQuestion: boolean;
   hasSchedule: boolean;
-  packageDomain?: PackageDomain;
   allowPartPayment: boolean;
   currency: string;
   description?: string;
@@ -47,6 +49,8 @@ export interface IProduct {
   minAmount?: number;
   maxAmount?: number;
   hasGrantDoc?: boolean;
+  rating?: number;
+  packageDomain?: string;
 }
 
 export interface ICategory {
