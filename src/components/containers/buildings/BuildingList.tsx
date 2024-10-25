@@ -1,6 +1,6 @@
 import { PlusCircleIcon, Search } from "lucide-react";
 import BuildingHistoryCard from "./BuildingHistoryCard";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import UploadDocumentsModal from "@/components/reusables/UploadBuildingDocument";
 import { MdFilterList } from "react-icons/md";
 import UsageSummary from "./BarChartBuilding";
@@ -11,17 +11,20 @@ import Loading from "@/components/reusables/Loading";
 import BuildingEmptyState from "@/components/reusables/EmptyStateBuildings";
 import RegisterBuilding from "@/components/reusables/RegisterBuilding";
 import PaginationButtons from "@/components/reusables/PageButtons";
+import CarbonFootPrint from "./GuageChartBuilding";
 
 const BuildingList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterDate, setFilterDate] = useState(""); 
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false); 
-  const [isRegisterBuildingVisible, setIsRegisterBuildingVisible] =
-    useState(false);
+  const [isRegisterBuildingVisible, setIsRegisterBuildingVisible] = useState(false);
   const [selectedBuildings, setSelectedBuildings] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 10; 
+
+  // Create a ref for the chart area
+  const chartAreaRef = useRef<HTMLDivElement>(null);
 
   // Fetch building data
   const { data, isLoading, error } = useQuery({
@@ -85,11 +88,15 @@ const BuildingList = () => {
 
   // Function to toggle selection of buildings
   const handleSelectBuilding = (buildingId: string) => {
-    setSelectedBuildings((prev) => (prev === buildingId ? '' : buildingId));
+    setSelectedBuildings((prev) => {
+      const newSelection = prev === buildingId ? '' : buildingId;
+      // Scroll to the chart area if a building is selected
+      if (newSelection) {
+        chartAreaRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }
+      return newSelection;
+    });
   };
-
- 
-
 
   // Pagination logic
   const totalPages = Math.ceil(filteredBuildingData.length / itemsPerPage);
@@ -97,9 +104,6 @@ const BuildingList = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-
-  
 
   return (
     <div className="py-6">
@@ -168,8 +172,8 @@ const BuildingList = () => {
             floors={building.numberOfFloors}
             postCode={building.address.postalCode}
             city={building.address.cityOrProvince}
-            onSelect={handleSelectBuilding} // Pass the function to the card
-            isSelected={selectedBuildings.includes(building._id)} // Pass selection state
+            onSelect={handleSelectBuilding} 
+            isSelected={selectedBuildings.includes(building._id)} 
           />
         ))
       ) : (
@@ -186,13 +190,15 @@ const BuildingList = () => {
       )}
 
       {/* Charts */}
-      <div className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm">
+      <div ref={chartAreaRef} className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm">
         <UsageSummary buildingId={selectedBuildings} />
       </div>
       <div className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm ">
         <TrendingProjections buildingId={selectedBuildings} /> 
       </div>
-
+      <div className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm ">
+        <CarbonFootPrint buildingId={selectedBuildings} /> 
+      </div>
 
       {/* Modal */}
       {isModalOpen && (

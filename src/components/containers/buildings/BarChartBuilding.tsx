@@ -23,6 +23,8 @@ const UsageSummary = ({ buildingId }: UsageSummaryProps) => {
   // Extract the aggregate energy bill data from the response
   const aggregateEnergyBill = response?.data?.[0]?.aggregateEnergyBill || {};
 
+  console.log("hello", aggregateEnergyBill)
+
   const currentElectricityDemand =
     aggregateEnergyBill.currentElectricityDemand || 0;
   const currentElectricityCharge =

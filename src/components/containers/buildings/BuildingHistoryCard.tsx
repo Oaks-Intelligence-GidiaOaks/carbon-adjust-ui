@@ -114,13 +114,13 @@ const BuildingHistoryCard = ({
               <div className="absolute top-8 right-0 bg-white border rounded shadow-md z-10 py-2 w-[160px]">
                 <button
                   onClick={openImageModal}
-                  className="flex gap-2 items-center justify-center  w-full px-4 py-2 text-left hover:bg-gray-100 text-sm"
+                  className="flex gap-2 items-center justify-center  w-full px-4 py-2 text-left hover:bg-gray-100 text-xs"
                 >
                  <FiUpload  size={12} /> Upload Image
                 </button>
                 <button
                   onClick={openEnergyBillsModal}
-                  className="flex gap-2 items-center justify-center  w-full px-4 py-2 text-left hover:bg-gray-100 text-sm"
+                  className="flex gap-2 items-center justify-center text-xs  w-full px-4 py-2 text-left hover:bg-gray-100"
                 >
                  <PencilIcon size={12}/> Edit Energy Bills
                 </button>
