@@ -33,7 +33,7 @@ const DeviceCard = (props: Props) => {
   const dispatch = useDispatch();
   const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [selectedBuilding, setSelectedBuilding] = useState(null);
+
 
   const handleOpenLinkDeviceModal = () => {
     setIsLinkDeviceModalOpen(true);

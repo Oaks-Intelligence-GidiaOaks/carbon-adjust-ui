@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import LineChart from "@/components/charts/LineChart";
 import { getEnergyChart } from "@/services/homeOwner";
 import { useEffect } from "react";
 import Loading from "@/components/reusables/Loading";

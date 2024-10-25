@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
 
