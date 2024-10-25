@@ -9,7 +9,7 @@ interface Option {
 
 interface CustomMapInputProps {
   value: string;
-  label: string;
+  label?: string;
   inputName: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   options?: Option[];

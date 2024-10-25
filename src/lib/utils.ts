@@ -285,11 +285,11 @@ const transportSchema = Joi.object({
   transportPhoto: Joi.object().required().messages({
     "any.required": "Transport photo must be uploaded",
   }),
-  transportId: Joi.object().required().messages({
-    "any.required": "Transport ID must be uploaded",
+  transportId: Joi.object().allow(null).messages({
+    "any": "Transport ID must be uploaded",
   }),
-  driversLicense: Joi.object().required().messages({
-    "any.required": "Driver's license must be uploaded",
+  driversLicense: Joi.object().allow(null).messages({
+    "any": "Driver's license must be uploaded",
   }),
   licensePlateNumber: Joi.string().required().messages({
     "string.empty": "License plate number is required",

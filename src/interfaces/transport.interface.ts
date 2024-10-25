@@ -16,6 +16,7 @@ export interface Transport {
   address: string;
   city: string;
   emissionFactor: string;
+  licensePlateNumber: string;
 }
 
 export interface ITransport {
@@ -29,7 +30,7 @@ export interface ITransport {
 
 export interface VehicleDetailProps {
   title: string;
-  des: string;
+  des: string | number;
 }
 
 interface Location {
@@ -51,6 +52,8 @@ export interface TravelDetails {
   latestArrivalTime: string;
 }
 
+
+
 export interface Trips {
   _id: string;
   startLocation: Location;
@@ -62,4 +65,26 @@ export interface Trips {
   durationOfTravelWindow: string;
   routePreference: string;
   latestArrivalTime: string;
+  tripQueueResponse: {
+    response?: {
+      transport_id?: string;
+      coordinate?: string;
+      best_route?: {
+        route_emission?: number;
+        factor?: {
+          base_emission_factor?: number;
+          vehicle_factor?: number;
+          weather_factor?: number;
+          seasonal_factor?: number;
+        };
+        estimated_arrival_time?: number;
+        estimated_distance?: number;
+        route_coordinate?: {
+          latitude: string;
+          longitude: string;
+        }[];
+      };
+    };
+    status?: string;
+  };
 }
