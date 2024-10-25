@@ -1,5 +1,6 @@
 import { cancelDeviceSchedule, deleteDevice } from "@/services/homeOwner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import { Dispatch, SetStateAction } from "react";
 import toast from "react-hot-toast";
 
 const useMutations = () => {
@@ -17,9 +18,6 @@ const useMutations = () => {
     },
     onSuccess: (sx: any) => {
       toast.success(sx.message);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["user-devices"] });
     },
   });
 

@@ -6,7 +6,7 @@ import { MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { deviceChanged, timeChanged } from "@/features/assetSlice";
 import { CurrentDispatchStatus, Device } from "@/interfaces/device.interface";
-import { useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import {
   formDateWithTime,
   getRemainingHours,
@@ -22,7 +22,11 @@ import { Link } from "react-router-dom";
 import useMutations from "@/hooks/useMutations";
 import { ThreeDots } from "react-loader-spinner";
 
-const DeviceCard = (props: Device) => {
+interface Props extends Device {
+  setId: Dispatch<SetStateAction<string | null>>;
+}
+
+const DeviceCard = (props: Props) => {
   const { device } = useSelector((state: RootState) => state.assets);
   const dispatch = useDispatch();
 
@@ -206,7 +210,7 @@ const DeviceCard = (props: Device) => {
 
       <button
         disabled={DeleteDevice.isPending}
-        onClick={handleDeleteDevice}
+        onClick={() => props.setId(props._id as string)}
         className={` ${
           DeleteDevice.isPending ? "text-gray-500" : "text-[#E71D36]"
         }  cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 `}
@@ -219,11 +223,6 @@ const DeviceCard = (props: Device) => {
   const handleScheduleDispatch = () => {
     dispatch(deviceChanged({ deviceId: props._id }));
     setId(null);
-  };
-
-  const handleDeleteDevice = () => {
-    setCardActions(!cardActions);
-    DeleteDevice.mutateAsync(props._id as string);
   };
 
   const handleCancelDeviceSchedule = () => {
