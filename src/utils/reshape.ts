@@ -37,7 +37,7 @@ export const transformPackagesGridData = (data: any) => {
         price === undefined
           ? `${currency ?? "£"} 0`
           : `${currency ?? "£"} ${formatNumberWithCommas(price)}`,
-      category: category.name,
+      category: category?.name,
     });
   });
 

@@ -16,11 +16,17 @@ import { clearDevice } from "@/features/assetSlice";
 import Paginate from "@/components/reusables/Paginate";
 import { PaginateProps } from "@/types/general";
 import { useEffect, useState } from "react";
+import DeleteDeviceModal from "@/components/dialogs/DeleteDeviceModal";
+import useMutations from "@/hooks/useMutations";
 
 const AddedDevices = () => {
+  const [id, setId] = useState<string | null>(null);
+
   const { device } = useSelector((state: RootState) => state.assets);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+
+  const { DeleteDevice } = useMutations();
 
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
@@ -32,11 +38,7 @@ const AddedDevices = () => {
     totalPages: 1,
   });
 
-  const {
-    data: userDevices,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data: userDevices, isLoading } = useQuery({
     queryKey: ["user-devices", pagination.currentPage],
     queryFn: () => getUserDevices(pagination.limit, pagination.currentPage),
   });
@@ -57,8 +59,6 @@ const AddedDevices = () => {
       ...prev,
       currentPage: pgNo,
     }));
-
-    refetch();
   };
 
   const DispatchDevice = useMutation({
@@ -96,6 +96,21 @@ const AddedDevices = () => {
     );
   }
 
+  const handleDeleteDevice = async () => {
+    await DeleteDevice.mutateAsync(id as string, {
+      onError: (err: any) => {
+        toast.error(
+          err?.response?.data?.message ||
+            "Error Deleting device. Please try again!"
+        );
+      },
+      onSettled: () => {
+        setId(null);
+        queryClient.invalidateQueries({ queryKey: ["user-devices"] });
+      },
+    });
+  };
+
   return (
     <div>
       <div className="flex-center mt-[15px]">
@@ -119,7 +134,7 @@ const AddedDevices = () => {
 
       <div className="mt-[15px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5">
         {Array.from(userDevices.data.devices as Device[], (it, i) => (
-          <DeviceCard {...it} key={i} />
+          <DeviceCard setId={setId} {...it} key={i} />
         ))}
       </div>
 
@@ -141,10 +156,19 @@ const AddedDevices = () => {
               text: "Yes",
               actionType: "default",
               onClick: () => DispatchDevice.mutate(device),
+              isLoading: DispatchDevice.isPending,
             },
           ]}
           headerText="Schedule Device"
           leadText={`Are you sure you want to schedule your device window for ${device.dispatchWindow} hours  and Device duration for ${device.workingPeriod.hh} hours ${device.workingPeriod.mm} minutes`}
+        />
+      )}
+
+      {id && (
+        <DeleteDeviceModal
+          cancel={setId}
+          deletee={handleDeleteDevice}
+          isPending={DeleteDevice.isPending}
         />
       )}
     </div>

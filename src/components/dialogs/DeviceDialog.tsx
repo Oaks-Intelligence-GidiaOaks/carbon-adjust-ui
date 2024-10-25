@@ -10,6 +10,7 @@ type Action = {
   text: string;
   onClick: () => void;
   actionType?: "destructive" | "outline" | "secondary" | "default";
+  isLoading?: boolean;
 };
 
 const DeviceDialog = (props: {
@@ -44,6 +45,8 @@ const DeviceDialog = (props: {
         <div className="flex-center justify-center gap-2 mt-10 w-full">
           {Array.from(props.actions, (it, i) => (
             <Button
+              {...it}
+              disabled={Boolean(it.isLoading)}
               key={i}
               className="flex-[0.5] "
               variant={it.actionType || "default"}

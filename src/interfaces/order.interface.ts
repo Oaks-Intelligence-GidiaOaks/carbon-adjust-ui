@@ -62,7 +62,7 @@ export interface IPackageOrder {
   aiOrderResponse: string;
   adminReport?: string;
   __v: number;
-  grantStatus?: 'approved' |'accepted' | 'applied' | 'rejected' | 'declined'; 
+  grantStatus?: 'approved' |'accepted' | 'applied' | 'rejected' | 'declined' |'cancelled'; 
   appliedDate?: string; 
   grantName?: string; 
   minAmount?: number;
