@@ -4,7 +4,7 @@ import { Doughnut } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type Dataset = {
-  data: number[]; 
+  data: number[];
   backgroundColor: string[];
   borderWidth: number;
 };
@@ -35,6 +35,10 @@ const GaugeChart = ({ Text, data, textColor }: GaugeChartProps) => {
     rotation: -90,
     circumference: 180,
     cutout: "70%",
+    animation: {
+      animateScale: true,
+      animateRotate: true,
+    },
     plugins: {
       legend: {
         display: true,

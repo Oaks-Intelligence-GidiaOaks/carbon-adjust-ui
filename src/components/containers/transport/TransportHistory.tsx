@@ -94,7 +94,7 @@ const TransportHistory = () => {
         <div className="flex items-center">
           <Link className="ml-5" to="/dashboard/transport/add">
             <Button className="rounded-[20px] flex-center gap-1 ">
-              <span className="md:block hidden">Add Transport</span>
+              <span>Add Transport</span>
               <PlusIcon />
             </Button>
           </Link>
@@ -104,13 +104,13 @@ const TransportHistory = () => {
         {Array.from(transportsHistory.data.trips as Trips[], (it, i) => (
           <TransportHistoryCard {...it} key={i} />
         ))}
-        <TransportChartCard />
       </div>
-
       {/* Pagination */}
       <div className="mt-8 pr-12 w-fit mx-auto">
         <Paginate {...pagination} onPageChange={handlePageChange} />
       </div>
+
+      <TransportChartCard />
     </div>
   );
 };
