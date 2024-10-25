@@ -181,7 +181,7 @@ export const getUserDevices = async (limit: number = 5, page: number = 1) => {
 };
 
 export const deviceMetaData = async () => {
-  const { data } = await axiosInstance.get("applications/metadata");
+  const { data } = await axiosInstance.get("/applications/metadata");
 
   return data;
 };
@@ -201,6 +201,20 @@ export const getDispatchedDevices = async (
 
   const url = `/devices/dispatch?${queryParams.toString()}`;
   const { data } = await axiosInstance.get(url);
+
+  return data;
+};
+
+export const cancelDeviceSchedule = async (deviceId: string) => {
+  const { data } = await axiosInstance.patch(
+    `/devices/cancel-schedule/${deviceId}`
+  );
+
+  return data;
+};
+
+export const deleteDevice = async (deviceId: string) => {
+  const { data } = await axiosInstance.delete(`/devices/${deviceId}`);
 
   return data;
 };
@@ -290,6 +304,11 @@ export const uploadBuildingImage = async (
   return data;
 };
 
+//RESTRICTED CARDS
+export const getRestrictedWallet = async () => {
+  const { data } = await axiosInstance.get(`wallet/info?walletType=RESTRICTED`); 
+  return data;
+};
 //UPLOAD ENERGY biLLS
 export const uploadEnergyBills = async (
   buildingId: string,
@@ -326,28 +345,30 @@ export const addTransport = async (formData: FormData) => {
   return data;
 };
 
-
 //GET ENERGY BILLS
 export const getEnergyBills = async (buildingId: string) => {
-  const { data } = await axiosInstance.get(`/building/${buildingId}/energy-bills`);
+  const { data } = await axiosInstance.get(
+    `/building/${buildingId}/energy-bills`
+  );
   return data;
 };
-
 
 // DELETE ENERGY BILLS
-export const deleteEnergyBill = async (buildingId: string, energyBillsId: string) => {
-  const { data } = await axiosInstance.delete(`/building/${buildingId}/energy-bills/${energyBillsId}`);
+export const deleteEnergyBill = async (
+  buildingId: string,
+  energyBillsId: string
+) => {
+  const { data } = await axiosInstance.delete(
+    `/building/${buildingId}/energy-bills/${energyBillsId}`
+  );
   return data;
 };
-
 
 //GET ENERGY CHART
 export const getEnergyChart = async (buildingId: string) => {
   const { data } = await axiosInstance.get(`/building/${buildingId}/charts`);
   return data;
 };
-
-
 
 export const getSuggestions = async (query: string) => {
   const requestUrl = import.meta.env.VITE_GEO_CODE_URL.replace(
