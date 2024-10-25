@@ -66,7 +66,7 @@ export const LinkDeviceModal: React.FC<{ onClose: () => void; onLink: (building:
                 </button>
               </div>
               <div className="flex gap-10 mt-5 px-4 py-2">
-                <div className="w-[200px] h-[200px] border">
+                <div className="w-[200px] h-[200px] border bg-gray-300">
                   {/* <img
                     src={building.imageUrl}
                     alt={`Building ${building.id}`}
