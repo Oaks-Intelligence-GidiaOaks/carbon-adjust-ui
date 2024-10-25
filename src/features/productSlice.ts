@@ -6,7 +6,10 @@ const initialState: IProduct = {
   _id: "",
   title: "",
   attachments: [],
-  owner: "",
+  owner:  {
+    name: "",
+    _id: "",
+  },
   category: {
     name: "",
     slug: "",
