@@ -55,7 +55,20 @@ class AudioRecorder extends EventEmitter {
 
       console.log("recording started...");
     } catch (error: any) {
-      throw new Error(error.message);
+      switch (error.name) {
+        case "NotAllowedError":
+          alert(
+            `Microphone access is blocked, Please enable it in your browser settings and try again.`
+          );
+          break;
+        case "NotFoundError":
+          alert(
+            `No audio input device found. Please connect a microphone or check your device settings.`
+          );
+          break;
+        default:
+          throw new Error("Failed to start recording");
+      }
     }
   }
 

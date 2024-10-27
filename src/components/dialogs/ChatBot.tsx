@@ -7,6 +7,7 @@ import { FaMicrophone } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
 import RecorderIndicator from "../ui/RecorderIndicator";
 import { MdOutlineTranscribe } from "react-icons/md";
+import useScrollIntoView from "@/hooks/useScrollIntoView";
 
 const ChatBot = () => {
   const [openChat, setOpenChat] = useState<boolean>(false);
@@ -18,6 +19,7 @@ const ChatBot = () => {
 
   const [time, setTime] = useState(0);
   const interval = useRef<NodeJS.Timeout | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const {
     inputText,
@@ -82,6 +84,7 @@ const ChatBot = () => {
   };
 
   useOutsideCloser(ref, openChat, setOpenChat);
+  useScrollIntoView(scrollRef, messages);
 
   const handleSendText = (txt: string) => {
     setIsStreaming(true);
@@ -92,7 +95,7 @@ const ChatBot = () => {
       setTimeout(() => {
         setIsStreaming(false);
         setMessages((prevMsgs) => [...prevMsgs, txt]);
-      }, 3000);
+      }, 200);
     });
   };
 
@@ -134,6 +137,8 @@ const ChatBot = () => {
             {Array.from(messages, (msg, i) => (
               <ChatMessage key={i} message={msg} isLoggedInUser={i % 2 === 0} />
             ))}
+
+            <div ref={scrollRef} className="h-1"></div>
 
             {isStreaming && <img src={LoadingGif} className="w-16" alt="" />}
           </div>
