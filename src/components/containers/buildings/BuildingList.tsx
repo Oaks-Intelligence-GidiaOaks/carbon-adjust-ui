@@ -37,10 +37,9 @@ const BuildingList = () => {
 
   // Fetch building data
   const { data: buildings, isLoading, error } = useQuery({
-    queryKey: ["building-data"],
-    queryFn: getBuildingData,
-  });
-
+    queryKey: ["building-data", pagination.currentPage],
+    queryFn: () => getBuildingData(pagination.limit, pagination.currentPage), 
+  })
  
 
   const buildingData = buildings?.data?.buildings || [];
@@ -225,7 +224,7 @@ const BuildingList = () => {
 
 
        {/* Pagination */}
-       {buildingData && (
+       {filteredBuildingData && (
         <div className="mt-8 pr-12 w-fit mx-auto ">
           <Paginate {...pagination} onPageChange={handlePageChange} />
         </div>
