@@ -74,7 +74,7 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
 
   const { data: transports } = useQuery({
     queryKey: ["transports"],
-    queryFn: () => getTransports(),
+    queryFn: () => getTransports(""),
   });
 
   const transformedTransports =
