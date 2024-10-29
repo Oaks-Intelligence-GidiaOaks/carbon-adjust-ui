@@ -38,8 +38,10 @@ const BuildingList = () => {
   // Fetch building data
   const { data: buildings, isLoading, error } = useQuery({
     queryKey: ["building-data"],
-    queryFn: () => getBuildingData(),
+    queryFn: getBuildingData,
   });
+
+ 
 
   const buildingData = buildings?.data?.buildings || [];
   
@@ -62,7 +64,7 @@ const BuildingList = () => {
     }));
   };
 
- 
+  console.log('data', buildingData)
 
   if (error) return <div>Error loading buildings data</div>;
 
