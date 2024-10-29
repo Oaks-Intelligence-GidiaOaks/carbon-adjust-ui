@@ -306,7 +306,7 @@ export const uploadBuildingImage = async (
 
 //RESTRICTED CARDS
 export const getRestrictedWallet = async () => {
-  const { data } = await axiosInstance.get(`wallet/info?walletType=RESTRICTED`); 
+  const { data } = await axiosInstance.get(`wallet/info?walletType=RESTRICTED`);
   return data;
 };
 //UPLOAD ENERGY biLLS
@@ -327,11 +327,9 @@ export const uploadEnergyBills = async (
 };
 
 //TRANSPORT
-export const getTransports = async () => {
-  const url = `/transportation`;
-
+export const getTransports = async (searchQuery: string) => {
+  const url = `/transportation?search=${encodeURIComponent(searchQuery)}`;
   const { data } = await axiosInstance.get(url);
-
   return data;
 };
 
@@ -342,6 +340,43 @@ export const addTransport = async (formData: FormData) => {
     },
   });
 
+  return data;
+};
+
+export const getSuggestions = async (query: string) => {
+  const requestUrl = import.meta.env.VITE_GEO_CODE_URL.replace(
+    "{query}",
+    encodeURIComponent(query)
+  )
+    .replace("{language}", "en-US")
+    .replace("{subKey}", import.meta.env.VITE_AZURE_KEY);
+
+  const { data } = await axiosInstance.get(requestUrl);
+
+  return data.results;
+};
+
+export const Optimize = async (formData: FormData) => {
+  const { data } = await axiosInstance.post(
+    "/transportation/optimize-trip",
+    formData
+  );
+
+  return data;
+};
+
+export const getTransportsHistory = async (
+  searchQuery: string,
+  ids: string
+) => {
+  const url = `/transportation/travel-history?search=${encodeURIComponent(
+    searchQuery
+  )}&ids=${encodeURIComponent(ids)}`;
+
+  // const url = `/transportation/travel-history?search=${encodeURIComponent(
+  //   searchQuery
+  // )}`;
+  const { data } = await axiosInstance.get(url);
   return data;
 };
 
@@ -377,35 +412,5 @@ export const linkDevice = async (buildingId: string, deviceIds: string[]) => {
   const { data } = await axiosInstance.put(`building/${buildingId}/add-devices`, {
     devices: deviceIds, 
   });
-  return data;
-};
-
-export const getSuggestions = async (query: string) => {
-  const requestUrl = import.meta.env.VITE_GEO_CODE_URL.replace(
-    "{query}",
-    encodeURIComponent(query)
-  )
-    .replace("{language}", "en-US")
-    .replace("{subKey}", import.meta.env.VITE_AZURE_KEY);
-
-  const { data } = await axiosInstance.get(requestUrl);
-
-  return data.results;
-};
-
-export const Optimize = async (formData: FormData) => {
-  const { data } = await axiosInstance.post(
-    "/transportation/optimize-trip",
-    formData
-  );
-
-  return data;
-};
-
-export const getTransportsHistory = async () => {
-  const url = `/transportation/travel-history`;
-
-  const { data } = await axiosInstance.get(url);
-
   return data;
 };

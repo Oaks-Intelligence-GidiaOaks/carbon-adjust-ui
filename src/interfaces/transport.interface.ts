@@ -52,8 +52,6 @@ export interface TravelDetails {
   latestArrivalTime: string;
 }
 
-
-
 export interface Trips {
   _id: string;
   startLocation: Location;
@@ -65,6 +63,9 @@ export interface Trips {
   durationOfTravelWindow: string;
   routePreference: string;
   latestArrivalTime: string;
+  carName: string;
+  setIds: (value: string) => void;
+  ids: string;
   tripQueueResponse: {
     response?: {
       transport_id?: string;

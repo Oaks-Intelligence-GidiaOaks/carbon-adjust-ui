@@ -5,6 +5,8 @@ import { useState } from "react";
 import VehicleDetail from "./TransportDetail";
 import { Trips } from "@/interfaces/transport.interface";
 import { formatTimeToISO } from "@/lib/utils";
+import Modal from "@/components/dialogs/Modal";
+// import TransportMap from "./TransportMap";
 
 const TransportHistoryCard = (props: Trips) => {
   const {
@@ -15,17 +17,70 @@ const TransportHistoryCard = (props: Trips) => {
     startTimeWindow,
     durationOfTravelWindow,
     plateNumber,
+    carName,
     tripQueueResponse,
+    setIds,
+    ids,
+    _id,
   } = props;
 
-  console.log(tripQueueResponse);
+  // const test = [
+  //   {
+  //     position: [-2.97784, 53.41078],
+  //   },
+  //   {
+  //     position: [-3.09018, 53.24839],
+  //   },
+  //   {
+  //     position: [-3.20252, 53.086],
+  //   },
+  //   {
+  //     position: [-3.31486, 52.92361],
+  //   },
+  //   {
+  //     position: [-3.4272, 52.76122],
+  //   },
+  //   {
+  //     position: [-3.53954, 52.59883],
+  //   },
+  //   {
+  //     position: [-3.65188, 52.43644],
+  //   },
+  //   {
+  //     position: [-3.76422, 52.27405],
+  //   },
+  //   {
+  //     position: [-3.87656, 52.11166],
+  //   },
+  //   {
+  //     position: [-3.9889, 51.94927],
+  //   },
+  //   {
+  //     position: [-4.10124, 51.78688],
+  //   },
+  //   {
+  //     position: [-3.94337, 51.62158],
+  //   },
+  // ];
 
   const [showMore, setShowMore] = useState(false);
-  const [checked, setChecked] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
 
-  const toggleChecked = () => {
-    setChecked(!checked);
+  const toggleChecked = (id: string) => {
+    const idsArray = ids ? ids.split(",") : [];
+
+    if (idsArray.includes(id)) {
+      const updatedIds = idsArray.filter(
+        (existingId: string) => existingId !== id
+      );
+      setIds(updatedIds.join(","));
+    } else {
+      idsArray.push(id);
+      setIds(idsArray.join(","));
+    }
   };
+
+  const checked = ids.split(",").includes(_id);
 
   return (
     <>
@@ -34,8 +89,8 @@ const TransportHistoryCard = (props: Trips) => {
           <input
             type="checkbox"
             checked={checked}
-            onChange={toggleChecked}
-            className="mr-4"
+            onChange={() => toggleChecked(_id)}
+            className="mr-4 cursor-pointer"
           />
         </div>
         <div className="flex-1 flex-col sm:p-5 divide-y-2">
@@ -45,8 +100,8 @@ const TransportHistoryCard = (props: Trips) => {
                 <input
                   type="checkbox"
                   checked={checked}
-                  onChange={toggleChecked}
-                  className="mr-4"
+                  onChange={() => toggleChecked(_id)}
+                  className="mr-4 cursor-pointer"
                 />
               </div>
               <div className="flex flex-col">
@@ -63,7 +118,7 @@ const TransportHistoryCard = (props: Trips) => {
                 <h3 className="text-sm font-normal text-gray-700">Status</h3>
                 <div
                   className={`${
-                    tripQueueResponse?.status?.toLowerCase() === "success"
+                    tripQueueResponse?.status?.toLowerCase() === "completed"
                       ? "text-green-800 bg-green-100"
                       : "text-red-800 bg-red-100"
                   } text-sm px-3 rounded-lg inline-flex items-center`}
@@ -96,7 +151,7 @@ const TransportHistoryCard = (props: Trips) => {
             />
             <VehicleDetail title="Mode of transport" des={modeOfTransport} />
             <VehicleDetail title="Transport type" des={transportDetails} />
-            <VehicleDetail title="Transport" des={"N/A"} />
+            <VehicleDetail title="Transport" des={carName || "N/A"} />
             <VehicleDetail title="Projected Carbon Offset" des={"N/A"} />
             <VehicleDetail title="Actual Carbon Offset" des={"N/A"} />
             <VehicleDetail
@@ -123,32 +178,56 @@ const TransportHistoryCard = (props: Trips) => {
             }`}
             style={{ transitionProperty: "max-height, opacity" }}
           >
-            <img
-              src={"https://placehold.co/100x150"}
-              alt=""
-              className="sm:w-[100px] w-[100%] h-[150px] rounded-md object-cover"
-            />
-          </div>
-
-          <div className="flex justify-center items-center p-3 ">
             <Button
-              variant={"ghost"}
-              className="gap-2"
-              onClick={() => setShowMore(!showMore)}
+              onClick={() => setShowModal(true)}
+              className="rounded-[20px] flex-center gap-1 mt-2 w-[150px] h-[30px]"
             >
-              {showMore ? (
-                <>
-                  <span>Collapse</span>
-                  <FaAngleUp />
-                </>
-              ) : (
-                <>
-                  <span>Expand</span>
-                  <FaAngleUp />
-                </>
-              )}
+              <span>View Route</span>
             </Button>
           </div>
+          {tripQueueResponse?.response?.best_route?.route_coordinate && (
+            <div className="flex justify-center items-center p-3 ">
+              <Button
+                variant={"ghost"}
+                className="gap-2"
+                onClick={() => setShowMore(!showMore)}
+              >
+                {showMore ? (
+                  <>
+                    <span>Collapse</span>
+                    <FaAngleUp />
+                  </>
+                ) : (
+                  <>
+                    <span>Expand</span>
+                    <FaAngleUp />
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+          {showModal && (
+            <Modal>
+              <div className="w-[90%] sm:w-[50%] bg-white h-[90%] rounded-lg p-5 overflow-y-scroll">
+                <div className="sticky top-0 flex justify-end  p-5">
+                  <button
+                    className="text-gray-500 text-2xl"
+                    onClick={() => setShowModal(false)}
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div className="flex  flex-col justify-start sm:p-5 p-2">
+                  <h2 className="text-2xl font-medium text-[#495057] capitalize font-poppins">
+                    optimized Route
+                  </h2>
+                  <div className="h-[600px] sm:my-10 my-5 ">
+                    {/* <TransportMap positions={test} /> */}
+                  </div>
+                </div>
+              </div>
+            </Modal>
+          )}
         </div>
       </div>
     </>

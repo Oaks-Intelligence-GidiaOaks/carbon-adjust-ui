@@ -13,9 +13,12 @@ import { useQuery } from "@tanstack/react-query";
 import { Trips } from "@/interfaces/transport.interface";
 import Paginate from "@/components/reusables/Paginate";
 import NoDevices from "../devices/NoDevices";
-import Loading from "@/components/reusables/Loading";
+import { useDebounce } from "@/hooks/useDebounce";
+import TransportHistoryCardSkeleton from "./CardSkeleton";
 
 const TransportHistory = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [ids, setIds] = useState("");
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
   >({
@@ -26,14 +29,19 @@ const TransportHistory = () => {
     totalPages: 1,
   });
 
+  const debouncedSearch = useDebounce(searchQuery, 500);
+
   const {
     data: transportsHistory,
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["transportsHistory"],
-    queryFn: () => getTransportsHistory(),
+    queryKey: ["transportsHistory", debouncedSearch, ids],
+    queryFn: () => getTransportsHistory(debouncedSearch, ids),
+    enabled: true,
   });
+
+  const Histories = transportsHistory?.data?.trips?.length > 0;
 
   useEffect(() => {
     setPagination({
@@ -53,23 +61,6 @@ const TransportHistory = () => {
 
     refetch();
   };
-
-  if (isLoading) {
-    return (
-      <div className="h-32 grid place-items-center">
-        <Loading message="loading" />
-      </div>
-    );
-  }
-
-  if (transportsHistory.data.trips.length === 0) {
-    return (
-      <div className="h-32 grid place-items-center max-w-[98%]">
-        <NoDevices link="/dashboard/transport/add" text="Transport History" />
-      </div>
-    );
-  }
-
   return (
     <div>
       <div className="flex justify-between flex-wrap mt-[15px] gap-5">
@@ -87,7 +78,8 @@ const TransportHistory = () => {
               name="search"
               placeholder="Search here"
               className="h-full w-full pl-10 m-0 bg-transparent text-sm outline-none border-none"
-              onChange={() => {}}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
@@ -100,17 +92,45 @@ const TransportHistory = () => {
           </Link>
         </div>
       </div>
-      <div className=" mt-[20px] space-y-[38px]">
-        {Array.from(transportsHistory.data.trips as Trips[], (it, i) => (
-          <TransportHistoryCard {...it} key={i} />
-        ))}
+
+      <div className="mt-[20px] space-y-[38px]">
+        {/* Render loading state if isLoading is true */}
+        {isLoading ? (
+          <div className="h-32 grid place-items-center">
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="flex flex-col mb-10 w-full">
+                <TransportHistoryCardSkeleton />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <>
+            {/* Render transport records if available */}
+            {Histories ? (
+              Array.from(transportsHistory.data.trips as Trips[], (it, i) => (
+                <TransportHistoryCard
+                  {...it}
+                  key={i}
+                  setIds={setIds}
+                  ids={ids}
+                />
+              ))
+            ) : (
+              // Render "No Devices" message if there are no records
+              <div className="h-32 grid place-items-center max-w-[98%]">
+                <NoDevices link="/dashboard/transport/add" text="Transport" />
+              </div>
+            )}
+          </>
+        )}
       </div>
       {/* Pagination */}
-      <div className="mt-8 pr-12 w-fit mx-auto">
-        <Paginate {...pagination} onPageChange={handlePageChange} />
-      </div>
-
-      <TransportChartCard />
+      {Histories && (
+        <div className="mt-8 pr-12 w-fit mx-auto">
+          <Paginate {...pagination} onPageChange={handlePageChange} />
+        </div>
+      )}
+      {Histories && <TransportChartCard />}
     </div>
   );
 };

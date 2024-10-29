@@ -30,7 +30,7 @@ const TransportChartCard = () => {
           </Button>
         </div>
       </div>
-      <div className="mx-auto my-3 py-5 h-[250px] sm:w-full w-[300px]">
+      <div className="flex items-center justify-center my-3 py-5 h-[250px] sm:w-full w-[300px]">
         <GuageChart data={data} Text={"0M"} textColor={"#4caf50"} />
       </div>
     </div>

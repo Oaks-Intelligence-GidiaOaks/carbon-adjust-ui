@@ -190,7 +190,10 @@ const NewTransport = () => {
         <div className="flex flex-col gap-8 lg:w-3/4 xl:w-2/3 w-full mx-auto mt-10 text-sm">
           {/* Transport photo */}
           <div className="space-y-2">
-            <h2 className="">Transport photo</h2>
+            <h2 className="">
+              Transport photo
+              <span className="font-medium text-sm text-red-500">*</span>
+            </h2>
 
             <input
               type="file"
@@ -297,7 +300,10 @@ const NewTransport = () => {
           </div>
           <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 mt-3 sm:mt-5">
             <div className="space-y-2 w-full">
-              <h2 className="pl-2">Transport license plate number </h2>
+              <h2 className="pl-2">
+                Transport license plate number
+                <span className="font-medium text-sm text-red-500">*</span>
+              </h2>
 
               <Input
                 className="border rounded-xl px-2 text-sm"
@@ -310,7 +316,10 @@ const NewTransport = () => {
           </div>
 
           <div className="space-y-2 w-full">
-            <h2 className="pl-5">Address</h2>
+            <h2 className="pl-5">
+              Address{" "}
+              <span className="font-medium text-sm text-red-500">*</span>
+            </h2>
             <CustomMapInput
               inputName="address"
               value={formData.address}
@@ -321,18 +330,12 @@ const NewTransport = () => {
                 handleOptionClick("address", location);
               }}
             />
-            {/* 
-            <Input
-              className="border rounded-xl px-2 text-sm"
-              type="text"
-              name="address"
-              value={formData.address}
-              onChange={handleInputChange}
-            /> */}
           </div>
 
           <div className="space-y-2 w-full">
-            <h2 className="pl-5">City</h2>
+            <h2 className="pl-5">
+              City <span className="font-medium text-sm text-red-500">*</span>
+            </h2>
 
             <CustomMapInput
               inputName="city"
