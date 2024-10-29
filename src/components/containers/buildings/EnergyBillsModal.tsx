@@ -43,7 +43,7 @@ const EnergyBillsModal = ({ isOpen, closeModal, buildingId }: ModalProps) => {
 
   const energyBills = response?.data || [];
 
-  console.log("energy", energyBills);
+ 
 
   const deleteBillMutation = useMutation({
     mutationFn: (energyBillsId: number) =>

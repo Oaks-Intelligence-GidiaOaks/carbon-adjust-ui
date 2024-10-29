@@ -19,7 +19,7 @@ const PaginationButtons: React.FC<PaginationProps> = ({ totalPages, currentPage,
   const renderPageButtons = () => {
     const pageButtons = [];
     
-    if (totalPages <= 5) {
+    if (totalPages <= 4) {
       // Render all buttons if total pages are less than or equal to 5
       for (let i = 1; i <= totalPages; i++) {
         pageButtons.push(
@@ -122,7 +122,7 @@ const PaginationButtons: React.FC<PaginationProps> = ({ totalPages, currentPage,
     <div className="flex justify-center items-center mt-6 overflow-x-auto whitespace-nowrap">
       {/* Previous Button */}
       <button
-        className={`flex items-center gap-1 px-2 md:px-3 py-1 rounded-md text-sm border bg-white mr-2 ${currentPage === 1 ? 'text-gray-400 cursor-not-allowed' : 'text-gray-400'}`}
+        className={`flex items-center gap-0.5 sm:gap-2 px-2 md:px-3 py-1 rounded-md text-xs md:text-sm border bg-white mr-2 ${currentPage === 1 ? 'text-gray-400 cursor-not-allowed' : 'text-gray-400'}`}
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -134,7 +134,7 @@ const PaginationButtons: React.FC<PaginationProps> = ({ totalPages, currentPage,
 
       {/* Next Button */}
       <button
-        className={`flex items-center gap-1 px-2 md:px-3 py-1 rounded-md text-sm  border bg-white ml-2 ${currentPage === totalPages ? 'text-gray-400 cursor-not-allowed' : 'text-gray-400'}`}
+        className={`flex items-center gap-0.5 sm:gap-2 px-2 md:px-3 py-1 rounded-md text-xs md:text-sm  border bg-white ml-2 ${currentPage === totalPages ? 'text-gray-400 cursor-not-allowed' : 'text-gray-400'}`}
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
