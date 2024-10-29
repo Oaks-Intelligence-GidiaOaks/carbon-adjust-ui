@@ -33,7 +33,9 @@ const BuildingList = () => {
     queryFn: getBuildingData,
   });
 
-  const buildingData = data?.data || [];
+  const buildingData = data?.data?.buildings || [];
+
+
 
 
   if (error) return <div>Error loading buildings data</div>;
