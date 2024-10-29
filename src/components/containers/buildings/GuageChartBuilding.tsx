@@ -1,31 +1,40 @@
 import { useQuery } from "@tanstack/react-query";
 import { getEnergyChart } from "@/services/homeOwner";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Loading from "@/components/reusables/Loading";
 import { GoDownload } from "react-icons/go";
 import { GuageChart } from "@/components/charts";
+import html2canvas from "html2canvas";
 
 interface GuaugeChartProps {
-  buildingId: string;
+  buildingId: string[];
 }
 
 const CarbonFootPrint = ({ buildingId }: GuaugeChartProps) => {
-  const {
-    data: response,
-    isLoading,
-    error,
-  } = useQuery({
+  const chartRef = useRef<HTMLDivElement>(null);
+
+  // Fetch data from the API
+  const { data: response, isLoading, error } = useQuery({
     queryKey: ["building-energy-chart", buildingId],
     queryFn: () => getEnergyChart(buildingId),
-    enabled: !!buildingId,
+    enabled: buildingId.length > 0,
   });
 
-  // Log error if it exists
   useEffect(() => {
     if (error) {
       console.error("Error in useQuery:", error);
     }
   }, [error]);
+
+  const downloadChart = async () => {
+    if (chartRef.current) {
+      const canvas = await html2canvas(chartRef.current);
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = "CarbonFootprintChart.png";
+      link.click();
+    }
+  };
 
   if (isLoading) {
     return (
@@ -36,18 +45,18 @@ const CarbonFootPrint = ({ buildingId }: GuaugeChartProps) => {
   }
   if (error) return <div>Error loading data</div>;
 
-  const carbonFootprintTracker =
-    response?.data?.[0]?.carbonFootprintTracker || {};
+  const carbonFootprintTracker = response?.data?.carbon_footprint_tracker || {};
+  const carbonFootprint = Math.round(carbonFootprintTracker.carbon_footprint || 0);
+  const highFootprint = Math.round(carbonFootprintTracker.high_footprint || 100);
 
-//   const averageFootprint = carbonFootprintTracker.averageFootprint || 0;
-  const carbonFootprint = carbonFootprintTracker.carbonFootprint || 0;
-  const highFootprint = carbonFootprintTracker.highFootprint || 0;
+  const filledValue = Math.min(carbonFootprint, highFootprint);
+  const emptyValue = Math.max(0, highFootprint - filledValue);
 
   const data = {
     labels: ["Filled", "Empty"],
     datasets: [
       {
-        data: [carbonFootprint, 100],
+        data: [filledValue, emptyValue],
         backgroundColor: ["#4caf50", "#e0e0e0"],
         borderWidth: 0,
       },
@@ -55,17 +64,20 @@ const CarbonFootPrint = ({ buildingId }: GuaugeChartProps) => {
   };
 
   return (
-    <div className="h-fit">
+    <div className="h-[300px] w-[90%]" ref={chartRef}>
       <div className="flex flex-col md:flex-row justify-between items-center">
         <h3 className="font-semibold">Carbon Footprint Score</h3>
-        <button className="flex-center w-fit text-sm gap-2 py-1 mt-2 md:mt-0 md:py-[6px] px-5 border-2 rounded-3xl  text-gray-500 border-[#3465AF]">
+        <button
+          onClick={downloadChart}
+          className="flex items-center justify-center hover:bg-[#3465AF] hover:text-white w-fit text-sm gap-2 py-1 mt-2 md:mt-0 md:py-[6px] px-5 border-2 rounded-3xl text-gray-500 border-[#3465AF]"
+        >
           <span>Download</span>
           <GoDownload />
         </button>
       </div>
 
       <div className="mx-auto my-3 py-5 h-[200px] w-[70%] md:w-full ">
-        <GuageChart data={data} Text={`${highFootprint} M`} textColor={"#4caf50"} />
+        <GuageChart data={data} Text={`${filledValue} M`} textColor={"#4caf50"} />
       </div>
     </div>
   );

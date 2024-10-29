@@ -306,7 +306,7 @@ export const uploadBuildingImage = async (
 
 //RESTRICTED CARDS
 export const getRestrictedWallet = async () => {
-  const { data } = await axiosInstance.get(`wallet/info?walletType=RESTRICTED`); 
+  const { data } = await axiosInstance.get(`wallet/info?walletType=RESTRICTED`);
   return data;
 };
 //UPLOAD ENERGY biLLS
@@ -327,11 +327,9 @@ export const uploadEnergyBills = async (
 };
 
 //TRANSPORT
-export const getTransports = async () => {
-  const url = `/transportation`;
-
+export const getTransports = async (searchQuery: string) => {
+  const url = `/transportation?search=${encodeURIComponent(searchQuery)}`;
   const { data } = await axiosInstance.get(url);
-
   return data;
 };
 
@@ -342,31 +340,6 @@ export const addTransport = async (formData: FormData) => {
     },
   });
 
-  return data;
-};
-
-//GET ENERGY BILLS
-export const getEnergyBills = async (buildingId: string) => {
-  const { data } = await axiosInstance.get(
-    `/building/${buildingId}/energy-bills`
-  );
-  return data;
-};
-
-// DELETE ENERGY BILLS
-export const deleteEnergyBill = async (
-  buildingId: string,
-  energyBillsId: string
-) => {
-  const { data } = await axiosInstance.delete(
-    `/building/${buildingId}/energy-bills/${energyBillsId}`
-  );
-  return data;
-};
-
-//GET ENERGY CHART
-export const getEnergyChart = async (buildingId: string) => {
-  const { data } = await axiosInstance.get(`/building/${buildingId}/charts`);
   return data;
 };
 
@@ -392,10 +365,52 @@ export const Optimize = async (formData: FormData) => {
   return data;
 };
 
-export const getTransportsHistory = async () => {
-  const url = `/transportation/travel-history`;
+export const getTransportsHistory = async (
+  searchQuery: string,
+  ids: string
+) => {
+  const url = `/transportation/travel-history?search=${encodeURIComponent(
+    searchQuery
+  )}&ids=${encodeURIComponent(ids)}`;
 
+  // const url = `/transportation/travel-history?search=${encodeURIComponent(
+  //   searchQuery
+  // )}`;
   const { data } = await axiosInstance.get(url);
+  return data;
+};
 
+//GET ENERGY BILLS
+export const getEnergyBills = async (buildingId: string) => {
+  const { data } = await axiosInstance.get(
+    `/building/${buildingId}/energy-bills`
+  );
+  return data;
+};
+
+// DELETE ENERGY BILLS
+export const deleteEnergyBill = async (
+  buildingId: string,
+  energyBillsId: string
+) => {
+  const { data } = await axiosInstance.delete(
+    `/building/${buildingId}/energy-bills/${energyBillsId}`
+  );
+  return data;
+};
+
+//GET ENERGY CHART
+export const getEnergyChart = async (buildingIds: string[]) => {
+  const { data } = await axiosInstance.post(`/building/chart-ids`, {
+    building_ids: buildingIds, 
+  });
+  return data;
+};
+
+//LINK A DEVICE
+export const linkDevice = async (buildingId: string, deviceIds: string[]) => {
+  const { data } = await axiosInstance.put(`building/${buildingId}/add-devices`, {
+    devices: deviceIds, 
+  });
   return data;
 };

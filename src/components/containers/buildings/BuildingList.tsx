@@ -1,4 +1,4 @@
-import { PlusCircleIcon, Search } from "lucide-react";
+import {  PlusCircleIcon, Search } from "lucide-react";
 import BuildingHistoryCard from "./BuildingHistoryCard";
 import { useState, useRef } from "react";
 import UploadDocumentsModal from "@/components/reusables/UploadBuildingDocument";
@@ -7,11 +7,12 @@ import UsageSummary from "./BarChartBuilding";
 import TrendingProjections from "./LineChartBuildings";
 import { useQuery } from "@tanstack/react-query";
 import { getBuildingData } from "@/services/homeOwner";
-import Loading from "@/components/reusables/Loading";
 import BuildingEmptyState from "@/components/reusables/EmptyStateBuildings";
 import RegisterBuilding from "@/components/reusables/RegisterBuilding";
 import PaginationButtons from "@/components/reusables/PageButtons";
 import CarbonFootPrint from "./GuageChartBuilding";
+import Skeleton from "@mui/material/Skeleton";
+import Box from "@mui/material/Box";
 
 const BuildingList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +20,7 @@ const BuildingList = () => {
   const [filterDate, setFilterDate] = useState(""); 
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false); 
   const [isRegisterBuildingVisible, setIsRegisterBuildingVisible] = useState(false);
-  const [selectedBuildings, setSelectedBuildings] = useState<string>('');
+  const [selectedBuildings, setSelectedBuildings] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 10; 
 
@@ -34,12 +35,19 @@ const BuildingList = () => {
 
   const buildingData = data?.data || [];
 
+
   if (error) return <div>Error loading buildings data</div>;
 
   if (isLoading) {
     return (
-      <div className="h-32 grid place-items-center">
-        <Loading message="loading" />
+      <div className="w-[100%] mx-auto mt-10 flex flex-col gap-4 ">
+        {Array.from({ length: 3 }, (_, i) => (
+        <Box key={i} sx={{ width: "100%" }}>
+          <Skeleton variant="rectangular" width={"100%"} height={100} />
+          <Skeleton width={"100%"} />
+          <Skeleton width={"50%"} animation="wave" />
+        </Box>
+      ))}
       </div>
     );
   }
@@ -89,14 +97,25 @@ const BuildingList = () => {
   // Function to toggle selection of buildings
   const handleSelectBuilding = (buildingId: string) => {
     setSelectedBuildings((prev) => {
-      const newSelection = prev === buildingId ? '' : buildingId;
-      // Scroll to the chart area if a building is selected
-      if (newSelection) {
+      let newSelection;
+      if (prev.includes(buildingId)) {
+        // Remove the building if it's already selected
+        newSelection = prev.filter(id => id !== buildingId);
+      } else {
+        // Add the building if it's not already selected
+        newSelection = [...prev, buildingId];
+      }
+      
+      // Scroll to the chart area if any building is selected
+      if (newSelection.length > 0) {
         chartAreaRef.current?.scrollIntoView({ behavior: 'smooth' });
       }
+      
       return newSelection;
     });
   };
+
+
 
   // Pagination logic
   const totalPages = Math.ceil(filteredBuildingData.length / itemsPerPage);
@@ -159,6 +178,8 @@ const BuildingList = () => {
       {/* Building History or No Data Found */}
       {paginatedData.length > 0 ? (
         paginatedData.map((building: any) => (
+          <>
+          
           <BuildingHistoryCard
             key={building._id}
             serialNumber={building.serialNumber}
@@ -175,6 +196,7 @@ const BuildingList = () => {
             onSelect={handleSelectBuilding} 
             isSelected={selectedBuildings.includes(building._id)} 
           />
+          </>
         ))
       ) : (
         <div className="text-center text-gray-500 mt-4">No data found.</div>
@@ -190,13 +212,13 @@ const BuildingList = () => {
       )}
 
       {/* Charts */}
-      <div ref={chartAreaRef} className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm">
+      <div ref={chartAreaRef} className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm">
         <UsageSummary buildingId={selectedBuildings} />
       </div>
-      <div className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm ">
+      <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm ">
         <TrendingProjections buildingId={selectedBuildings} /> 
       </div>
-      <div className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm ">
+      <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-10 shadow-sm ">
         <CarbonFootPrint buildingId={selectedBuildings} /> 
       </div>
 

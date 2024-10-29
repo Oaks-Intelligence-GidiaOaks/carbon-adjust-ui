@@ -22,13 +22,13 @@ const RegisterBuilding: React.FC = () => {
   return (
     <div className="max-w-4xl p-4 sm:p-2 mt-6 sm:mt-10">
       {/* Header */}
-      <div className="flex flex-col xs:flex-row justify-between sm:items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-6">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
           Register Building
         </h1>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center w-fit gap-2 blue-gradient text-white px-3 sm:px-4 py-2 rounded-xl hover:bg-blue-700 transition mt-4 xs:mt-0"
+          className="flex items-center w-fit gap-2 blue-gradient text-white px-3 sm:px-4 py-2 rounded-xl hover:bg-blue-700 transition mt-4 sm:mt-0"
         >
           <span>Upload Building</span>
           <PlusCircleIcon className="h-5 w-5 ml-1 sm:ml-2" />
@@ -37,15 +37,19 @@ const RegisterBuilding: React.FC = () => {
 
       {/* Description */}
       <p className="text-gray-500 mb-6 sm:mb-8 text-sm sm:text-base">
-        Lorem ipsum dolor sit amet consectetur. Feugiat sollicitudin urna sed
-        fermentum pulvinar habitant sagittis. Arcu id et nam tortor. Neque eu
-        magna ultrices sed ut urna vitae nec vitae. Mi placerat lorem lorem et.
+        A Building Registration Template offers two convenient, downloadable
+        Excel files designed to streamline the process of registering
+        properties. Users can choose between Residential and Commercial
+        templates, each tailored to capture essential information specific to
+        the type of building.
       </p>
 
       {/* File List */}
       <div className="grid grid-cols-2 gap-2 sm:gap-4 text-gray-500 mt-6 sm:mt-10 text-sm sm:text-base">
         <span className="font-medium">File name</span>
-        <span className="text-right mr-12 sm:mr-32 hidden lg:block font-medium">File format</span>
+        <span className="text-right mr-12 sm:mr-32 hidden lg:block font-medium">
+          File format
+        </span>
       </div>
       {files.map((file, index) => (
         <div
@@ -66,7 +70,7 @@ const RegisterBuilding: React.FC = () => {
               download
               className="flex items-center gap-2 justify-center px-3 sm:px-4 py-2 border border-[#139EEC] text-[#139EEC] font-semibold rounded-md hover:bg-[#139EEC] hover:text-white transition-colors"
             >
-              Download <GoDownload size={16}  />
+              Download <GoDownload size={16} />
             </a>
           </div>
         </div>
@@ -74,7 +78,10 @@ const RegisterBuilding: React.FC = () => {
 
       {/* Modal */}
       {isModalOpen && (
-        <UploadDocumentsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        <UploadDocumentsModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       )}
     </div>
   );

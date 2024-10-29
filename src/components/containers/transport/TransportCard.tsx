@@ -1,6 +1,5 @@
 import { MdMoreVert } from "react-icons/md";
 import { FaAngleUp } from "react-icons/fa";
-import { AiOutlineDownload } from "react-icons/ai";
 import { Button } from "@/components/ui";
 import { useState } from "react";
 import { Transport } from "@/interfaces/transport.interface";
@@ -48,7 +47,7 @@ const TransportCard = (props: Transport) => {
           <VehicleDetail title="fuel type" des={fuelType} />
         </div>
         <div
-          className={`flex flex-col sm:flex-row gap-5  sm:items-center items-start transition-all duration-500 ease-in-out overflow-hidden ${
+          className={`flex flex-col sm:flex-row gap-5  items-start transition-all duration-500 ease-in-out overflow-hidden ${
             showMore
               ? "max-h-[1000px] opacity-100 visible py-5"
               : "max-h-0 opacity-0 invisible"
@@ -68,10 +67,6 @@ const TransportCard = (props: Transport) => {
             </div>
             <VehicleDetail title="emission factor" des={emissionFactor} />
 
-            <Button className="rounded-[20px] flex-center gap-1 mt-2 w-[150px] h-[30px]">
-              <AiOutlineDownload />
-              <span>Download</span>
-            </Button>
           </div>
         </div>
 
