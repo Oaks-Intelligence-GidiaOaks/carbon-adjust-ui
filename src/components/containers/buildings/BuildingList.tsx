@@ -64,7 +64,6 @@ const BuildingList = () => {
     }));
   };
 
-  console.log('data', buildingData)
 
   if (error) return <div>Error loading buildings data</div>;
 
