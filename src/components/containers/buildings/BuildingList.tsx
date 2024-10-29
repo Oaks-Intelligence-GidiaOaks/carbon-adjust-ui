@@ -1,6 +1,6 @@
 import {  PlusCircleIcon, Search } from "lucide-react";
 import BuildingHistoryCard from "./BuildingHistoryCard";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import UploadDocumentsModal from "@/components/reusables/UploadBuildingDocument";
 import { MdFilterList } from "react-icons/md";
 import UsageSummary from "./BarChartBuilding";
@@ -9,10 +9,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getBuildingData } from "@/services/homeOwner";
 import BuildingEmptyState from "@/components/reusables/EmptyStateBuildings";
 import RegisterBuilding from "@/components/reusables/RegisterBuilding";
-import PaginationButtons from "@/components/reusables/PageButtons";
 import CarbonFootPrint from "./GuageChartBuilding";
 import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/material/Box";
+import Paginate from "@/components/reusables/Paginate";
+import { PaginateProps } from "@/types/general";
 
 const BuildingList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,20 +22,47 @@ const BuildingList = () => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false); 
   const [isRegisterBuildingVisible, setIsRegisterBuildingVisible] = useState(false);
   const [selectedBuildings, setSelectedBuildings] = useState<string[]>([]);
-  const [currentPage, setCurrentPage] = useState(1); 
-  const itemsPerPage = 10; 
+  const [pagination, setPagination] = useState<
+    Omit<PaginateProps, "onPageChange">
+  >({
+    currentPage: 1,
+    limit: 20,
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+  });
 
   // Create a ref for the chart area
   const chartAreaRef = useRef<HTMLDivElement>(null);
 
   // Fetch building data
-  const { data, isLoading, error } = useQuery({
+  const { data: buildings, isLoading, error } = useQuery({
     queryKey: ["building-data"],
     queryFn: getBuildingData,
   });
 
-  const buildingData = data?.data?.buildings || [];
+  const buildingData = buildings?.data?.buildings || [];
+  
 
+  useEffect(() => {
+    if (buildings)
+      setPagination({
+        currentPage: buildings?.data?.page,
+        hasNextPage: buildings?.data?.hasNextPage,
+        hasPrevPage: buildings?.data?.hasPrevPage,
+        limit: buildings?.data?.limit,
+        totalPages: buildings?.data?.totalPages,
+      });
+  }, [buildings]);
+
+  const handlePageChange = (pgNo: number) => {
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: pgNo,
+    }));
+  };
+
+  console.log('data', buildingData)
 
   if (error) return <div>Error loading buildings data</div>;
 
@@ -115,16 +143,7 @@ const BuildingList = () => {
     });
   };
 
-  const reversedBuildingData = filteredBuildingData.reverse();
-
-  // Pagination logic with reversed data
-  const totalPages = Math.ceil(filteredBuildingData.length / itemsPerPage);
-  const paginatedData = reversedBuildingData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-
+  // const reversedBuildingData = filteredBuildingData.reverse();
 
   return (
     <div className="py-6">
@@ -178,10 +197,9 @@ const BuildingList = () => {
       </div>
 
       {/* Building History or No Data Found */}
-      {paginatedData.length > 0 ? (
-        paginatedData.map((building: any) => (
+      {filteredBuildingData.length > 0 ? (
+        filteredBuildingData.map((building: any) => (
           <>
-          
           <BuildingHistoryCard
             key={building._id}
             serialNumber={building.serialNumber}
@@ -204,14 +222,14 @@ const BuildingList = () => {
         <div className="text-center text-gray-500 mt-4">No data found.</div>
       )}
 
-      {/* Pagination Controls */}
-      {filteredBuildingData.length > itemsPerPage && (
-        <PaginationButtons 
-          totalPages={totalPages} 
-          onPageChange={setCurrentPage} 
-          currentPage={currentPage} 
-        />
+
+       {/* Pagination */}
+       {buildingData && (
+        <div className="mt-8 pr-12 w-fit mx-auto ">
+          <Paginate {...pagination} onPageChange={handlePageChange} />
+        </div>
       )}
+
 
       {/* Charts */}
       <div ref={chartAreaRef} className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm">
