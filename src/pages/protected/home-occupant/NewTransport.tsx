@@ -1,14 +1,17 @@
 import { Button, Input } from "@/components/ui";
+import CustomMapInput from "@/components/ui/customMapInput";
 import ImagePreviewCard from "@/components/ui/ImagePreviewCard";
 import { ITransport } from "@/interfaces/transport.interface";
 import { validateTransportInputs } from "@/lib/utils";
-import { addTransport } from "@/services/homeOwner";
-import { useMutation } from "@tanstack/react-query";
+import { addTransport, getSuggestions } from "@/services/homeOwner";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { MdKeyboardArrowLeft } from "react-icons/md";
+import { FaLocationDot, FaLocationCrosshairs } from "react-icons/fa6";
 import { Oval } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
+import { useDebounce } from "@/hooks/useDebounce";
 
 const NewTransport = () => {
   const navigate = useNavigate();
@@ -16,6 +19,16 @@ const NewTransport = () => {
   const transportPhotoRef = useRef<HTMLInputElement | null>(null);
   const transportIdRef = useRef<HTMLInputElement | null>(null);
   const driversLicenseRef = useRef<HTMLInputElement | null>(null);
+
+  const [transportPhotoPreview, setTransportPhotoPreview] = useState<
+    string | null
+  >(null);
+  const [transportIdPreview, setTransportIdPreview] = useState<string | null>(
+    null
+  );
+  const [driversLicensePreview, setDriversLicensePreview] = useState<
+    string | null
+  >(null);
 
   const initialState: ITransport = {
     transportPhoto: null,
@@ -27,16 +40,8 @@ const NewTransport = () => {
   };
 
   const [formData, setFormData] = useState<ITransport>(initialState);
-
-  const [transportPhotoPreview, setTransportPhotoPreview] = useState<
-    string | null
-  >(null);
-  const [transportIdPreview, setTransportIdPreview] = useState<string | null>(
-    null
-  );
-  const [driversLicensePreview, setDriversLicensePreview] = useState<
-    string | null
-  >(null);
+  const debouncedAddress = useDebounce(formData.address, 500);
+  const debouncedCity = useDebounce(formData.city, 500);
 
   const CreateTransport = useMutation({
     mutationKey: ["create-transport"],
@@ -50,6 +55,20 @@ const NewTransport = () => {
     onError: (ex: any) => {
       toast.error(ex.response.data.message);
     },
+  });
+
+  const { data: addressSuggestions } = useQuery({
+    queryKey: ["suggestions", debouncedAddress],
+    queryFn: () => getSuggestions(debouncedAddress),
+    enabled: debouncedAddress.length >= 3,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: citySuggestions } = useQuery({
+    queryKey: ["suggestions", debouncedCity],
+    queryFn: () => getSuggestions(debouncedCity),
+    enabled: debouncedCity.length >= 3,
+    staleTime: 5 * 60 * 1000,
   });
 
   const handleFileChange = (
@@ -95,6 +114,28 @@ const NewTransport = () => {
       setFormData((prev) => ({
         ...prev,
         [name]: value,
+      }));
+    }
+  };
+
+  const handleOptionClick = (
+    type: "address" | "city",
+    location: {
+      address: {
+        freeformAddress: string;
+        municipality: string;
+      };
+    }
+  ) => {
+    if (type === "address") {
+      setFormData((prev: ITransport) => ({
+        ...prev,
+        address: location.address.freeformAddress,
+      }));
+    } else {
+      setFormData((prev: ITransport) => ({
+        ...prev,
+        city: location.address.municipality,
       }));
     }
   };
@@ -149,7 +190,10 @@ const NewTransport = () => {
         <div className="flex flex-col gap-8 lg:w-3/4 xl:w-2/3 w-full mx-auto mt-10 text-sm">
           {/* Transport photo */}
           <div className="space-y-2">
-            <h2 className="">Transport photo</h2>
+            <h2 className="">
+              Transport photo
+              <span className="font-medium text-sm text-red-500">*</span>
+            </h2>
 
             <input
               type="file"
@@ -256,7 +300,10 @@ const NewTransport = () => {
           </div>
           <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 mt-3 sm:mt-5">
             <div className="space-y-2 w-full">
-              <h2 className="pl-2">Transport license plate number </h2>
+              <h2 className="pl-2">
+                Transport license plate number
+                <span className="font-medium text-sm text-red-500">*</span>
+              </h2>
 
               <Input
                 className="border rounded-xl px-2 text-sm"
@@ -269,27 +316,45 @@ const NewTransport = () => {
           </div>
 
           <div className="space-y-2 w-full">
-            <h2 className="pl-5">Address</h2>
-
-            <Input
-              className="border rounded-xl px-2 text-sm"
-              type="text"
-              name="address"
+            <h2 className="pl-5">
+              Address{" "}
+              <span className="font-medium text-sm text-red-500">*</span>
+            </h2>
+            <CustomMapInput
+              inputName="address"
               value={formData.address}
+              icon={<FaLocationDot size={20} color="#3465AF" />}
               onChange={handleInputChange}
+              options={addressSuggestions}
+              handleOptionClick={(location: any) => {
+                handleOptionClick("address", location);
+              }}
             />
           </div>
 
           <div className="space-y-2 w-full">
-            <h2 className="pl-5">City</h2>
+            <h2 className="pl-5">
+              City <span className="font-medium text-sm text-red-500">*</span>
+            </h2>
 
-            <Input
+            <CustomMapInput
+              inputName="city"
+              value={formData.city}
+              icon={<FaLocationCrosshairs size={20} color="#3465AF" />}
+              onChange={handleInputChange}
+              options={citySuggestions}
+              handleOptionClick={(location: any) => {
+                handleOptionClick("city", location);
+              }}
+            />
+
+            {/* <Input
               className="border rounded-xl px-2 text-sm"
               type="text"
               name="city"
               value={formData.city}
               onChange={handleInputChange}
-            />
+            /> */}
           </div>
 
           <div className="w-full mx-auto ">

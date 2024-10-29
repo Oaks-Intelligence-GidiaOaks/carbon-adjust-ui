@@ -18,13 +18,13 @@ import { setKommunitaToken, setToken } from "@/features/userSlice";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { AuthUserProfile } from "@/types/general";
 import { RootState } from "@/app/store";
-import SocketService from "@/repository/socket";
+// import SocketService from "@/repository/socket";
 
-import {
-  ILoginEventPayload,
-  MonitoringEvent,
-  SubLevelEvent,
-} from "@/interfaces/events.interface";
+// import {
+//   ILoginEventPayload,
+//   MonitoringEvent,
+//   SubLevelEvent,
+// } from "@/interfaces/events.interface";
 import { UserRole } from "@/interfaces/user.interface";
 // import { uniqueObjectsByIdType } from "@/utils";
 // import { RootState } from "@/app/store";
@@ -60,25 +60,28 @@ const Login = () => {
       );
     },
     onSuccess: (data) => {
-      const { user }: { user: AuthUserProfile } = data.data.data;
+      // const { user }: { user: AuthUserProfile } = data.data.data;
 
-      const loginEventPayload: ILoginEventPayload = {
-        userId: user._id,
-        time: Date.now(),
-        eventName: SubLevelEvent.LOGIN_USER_EVENT,
-      };
+      // const loginEventPayload: ILoginEventPayload = {
+      //   userId: user._id,
+      //   time: Date.now(),
+      //   eventName: SubLevelEvent.LOGIN_USER_EVENT,
+      // };
 
-      SocketService.connect(user._id);
+      // SocketService.connect(user._id);
+      // ChatSocketService.connect();
 
-      SocketService.on("connect", () => {
-        SocketService.emit(
-          MonitoringEvent.NEW_SUBLEVEL_EVENT,
-          loginEventPayload
-        );
-      });
+      // SocketService.on("connect", () => {
+      //   SocketService.emit(
+      //     MonitoringEvent.NEW_SUBLEVEL_EVENT,
+      //     loginEventPayload
+      //   );
+      // });
 
       dispatch(setToken(data.data.data.access_token));
       dispatch(setKommunitaToken(data.data.data.kommunita_access_token));
+
+      localStorage.setItem("token", data.data.data.access_token);
 
       if (
         data.data.data.user.roles[0] !== "STAFF" &&

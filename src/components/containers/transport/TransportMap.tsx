@@ -65,27 +65,30 @@ const TransportMap: React.FC<{ positions: any[] }> = ({ positions }) => {
           });
 
         // Add markers and popups for each position
+
         positions.forEach((pos) => {
-          const marker = new atlas.HtmlMarker({
-            color: "dodgerblue",
-            text: pos.text,
-            position: [pos.position[0], pos.position[1]],
-          });
-
-          const popup = new atlas.Popup({
-            content: `<div class="p-5 text-sm">${pos.name}<br>${pos.address}</div>`,
-            pixelOffset: [0, -30],
-          });
-
-          map.events.add("click", marker, () => {
-            popup.setOptions({
+          if (pos.text) {
+            const marker = new atlas.HtmlMarker({
+              color: "dodgerblue",
+              text: pos.text,
               position: [pos.position[0], pos.position[1]],
             });
-            popup.open(map);
-          });
 
-          map.markers.add(marker);
-          map.popups.add(popup);
+            const popup = new atlas.Popup({
+              content: `<div class="p-5 text-sm">${pos.name}<br>${pos.address}</div>`,
+              pixelOffset: [0, -30],
+            });
+
+            map.events.add("click", marker, () => {
+              popup.setOptions({
+                position: [pos.position[0], pos.position[1]],
+              });
+              popup.open(map);
+            });
+
+            map.markers.add(marker);
+            map.popups.add(popup);
+          }
         });
       }
     });
@@ -98,7 +101,7 @@ const TransportMap: React.FC<{ positions: any[] }> = ({ positions }) => {
   return (
     <div
       id="azureMapContainer"
-      className="w-full h-[400px] my-10 relative"
+      className="w-full h-full relative"
     ></div>
   );
 };

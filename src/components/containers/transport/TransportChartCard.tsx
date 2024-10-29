@@ -7,7 +7,7 @@ const TransportChartCard = () => {
     labels: ["Filled", "Empty"],
     datasets: [
       {
-        data: [75, 25],
+        data: [0, 100],
         backgroundColor: ["#4caf50", "#e0e0e0"],
         borderWidth: 0,
       },
@@ -30,8 +30,8 @@ const TransportChartCard = () => {
           </Button>
         </div>
       </div>
-      <div className="mx-auto my-3 py-5 h-[200px] sm:w-full w-[300px]">
-        <GuageChart data={data} Text={"25%"} textColor={"#4caf50"} />
+      <div className="flex items-center justify-center my-3 py-5 h-[250px] sm:w-full w-[300px]">
+        <GuageChart data={data} Text={"0M"} textColor={"#4caf50"} />
       </div>
     </div>
   );
