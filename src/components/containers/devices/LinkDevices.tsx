@@ -1,12 +1,13 @@
 import Loading from "@/components/reusables/Loading";
 import { getBuildingData, linkDevice } from "@/services/homeOwner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
-import PaginationButtons from "@/components/reusables/PageButtons";
 import toast from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa6";
+import { PaginateProps } from "@/types/general";
+import Paginate from "@/components/reusables/Paginate";
 
 type Building = {
   _id: string;
@@ -22,26 +23,50 @@ export const LinkDeviceModal: React.FC<{
   deviceId: any;
 }> = ({ onClose, deviceId }) => {
   const queryClient = useQueryClient();
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedBuilding, setSelectedBuilding] = useState<Building | null>(
     null
   );
   const [isConfirming, setIsConfirming] = useState(false);
 
-  const itemsPerPage = 10;
-
-  // Fetch building data
-  const { data, isLoading } = useQuery({
-    queryKey: ["building-data"],
-    queryFn: () => getBuildingData(),
+  const [pagination, setPagination] = useState<
+    Omit<PaginateProps, "onPageChange">
+  >({
+    currentPage: 1,
+    limit: 20,
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
   });
 
-  const buildingData = data?.data || [];
-  const totalPages = Math.ceil(buildingData.length / itemsPerPage);
-  const paginatedData = buildingData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  // Fetch building data
+  const {
+    data: buildings,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["building-data", pagination.currentPage],
+    queryFn: () => getBuildingData(pagination.limit, pagination.currentPage),
+  });
+
+  const buildingData = buildings?.data?.buildings || [];
+
+  useEffect(() => {
+    if (buildings)
+      setPagination({
+        currentPage: buildings?.data?.page,
+        hasNextPage: buildings?.data?.hasNextPage,
+        hasPrevPage: buildings?.data?.hasPrevPage,
+        limit: buildings?.data?.limit,
+        totalPages: buildings?.data?.totalPages,
+      });
+  }, [buildings]);
+
+  const handlePageChange = (pgNo: number) => {
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: pgNo,
+    }));
+  };
 
   const linkSelectedDevice = useMutation({
     mutationFn: ({
@@ -143,7 +168,7 @@ export const LinkDeviceModal: React.FC<{
           <>
             <h2 className="text-xl font-semibold mb-4">Available Buildings</h2>
             <div className="mt-4 space-y-4 overflow-auto max-h-[70vh]">
-              {paginatedData.map((building: any) => (
+              {buildingData.map((building: any) => (
                 <div key={building.id} className="border rounded-lg">
                   <div className="flex justify-between p-3 border-b">
                     <span className="font-poppins text-black-main font-bold">
@@ -217,12 +242,12 @@ export const LinkDeviceModal: React.FC<{
                 </div>
               ))}
             </div>
-            {buildingData.length > itemsPerPage && (
-              <PaginationButtons
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-                currentPage={currentPage}
-              />
+
+            {/* Pagination */}
+            {buildingData && (
+              <div className="mt-8 pr-12 w-fit mx-auto ">
+                <Paginate {...pagination} onPageChange={handlePageChange} />
+              </div>
             )}
           </>
         )}
