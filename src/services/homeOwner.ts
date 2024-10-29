@@ -272,8 +272,15 @@ export const getGrantSubCategory = async ({
 };
 
 // GET BUILDINGS
-export const getBuildingData = async () => {
-  const { data } = await axiosInstance.get(`/building`);
+export const getBuildingData = async (limit: number = 30, page: number = 1) => {
+  const queryParams = new URLSearchParams();
+
+  queryParams.append("limit", limit.toString());
+  queryParams.append("page", page.toString());
+
+  const url = `/building?${queryParams.toString()}`;
+
+  const { data } = await axiosInstance.get(url);
   return data;
 };
 
@@ -402,15 +409,18 @@ export const deleteEnergyBill = async (
 //GET ENERGY CHART
 export const getEnergyChart = async (buildingIds: string[]) => {
   const { data } = await axiosInstance.post(`/building/chart-ids`, {
-    building_ids: buildingIds, 
+    building_ids: buildingIds,
   });
   return data;
 };
 
 //LINK A DEVICE
 export const linkDevice = async (buildingId: string, deviceIds: string[]) => {
-  const { data } = await axiosInstance.put(`building/${buildingId}/add-devices`, {
-    devices: deviceIds, 
-  });
+  const { data } = await axiosInstance.put(
+    `building/${buildingId}/add-devices`,
+    {
+      devices: deviceIds,
+    }
+  );
   return data;
 };

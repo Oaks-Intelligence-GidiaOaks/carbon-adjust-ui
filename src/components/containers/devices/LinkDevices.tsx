@@ -33,7 +33,7 @@ export const LinkDeviceModal: React.FC<{
   // Fetch building data
   const { data, isLoading } = useQuery({
     queryKey: ["building-data"],
-    queryFn: getBuildingData,
+    queryFn: () => getBuildingData(),
   });
 
   const buildingData = data?.data || [];
@@ -180,10 +180,10 @@ export const LinkDeviceModal: React.FC<{
                           </div>
                           <div>
                             <h4 className="text-[#767A85] font-inter text-xs">
-                              Power rating: 
+                              Power rating:
                             </h4>
                             <p className="font-semibold text-xs font-inter text-[#1F2026]">
-                              {building.powerRating || 'V'}
+                              {building.powerRating || "V"}
                             </p>
                           </div>
                         </div>
