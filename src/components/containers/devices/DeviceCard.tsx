@@ -17,7 +17,7 @@ import {
 } from "@/lib/utils";
 import { RootState } from "@/app/store";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
-import { ConfirmModal, LinkDeviceModal } from "./LinkDevices";
+import {  LinkDeviceModal } from "./LinkDevices";
 
 // @ts-ignore
 import { Link } from "react-router-dom";
@@ -32,7 +32,7 @@ const DeviceCard = (props: Props) => {
   const { device } = useSelector((state: RootState) => state.assets);
   const dispatch = useDispatch();
   const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+ 
 
 
   const handleOpenLinkDeviceModal = () => {
@@ -43,18 +43,7 @@ const DeviceCard = (props: Props) => {
     setIsLinkDeviceModalOpen(false);
   };
 
-  const handleOpenConfirmModal = () => {
-    setIsLinkDeviceModalOpen(false);
-    setIsConfirmModalOpen(true);
-  };
-
-  const handleConfirmLink = () => {
-    setIsConfirmModalOpen(false);
-  };
-
-  const handleCancelLink = () => {
-    setIsConfirmModalOpen(false);
-  };
+ 
 
   const [cardActions, setCardActions] = useState<boolean>(false);
   const [id, setId] = useState<string | null>(null);
@@ -299,7 +288,7 @@ const DeviceCard = (props: Props) => {
 
       <div className="py-2 pl-5">
       <button
-          onClick={handleOpenLinkDeviceModal} // Trigger the action here
+          onClick={handleOpenLinkDeviceModal} 
           className="text-[#139EEC] border-[#139EEC] border !rounded-[15.2px] px-4 py-1 flex-center gap-[7px] text-xs font-[400] font-sans"
         >
           <span>Link Device</span>
@@ -374,16 +363,7 @@ const DeviceCard = (props: Props) => {
       {isLinkDeviceModalOpen && (
         <LinkDeviceModal
           onClose={handleCloseLinkDeviceModal}
-          onLink={handleOpenConfirmModal}
-        />
-      )}
-
-      {/* Confirmation Modal */}
-      {isConfirmModalOpen && (
-        <ConfirmModal
-          message={`Are you sure you want to link your device to ${'duplex'}?`}
-          onConfirm={handleConfirmLink}
-          onCancel={handleCancelLink}
+          deviceId= {props._id}
         />
       )}
       

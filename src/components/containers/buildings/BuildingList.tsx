@@ -19,7 +19,7 @@ const BuildingList = () => {
   const [filterDate, setFilterDate] = useState(""); 
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false); 
   const [isRegisterBuildingVisible, setIsRegisterBuildingVisible] = useState(false);
-  const [selectedBuildings, setSelectedBuildings] = useState<string>('');
+  const [selectedBuildings, setSelectedBuildings] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 10; 
 
@@ -89,14 +89,25 @@ const BuildingList = () => {
   // Function to toggle selection of buildings
   const handleSelectBuilding = (buildingId: string) => {
     setSelectedBuildings((prev) => {
-      const newSelection = prev === buildingId ? '' : buildingId;
-      // Scroll to the chart area if a building is selected
-      if (newSelection) {
+      let newSelection;
+      if (prev.includes(buildingId)) {
+        // Remove the building if it's already selected
+        newSelection = prev.filter(id => id !== buildingId);
+      } else {
+        // Add the building if it's not already selected
+        newSelection = [...prev, buildingId];
+      }
+      
+      // Scroll to the chart area if any building is selected
+      if (newSelection.length > 0) {
         chartAreaRef.current?.scrollIntoView({ behavior: 'smooth' });
       }
+      
       return newSelection;
     });
   };
+
+
 
   // Pagination logic
   const totalPages = Math.ceil(filteredBuildingData.length / itemsPerPage);
@@ -190,13 +201,13 @@ const BuildingList = () => {
       )}
 
       {/* Charts */}
-      <div ref={chartAreaRef} className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm">
+      <div ref={chartAreaRef} className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm">
         <UsageSummary buildingId={selectedBuildings} />
       </div>
-      <div className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm ">
+      <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm ">
         <TrendingProjections buildingId={selectedBuildings} /> 
       </div>
-      <div className="mt-10 bg-white py-9 px-3 md:px-6 md:py-10 shadow-sm ">
+      <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-10 shadow-sm ">
         <CarbonFootPrint buildingId={selectedBuildings} /> 
       </div>
 

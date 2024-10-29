@@ -23,8 +23,8 @@ const BuildingHistoryCard = ({
   floors,
   postCode,
   city,
-  onSelect, // New prop
-  isSelected, // New prop
+  onSelect, 
+  isSelected, 
 }: any) => {
 
   const [checked, setChecked] = useState<boolean>(isSelected);
