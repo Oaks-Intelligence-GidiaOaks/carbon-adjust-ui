@@ -26,7 +26,7 @@ export enum SubLevelEvent {
   ORDER_SUCCESS_EVENT = "Order Success",
   ORDER_FAILURE_EVENT = "Order Failure",
   ORDER_BOOKING_EVENT = "Order Booking",
-  APPLY_FOR_GRANT_EVENT = "Apply for grant"
+  APPLY_FOR_GRANT_EVENT = "Apply for grant",
 }
 
 export interface IPageViewPayload {
@@ -87,3 +87,21 @@ export interface ILoginEventPayload {
 }
 
 export interface ILoginOutPayload extends ILoginEventPayload {}
+
+// CHAT BOT EVENTS
+export enum ChatEvent {
+  USER_MESSAGE = "ca_user_message",
+  AI_MESSAGE = "ca_ai_message",
+}
+
+export interface IChatUserMessage {
+  conversation_id: string;
+  query: string;
+  user_id: string;
+}
+
+export interface IAiMesssage {
+  reply_text: string;
+  conversation_id: string;
+  isAiMessage?: boolean;
+}

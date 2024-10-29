@@ -7,7 +7,6 @@ import { PlusIcon } from "@/assets/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { dispatchDevice, getUserDevices } from "@/services/homeOwner";
 import { Device, IDispatchData } from "@/interfaces/device.interface";
-import Loading from "@/components/reusables/Loading";
 import DeviceDialog from "@/components/dialogs/DeviceDialog";
 import { RootState } from "@/app/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +17,7 @@ import { PaginateProps } from "@/types/general";
 import { useEffect, useState } from "react";
 import DeleteDeviceModal from "@/components/dialogs/DeleteDeviceModal";
 import useMutations from "@/hooks/useMutations";
+import DeviceSkeletonLoader from "@/components/reusables/device/DeviceSkeletonLoader";
 
 const AddedDevices = () => {
   const [id, setId] = useState<string | null>(null);
@@ -42,8 +42,6 @@ const AddedDevices = () => {
     queryKey: ["user-devices", pagination.currentPage],
     queryFn: () => getUserDevices(pagination.limit, pagination.currentPage),
   });
-
- 
 
   useEffect(() => {
     if (userDevices?.data)
@@ -83,11 +81,7 @@ const AddedDevices = () => {
   });
 
   if (isLoading) {
-    return (
-      <div className="h-32 grid place-items-center">
-        <Loading message="loading" />
-      </div>
-    );
+    return <DeviceSkeletonLoader />;
   }
 
   if (userDevices?.data?.devices.length === 0) {

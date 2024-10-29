@@ -19,7 +19,7 @@ class SocketService {
     if (!this.socket) {
       this.socket = io(import.meta.env.VITE_SOCKET_SERVER, {
         query: { userId },
-        transports: ["websocket", "polling"],
+        transports: ["websocket"],
       });
 
       this.socket.on("connect", () => {

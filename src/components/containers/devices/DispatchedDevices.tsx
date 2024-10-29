@@ -1,12 +1,12 @@
 import Search from "@/components/ui/Search";
 import DeviceHistoryCard from "./DeviceHistoryCard";
 import { useQuery } from "@tanstack/react-query";
-import Loading from "@/components/reusables/Loading";
 import { getDispatchedDevices } from "@/services/homeOwner";
 import { IDispatchDevice } from "@/interfaces/device.interface";
 import Paginate from "@/components/reusables/Paginate";
 import { PaginateProps } from "@/types/general";
 import { useEffect, useState } from "react";
+import DispatchListSkeleton from "@/components/reusables/device/DispatchListSkeleton";
 
 const DispatchDevices = (props: { status: string }) => {
   const [pagination, setPagination] = useState<
@@ -50,11 +50,7 @@ const DispatchDevices = (props: { status: string }) => {
   };
 
   if (isLoading) {
-    return (
-      <div className="">
-        <Loading message="Loading.." />
-      </div>
-    );
+    return <DispatchListSkeleton />;
   }
 
   return (
