@@ -24,6 +24,7 @@ jobs:
           VITE_GEO_CODE_URL: ${{ secrets.VITE_GEO_CODE_URL }}
           VITE_AZURE_KEY: ${{ secrets.VITE_AZURE_KEY }}
           VITE_SOCKET_SERVER: https://carbon-adjust-api-v2-d77b19823594.herokuapp.com
+          VITE_CHATBOT_SOCKET_URL: https://ai-api-staging.pollsensei.ai
         run: npm run build # The build command of your project
 
       - name: Push

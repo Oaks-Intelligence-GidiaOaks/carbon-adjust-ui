@@ -24,6 +24,7 @@ jobs:
           VITE_SOCKET_SERVER: https://carbon-adjust-dev-ff1d65869271.herokuapp.com
           VITE_GEO_CODE_URL: https://atlas.microsoft.com/search/address/json?subscription-key={subKey}&typeahead=true&api-version=1&query={query}&language={language}&view=Auto
           VITE_AZURE_KEY: FiLjt76mMRa71Af1349ZyHsJoGpmECMFt9pjrGCR6vhwiMkGccUTJQQJ99AJACYeBjFD6W3fAAAgAZMPoEqf
+          VITE_CHATBOT_SOCKET_URL: https://ai-api-staging.pollsensei.ai
         run: npm run build # The build command of your project
 
       - name: Push
