@@ -17,6 +17,8 @@ import {
 } from "@/lib/utils";
 import { RootState } from "@/app/store";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
+import {  LinkDeviceModal } from "./LinkDevices";
+
 // @ts-ignore
 import { Link } from "react-router-dom";
 import useMutations from "@/hooks/useMutations";
@@ -29,6 +31,19 @@ interface Props extends Device {
 const DeviceCard = (props: Props) => {
   const { device } = useSelector((state: RootState) => state.assets);
   const dispatch = useDispatch();
+  const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
+ 
+
+
+  const handleOpenLinkDeviceModal = () => {
+    setIsLinkDeviceModalOpen(true);
+  };
+
+  const handleCloseLinkDeviceModal = () => {
+    setIsLinkDeviceModalOpen(false);
+  };
+
+ 
 
   const [cardActions, setCardActions] = useState<boolean>(false);
   const [id, setId] = useState<string | null>(null);
@@ -272,7 +287,10 @@ const DeviceCard = (props: Props) => {
       </div>
 
       <div className="py-2 pl-5">
-        <button className="text-[#139EEC] border-[#139EEC] border !rounded-[15.2px] px-4 py-1 flex-center gap-[7px] text-xs font-[400] font-sans">
+      <button
+          onClick={handleOpenLinkDeviceModal} 
+          className="text-[#139EEC] border-[#139EEC] border !rounded-[15.2px] px-4 py-1 flex-center gap-[7px] text-xs font-[400] font-sans"
+        >
           <span>Link Device</span>
           <BoxIcon className="h-5 w-5" />
         </button>
@@ -341,6 +359,14 @@ const DeviceCard = (props: Props) => {
           </Button>
         )}
       </div>
+      {/* Link Device Modal */}
+      {isLinkDeviceModalOpen && (
+        <LinkDeviceModal
+          onClose={handleCloseLinkDeviceModal}
+          deviceId= {props._id}
+        />
+      )}
+      
     </div>
   );
 };

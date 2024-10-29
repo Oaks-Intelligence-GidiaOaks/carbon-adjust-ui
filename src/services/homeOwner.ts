@@ -400,7 +400,17 @@ export const deleteEnergyBill = async (
 };
 
 //GET ENERGY CHART
-export const getEnergyChart = async (buildingId: string) => {
-  const { data } = await axiosInstance.get(`/building/${buildingId}/charts`);
+export const getEnergyChart = async (buildingIds: string[]) => {
+  const { data } = await axiosInstance.post(`/building/chart-ids`, {
+    building_ids: buildingIds, 
+  });
+  return data;
+};
+
+//LINK A DEVICE
+export const linkDevice = async (buildingId: string, deviceIds: string[]) => {
+  const { data } = await axiosInstance.put(`building/${buildingId}/add-devices`, {
+    devices: deviceIds, 
+  });
   return data;
 };

@@ -43,6 +43,8 @@ const AddedDevices = () => {
     queryFn: () => getUserDevices(pagination.limit, pagination.currentPage),
   });
 
+  console.log('devices', userDevices)
+
   useEffect(() => {
     if (userDevices?.data)
       setPagination({
