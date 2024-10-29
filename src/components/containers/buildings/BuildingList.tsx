@@ -36,8 +36,6 @@ const BuildingList = () => {
   const buildingData = data?.data?.buildings || [];
 
 
-
-
   if (error) return <div>Error loading buildings data</div>;
 
   if (isLoading) {
@@ -117,14 +115,16 @@ const BuildingList = () => {
     });
   };
 
+  const reversedBuildingData = filteredBuildingData.reverse();
 
-
-  // Pagination logic
+  // Pagination logic with reversed data
   const totalPages = Math.ceil(filteredBuildingData.length / itemsPerPage);
-  const paginatedData = filteredBuildingData.slice(
+  const paginatedData = reversedBuildingData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+
 
   return (
     <div className="py-6">
