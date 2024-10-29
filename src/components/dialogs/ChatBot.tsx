@@ -1,8 +1,7 @@
-import { LoadingGif } from "@/assets";
 import { useChatbotInput } from "@/hooks/useChatBotInput";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
 import { StopCircle } from "lucide-react";
-import { useRef, useState, useTransition } from "react";
+import { useRef, useState } from "react";
 import { FaMicrophone } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
 import RecorderIndicator from "../ui/RecorderIndicator";
@@ -12,10 +11,6 @@ import useScrollIntoView from "@/hooks/useScrollIntoView";
 const ChatBot = () => {
   const [openChat, setOpenChat] = useState<boolean>(false);
   const ref = useRef<HTMLImageElement | null>(null);
-  const [_, startTransition] = useTransition();
-
-  const [messages, setMessages] = useState<string[]>([]);
-  const [isStreaming, setIsStreaming] = useState<boolean>(false);
 
   const [time, setTime] = useState(0);
   const interval = useRef<NodeJS.Timeout | null>(null);
@@ -32,7 +27,6 @@ const ChatBot = () => {
 
     // transcribeAudio,
     setInputText,
-    // @ts-ignore
     handleSend,
     toggleOngoingRecording,
     playAudio,
@@ -42,6 +36,8 @@ const ChatBot = () => {
     resumeRecording,
     toggleRecordedAudio,
     isPaused,
+
+    messages,
   } = useChatbotInput();
 
   const startTimer = () => {
@@ -86,19 +82,6 @@ const ChatBot = () => {
   useOutsideCloser(ref, openChat, setOpenChat);
   useScrollIntoView(scrollRef, messages);
 
-  const handleSendText = (txt: string) => {
-    setIsStreaming(true);
-
-    startTransition(() => {
-      setInputText("");
-
-      setTimeout(() => {
-        setIsStreaming(false);
-        setMessages((prevMsgs) => [...prevMsgs, txt]);
-      }, 200);
-    });
-  };
-
   const toggleRecording = () => {
     if (isRecording) {
       if (isPaused) {
@@ -118,7 +101,10 @@ const ChatBot = () => {
   };
 
   return (
-    <div ref={ref} className=" fixed bottom-4 right-3 z-[50] ">
+    <div
+      ref={ref}
+      className=" fixed bottom-4 right-3 z-[50] min-w-[280px] w-[400px]"
+    >
       <div
         className={`${
           !openChat && "hidden"
@@ -130,17 +116,15 @@ const ChatBot = () => {
 
         <div className=" bg-[#F7F7F7] flex flex-col">
           <div className="flex flex-col gap-2 px-4 py-5 pb-6 border max-h-[290px] overflow-y-scroll scrollbar-hide">
-            {Array.from({ length: 4 }, (_, i) => (
-              <ChatMessage isLoggedInUser={i % 2 === 0} />
-            ))}
-
             {Array.from(messages, (msg, i) => (
-              <ChatMessage key={i} message={msg} isLoggedInUser={i % 2 === 0} />
+              <ChatMessage
+                key={i}
+                message={msg.text}
+                isLoggedInUser={!msg.isAiMessage}
+              />
             ))}
 
             <div ref={scrollRef} className="h-1"></div>
-
-            {isStreaming && <img src={LoadingGif} className="w-16" alt="" />}
           </div>
 
           <div className="flex-center gap-3 border-t w-full justify-between py-[16px] px-1">
@@ -181,7 +165,7 @@ const ChatBot = () => {
                   <StopCircle size={20} onClick={toggleRecording} />
                 ) : inputText.length > 0 ? (
                   <IoSend
-                    onClick={() => handleSendText(inputText)}
+                    onClick={() => handleSend(inputText)}
                     className="flex-[0.1]"
                     color="#2E599A"
                     size={25}

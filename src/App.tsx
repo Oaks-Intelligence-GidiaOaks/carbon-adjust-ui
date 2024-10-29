@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./app/store";
 import SocketService from "@/repository/socket";
+import ChatSocketService from "./repository/chatSocket";
 
 function App() {
   const queryClient = new QueryClient();
@@ -13,13 +14,15 @@ function App() {
 
   useEffect(() => {
     if (user?._id) {
+      ChatSocketService.connect();
       SocketService.connect(user._id);
     }
 
     return () => {
+      ChatSocketService.disconnect();
       SocketService.disconnect();
     };
-  }, []);
+  }, [user?._id]);
 
   return (
     <QueryClientProvider client={queryClient}>

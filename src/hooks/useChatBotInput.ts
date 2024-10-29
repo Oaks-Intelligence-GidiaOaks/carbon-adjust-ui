@@ -1,15 +1,18 @@
-// @ts-ignore
 import { useState, useCallback, useEffect } from "react";
 // import { useSpeechToText } from "@/hooks/useSpeechToText";
 import { useAudioRecorder } from "@/hooks/useAudioRecorder";
 import { useSpeechToText } from "./useSpeechToText";
+import ChatSocketService from "@/repository/chatSocket";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { IMessage } from "@/interfaces/chatbot.interface";
 
 interface ChatbotInputHook {
   inputText: string;
   isRecording: boolean;
   audioData: Blob | null;
   setInputText: (text: string) => void;
-  handleSend: () => void;
+  handleSend: (msg: string) => void;
   toggleOngoingRecording: () => Promise<void>;
   clearInput: () => void;
   pauseAudio: () => void;
@@ -27,13 +30,35 @@ interface ChatbotInputHook {
   transcript?: string;
   startListening: () => void;
   stopListening: () => void;
+
+  messages: IMessage[];
 }
 
 export const useChatbotInput = (): ChatbotInputHook => {
+  const { user } = useSelector((state: RootState) => state.user);
   const { isListening, transcript, startListening, stopListening } =
     useSpeechToText();
 
   const [inputText, setInputText] = useState<string>("");
+  const [messages, setMessages] = useState<IMessage[]>([]);
+
+  useEffect(() => {
+    const handleMessagesChange = (state: IMessage[]) => setMessages([...state]);
+
+    ChatSocketService.emitter.on("new_message", handleMessagesChange);
+
+    return () => {
+      ChatSocketService.emitter.off("new_message", handleMessagesChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    setInputText(transcript);
+  }, [transcript]);
+
+  useEffect(() => {
+    console.log(messages, "messages");
+  }, [messages]);
 
   const {
     isRecording,
@@ -51,17 +76,15 @@ export const useChatbotInput = (): ChatbotInputHook => {
     isTranscribing,
   } = useAudioRecorder();
 
-  const handleSend = useCallback((): void => {
-    // Emit socket event here
+  const handleSend = (msg: string): void => {
+    ChatSocketService.sendMessage({
+      conversation_id: "",
+      query: msg,
+      user_id: user?._id as string,
+    });
 
-    //
-    console.log("Sending:", inputText);
-    setInputText("");
-    // clearTranscript();
-  }, [
-    inputText,
-    // clearTranscript
-  ]);
+    clearInput();
+  };
 
   const clearInput = useCallback(
     (): void => {
@@ -72,10 +95,6 @@ export const useChatbotInput = (): ChatbotInputHook => {
       // clearTranscript
     ]
   );
-
-  useEffect(() => {
-    setInputText(transcript);
-  }, [transcript]);
 
   return {
     inputText,
@@ -99,5 +118,7 @@ export const useChatbotInput = (): ChatbotInputHook => {
     isListening,
     startListening,
     stopListening,
+
+    messages,
   };
 };

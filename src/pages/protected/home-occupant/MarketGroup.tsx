@@ -76,8 +76,6 @@ const MarketGroup = (_: Props) => {
     ? categoryData?.data?.packages || []
     : [];
 
-  console.log(catProducts);
-
   // Check if the category is "Grant"
   const isGrant = categoryName.toLowerCase() === "grant";
 
