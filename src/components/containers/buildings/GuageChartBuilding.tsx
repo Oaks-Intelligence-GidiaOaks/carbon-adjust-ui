@@ -46,8 +46,8 @@ const CarbonFootPrint = ({ buildingId }: GuaugeChartProps) => {
   if (error) return <div>Error loading data</div>;
 
   const carbonFootprintTracker = response?.data?.carbon_footprint_tracker || {};
-  const carbonFootprint = carbonFootprintTracker.carbon_footprint || 0;
-  const highFootprint = carbonFootprintTracker.high_footprint || 100;
+  const carbonFootprint = Math.round(carbonFootprintTracker.carbon_footprint || 0);
+  const highFootprint = Math.round(carbonFootprintTracker.high_footprint || 100);
 
   const filledValue = Math.min(carbonFootprint, highFootprint);
   const emptyValue = Math.max(0, highFootprint - filledValue);
