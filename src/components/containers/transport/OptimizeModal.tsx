@@ -442,8 +442,9 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                   </div>
                 )} */}
               </div>
-
-              <TransportMap positions={positions} />
+              <div className="h-[500px] my-10">
+                <TransportMap positions={positions} />
+              </div>
 
               <div className="w-full mx-auto ">
                 <Button className="w-full">
