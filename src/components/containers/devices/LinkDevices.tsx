@@ -42,7 +42,6 @@ export const LinkDeviceModal: React.FC<{
   const {
     data: buildings,
     isLoading,
-    error,
   } = useQuery({
     queryKey: ["building-data", pagination.currentPage],
     queryFn: () => getBuildingData(pagination.limit, pagination.currentPage),
