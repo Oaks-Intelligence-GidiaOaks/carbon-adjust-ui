@@ -75,7 +75,7 @@ const TransportChartCard: React.FC<TransportChartCardProps> = ({ ids }) => {
         </div>
       ) : (
         <div
-          className="flex items-center justify-center my-3 py-5 h-[250px] sm:w-full w-[300px]"
+          className="flex items-center justify-center mx-auto my-3 py-5 h-[250px] sm:w-full w-[300px]"
           ref={chartRef}
         >
           <GuageChart

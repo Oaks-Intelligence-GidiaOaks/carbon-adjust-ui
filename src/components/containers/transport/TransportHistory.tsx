@@ -1,5 +1,5 @@
 // import Loading from "@/components/reusables/Loading";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { BiSearch } from "react-icons/bi";
 import { IoFilterSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
@@ -19,6 +19,7 @@ import TransportHistoryCardSkeleton from "./CardSkeleton";
 const TransportHistory = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [ids, setIds] = useState("");
+  const chartAreaRef = useRef<HTMLDivElement>(null);
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
   >({
@@ -42,6 +43,12 @@ const TransportHistory = () => {
   });
 
   const Histories = transportsHistory?.data?.trips?.length > 0;
+
+  useEffect(() => {
+    if (ids.length > 0) {
+      chartAreaRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [ids]);
 
   useEffect(() => {
     setPagination({
@@ -130,7 +137,11 @@ const TransportHistory = () => {
           <Paginate {...pagination} onPageChange={handlePageChange} />
         </div>
       )}
-      {Histories && <TransportChartCard ids={ids}/>}
+      {Histories && (
+        <div ref={chartAreaRef}>
+          <TransportChartCard ids={ids} />
+        </div>
+      )}
     </div>
   );
 };
