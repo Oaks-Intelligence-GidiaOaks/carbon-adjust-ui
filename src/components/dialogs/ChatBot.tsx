@@ -5,8 +5,10 @@ import { useRef, useState } from "react";
 import { FaMicrophone } from "react-icons/fa6";
 import { IoSend } from "react-icons/io5";
 import RecorderIndicator from "../ui/RecorderIndicator";
+// @ts-ignore
 import { MdOutlineTranscribe } from "react-icons/md";
 import useScrollIntoView from "@/hooks/useScrollIntoView";
+import toast from "react-hot-toast";
 
 const ChatBot = () => {
   const [openChat, setOpenChat] = useState<boolean>(false);
@@ -38,6 +40,7 @@ const ChatBot = () => {
     isPaused,
 
     messages,
+    isSocketConnected,
   } = useChatbotInput();
 
   const startTimer = () => {
@@ -98,6 +101,16 @@ const ChatBot = () => {
     }
 
     toggleOngoingRecording();
+  };
+
+  const sendChatMessage = () => {
+    if (!isSocketConnected) {
+      toast.error(`Something went wrong. try reloading the page.`);
+    } else if (!inputText.length) {
+      toast.error(`Please enter a message`);
+    } else {
+      handleSend(inputText);
+    }
   };
 
   return (
@@ -161,11 +174,11 @@ const ChatBot = () => {
 
             {true && (
               <button>
-                {isRecording ? (
+                {false ? (
                   <StopCircle size={20} onClick={toggleRecording} />
-                ) : inputText.length > 0 ? (
+                ) : inputText.length > 0 || true ? (
                   <IoSend
-                    onClick={() => handleSend(inputText)}
+                    onClick={sendChatMessage}
                     className="flex-[0.1]"
                     color="#2E599A"
                     size={25}
@@ -182,12 +195,12 @@ const ChatBot = () => {
             )}
           </div>
 
-          <div
+          {/* <div
             onClick={discardRecording}
             className="mb-3 mx-auto grid place-items-center w-fit h-fit p-3 cursor-pointer bg-gray-300 rounded-full only:"
           >
             <MdOutlineTranscribe size={20} color="blue" />
-          </div>
+          </div> */}
         </div>
       </div>
 
