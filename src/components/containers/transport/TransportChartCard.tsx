@@ -29,7 +29,7 @@ const TransportChartCard: React.FC<TransportChartCardProps> = ({ ids }) => {
   );
 
   const filledValue = Math.min(carbonFootprint, highFootprint);
-  const emptyValue = Math.max(0, highFootprint - filledValue);
+  const emptyValue = highFootprint - filledValue;
 
   const downloadChart = async () => {
     if (chartRef.current) {

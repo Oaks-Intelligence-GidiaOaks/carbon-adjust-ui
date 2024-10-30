@@ -1,12 +1,14 @@
 import { FaAngleUp } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
+import { AiOutlineDownload } from "react-icons/ai";
 import { Button } from "@/components/ui";
 import { useState } from "react";
 import VehicleDetail from "./TransportDetail";
 import { Trips } from "@/interfaces/transport.interface";
-import { formatDateTime, formatTimeToISO } from "@/lib/utils";
+import { formatDateTime, formatTimeToISO, generateKML } from "@/lib/utils";
 import Modal from "@/components/dialogs/Modal";
 import TransportMap from "./TransportMap";
+import { saveAs } from "file-saver";
 
 const TransportHistoryCard = (props: Trips) => {
   const {
@@ -42,6 +44,15 @@ const TransportHistoryCard = (props: Trips) => {
   };
 
   const checked = ids.split(",").includes(_id);
+
+  function downloadKML(data: any[]) {
+    const kmlContent = generateKML(data);
+
+    const blob = new Blob([kmlContent], {
+      type: "application/vnd.google-earth.kml+xml",
+    });
+    saveAs(blob, "optimized-coordinates.kml");
+  }
 
   return (
     <>
@@ -154,6 +165,18 @@ const TransportHistoryCard = (props: Trips) => {
             }`}
             style={{ transitionProperty: "max-height, opacity" }}
           >
+            <Button
+              onClick={() =>
+                tripQueueResponse?.response?.best_route?.route_coordinate &&
+                downloadKML(
+                  tripQueueResponse?.response?.best_route?.route_coordinate
+                )
+              }
+              className="rounded-[20px] flex-center gap-1 mt-2 w-[150px] h-[30px]"
+            >
+              <span>Download Route</span>
+              <AiOutlineDownload />
+            </Button>
             <Button
               onClick={() => {
                 setShowModal(true);

@@ -6,6 +6,7 @@ import { IComponentMap } from "@/types/general";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as XLSX from "xlsx";
+import { create } from "xmlbuilder2";
 import { ITransport } from "@/interfaces/transport.interface";
 
 export function cn(...inputs: ClassValue[]) {
@@ -474,3 +475,23 @@ export const getMerchantRoleColor: IComponentMap = {
   [UserRole.SUPER_MERCHANT]: "bg-teal-500",
   [UserRole.GRANT_MERCHANT]: "bg-teal-400",
 };
+
+export function generateKML(data: any[]) {
+  const root = create({ version: "1.0", encoding: "UTF-8" })
+    .ele("kml", { xmlns: "http://www.opengis.net/kml/2.2" })
+    .ele("Document");
+
+  data.forEach((item) => {
+    const [longitude, latitude] = item.position;
+    root
+      .ele("Placemark")
+      .ele("name")
+      .txt(`optimized-coordinates`)
+      .up()
+      .ele("Point")
+      .ele("coordinates")
+      .txt(`${longitude},${latitude},0`);
+  });
+
+  return root.end({ prettyPrint: true });
+}
