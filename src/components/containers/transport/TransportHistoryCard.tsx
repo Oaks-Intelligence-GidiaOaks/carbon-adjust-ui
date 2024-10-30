@@ -4,9 +4,9 @@ import { Button } from "@/components/ui";
 import { useState } from "react";
 import VehicleDetail from "./TransportDetail";
 import { Trips } from "@/interfaces/transport.interface";
-import { formatTimeToISO } from "@/lib/utils";
+import { formatDateTime, formatTimeToISO } from "@/lib/utils";
 import Modal from "@/components/dialogs/Modal";
-// import TransportMap from "./TransportMap";
+import TransportMap from "./TransportMap";
 
 const TransportHistoryCard = (props: Trips) => {
   const {
@@ -23,45 +23,6 @@ const TransportHistoryCard = (props: Trips) => {
     ids,
     _id,
   } = props;
-
-  // const test = [
-  //   {
-  //     position: [-2.97784, 53.41078],
-  //   },
-  //   {
-  //     position: [-3.09018, 53.24839],
-  //   },
-  //   {
-  //     position: [-3.20252, 53.086],
-  //   },
-  //   {
-  //     position: [-3.31486, 52.92361],
-  //   },
-  //   {
-  //     position: [-3.4272, 52.76122],
-  //   },
-  //   {
-  //     position: [-3.53954, 52.59883],
-  //   },
-  //   {
-  //     position: [-3.65188, 52.43644],
-  //   },
-  //   {
-  //     position: [-3.76422, 52.27405],
-  //   },
-  //   {
-  //     position: [-3.87656, 52.11166],
-  //   },
-  //   {
-  //     position: [-3.9889, 51.94927],
-  //   },
-  //   {
-  //     position: [-4.10124, 51.78688],
-  //   },
-  //   {
-  //     position: [-3.94337, 51.62158],
-  //   },
-  // ];
 
   const [showMore, setShowMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -85,25 +46,29 @@ const TransportHistoryCard = (props: Trips) => {
   return (
     <>
       <div className="flex  bg-[#Fff] border rounded-lg py-5 px-5 sm:px-10 ">
-        <div className="sm:flex hidden">
-          <input
-            type="checkbox"
-            checked={checked}
-            onChange={() => toggleChecked(_id)}
-            className="mr-4 cursor-pointer"
-          />
-        </div>
+        {tripQueueResponse?.status?.toLowerCase() === "completed" && (
+          <div className="sm:flex hidden">
+            <input
+              type="checkbox"
+              checked={checked}
+              onChange={() => toggleChecked(_id)}
+              className="mr-4 cursor-pointer"
+            />
+          </div>
+        )}
         <div className="flex-1 flex-col sm:p-5 divide-y-2">
           <div className="flex justify-between items-center my-2">
             <div className="flex items-center">
-              <div className="sm:hidden block">
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onChange={() => toggleChecked(_id)}
-                  className="mr-4 cursor-pointer"
-                />
-              </div>
+              {tripQueueResponse?.status?.toLowerCase() === "completed" && (
+                <div className="sm:hidden block">
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => toggleChecked(_id)}
+                    className="mr-4 cursor-pointer"
+                  />
+                </div>
+              )}
               <div className="flex flex-col">
                 <h3 className="text-sm font-normal text-gray-700">
                   Plate Number
@@ -152,20 +117,31 @@ const TransportHistoryCard = (props: Trips) => {
             <VehicleDetail title="Mode of transport" des={modeOfTransport} />
             <VehicleDetail title="Transport type" des={transportDetails} />
             <VehicleDetail title="Transport" des={carName || "N/A"} />
-            <VehicleDetail title="Projected Carbon Offset" des={"N/A"} />
+            <VehicleDetail
+              title="Projected Carbon Offset"
+              des={tripQueueResponse?.response?.projected_arbitrage || "N/A"}
+            />
             <VehicleDetail title="Actual Carbon Offset" des={"N/A"} />
             <VehicleDetail
               title="Actual emission"
+              des={tripQueueResponse?.response?.min_emission || "N/A"}
+            />
+            <VehicleDetail
+              title="Scheduled Travel time"
               des={
-                tripQueueResponse?.response?.best_route?.route_emission || "N/A"
+                tripQueueResponse?.response?.best_time
+                  ? formatDateTime(tripQueueResponse?.response?.best_time)
+                  : "N/A"
               }
             />
-            <VehicleDetail title="Scheduled Travel time" des={"N/A"} />
             <VehicleDetail
               title="Arrival time"
               des={
-                tripQueueResponse?.response?.best_route
-                  ?.estimated_arrival_time || "N/A"
+                tripQueueResponse?.response?.estimated_arrival_time
+                  ? formatDateTime(
+                      tripQueueResponse?.response?.estimated_arrival_time
+                    )
+                  : "N/A"
               }
             />
           </div>
@@ -179,7 +155,9 @@ const TransportHistoryCard = (props: Trips) => {
             style={{ transitionProperty: "max-height, opacity" }}
           >
             <Button
-              onClick={() => setShowModal(true)}
+              onClick={() => {
+                setShowModal(true);
+              }}
               className="rounded-[20px] flex-center gap-1 mt-2 w-[150px] h-[30px]"
             >
               <span>View Route</span>
@@ -222,7 +200,15 @@ const TransportHistoryCard = (props: Trips) => {
                     optimized Route
                   </h2>
                   <div className="h-[600px] sm:my-10 my-5 ">
-                    {/* <TransportMap positions={test} /> */}
+                    {tripQueueResponse?.response?.best_route
+                      ?.route_coordinate && (
+                      <TransportMap
+                        positions={
+                          tripQueueResponse?.response?.best_route
+                            ?.route_coordinate
+                        }
+                      />
+                    )}
                   </div>
                 </div>
               </div>

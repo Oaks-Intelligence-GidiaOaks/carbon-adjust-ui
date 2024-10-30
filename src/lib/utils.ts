@@ -63,6 +63,19 @@ export const formatTimeToISO = (input: string): string => {
   }
 };
 
+export function formatDateTime(timestamp: string) {
+  const date = new Date(timestamp);
+
+  const formattedDate = date.toISOString().slice(0, 10); // "YYYY-MM-DD"
+  const formattedTime = date.toISOString().slice(11, 16); // "HH:MM"
+
+  return `${formattedDate} ${formattedTime}`;
+}
+
+// Usage
+const timestamp = "2024-10-29 22:56:00+01:00";
+console.log(formatDateTime(timestamp)); // Output: "2024-10-29 22:56"
+
 export function convertNumberToTimeFormat(hours: any) {
   // Ensure hours is a two-digit string
   const formattedHours = String(hours).padStart(2, "0");
@@ -286,10 +299,10 @@ const transportSchema = Joi.object({
     "any.required": "Transport photo must be uploaded",
   }),
   transportId: Joi.object().allow(null).messages({
-    "any": "Transport ID must be uploaded",
+    any: "Transport ID must be uploaded",
   }),
   driversLicense: Joi.object().allow(null).messages({
-    "any": "Driver's license must be uploaded",
+    any: "Driver's license must be uploaded",
   }),
   licensePlateNumber: Joi.string().required().messages({
     "string.empty": "License plate number is required",

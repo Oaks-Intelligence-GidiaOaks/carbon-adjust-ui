@@ -36,8 +36,8 @@ const TransportHistory = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["transportsHistory", debouncedSearch, ids],
-    queryFn: () => getTransportsHistory(debouncedSearch, ids),
+    queryKey: ["transportsHistory", debouncedSearch],
+    queryFn: () => getTransportsHistory(debouncedSearch, ""),
     enabled: true,
   });
 
@@ -130,7 +130,7 @@ const TransportHistory = () => {
           <Paginate {...pagination} onPageChange={handlePageChange} />
         </div>
       )}
-      {Histories && <TransportChartCard />}
+      {Histories && <TransportChartCard ids={ids}/>}
     </div>
   );
 };
