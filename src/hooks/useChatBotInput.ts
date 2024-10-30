@@ -32,6 +32,7 @@ interface ChatbotInputHook {
   stopListening: () => void;
 
   messages: IMessage[];
+  isSocketConnected: boolean;
 }
 
 export const useChatbotInput = (): ChatbotInputHook => {
@@ -41,14 +42,22 @@ export const useChatbotInput = (): ChatbotInputHook => {
 
   const [inputText, setInputText] = useState<string>("");
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
 
   useEffect(() => {
     const handleMessagesChange = (state: IMessage[]) => setMessages([...state]);
+    const handleSocketConnectionChange = (state: boolean) =>
+      setIsSocketConnected(state);
 
     ChatSocketService.emitter.on("new_message", handleMessagesChange);
+    ChatSocketService.emitter.on("isConnected", handleSocketConnectionChange);
 
     return () => {
       ChatSocketService.emitter.off("new_message", handleMessagesChange);
+      ChatSocketService.emitter.off(
+        "isConnected",
+        handleSocketConnectionChange
+      );
     };
   }, []);
 
@@ -120,5 +129,6 @@ export const useChatbotInput = (): ChatbotInputHook => {
     stopListening,
 
     messages,
+    isSocketConnected,
   };
 };
