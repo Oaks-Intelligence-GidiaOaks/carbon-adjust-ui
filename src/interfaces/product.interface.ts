@@ -3,6 +3,7 @@ import { MultiValue } from "react-select";
 export enum PackageDomain {
   GRANT_PACKAGE = "Grant_Package",
   REGULAR_PACKAGE = "Regular_Package",
+  SUB_PACKAGE = "Sub_Package",
 }
 
 export interface IQuestion {
@@ -20,7 +21,10 @@ export interface IProduct {
   attachments: string[];
   media?: string[];
   hasDownloadedableFile?: boolean;
-  owner: string;
+  owner?: {
+    name: string;
+    _id: string;
+  };
   category?: {
     name: string;
     slug: string;
@@ -45,6 +49,8 @@ export interface IProduct {
   minAmount?: number;
   maxAmount?: number;
   hasGrantDoc?: boolean;
+  rating?: number;
+  packageDomain?: string;
 }
 
 export interface ICategory {

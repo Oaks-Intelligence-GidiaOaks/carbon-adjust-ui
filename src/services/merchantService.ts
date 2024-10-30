@@ -120,9 +120,20 @@ export const getApplicationsChart = async (year: number) => {
 
 // Get SubApplications by PackageID
 export const getSuperMerchantSubApplications = async (
-  applicationId: string
+  applicationId: string,
+  limit: number = 100,
+  page: number = 1
 ) => {
-  const { data } = await axiosInstance.get(`/application/ho/${applicationId}`);
+  let url = `/application/ho/${applicationId}`;
+
+  const queryParams = new URLSearchParams();
+
+  queryParams.append("page", page.toString());
+  queryParams.append("limit", limit.toString());
+
+  url += `?${queryParams.toString()}`;
+
+  const { data } = await axiosInstance.get(url);
 
   return data;
 };

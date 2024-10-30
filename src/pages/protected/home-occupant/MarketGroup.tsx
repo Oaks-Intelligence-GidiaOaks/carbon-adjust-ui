@@ -2,7 +2,10 @@ import Promotion from "@/components/containers/Promotion";
 import ProductCheckout from "@/components/reusables/ProductCheckout";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getPackagesByCategorySlug, getGrantSubCategory } from "@/services/homeOwner";
+import {
+  getPackagesByCategorySlug,
+  getGrantSubCategory,
+} from "@/services/homeOwner";
 import ProductCard from "@/components/reusables/ProductCard";
 import { formatSlug, getBrowserAndOS } from "@/lib/utils";
 import { IProduct } from "@/interfaces/product.interface";
@@ -55,18 +58,26 @@ const MarketGroup = (_: Props) => {
   };
 
   // Fetch sub-category products if pid exists, otherwise fetch by category slug
-  const { data: categoryData, isLoading: categoryLoading, isSuccess: categorySuccess } = useQuery({
-    queryKey: pid ? ["get-subcategory-products", pid] : ["get-category-products", param.category],
+  const {
+    data: categoryData,
+    isLoading: categoryLoading,
+    isSuccess: categorySuccess,
+  } = useQuery({
+    queryKey: pid
+      ? ["get-subcategory-products", pid]
+      : ["get-category-products", param.category],
     queryFn: () =>
-      pid ? getGrantSubCategory({ packageId: pid }) : getPackagesByCategorySlug(param.category),
+      pid
+        ? getGrantSubCategory({ packageId: pid })
+        : getPackagesByCategorySlug(param.category),
   });
 
-  const catProducts: IProduct[] = categorySuccess ? categoryData?.data?.packages || [] : [];
+  const catProducts: IProduct[] = categorySuccess
+    ? categoryData?.data?.packages || []
+    : [];
 
   // Check if the category is "Grant"
   const isGrant = categoryName.toLowerCase() === "grant";
-
-  console.log("Category Data:", categoryData);
 
   return (
     <div className="relative">
@@ -79,15 +90,17 @@ const MarketGroup = (_: Props) => {
           <CategoriesLoading />
         ) : (
           Boolean(catProducts.length) &&
-          catProducts.slice(0, 4).map((item) =>
-            item.discount ? (
-              <SubGrantCard {...item} key={item._id} />
-            ) : isGrant ? (
-              <GrantCard {...item} key={item._id} />
-            ) : (
-              <ProductCard {...item} key={item._id} />
+          catProducts
+            .slice(0, 4)
+            .map((item) =>
+              item.discount ? (
+                <SubGrantCard {...item} key={item._id} />
+              ) : isGrant ? (
+                <GrantCard {...item} key={item._id} />
+              ) : (
+                <ProductCard {...item} key={item._id} />
+              )
             )
-          )
         )}
       </div>
 
@@ -100,15 +113,17 @@ const MarketGroup = (_: Props) => {
           <CategoriesLoading />
         ) : (
           Boolean(catProducts.length) &&
-          catProducts.slice(6).map((item) =>
-            pid ? (
-              <SubGrantCard {...item} key={item._id} />
-            ) : isGrant ? (
-              <GrantCard {...item} key={item._id} />
-            ) : (
-              <ProductCard {...item} key={item._id} />
+          catProducts
+            .slice(6)
+            .map((item) =>
+              pid ? (
+                <SubGrantCard {...item} key={item._id} />
+              ) : isGrant ? (
+                <GrantCard {...item} key={item._id} />
+              ) : (
+                <ProductCard {...item} key={item._id} />
+              )
             )
-          )
         )}
       </div>
 

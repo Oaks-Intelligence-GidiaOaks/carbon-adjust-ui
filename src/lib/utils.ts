@@ -1,10 +1,13 @@
 import { IDevice, IDeviceChartData } from "@/interfaces/device.interface";
 import { UserRole } from "@/interfaces/user.interface";
+import Joi from "joi";
 import { SelectItem } from "@/types/formSelect";
 import { IComponentMap } from "@/types/general";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as XLSX from "xlsx";
+import { create } from "xmlbuilder2";
+import { ITransport } from "@/interfaces/transport.interface";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,6 +35,55 @@ export const formatDate = (createdDate: string) => {
 
   return date.toLocaleDateString("en-US", options as any);
 };
+
+export const formatTimeToISO = (input: string): string => {
+  // Check if the input is in ISO format (starting with 'T')
+  if (input.includes("T")) {
+    // Parse the time from the ISO string (format: 'YYYY-MM-DDTHH:MM:SSZ')
+    const date = new Date(input);
+
+    // Extract hours and minutes
+    const hours = date.getUTCHours().toString().padStart(2, "0");
+    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+
+    // Return the time in 'HH:MM' format
+    return `${hours}:${minutes}`;
+  } else {
+    // If input is in 'HH:MM' format, convert to ISO
+    // Get the current date
+    const currentDate = new Date();
+
+    // Extract hours and minutes from the time string
+    const [hours, minutes] = input.split(":").map(Number);
+
+    // Set hours and minutes in the current date
+    currentDate.setUTCHours(hours, minutes, 0, 0);
+
+    // Return the date in the ISO 8601 format
+    return currentDate.toISOString();
+  }
+};
+
+export function formatDateTime(timestamp: string) {
+  const date = new Date(timestamp);
+
+  const formattedDate = date.toISOString().slice(0, 10); // "YYYY-MM-DD"
+  const formattedTime = date.toISOString().slice(11, 16); // "HH:MM"
+
+  return `${formattedDate} ${formattedTime}`;
+}
+
+// Usage
+const timestamp = "2024-10-29 22:56:00+01:00";
+console.log(formatDateTime(timestamp)); // Output: "2024-10-29 22:56"
+
+export function convertNumberToTimeFormat(hours: any) {
+  // Ensure hours is a two-digit string
+  const formattedHours = String(hours).padStart(2, "0");
+
+  // Return the formatted time
+  return `${formattedHours}:00:00`;
+}
 
 export const formDateWithTime = (
   createdDate: string,
@@ -242,6 +294,33 @@ export const validateDeviceInputs = (formData: IDevice) => {
   return error;
 };
 
+//TRANSPORT VALIDATION
+const transportSchema = Joi.object({
+  transportPhoto: Joi.object().required().messages({
+    "any.required": "Transport photo must be uploaded",
+  }),
+  transportId: Joi.object().allow(null).messages({
+    any: "Transport ID must be uploaded",
+  }),
+  driversLicense: Joi.object().allow(null).messages({
+    any: "Driver's license must be uploaded",
+  }),
+  licensePlateNumber: Joi.string().required().messages({
+    "string.empty": "License plate number is required",
+  }),
+  address: Joi.string().required().messages({
+    "string.empty": "Address is required",
+  }),
+  city: Joi.string().required().messages({
+    "string.empty": "City is required",
+  }),
+});
+
+export const validateTransportInputs = (formData: ITransport) => {
+  const { error } = transportSchema.validate(formData);
+  return error ? error.details[0].message : null;
+};
+
 export const getRemainingHours = (): string[] => {
   const currentDate = new Date();
   const currentHour = currentDate.getHours(); // Get the current hour (0-23)
@@ -396,3 +475,23 @@ export const getMerchantRoleColor: IComponentMap = {
   [UserRole.SUPER_MERCHANT]: "bg-teal-500",
   [UserRole.GRANT_MERCHANT]: "bg-teal-400",
 };
+
+export function generateKML(data: any[]) {
+  const root = create({ version: "1.0", encoding: "UTF-8" })
+    .ele("kml", { xmlns: "http://www.opengis.net/kml/2.2" })
+    .ele("Document");
+
+  data.forEach((item) => {
+    const [longitude, latitude] = item.position;
+    root
+      .ele("Placemark")
+      .ele("name")
+      .txt(`optimized-coordinates`)
+      .up()
+      .ele("Point")
+      .ele("coordinates")
+      .txt(`${longitude},${latitude},0`);
+  });
+
+  return root.end({ prettyPrint: true });
+}

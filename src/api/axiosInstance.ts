@@ -2,7 +2,7 @@ import store, { persistor } from "@/app/store";
 // import { baseURL } from "./../constants/api";
 import axios from "axios";
 
-const token = store.getState().user.token; // Assuming your token is stored in the user slice; // Replace with your Bearer token
+const token = localStorage.getItem("token") || store.getState().user.token; // Assuming your token is stored in the user slice; // Replace with your Bearer token
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -18,7 +18,7 @@ const axiosInstance = axios.create({
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = store.getState().user.token;
+    const token = localStorage.getItem("token") || store.getState().user.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -30,12 +30,8 @@ axiosInstance.interceptors.request.use(
 );
 // Add a response interceptor
 axiosInstance.interceptors.response.use(
-  (config) => {
-    const token = store.getState().user.token;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
+  (response) => {
+    return response;
   },
   (error) => {
     if (error.response.status === 401) {
@@ -43,6 +39,7 @@ axiosInstance.interceptors.response.use(
       persistor.flush().then(() => {
         return persistor.purge();
       });
+      localStorage.removeItem("token");
       window.location.assign("/login?ie=unauthorized");
     }
     return Promise.reject(error);

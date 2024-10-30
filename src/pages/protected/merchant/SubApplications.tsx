@@ -15,7 +15,9 @@ const SubApplications = () => {
     queryFn: () => getSuperMerchantSubApplications(applicationId!),
   });
 
-  const tableApps = isSuccess ? transformApplicationsGridData(data.data) : [];
+  const tableApps = isSuccess
+    ? transformApplicationsGridData(data.data.applications)
+    : [];
 
   const customerName = tableApps[0]?.customer.name;
 

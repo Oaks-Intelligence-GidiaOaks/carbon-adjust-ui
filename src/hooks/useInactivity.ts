@@ -2,14 +2,12 @@ import { useEffect, useRef } from "react";
 
 const useInactivity = (
   logoutCallback: () => void,
-  timeout: number = 10 * 60 * 1000
+  timeout: number = 60 * 60 * 1000
 ) => {
-  const timer = useRef<number | null>(null);
+  const timer = useRef<number>(-1);
 
   const resetTimer = () => {
-    if (timer.current) {
-      clearTimeout(timer.current);
-    }
+    window.clearTimeout(timer.current);
     timer.current = window.setTimeout(logoutCallback, timeout);
   };
 
@@ -20,11 +18,10 @@ const useInactivity = (
       "keypress",
       "scroll",
       "touchstart",
+      "touchmove",
     ];
 
-    const handleActivity = () => {
-      resetTimer();
-    };
+    const handleActivity = () => resetTimer();
 
     events.forEach((event) => {
       window.addEventListener(event, handleActivity);
@@ -34,9 +31,8 @@ const useInactivity = (
     resetTimer();
 
     return () => {
-      if (timer.current) {
-        clearTimeout(timer.current);
-      }
+      window.clearTimeout(timer.current);
+
       events.forEach((event) => {
         window.removeEventListener(event, handleActivity);
       });

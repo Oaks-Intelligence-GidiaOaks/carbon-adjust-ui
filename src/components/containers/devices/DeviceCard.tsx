@@ -6,7 +6,7 @@ import { MdMoreVert } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { deviceChanged, timeChanged } from "@/features/assetSlice";
 import { CurrentDispatchStatus, Device } from "@/interfaces/device.interface";
-import { useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import {
   formDateWithTime,
   getRemainingHours,
@@ -17,11 +17,33 @@ import {
 } from "@/lib/utils";
 import { RootState } from "@/app/store";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
+import {  LinkDeviceModal } from "./LinkDevices";
 
-const DeviceCard = (props: Device) => {
+// @ts-ignore
+import { Link } from "react-router-dom";
+import useMutations from "@/hooks/useMutations";
+import { ThreeDots } from "react-loader-spinner";
+
+interface Props extends Device {
+  setId: Dispatch<SetStateAction<string | null>>;
+}
+
+const DeviceCard = (props: Props) => {
   const { device } = useSelector((state: RootState) => state.assets);
-
   const dispatch = useDispatch();
+  const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
+ 
+
+
+  const handleOpenLinkDeviceModal = () => {
+    setIsLinkDeviceModalOpen(true);
+  };
+
+  const handleCloseLinkDeviceModal = () => {
+    setIsLinkDeviceModalOpen(false);
+  };
+
+ 
 
   const [cardActions, setCardActions] = useState<boolean>(false);
   const [id, setId] = useState<string | null>(null);
@@ -29,6 +51,7 @@ const DeviceCard = (props: Device) => {
   const actionsRef = useRef<null | HTMLDivElement>(null);
 
   useOutsideCloser(actionsRef, cardActions, setCardActions);
+  const { DeleteDevice, CancelDeviceSchedule } = useMutations();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -194,13 +217,21 @@ const DeviceCard = (props: Device) => {
       ref={actionsRef}
       className="absolute bg-white top-8 right-2 max-w-[150px] shadow-lg border space-y-2 rounded-[10px] px-2 py-3"
     >
-      <div className="text-[#414141] cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 ">
-        <span>Edit Device</span>
-      </div>
+      {/* <Link to={`/dashboard/devices/${props._id}/edit`}>
+        <div className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 ">
+          <span>Edit Device</span>
+        </div>
+      </Link> */}
 
-      <div className="text-[#E71D36] cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 ">
+      <button
+        disabled={DeleteDevice.isPending}
+        onClick={() => props.setId(props._id as string)}
+        className={` ${
+          DeleteDevice.isPending ? "text-gray-500" : "text-[#E71D36]"
+        }  cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 `}
+      >
         <span>Delete Device</span>
-      </div>
+      </button>
     </div>
   );
 
@@ -209,11 +240,32 @@ const DeviceCard = (props: Device) => {
     setId(null);
   };
 
+  const handleCancelDeviceSchedule = () => {
+    CancelDeviceSchedule.mutateAsync(props._id as string);
+  };
+
   return (
-    <div className="border-[0.4px] rounded-xl bg-white shadow-md max-w-[392px]">
+    <div className="border-[0.4px] font-poppins rounded-xl bg-white shadow-md max-w-[392px]">
       <div className="flex-center justify-between px-[10px] border-b p-3 relative">
-        <h2 className="font-[600] text-sm font-inter pl-3">{props.name}</h2>
-        <MdMoreVert onClick={() => setCardActions(!cardActions)} />
+        <h2 className="font-[600] text-sm font-inter pl-3 capitalize">
+          {props.name}
+        </h2>
+
+        {DeleteDevice.isPending ? (
+          <ThreeDots
+            visible={true}
+            height="20"
+            width="40"
+            color="#767A85"
+            radius="9"
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        ) : (
+          <MdMoreVert onClick={() => setCardActions(!cardActions)} />
+        )}
+
         {id && <CardPopup />}
 
         {cardActions && <CardActions />}
@@ -235,7 +287,10 @@ const DeviceCard = (props: Device) => {
       </div>
 
       <div className="py-2 pl-5">
-        <button className="text-[#139EEC] border-[#139EEC] border !rounded-[15.2px] px-4 py-1 flex-center gap-[7px] text-xs font-[400] font-sans">
+      <button
+          onClick={handleOpenLinkDeviceModal} 
+          className="text-[#139EEC] border-[#139EEC] border !rounded-[15.2px] px-4 py-1 flex-center gap-[7px] text-xs font-[400] font-sans"
+        >
           <span>Link Device</span>
           <BoxIcon className="h-5 w-5" />
         </button>
@@ -279,16 +334,39 @@ const DeviceCard = (props: Device) => {
 
         {props.currentDispatchStatus === CurrentDispatchStatus.Scheduled && (
           <Button
+            disabled={CancelDeviceSchedule.isPending}
+            onClick={handleCancelDeviceSchedule}
             variant="outline"
             size="sm"
-            className="!rounded-[20px] !px-4 !h-[27px] border-[#B70000] border bg-white"
+            className="!rounded-[20px] !px-4 !h-[27px] border-[#B70000] border bg-white text-center"
           >
-            <span className="text-xs font-sans font-[600] text-[#B70000]">
-              Cancel Schedule
-            </span>
+            {CancelDeviceSchedule.isPending ? (
+              <ThreeDots
+                visible={true}
+                height="40"
+                width="40"
+                // color="#4fa94d"
+                radius="9"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+              />
+            ) : (
+              <span className="text-xs font-sans font-[600] text-[#B70000]">
+                Cancel Schedule
+              </span>
+            )}
           </Button>
         )}
       </div>
+      {/* Link Device Modal */}
+      {isLinkDeviceModalOpen && (
+        <LinkDeviceModal
+          onClose={handleCloseLinkDeviceModal}
+          deviceId= {props._id}
+        />
+      )}
+      
     </div>
   );
 };

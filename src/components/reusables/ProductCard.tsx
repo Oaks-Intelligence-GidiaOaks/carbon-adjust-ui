@@ -3,8 +3,6 @@ import { IProduct } from "@/interfaces/product.interface";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GrFavorite } from "react-icons/gr";
-import { getPackagesReviews } from "@/services/homeOwner";
-import { useQuery } from "@tanstack/react-query";
 import { RootState } from "@/app/store";
 import {
   IAddToBasketEventPayload,
@@ -18,14 +16,10 @@ interface Props extends IProduct {
   wrapText?: boolean;
 }
 
-interface Stats {
-  averageRating: number;
-}
-
 const ProductCard = ({ isMerchant = false, ...props }: Props) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.user);
-  const packageId = props._id;
+
 
   const handleInitiateCheckout = () => {
     dispatch(addProduct({ ...props }));
@@ -44,14 +38,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
     SocketService.emit(MonitoringEvent.NEW_SUBLEVEL_EVENT, basketPayload);
   };
 
-  // Fetch package reviews
-  const { data } = useQuery({
-    queryKey: ["package-review", packageId],
-    queryFn: () => getPackagesReviews({ packageId }),
-  });
-
-  const stats: Stats | null = data?.data?.stats || null;
-  const averageRating = stats?.averageRating || 0;
+  const averageRating = props?.rating || 0;
 
   return (
     <>

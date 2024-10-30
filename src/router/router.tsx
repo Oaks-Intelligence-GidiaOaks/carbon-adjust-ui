@@ -50,8 +50,10 @@ import {
   UserMarketGroup,
   UserMarketPlace,
   UserNewDevice,
+  UserNewTransport,
   UserOrderList,
   UserProfile,
+  UserTransport,
   UserWallet,
 } from "@/pages/protected/home-occupant";
 
@@ -69,6 +71,7 @@ import { AdminStaffOrders } from "@/pages/protected/staffAdmin";
 import AssetsLayout from "@/layouts/AssetsLayout";
 import ComingSoon from "@/components/reusables/ComingSoon";
 import ZohoPage from "@/pages/public/test";
+import BuildingList from "@/components/containers/buildings/BuildingList";
 
 const Router = createBrowserRouter([
   {
@@ -169,6 +172,10 @@ const Router = createBrowserRouter([
             path: "add",
             element: <UserNewDevice />,
           },
+          {
+            path: ":deviceId/edit",
+            element: <UserNewDevice />,
+          },
         ],
       },
       {
@@ -181,7 +188,7 @@ const Router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <ComingSoon />,
+            element: <BuildingList />,
           },
         ],
       },
@@ -191,7 +198,11 @@ const Router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <ComingSoon />,
+            element: <UserTransport />,
+          },
+          {
+            path: "add",
+            element: <UserNewTransport />,
           },
         ],
       },
