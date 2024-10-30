@@ -6,6 +6,7 @@ import { IComponentMap } from "@/types/general";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as XLSX from "xlsx";
+import { create } from "xmlbuilder2";
 import { ITransport } from "@/interfaces/transport.interface";
 
 export function cn(...inputs: ClassValue[]) {
@@ -62,6 +63,19 @@ export const formatTimeToISO = (input: string): string => {
     return currentDate.toISOString();
   }
 };
+
+export function formatDateTime(timestamp: string) {
+  const date = new Date(timestamp);
+
+  const formattedDate = date.toISOString().slice(0, 10); // "YYYY-MM-DD"
+  const formattedTime = date.toISOString().slice(11, 16); // "HH:MM"
+
+  return `${formattedDate} ${formattedTime}`;
+}
+
+// Usage
+const timestamp = "2024-10-29 22:56:00+01:00";
+console.log(formatDateTime(timestamp)); // Output: "2024-10-29 22:56"
 
 export function convertNumberToTimeFormat(hours: any) {
   // Ensure hours is a two-digit string
@@ -286,10 +300,10 @@ const transportSchema = Joi.object({
     "any.required": "Transport photo must be uploaded",
   }),
   transportId: Joi.object().allow(null).messages({
-    "any": "Transport ID must be uploaded",
+    any: "Transport ID must be uploaded",
   }),
   driversLicense: Joi.object().allow(null).messages({
-    "any": "Driver's license must be uploaded",
+    any: "Driver's license must be uploaded",
   }),
   licensePlateNumber: Joi.string().required().messages({
     "string.empty": "License plate number is required",
@@ -461,3 +475,23 @@ export const getMerchantRoleColor: IComponentMap = {
   [UserRole.SUPER_MERCHANT]: "bg-teal-500",
   [UserRole.GRANT_MERCHANT]: "bg-teal-400",
 };
+
+export function generateKML(data: any[]) {
+  const root = create({ version: "1.0", encoding: "UTF-8" })
+    .ele("kml", { xmlns: "http://www.opengis.net/kml/2.2" })
+    .ele("Document");
+
+  data.forEach((item) => {
+    const [longitude, latitude] = item.position;
+    root
+      .ele("Placemark")
+      .ele("name")
+      .txt(`optimized-coordinates`)
+      .up()
+      .ele("Point")
+      .ele("coordinates")
+      .txt(`${longitude},${latitude},0`);
+  });
+
+  return root.end({ prettyPrint: true });
+}

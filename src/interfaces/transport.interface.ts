@@ -67,9 +67,13 @@ export interface Trips {
   setIds: (value: string) => void;
   ids: string;
   tripQueueResponse: {
-    response?: {
+    response: {
       transport_id?: string;
       coordinate?: string;
+      estimated_arrival_time: string;
+      min_emission: string;
+      projected_arbitrage: string;
+      best_time?: string;
       best_route?: {
         route_emission?: number;
         factor?: {
@@ -80,9 +84,8 @@ export interface Trips {
         };
         estimated_arrival_time?: number;
         estimated_distance?: number;
-        route_coordinate?: {
-          latitude: string;
-          longitude: string;
+        route_coordinate: {
+          position: any[];
         }[];
       };
     };

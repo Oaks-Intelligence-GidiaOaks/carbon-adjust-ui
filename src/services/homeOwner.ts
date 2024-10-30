@@ -379,10 +379,12 @@ export const getTransportsHistory = async (
   const url = `/transportation/travel-history?search=${encodeURIComponent(
     searchQuery
   )}&ids=${encodeURIComponent(ids)}`;
+  const { data } = await axiosInstance.get(url);
+  return data;
+};
 
-  // const url = `/transportation/travel-history?search=${encodeURIComponent(
-  //   searchQuery
-  // )}`;
+export const getOptimizeChart = async (ids: string) => {
+  const url = `/transportation/analytics?ids=${encodeURIComponent(ids)}`;
   const { data } = await axiosInstance.get(url);
   return data;
 };
