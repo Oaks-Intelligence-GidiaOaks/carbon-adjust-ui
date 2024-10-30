@@ -271,16 +271,16 @@ export const getGrantSubCategory = async ({
   return data;
 };
 
-// GET BUILDINGS
-export const getBuildingData = async (limit: number = 30, page: number = 1) => {
-  const queryParams = new URLSearchParams();
 
+export const getBuildingData = async (limit: number = 5, page: number = 1) => {
+  const queryParams = new URLSearchParams();
   queryParams.append("limit", limit.toString());
   queryParams.append("page", page.toString());
 
   const url = `/building?${queryParams.toString()}`;
 
   const { data } = await axiosInstance.get(url);
+
   return data;
 };
 
