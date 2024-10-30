@@ -12,6 +12,7 @@ class ChatSocket {
   private url: string;
   private socket: Socket | null = null;
   private chatMessages: IMessage[] = [];
+  private isConnected: boolean = false;
 
   constructor(readonly emitter: EventEmitter, url?: string) {
     this.url = url || (import.meta.env.VITE_CHATBOT_SOCKET_URL as string);
@@ -29,18 +30,22 @@ class ChatSocket {
     if (!this.socket) {
       this.socket = io(this.url, {
         transports: ["websocket"],
-        // reconnectionAttempts: 5,
+        reconnectionAttempts: 8,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,
         timeout: 20000,
       });
 
       this.socket.on("connect", () => {
+        this.isConnected = true;
+        this.emitter.emit("isConnected", this.isConnected);
         console.log("Chatbot Socket connected:", this.socket?.id);
       });
 
       this.socket.on("disconnect", () => {
         console.log("Chat Socket disconnected.....");
+        this.isConnected = false;
+        this.emitter.emit("isConnected", this.isConnected);
         this.socket = null;
       });
 
