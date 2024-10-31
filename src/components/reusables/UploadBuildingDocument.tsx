@@ -103,12 +103,12 @@ const UploadDocumentsModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   {
                     name: "Residential Building",
                     format: "xls",
-                    downloadLink: "/residential_building_data_sample.xlsx",
+                    downloadLink: "/building_data_sample.xlsx",
                   },
                   {
                     name: "Commercial Building",
                     format: "xls",
-                    downloadLink: "/commercial_building_data_sample.xlsx",
+                    downloadLink: "/building_data_sample.xlsx",
                   },
                 ].map((file, index) => (
                   <div
