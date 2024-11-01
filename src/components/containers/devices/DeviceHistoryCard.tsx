@@ -100,18 +100,16 @@ const DeviceHistoryCard = (props: IDispatchDevice) => {
           <div className="space-y-3 ">
             <h4 className="text-[#212121] font-[500]">Projected Offset</h4>
             <h4 className="text-light">
-              {roundNumber(props?.estimatedCC ?? 0)} KgCO2e
+              {roundNumber(props?.estimatedCC ?? 0, 3)} KgCO2e
             </h4>
           </div>
 
           <div className="space-y-3 ">
             <h4 className="text-[#212121] font-[500]">Achieved Offset</h4>
             <h4 className="text-light">
-              {roundNumber(props?.actualCC ?? 0)} KgCO2e
+              {roundNumber(props?.actualCC ?? 0, 3)} KgCO2e
             </h4>
           </div>
-
-        
         </div>
 
         <hr className="" />
