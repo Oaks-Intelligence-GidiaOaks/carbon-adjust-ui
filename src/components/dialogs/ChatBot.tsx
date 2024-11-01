@@ -113,6 +113,11 @@ const ChatBot = () => {
     }
   };
 
+  const handleTranscribe = () => {
+    discardRecording();
+    setTime(0);
+  };
+
   return (
     <div
       ref={ref}
@@ -174,9 +179,9 @@ const ChatBot = () => {
 
             {true && (
               <button>
-                {false ? (
+                {isRecording ? (
                   <StopCircle size={20} onClick={toggleRecording} />
-                ) : inputText.length > 0 || true ? (
+                ) : inputText.length > 0 ? (
                   <IoSend
                     onClick={sendChatMessage}
                     className="flex-[0.1]"
@@ -195,12 +200,14 @@ const ChatBot = () => {
             )}
           </div>
 
-          {/* <div
-            onClick={discardRecording}
-            className="mb-3 mx-auto grid place-items-center w-fit h-fit p-3 cursor-pointer bg-gray-300 rounded-full only:"
-          >
-            <MdOutlineTranscribe size={20} color="blue" />
-          </div> */}
+          {isRecording && (
+            <div
+              onClick={handleTranscribe}
+              className="mb-3 mx-auto grid place-items-center w-fit h-fit p-3 cursor-pointer bg-gray-300 rounded-full only:"
+            >
+              <MdOutlineTranscribe size={20} color="blue" />
+            </div>
+          )}
         </div>
       </div>
 

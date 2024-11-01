@@ -80,7 +80,7 @@ const NewDevice = () => {
   ) => {
     const { name, value, type } = e.target;
 
-    const regex = /^[a-zA-Z0-9]*$/;
+    const regex = /^[a-zA-Z0-9\s]*$/;
 
     if (type === "checkbox") {
       const { checked } = e.target as HTMLInputElement;
