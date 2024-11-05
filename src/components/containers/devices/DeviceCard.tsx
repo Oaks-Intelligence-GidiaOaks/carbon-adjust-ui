@@ -292,30 +292,35 @@ const DeviceCard = (props: Props) => {
       <div
         className={`flex-center justify-between p-3 px-6 min-h-[56px] bg-[#DEE7F2] rounded-b-[10px]`}
       >
-        {!props.currentDispatchTime && Boolean(props.currentDispatchStatus) && (
-          <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
-            <IoAlertCircleSharp />
-            <span>Scheduled</span>
-          </div>
-        )}
+        {Boolean(props.currentDispatchStatus) &&
+          props.currentDispatchStatus === CurrentDispatchStatus.Scheduled &&
+          Boolean(!props.currentDispatchTime) && (
+            <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
+              <IoAlertCircleSharp />
+              <span>Scheduled</span>
+            </div>
+          )}
 
-        {Boolean(!props.currentDispatchStatus) && (
+        {(Boolean(!props.currentDispatchStatus) ||
+          props.currentDispatchStatus === CurrentDispatchStatus.Initiated) && (
           <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
             <IoAlertCircleSharp />
             <span>No dispatch scheduled</span>
           </div>
         )}
 
-        {props.currentDispatchTime && (
-          <div className="flex-center gap-1 font-[500] text-xs font-sans">
-            <span className="bg-gradient-to-r from-[#139EEC] to-[#3465AF] bg-clip-text text-transparent text-xs font-[500]">
-              Dispatch scheduled for{" "}
-              {formDateWithTime(props.currentDispatchTime)}
-            </span>
-          </div>
-        )}
+        {props.currentDispatchTime &&
+          props.currentDispatchStatus !== CurrentDispatchStatus.Initiated && (
+            <div className="flex-center gap-1 font-[500] text-xs font-sans">
+              <span className="bg-gradient-to-r from-[#139EEC] to-[#3465AF] bg-clip-text text-transparent text-xs font-[500]">
+                Dispatch scheduled for{" "}
+                {formDateWithTime(props.currentDispatchTime)}
+              </span>
+            </div>
+          )}
 
-        {!props.currentDispatchStatus && (
+        {(!props.currentDispatchStatus ||
+          props.currentDispatchStatus === CurrentDispatchStatus.Initiated) && (
           <Button
             onClick={() => setId(props._id as string)}
             size="sm"
