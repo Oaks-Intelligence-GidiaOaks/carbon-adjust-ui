@@ -18,15 +18,17 @@ import { useEffect, useState } from "react";
 import DeleteDeviceModal from "@/components/dialogs/DeleteDeviceModal";
 import useMutations from "@/hooks/useMutations";
 import DeviceSkeletonLoader from "@/components/reusables/device/DeviceSkeletonLoader";
+import CancelDeviceScheduleModal from "@/components/dialogs/CancelDeviceScheduleModal";
 
 const AddedDevices = () => {
   const [id, setId] = useState<string | null>(null);
+  const [cancelId, setCancelId] = useState<string | null>(null);
 
   const { device } = useSelector((state: RootState) => state.assets);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
-  const { DeleteDevice } = useMutations();
+  const { DeleteDevice, CancelDeviceSchedule } = useMutations();
 
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
@@ -107,6 +109,21 @@ const AddedDevices = () => {
     });
   };
 
+  const handleCancelSchedule = async () => {
+    await CancelDeviceSchedule.mutateAsync(cancelId as string, {
+      onError: (err: any) => {
+        toast.error(
+          err?.response?.data?.message ||
+            "Error Canceling  device Schedule. Please try again!"
+        );
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: ["user-devices"] });
+        setCancelId(null);
+      },
+    });
+  };
+
   return (
     <div>
       <div className="flex-center mt-[15px]">
@@ -130,7 +147,7 @@ const AddedDevices = () => {
 
       <div className="mt-[15px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5">
         {Array.from(userDevices.data.devices as Device[], (it, i) => (
-          <DeviceCard setId={setId} {...it} key={i} />
+          <DeviceCard setCancelId={setCancelId} setId={setId} {...it} key={i} />
         ))}
       </div>
 
@@ -165,6 +182,14 @@ const AddedDevices = () => {
           cancel={setId}
           deletee={handleDeleteDevice}
           isPending={DeleteDevice.isPending}
+        />
+      )}
+
+      {cancelId && (
+        <CancelDeviceScheduleModal
+          hide={setCancelId}
+          cancel={handleCancelSchedule}
+          isPending={CancelDeviceSchedule.isPending}
         />
       )}
     </div>
