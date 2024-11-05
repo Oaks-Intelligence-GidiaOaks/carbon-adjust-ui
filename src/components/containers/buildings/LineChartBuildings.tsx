@@ -36,7 +36,7 @@ const TrendingProjections = ({ buildingId }: LineChartProps) => {
       const canvas = await html2canvas(chartRef.current, {
         scale: 2, // For better quality
         useCORS: true,
-        backgroundColor: null // Optional: For transparent backgrounds
+        backgroundColor: 'white' 
       });
 
       // Reset the original height after capturing

@@ -1,14 +1,14 @@
 import {  PlusCircleIcon, Search } from "lucide-react";
 import BuildingHistoryCard from "./BuildingHistoryCard";
 import { useState, useRef, useEffect } from "react";
-import UploadDocumentsModal from "@/components/reusables/UploadBuildingDocument";
+import UploadDocumentsModal from "@/components/containers/buildings/UploadBuildingDocument";
 import { MdFilterList } from "react-icons/md";
 import UsageSummary from "./BarChartBuilding";
 import TrendingProjections from "./LineChartBuildings";
 import { useQuery } from "@tanstack/react-query";
 import { getBuildingData } from "@/services/homeOwner";
-import BuildingEmptyState from "@/components/reusables/EmptyStateBuildings";
-import RegisterBuilding from "@/components/reusables/RegisterBuilding";
+import BuildingEmptyState from "@/components/containers/buildings/EmptyStateBuildings";
+import RegisterBuilding from "@/components/containers/buildings/RegisterBuilding";
 import CarbonFootPrint from "./GuageChartBuilding";
 import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/material/Box";

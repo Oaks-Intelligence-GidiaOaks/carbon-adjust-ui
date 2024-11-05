@@ -1,7 +1,7 @@
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import FileUpload from "./FileUpload";
+import FileUpload from "../../reusables/FileUpload";
 import { uploadBuildingData } from "@/services/homeOwner";
 import { FaFileAlt, FaSpinner } from "react-icons/fa";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -29,16 +29,28 @@ const UploadDocumentsModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       onClose();
     },
     onError: (err: any) => {
-      const errorMessage =
-        err.response?.data?.message || "An unknown error occurred";
-      const errorType = err.response?.data?.error || "Error";
-      toast.error(`${errorType}: ${errorMessage}`);
+      const errorMessage = err.response?.data?.message || "An unknown error occurred";
+  
+  
+      // Parse the error message if it's a JSON string
+      let formattedMessages = [];
+  
+      try {
+        // Check if errorMessage is a valid JSON string
+        const parsedMessages = JSON.parse(errorMessage);
+        formattedMessages = parsedMessages.map((msg: any) => msg.message);
+      } catch (e) {
+        // If parsing fails, fallback to the original message
+        formattedMessages = [errorMessage];
+      }
+  
+      toast.error(`${formattedMessages.join(", ")}`);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["upload-building-document"] });
+      queryClient.invalidateQueries({ queryKey: ["building-data"] });
     },
   });
-
+  
   const handleSubmit = () => {
     if (commercialFile || residentialFile) {
       const formData = new FormData();
