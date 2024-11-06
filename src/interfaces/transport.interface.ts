@@ -17,6 +17,8 @@ export interface Transport {
   city: string;
   emissionFactor: string;
   licensePlateNumber: string;
+  setIds: (value: string) => void;
+  ids: string;
 }
 
 export interface ITransport {
@@ -64,8 +66,6 @@ export interface Trips {
   routePreference: string;
   latestArrivalTime: string;
   carName: string;
-  setIds: (value: string) => void;
-  ids: string;
   tripQueueResponse: {
     response: {
       transport_id?: string;

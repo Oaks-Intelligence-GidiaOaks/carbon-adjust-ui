@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui";
 import { PlusIcon } from "@/assets/icons";
 import TransportCard from "./TransportCard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import OptimizeModal from "./OptimizeModal";
 import { getTransports } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
@@ -14,10 +14,15 @@ import { PaginateProps } from "@/types/general";
 import NoDevices from "../devices/NoDevices";
 import { useDebounce } from "@/hooks/useDebounce";
 import TransportHistoryCardSkeleton from "./CardSkeleton";
+import TransportChartCard from "./TransportChartCard";
+import TransportLineChart from "./TransportLineChart";
+import TransportBarChart from "./TransportBarChart";
 
 const Vehicles = () => {
   const [showModal, setShowModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [ids, setIds] = useState("");
+  const chartAreaRef = useRef<HTMLDivElement>(null);
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
   >({
@@ -60,6 +65,12 @@ const Vehicles = () => {
 
     refetch();
   };
+
+  useEffect(() => {
+    if (ids.length > 0) {
+      chartAreaRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [ids]);
 
   return (
     <div>
@@ -117,7 +128,9 @@ const Vehicles = () => {
             {Vehicles ? (
               Array.from(
                 transports.data.transportationRecords as Transport[],
-                (it, i) => <TransportCard {...it} key={i} />
+                (it, i) => (
+                  <TransportCard {...it} key={i} setIds={setIds} ids={ids} />
+                )
               )
             ) : (
               <div className="h-32 grid place-items-center max-w-[98%]">
@@ -133,6 +146,13 @@ const Vehicles = () => {
       {Vehicles && (
         <div className="mt-8 pr-12 w-fit mx-auto">
           <Paginate {...pagination} onPageChange={handlePageChange} />
+        </div>
+      )}
+      {Vehicles && (
+        <div ref={chartAreaRef}>
+          <TransportLineChart ids={ids} />
+          <TransportBarChart ids={ids} />
+          <TransportChartCard ids={ids} />
         </div>
       )}
     </div>

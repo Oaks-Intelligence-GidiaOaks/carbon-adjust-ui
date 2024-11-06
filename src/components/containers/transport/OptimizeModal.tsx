@@ -16,7 +16,7 @@ import SelectInput from "@/components/ui/SelectInput";
 import { useDebounce } from "@/hooks/useDebounce";
 import { getSuggestions, getTransports, Optimize } from "@/services/homeOwner";
 import { TravelDetails } from "@/interfaces/transport.interface";
-import { Routes, TransportDetails } from "@/constants/transport";
+import { Routes, TransportDetails, TravelWindow } from "@/constants/transport";
 import { convertNumberToTimeFormat, formatTimeToISO } from "@/lib/utils";
 import { RotatingLines } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
@@ -79,7 +79,7 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
 
   const transformedTransports =
     transports?.data?.transportationRecords?.map((record: any) => ({
-      label: record.vehicleManufacturer,
+      label: record.licensePlateNumber,
       value: record._id,
     })) || [];
 
@@ -362,17 +362,14 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
 
               <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 mt-3 sm:mt-10">
                 <div className="space-y-2 w-full">
-                  <h2 className="pl-2 text-sm">
-                    Duration of Travel window (hours)
-                  </h2>
+                  <h2 className="pl-2 text-sm">Travel window (hours)</h2>
 
-                  <Input
-                    className="border rounded-xl px-2 text-sm w-[100%]"
-                    type="number"
-                    name="durationOfTravelWindow"
-                    inputClassName="w-full"
+                  <SelectInput
+                    options={TravelWindow}
                     value={formData.durationOfTravelWindow}
-                    onChange={handleInputChange}
+                    onChange={(e) =>
+                      handleSelectInputChange(e, "durationOfTravelWindow")
+                    }
                   />
                 </div>
 
@@ -400,19 +397,7 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                     }
                   />
                 </div>
-                {formData.transportDetails.value === "Private" ? (
-                  <div className="space-y-2 w-full">
-                    <h2 className="pl-2 text-sm">Transportation</h2>
-
-                    <SelectInput
-                      options={transformedTransports}
-                      value={formData.transportation}
-                      onChange={(e) =>
-                        handleSelectInputChange(e, "transportation")
-                      }
-                    />
-                  </div>
-                ) : (
+                {formData.transportDetails.value === "Other" ? (
                   <div className="space-y-2 w-full">
                     <h2 className="pl-2 text-sm">Plate Number</h2>
 
@@ -423,6 +408,18 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                       inputClassName="w-full"
                       value={formData.plateNumber}
                       onChange={handleInputChange}
+                    />
+                  </div>
+                ) : (
+                  <div className="space-y-2 w-full">
+                    <h2 className="pl-2 text-sm">Transportation</h2>
+
+                    <SelectInput
+                      options={transformedTransports}
+                      value={formData.transportation}
+                      onChange={(e) =>
+                        handleSelectInputChange(e, "transportation")
+                      }
                     />
                   </div>
                 )}

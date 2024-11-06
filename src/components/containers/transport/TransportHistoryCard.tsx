@@ -21,29 +21,10 @@ const TransportHistoryCard = (props: Trips) => {
     plateNumber,
     carName,
     tripQueueResponse,
-    setIds,
-    ids,
-    _id,
   } = props;
 
   const [showMore, setShowMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
-  const toggleChecked = (id: string) => {
-    const idsArray = ids ? ids.split(",") : [];
-
-    if (idsArray.includes(id)) {
-      const updatedIds = idsArray.filter(
-        (existingId: string) => existingId !== id
-      );
-      setIds(updatedIds.join(","));
-    } else {
-      idsArray.push(id);
-      setIds(idsArray.join(","));
-    }
-  };
-
-  const checked = ids.split(",").includes(_id);
 
   function downloadKML(data: any[]) {
     const kmlContent = generateKML(data);
@@ -57,29 +38,9 @@ const TransportHistoryCard = (props: Trips) => {
   return (
     <>
       <div className="flex  bg-[#Fff] border rounded-lg py-5 px-5 sm:px-10 ">
-        {tripQueueResponse?.status?.toLowerCase() === "completed" && (
-          <div className="sm:flex hidden">
-            <input
-              type="checkbox"
-              checked={checked}
-              onChange={() => toggleChecked(_id)}
-              className="mr-4 cursor-pointer"
-            />
-          </div>
-        )}
         <div className="flex-1 flex-col sm:p-5 divide-y-2">
           <div className="flex justify-between items-center my-2">
             <div className="flex items-center">
-              {tripQueueResponse?.status?.toLowerCase() === "completed" && (
-                <div className="sm:hidden block">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => toggleChecked(_id)}
-                    className="mr-4 cursor-pointer"
-                  />
-                </div>
-              )}
               <div className="flex flex-col">
                 <h3 className="text-sm font-normal text-gray-700">
                   Plate Number

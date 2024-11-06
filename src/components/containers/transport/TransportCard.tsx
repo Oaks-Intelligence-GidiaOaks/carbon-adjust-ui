@@ -1,4 +1,3 @@
-import { MdMoreVert } from "react-icons/md";
 import { FaAngleUp } from "react-icons/fa";
 import { Button } from "@/components/ui";
 import { useState } from "react";
@@ -17,11 +16,28 @@ const TransportCard = (props: Transport) => {
     city,
     emissionFactor,
     licensePlateNumber,
+    setIds,
+    ids,
   } = props;
 
   const [showMore, setShowMore] = useState(false);
 
- 
+  const toggleChecked = (id: string) => {
+    const idsArray = ids ? ids.split(",") : [];
+
+    if (idsArray.includes(id)) {
+      const updatedIds = idsArray.filter(
+        (existingId: string) => existingId !== id
+      );
+      setIds(updatedIds.join(","));
+    } else {
+      idsArray.push(id);
+      setIds(idsArray.join(","));
+    }
+  };
+
+  const checked = ids.split(",").includes(_id);
+
   return (
     <>
       <div className="flex flex-col bg-[#Fff] border rounded-lg py-5 sm:px-10 px-5 divide-y-2 ">
@@ -36,7 +52,12 @@ const TransportCard = (props: Transport) => {
               </h4>
             </div>
           </div>
-          <MdMoreVert />
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={() => toggleChecked(_id)}
+            className="mr-4 cursor-pointer"
+          />
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 py-5">
@@ -45,6 +66,12 @@ const TransportCard = (props: Transport) => {
           <VehicleDetail title="Year of purchase" des={yearOfPurchase} />
           <VehicleDetail title="Car Model" des={carModel} />
           <VehicleDetail title="fuel type" des={fuelType} />
+          <VehicleDetail
+            title="Total Projected Carbon Offset"
+            des={yearOfPurchase}
+          />
+          <VehicleDetail title="Total Actual Carbon Offset" des={carModel} />
+          <VehicleDetail title="Total Actual emission" des={fuelType} />
         </div>
         <div
           className={`flex flex-col sm:flex-row gap-5  items-start transition-all duration-500 ease-in-out overflow-hidden ${
@@ -66,7 +93,6 @@ const TransportCard = (props: Transport) => {
               <VehicleDetail title="city" des={city} />
             </div>
             <VehicleDetail title="emission factor" des={emissionFactor} />
-
           </div>
         </div>
 
