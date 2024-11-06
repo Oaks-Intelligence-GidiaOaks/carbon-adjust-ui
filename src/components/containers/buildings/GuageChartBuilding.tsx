@@ -118,6 +118,14 @@ const CarbonFootPrint = ({ buildingId }: GuaugeChartProps) => {
     // enabled: buildingId.length > 0,
   });
 
+  if (isLoading) {
+    return (
+      <div className="h-32 grid place-items-center">
+        <Loading message="Carbon Footprint score loading..." />
+      </div>
+    );
+  }
+
   if (error) return <div>Error loading data</div>;
 
   const carbonFootprintTracker = response?.data?.carbon_footprint_tracker || {};
@@ -165,11 +173,8 @@ const CarbonFootPrint = ({ buildingId }: GuaugeChartProps) => {
           <GoDownload />
         </button>
       </div>
-      {isLoading ? (
-        <div className="h-32 grid place-items-center">
-          <Loading message="Carbon Footprint score loading..." />
-        </div>
-      ) : (
+     
+   
         <div
           className="flex items-center justify-center mx-auto my-3 py-5 h-[250px] sm:w-full w-[300px]"
           ref={chartRef}
@@ -180,7 +185,6 @@ const CarbonFootPrint = ({ buildingId }: GuaugeChartProps) => {
             textColor={"#4caf50"}
           />
         </div>
-      )}
     </div>
   );
 };

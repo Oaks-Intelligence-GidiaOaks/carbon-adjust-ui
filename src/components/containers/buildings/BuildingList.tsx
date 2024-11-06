@@ -43,7 +43,9 @@ const BuildingList = () => {
  
 
   const buildingData = buildings?.data?.buildings || [];
-  
+     
+
+  console.log('h', buildingData)
 
   useEffect(() => {
     if (buildings)
@@ -212,6 +214,7 @@ const BuildingList = () => {
             voltageLevel={building.voltageLevel}
             floors={building.numberOfFloors}
             postCode={building.address.postalCode}
+          optimizationStatus={building.optimizationStatus}
             city={building.address.cityOrProvince}
             onSelect={handleSelectBuilding} 
             isSelected={selectedBuildings.includes(building._id)} 
