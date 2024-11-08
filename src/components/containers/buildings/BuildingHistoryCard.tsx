@@ -113,16 +113,20 @@ optimizationStatus,
   };
   
   
-
+  // Render N/A if optimizationStatus is not provided
+  const displayedStatus = optimizationStatus || "N/A";
 
   return (
     <div className="bg-white border-[0.5px] mb-7 rounded-md shadow-sm flex flex-col md:flex-row p-4 lg:p-6 text-sm lg:text-base cursor-pointer">
-      <input
-        type="checkbox"
-        checked={isSelected}
-        onChange={toggleChecked}
-        className="mr-4"
-      />
+     {/* Conditionally render the checkbox based on optimizationStatus */}
+     {optimizationStatus && (
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={toggleChecked}
+          className="mr-4"
+        />
+      )}
       <div className="flex-1">
         {/* Building Main Details */}
         <div className="flex flex-col md:flex-row justify-between items-start">
@@ -138,7 +142,7 @@ optimizationStatus,
               <div>
                 <h4 className="font-poppins text-[#212121]">Status</h4>
                 <span className={`pr-3 rounded-2xl font-poppins w-fit text-sm flex items-center ${getStatusStyles()}`}>
-                  <Dot className="size-7" /> {optimizationStatus}
+                  <Dot className="size-7" /> {displayedStatus}
                 </span>
               </div>
             
