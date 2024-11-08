@@ -98,7 +98,7 @@ const OrderList = (_: Props) => {
     <div className="">
       <div className="h-[150px] bg-[#F5FAFF] flex items-center justify-between pl-6 lg:pl-[50px]">
         <h2 className="font-[500] text-xl">Order List</h2>
-        <Button className="font-poppins" onClick={handlePurchaseClick}>
+        <Button className="font-poppins mr-10" onClick={handlePurchaseClick}>
           Purchases
         </Button>
       </div>
