@@ -1,7 +1,7 @@
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import FileUpload from "./FileUpload";
+import FileUpload from "../../reusables/FileUpload";
 import { FaSpinner } from "react-icons/fa"; 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadEnergyBills } from "@/services/homeOwner";
@@ -24,7 +24,7 @@ const UploadEnergyBillsModal: React.FC<ModalProps> = ({ isOpen, onClose, buildin
     mutationFn: (formData: FormData) => uploadEnergyBills(buildingId, formData),
     onSuccess: () => {
       toast.success("Energy bills uploaded successfully.");
-      queryClient.invalidateQueries({ queryKey: ["upload-energy-bills"] });
+      queryClient.invalidateQueries({ queryKey: ["b"] });
       onClose(); 
     },
     onError: () => {

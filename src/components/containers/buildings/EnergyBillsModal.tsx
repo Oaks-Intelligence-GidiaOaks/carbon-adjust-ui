@@ -49,7 +49,7 @@ const EnergyBillsModal = ({ isOpen, closeModal, buildingId }: ModalProps) => {
     mutationFn: (energyBillsId: number) =>
       deleteEnergyBill(buildingId, energyBillsId.toString()),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["building-energy-bills"] });
+      queryClient.invalidateQueries({ queryKey: ["building-data"] });
       toast.success("Energy bill deleted successfully!", { duration: 5000 });
     },
   });
