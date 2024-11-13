@@ -16,6 +16,8 @@ const TransportCard = (props: Transport) => {
     city,
     emissionFactor,
     licensePlateNumber,
+    totalEmission,
+    totalProjectedCarbonOffset,
     setIds,
     ids,
   } = props;
@@ -23,20 +25,14 @@ const TransportCard = (props: Transport) => {
   const [showMore, setShowMore] = useState(false);
 
   const toggleChecked = (id: string) => {
-    const idsArray = ids ? ids.split(",") : [];
-
-    if (idsArray.includes(id)) {
-      const updatedIds = idsArray.filter(
-        (existingId: string) => existingId !== id
-      );
-      setIds(updatedIds.join(","));
+    if (ids.includes(id)) {
+      setIds(ids.filter((existingId) => existingId !== id));
     } else {
-      idsArray.push(id);
-      setIds(idsArray.join(","));
+      setIds([...ids, id]);
     }
   };
 
-  const checked = ids.split(",").includes(_id);
+  const checked = ids.includes(_id);
 
   return (
     <>
@@ -68,10 +64,10 @@ const TransportCard = (props: Transport) => {
           <VehicleDetail title="fuel type" des={fuelType} />
           <VehicleDetail
             title="Total Projected Carbon Offset"
-            des={yearOfPurchase}
+            des={totalProjectedCarbonOffset}
           />
-          <VehicleDetail title="Total Actual Carbon Offset" des={carModel} />
-          <VehicleDetail title="Total Actual emission" des={fuelType} />
+          <VehicleDetail title="Total Actual Carbon Offset" des={"N/A"} />
+          <VehicleDetail title="Total Actual emission" des={totalEmission} />
         </div>
         <div
           className={`flex flex-col sm:flex-row gap-5  items-start transition-all duration-500 ease-in-out overflow-hidden ${

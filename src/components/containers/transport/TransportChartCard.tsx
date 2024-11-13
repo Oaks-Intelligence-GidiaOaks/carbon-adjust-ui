@@ -8,7 +8,7 @@ import { useRef } from "react";
 import html2canvas from "html2canvas";
 
 interface TransportChartCardProps {
-  ids: string;
+  ids: string[];
 }
 
 const TransportChartCard: React.FC<TransportChartCardProps> = ({ ids }) => {

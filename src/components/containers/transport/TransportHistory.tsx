@@ -41,8 +41,6 @@ const TransportHistory = () => {
 
   const Histories = transportsHistory?.data?.trips?.length > 0;
 
-
-
   useEffect(() => {
     setPagination({
       currentPage: transportsHistory?.data.page,
@@ -76,7 +74,7 @@ const TransportHistory = () => {
             />
             <input
               name="search"
-              placeholder="Search here"
+              placeholder="Search transport type, mode of transport"
               className="h-full w-full pl-10 m-0 bg-transparent text-sm outline-none border-none"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -111,9 +109,12 @@ const TransportHistory = () => {
                 <TransportHistoryCard {...it} key={i} />
               ))
             ) : (
-              // Render "No Devices" message if there are no records
               <div className="h-32 grid place-items-center max-w-[98%]">
-                <NoDevices link="/dashboard/transport/add" text="Transport" />
+                {searchQuery ? (
+                  <div>No Result matched your query</div>
+                ) : (
+                  <NoDevices link="/dashboard/transport/add" text="Transport" />
+                )}
               </div>
             )}
           </>

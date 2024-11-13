@@ -1,4 +1,5 @@
 import { SelectItem } from "@/types/formSelect";
+import { Dispatch, SetStateAction } from "react";
 import { PropsValue } from "react-select";
 
 export enum TransportTabs {
@@ -17,8 +18,10 @@ export interface Transport {
   city: string;
   emissionFactor: string;
   licensePlateNumber: string;
-  setIds: (value: string) => void;
-  ids: string;
+  setIds: Dispatch<SetStateAction<string[]>>
+  ids: string[];
+  totalEmission: string;
+  totalProjectedCarbonOffset: string;
 }
 
 export interface ITransport {

@@ -8,7 +8,7 @@ import { useRef } from "react";
 import { Button } from "@/components/ui";
 
 interface TransportBarChartProps {
-  ids: string;
+  ids: string[];
 }
 
 const TransportBarChart = ({ ids }: TransportBarChartProps) => {
@@ -97,14 +97,6 @@ const TransportBarChart = ({ ids }: TransportBarChartProps) => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="h-32 grid place-items-center">
-        <Loading message="Aggregate Energy Bill loading..." />
-      </div>
-    );
-  }
-
   return (
     <div className=" flex flex-col bg-[#Fff] border rounded-lg p-5 mt-5">
       <div className="flex justify-between items-center mt-2 mb-5 sm:px-5">
@@ -118,9 +110,15 @@ const TransportBarChart = ({ ids }: TransportBarChartProps) => {
           <AiOutlineDownload />
         </Button>
       </div>
-      <div ref={chartRef}>
-        <BarChart data={data} options={options} />
-      </div>
+      {isLoading ? (
+        <div className="h-32 grid place-items-center">
+          <Loading message="Carbon Tracker chart loading..." />
+        </div>
+      ) : (
+        <div ref={chartRef}>
+          <BarChart data={data} options={options} />
+        </div>
+      )}
     </div>
   );
 };

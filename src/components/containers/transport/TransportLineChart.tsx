@@ -8,7 +8,7 @@ import { Button } from "@/components/ui";
 import { LineChart } from "@/components/charts";
 
 interface TransportLineChartProps {
-  ids: string;
+  ids: string[];
 }
 
 const TransportLIneChart = ({ ids }: TransportLineChartProps) => {
@@ -41,14 +41,6 @@ const TransportLIneChart = ({ ids }: TransportLineChartProps) => {
       link.click();
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="h-32 grid place-items-center">
-        <Loading message="Transition score loading..." />
-      </div>
-    );
-  }
 
   const transitionScore = response?.data?.transition_score || {};
 
@@ -148,9 +140,15 @@ const TransportLIneChart = ({ ids }: TransportLineChartProps) => {
           <AiOutlineDownload />
         </Button>
       </div>
-      <div ref={chartRef}>
-        <LineChart data={data} options={options} />
-      </div>
+      {isLoading ? (
+        <div className="h-32 grid place-items-center">
+          <Loading message="Transition score loading..." />
+        </div>
+      ) : (
+        <div ref={chartRef}>
+          <LineChart data={data} options={options} />
+        </div>
+      )}
     </div>
   );
 };

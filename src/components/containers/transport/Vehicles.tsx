@@ -21,7 +21,7 @@ import TransportBarChart from "./TransportBarChart";
 const Vehicles = () => {
   const [showModal, setShowModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [ids, setIds] = useState("");
+  const [ids, setIds] = useState<string[]>([]);
   const chartAreaRef = useRef<HTMLDivElement>(null);
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
@@ -45,7 +45,7 @@ const Vehicles = () => {
     enabled: true,
   });
 
-  const Vehicles = transports?.data?.transportationRecords?.length > 0;
+  const Vehicles = transports?.data?.transportations?.length > 0;
 
   useEffect(() => {
     setPagination({
@@ -87,7 +87,7 @@ const Vehicles = () => {
             />
             <input
               name="search"
-              placeholder="Search here"
+              placeholder="Search vehicle, car model"
               className="h-full w-full pl-10 m-0 bg-transparent text-sm outline-none border-none"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -127,14 +127,18 @@ const Vehicles = () => {
           <>
             {Vehicles ? (
               Array.from(
-                transports.data.transportationRecords as Transport[],
+                transports.data.transportations as Transport[],
                 (it, i) => (
                   <TransportCard {...it} key={i} setIds={setIds} ids={ids} />
                 )
               )
             ) : (
               <div className="h-32 grid place-items-center max-w-[98%]">
-                <NoDevices link="/dashboard/transport/add" text="Transport" />
+                {searchQuery ? (
+                  <div>No Result matched your query</div>
+                ) : (
+                  <NoDevices link="/dashboard/transport/add" text="Transport" />
+                )}
               </div>
             )}
           </>

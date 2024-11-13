@@ -17,6 +17,7 @@ const TransportHistoryCard = (props: Trips) => {
     modeOfTransport,
     transportDetails,
     startTimeWindow,
+    latestArrivalTime,
     durationOfTravelWindow,
     plateNumber,
     carName,
@@ -78,10 +79,17 @@ const TransportHistoryCard = (props: Trips) => {
               title="Destination"
               des={destinationLocation?.address || "N/A"}
             />
-            <VehicleDetail
-              title="Start time of travel window"
-              des={formatTimeToISO(startTimeWindow)}
-            />
+            {startTimeWindow ? (
+              <VehicleDetail
+                title="Start time of travel window"
+                des={formatTimeToISO(startTimeWindow)}
+              />
+            ) : (
+              <VehicleDetail
+                title="Latest arrival time"
+                des={formatTimeToISO(latestArrivalTime)}
+              />
+            )}
             <VehicleDetail
               title="Duration of travel window"
               des={durationOfTravelWindow}

@@ -14,3 +14,8 @@ export const TravelWindow = [
   { label: "04:00", value: "04:00" },
   { label: "06:00", value: "06:00" },
 ];
+
+export const OptimizeBy = [
+  { label: "Start time of travel window", value: "start" },
+  { label: "latest arrival time", value: "arrival" },
+];
