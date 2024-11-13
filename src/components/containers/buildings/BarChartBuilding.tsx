@@ -66,7 +66,7 @@ const UsageSummary = ({ buildingId }: UsageSummaryProps) => {
       const canvas = await html2canvas(chartRef.current, {
         scale: 2, // For better quality
         useCORS: true,
-        backgroundColor: null // Optional: For transparent backgrounds
+        backgroundColor: 'white'  // Optional: For transparent backgrounds
       });
 
       // Reset the original height after capturing
@@ -91,7 +91,7 @@ const UsageSummary = ({ buildingId }: UsageSummaryProps) => {
   return (
     <div className="h-[400px] w-[90%]" ref={chartRef}>
       <div className="flex flex-col md:flex-row justify-between items-center">
-        <h3 className="font-semibold">Carbon Tracker</h3>
+        <h3 className="font-semibold">Aggregate Energy Bill </h3>
         <button
           onClick={downloadChart}
           className="flex items-center justify-center hover:bg-[#3465AF] hover:text-white w-fit text-sm gap-2 py-1 mt-2 md:mt-0 md:py-[6px] px-5 border-2 rounded-3xl text-gray-500 border-[#3465AF]"
