@@ -18,7 +18,7 @@ import {
 import Paginate from "@/components/reusables/Paginate";
 import { PaginateProps } from "@/types/general";
 import { Button } from "@/components/ui";
-import PurchasesEmptyState from "./Purchases";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
@@ -38,7 +38,7 @@ const OrderList = (_: Props) => {
     totalPages: 1,
   });
 
-  const [showPurchaseContent, setShowPurchaseContent] = useState(false);
+
 
   const pageEventPayload: IPageViewPayload = {
     name: PageEvent.ORDER_LIST,
@@ -90,17 +90,14 @@ const OrderList = (_: Props) => {
     }));
   };
 
-  const handlePurchaseClick = () => {
-    setShowPurchaseContent(true);
-  };
 
   return (
     <div className="">
       <div className="h-[150px] bg-[#F5FAFF] flex items-center justify-between pl-6 lg:pl-[50px]">
         <h2 className="font-[500] text-xl">Order List</h2>
-        <Button className="font-poppins mr-10" onClick={handlePurchaseClick}>
-          Purchases
-        </Button>
+        <Link to="/dashboard/purchases">
+          <Button className="font-poppins mr-10">Purchases</Button>
+        </Link>
       </div>
 
       {/* Content Section */}
@@ -108,9 +105,7 @@ const OrderList = (_: Props) => {
         ref={scrollRef}
         className="px-2 md:px-4 lg:w-5/6 mx-auto mt-[79px] space-y-[38px]"
       >
-        {showPurchaseContent ? (
-          <PurchasesEmptyState />
-        ) : isLoading ? (
+        {isLoading ? (
           <OrdersLoading />
         ) : (
           hoOrders.length > 0 &&
@@ -119,11 +114,10 @@ const OrderList = (_: Props) => {
       </div>
 
       {/* Pagination */}
-      {!showPurchaseContent && (
-        <div className="mt-8 pr-12 w-fit mx-auto">
-          <Paginate {...pagination} onPageChange={handlePageChange} />
-        </div>
-      )}
+
+      <div className="mt-8 pr-12 w-fit mx-auto">
+        <Paginate {...pagination} onPageChange={handlePageChange} />
+      </div>
     </div>
   );
 };

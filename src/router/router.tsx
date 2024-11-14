@@ -53,6 +53,7 @@ import {
   UserNewTransport,
   UserOrderList,
   UserProfile,
+  UserPurchases,
   UserTransport,
   UserWallet,
 } from "@/pages/protected/home-occupant";
@@ -159,6 +160,10 @@ const Router = createBrowserRouter([
       {
         path: "orders",
         element: <UserOrderList />,
+      },
+      {
+        path: "purchases",
+        element: <UserPurchases />,
       },
       {
         path: "devices",

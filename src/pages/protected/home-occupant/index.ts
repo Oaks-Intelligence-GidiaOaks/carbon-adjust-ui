@@ -8,3 +8,6 @@ export { default as UserNewDevice } from "./NewDevice";
 export { default as UserNewTransport } from "./NewTransport";
 export { default as UserWallet } from "./Wallet";
 export { default as UserTransport } from "./Transport";
+export { default as UserPurchases } from "./Purchases";
+
+
