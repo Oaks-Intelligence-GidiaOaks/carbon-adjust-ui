@@ -182,7 +182,6 @@ const PurchaseList = () => {
         <UploadPurchaseDocumentModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          buildingId={""}
         />
       )}
     </div>

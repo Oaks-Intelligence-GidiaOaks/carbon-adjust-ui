@@ -29,7 +29,6 @@ const PurchasesEmptyState: React.FC = () => {
         <UploadPurchaseDocumentModal
           isOpen={isModalOpen}
           onClose={handleCloseModal}
-          buildingId="your-building-id"
         />
       </div>
     );

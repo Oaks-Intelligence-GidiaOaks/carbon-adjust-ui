@@ -7,10 +7,10 @@ import FileUpload from "@/components/reusables/FileUpload";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  buildingId: string;
+
 }
 
-const UploadPurchaseDocumentModal: React.FC<ModalProps> = ({ isOpen, onClose, buildingId }) => {
+const UploadPurchaseDocumentModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [invoiceFile, setInvoiceFile] = useState<File | null>(null);
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
