@@ -5,7 +5,7 @@ import { PlusCircleIcon, Search } from "lucide-react";
 import { useState } from "react";
 import { MdFilterList } from "react-icons/md";
 
-// Combined PurchaseList Component
+
 const PurchaseList = () => {
   const purchases = [
     {
@@ -114,7 +114,7 @@ const PurchaseList = () => {
       </div>
 
       {/* Search, Filter, and Upload Section */}
-      <div className="flex flex-col px-10  sm:flex-row sm:items-center sm:justify-between my-6">
+      <div className="flex flex-col px-8 md:px-10 sm:flex-row sm:items-center sm:justify-between my-6">
         <div className="flex items-center space-x-4">
           {/* Toggle Date Picker */}
           <div className="relative">
@@ -164,7 +164,7 @@ const PurchaseList = () => {
 
       {purchases.length > 0 ? (
         purchases.map((purchase) => (
-          <div className="px-2 md:px-10 lg:w-full mx-auto mt-[10px] space-y-[38px]">
+          <div className="px-8 md:px-10 lg:w-full mx-auto mt-[10px] space-y-[38px]">
             <PurchaseHistoryCard
               key={purchase.id}
               {...purchase}
