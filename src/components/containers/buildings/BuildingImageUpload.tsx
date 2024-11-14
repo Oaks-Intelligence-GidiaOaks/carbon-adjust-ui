@@ -23,7 +23,7 @@ const UploadBuildingImageModal: React.FC<ModalProps> = ({ isOpen, onClose, build
     mutationFn: (formData: FormData) => uploadBuildingImage(buildingId, formData),
     onSuccess: () => {
       toast.success("Building image uploaded successfully.");
-      queryClient.invalidateQueries({ queryKey: ["upload-building-image"] });
+      queryClient.invalidateQueries({ queryKey: ["building-data"] });
       onClose(); 
     },
     onError: () => {
