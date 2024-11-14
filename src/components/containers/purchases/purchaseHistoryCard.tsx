@@ -115,9 +115,9 @@ const PurchaseHistoryCard = ({
           <div className="p-3 flex flex-col md:flex-row items-stretch border-b pb-5">
             <div className="flex flex-col gap-5 mt-4 md:mt-0">
               {/* Documents Section */}
-              <div className="flex gap-5">
+              <div className="flex flex-col lg:flex-row gap-5">
               <div>
-                <ul className="flex gap-10 items-center">
+                <ul className="flex flex-col lg:flex-row gap-10 items-center">
                   {documents.map((doc) => (
                     <li
                       key={doc.id}
@@ -130,7 +130,7 @@ const PurchaseHistoryCard = ({
               </div>
 
               {/* Emission Data Section */}
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
                 {Object.entries(emissionData).map(([key, value]) => (
                   <div key={key}>
                     <h4 className="text-[#767A85] font-inter text-xs">
