@@ -1,42 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
-import LineChart from "@/components/charts/LineChart";
-import { getEnergyChart } from "@/services/homeOwner";
-import { useEffect, useRef } from "react";
+import { getOptimizeChart } from "@/services/homeOwner";
 import Loading from "@/components/reusables/Loading";
-import { GoDownload } from "react-icons/go";
+import { AiOutlineDownload } from "react-icons/ai";
 import html2canvas from "html2canvas";
+import { useRef } from "react";
+import { Button } from "@/components/ui";
+import { LineChart } from "@/components/charts";
 
-interface LineChartProps {
-  buildingId: string[];
+interface TransportLineChartProps {
+  ids: string[];
 }
 
-const TrendingProjections = ({ buildingId }: LineChartProps) => {
+const TransportLIneChart = ({ ids }: TransportLineChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
-  // Fetch data from the API
-  const { data: response, isLoading, error } = useQuery({
-    queryKey: ["building-energy-chart", buildingId],
-    queryFn: () => getEnergyChart(buildingId),
-    enabled: buildingId.length > 0,
+  const { data: response, isLoading } = useQuery({
+    queryKey: ["optimize-chart", ids],
+    queryFn: () => getOptimizeChart(ids),
+    enabled: ids.length > 0,
   });
-
-  // Log error if it exists
-  useEffect(() => {
-    if (error) {
-      console.error("Error in useQuery:", error);
-    }
-  }, [error]);
 
   // Download chart as PNG
   const downloadChart = async () => {
     if (chartRef.current) {
       const originalHeight = chartRef.current.style.height; // Store original height
-      chartRef.current.style.height = '600px'; // Increase height for download
+      chartRef.current.style.height = "600px"; // Increase height for download
 
       const canvas = await html2canvas(chartRef.current, {
         scale: 2, // For better quality
         useCORS: true,
-        backgroundColor: 'white' 
+        backgroundColor: null, // Optional: For transparent backgrounds
       });
 
       // Reset the original height after capturing
@@ -48,15 +41,6 @@ const TrendingProjections = ({ buildingId }: LineChartProps) => {
       link.click();
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="h-32 grid place-items-center">
-        <Loading message="Transition score loading..." />
-      </div>
-    );
-  }
-  if (error) return <div>Error loading data</div>;
 
   const transitionScore = response?.data?.transition_score || {};
 
@@ -144,20 +128,29 @@ const TrendingProjections = ({ buildingId }: LineChartProps) => {
   };
 
   return (
-    <div className="h-[500px] w-[90%]" ref={chartRef}>
-      <div className="flex flex-col md:flex-row justify-between items-center">
+    <div className=" flex flex-col bg-[#Fff] border rounded-lg p-5 mt-5">
+      <div className="flex justify-between items-center mt-2 mb-5 sm:px-5">
         <h3 className="font-semibold">Transition Score</h3>
-        <button
+        <Button
           onClick={downloadChart}
-          className="flex items-center justify-center  hover:bg-[#3465AF] hover:text-white w-fit text-sm gap-2 py-1 mt-2 md:mt-0 md:py-[6px] px-5 border-2 rounded-3xl text-gray-500 border-[#3465AF]"
+          variant={"outline"}
+          className="rounded-[20px] border-cyan-700 flex-center gap-1 py-3 h-[20px] text-sky-900"
         >
-         <span className="inline-block">Download</span>
-         <GoDownload className="inline-block" />
-        </button>
+          <span>Download</span>
+          <AiOutlineDownload />
+        </Button>
       </div>
-      <LineChart data={data} options={options} />
+      {isLoading ? (
+        <div className="h-32 grid place-items-center">
+          <Loading message="Transition score loading..." />
+        </div>
+      ) : (
+        <div ref={chartRef}>
+          <LineChart data={data} options={options} />
+        </div>
+      )}
     </div>
   );
 };
 
-export default TrendingProjections;
+export default TransportLIneChart;

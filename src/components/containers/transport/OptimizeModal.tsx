@@ -16,11 +16,15 @@ import SelectInput from "@/components/ui/SelectInput";
 import { useDebounce } from "@/hooks/useDebounce";
 import { getSuggestions, getTransports, Optimize } from "@/services/homeOwner";
 import { TravelDetails } from "@/interfaces/transport.interface";
-import { Routes, TransportDetails } from "@/constants/transport";
-import { convertNumberToTimeFormat, formatTimeToISO } from "@/lib/utils";
+import {
+  OptimizeBy,
+  Routes,
+  TransportDetails,
+  TravelWindow,
+} from "@/constants/transport";
+import { formatTimeToISO, validateOptimizeInputs } from "@/lib/utils";
 import { RotatingLines } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
-// import arrows from "../../../assets/arrows.png";
 
 const Modes = [
   { name: "Car", Icon: taxi },
@@ -42,6 +46,10 @@ type OptimizeModalProps = {
 const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
   const navigate = useNavigate();
   const [mode, setMode] = useState<string>("Car");
+  const [optBy, setOptBy] = useState({
+    label: "Start time of travel window",
+    value: "start",
+  });
   const [start, setStart] = useState("");
   const [destination, setDestination] = useState("");
   const [positions, setPositions] = useState([]);
@@ -78,8 +86,8 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
   });
 
   const transformedTransports =
-    transports?.data?.transportationRecords?.map((record: any) => ({
-      label: record.vehicleManufacturer,
+    transports?.data?.transportations?.map((record: any) => ({
+      label: record.licensePlateNumber,
       value: record._id,
     })) || [];
 
@@ -192,26 +200,48 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
     e.preventDefault();
 
     // Destructure transportation out of formData
-    const { transportation, plateNumber, ...restOfFormData } = formData;
+    const {
+      transportation,
+      plateNumber,
+      startTimeWindow,
+      latestArrivalTime,
+      ...restOfFormData
+    } = formData;
 
     const Payload: any = {
       ...restOfFormData,
       transportDetails: restOfFormData.transportDetails.value,
       routePreference: restOfFormData.routePreference.value,
-      durationOfTravelWindow: convertNumberToTimeFormat(
-        restOfFormData.durationOfTravelWindow
-      ),
-      startTimeWindow: formatTimeToISO(restOfFormData.startTimeWindow),
-      latestArrivalTime: formatTimeToISO(restOfFormData.latestArrivalTime),
+      durationOfTravelWindow: restOfFormData.durationOfTravelWindow.value,
     };
+    if (startTimeWindow) {
+      Payload.startTimeWindow = formatTimeToISO(startTimeWindow);
+    }
 
-    // Conditionally add 'transportation' if it's not an empty string
+    if (latestArrivalTime) {
+      Payload.latestArrivalTime = formatTimeToISO(latestArrivalTime);
+    }
+
     if (transportation && transportation.value.trim() !== "") {
       Payload.transportation = transportation.value;
     }
 
     if (plateNumber !== "") {
       Payload.plateNumber = plateNumber;
+    }
+
+    if (!latestArrivalTime && !startTimeWindow) {
+      return toast.error("Provide a start time window or latest arrival time");
+    }
+
+    const error = validateOptimizeInputs(Payload);
+
+    if (error) {
+      return toast.error(error);
+    }
+
+    if (!plateNumber && !transportation.value) {
+      return toast.error("Provide a plate number or pick transport");
     }
 
     OptimizeTransport.mutate(Payload);
@@ -335,44 +365,53 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
 
               <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 mt-3 sm:mt-10">
                 <div className="space-y-2 w-full">
-                  <h2 className="pl-2 text-sm">Start time of Travel window</h2>
-                  <Input
-                    className="border rounded-xl px-2 text-sm w-[100%]"
-                    type="time"
-                    name="startTimeWindow"
-                    inputClassName="w-full"
-                    value={formData.startTimeWindow}
-                    onChange={handleInputChange}
+                  <h2 className="pl-2 text-sm">Optimize By</h2>
+                  <SelectInput
+                    options={OptimizeBy}
+                    value={optBy}
+                    onChange={(e) => setOptBy(e)}
                   />
                 </div>
+                {optBy.value === "start" ? (
+                  <div className="space-y-2 w-full">
+                    <h2 className="pl-2 text-sm">
+                      Start time of Travel window
+                    </h2>
+                    <Input
+                      className="border rounded-xl px-2 text-sm w-[100%]"
+                      type="time"
+                      name="startTimeWindow"
+                      inputClassName="w-full"
+                      value={formData.startTimeWindow}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                ) : (
+                  <div className="space-y-2 w-full">
+                    <h2 className="pl-2 text-sm">Latest arrival time</h2>
 
-                <div className="space-y-2 w-full">
-                  <h2 className="pl-2 text-sm">Latest arrival time</h2>
-
-                  <Input
-                    className="border rounded-xl px-2 text-sm w-[100%]"
-                    type="time"
-                    name="latestArrivalTime"
-                    inputClassName="w-full"
-                    value={formData.latestArrivalTime}
-                    onChange={handleInputChange}
-                  />
-                </div>
+                    <Input
+                      className="border rounded-xl px-2 text-sm w-[100%]"
+                      type="time"
+                      name="latestArrivalTime"
+                      inputClassName="w-full"
+                      value={formData.latestArrivalTime}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 mt-3 sm:mt-10">
                 <div className="space-y-2 w-full">
-                  <h2 className="pl-2 text-sm">
-                    Duration of Travel window (hours)
-                  </h2>
+                  <h2 className="pl-2 text-sm">Travel window (hours)</h2>
 
-                  <Input
-                    className="border rounded-xl px-2 text-sm w-[100%]"
-                    type="number"
-                    name="durationOfTravelWindow"
-                    inputClassName="w-full"
+                  <SelectInput
+                    options={TravelWindow}
                     value={formData.durationOfTravelWindow}
-                    onChange={handleInputChange}
+                    onChange={(e) =>
+                      handleSelectInputChange(e, "durationOfTravelWindow")
+                    }
                   />
                 </div>
 
@@ -400,19 +439,7 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                     }
                   />
                 </div>
-                {formData.transportDetails.value === "Private" ? (
-                  <div className="space-y-2 w-full">
-                    <h2 className="pl-2 text-sm">Transportation</h2>
-
-                    <SelectInput
-                      options={transformedTransports}
-                      value={formData.transportation}
-                      onChange={(e) =>
-                        handleSelectInputChange(e, "transportation")
-                      }
-                    />
-                  </div>
-                ) : (
+                {formData.transportDetails.value === "Other" ? (
                   <div className="space-y-2 w-full">
                     <h2 className="pl-2 text-sm">Plate Number</h2>
 
@@ -423,6 +450,18 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                       inputClassName="w-full"
                       value={formData.plateNumber}
                       onChange={handleInputChange}
+                    />
+                  </div>
+                ) : (
+                  <div className="space-y-2 w-full">
+                    <h2 className="pl-2 text-sm">Transportation</h2>
+
+                    <SelectInput
+                      options={transformedTransports}
+                      value={formData.transportation}
+                      onChange={(e) =>
+                        handleSelectInputChange(e, "transportation")
+                      }
                     />
                   </div>
                 )}

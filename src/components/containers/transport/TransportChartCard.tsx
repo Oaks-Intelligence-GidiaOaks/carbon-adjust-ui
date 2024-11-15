@@ -8,7 +8,7 @@ import { useRef } from "react";
 import html2canvas from "html2canvas";
 
 interface TransportChartCardProps {
-  ids: string;
+  ids: string[];
 }
 
 const TransportChartCard: React.FC<TransportChartCardProps> = ({ ids }) => {
@@ -55,7 +55,7 @@ const TransportChartCard: React.FC<TransportChartCardProps> = ({ ids }) => {
     <div className="flex flex-col bg-[#Fff] border rounded-lg p-5 mt-5 ">
       <div className="flex justify-between items-center my-2 sm:px-5">
         <div className="flex  ">
-          <h3 className="text-lg font-normal text-gray-700">Carbon Tracker</h3>
+          <h3 className="font-semibold">Bill Summary</h3>
         </div>
 
         <div className="flex ">

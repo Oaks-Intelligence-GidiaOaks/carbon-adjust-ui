@@ -17,7 +17,7 @@ import {
 } from "@/lib/utils";
 import { RootState } from "@/app/store";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
-import {  LinkDeviceModal } from "./LinkDevices";
+import { LinkDeviceModal } from "./LinkDevices";
 
 // @ts-ignore
 import { Link } from "react-router-dom";
@@ -26,14 +26,13 @@ import { ThreeDots } from "react-loader-spinner";
 
 interface Props extends Device {
   setId: Dispatch<SetStateAction<string | null>>;
+  setCancelId: Dispatch<SetStateAction<string | null>>;
 }
 
 const DeviceCard = (props: Props) => {
   const { device } = useSelector((state: RootState) => state.assets);
   const dispatch = useDispatch();
   const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
- 
-
 
   const handleOpenLinkDeviceModal = () => {
     setIsLinkDeviceModalOpen(true);
@@ -43,15 +42,13 @@ const DeviceCard = (props: Props) => {
     setIsLinkDeviceModalOpen(false);
   };
 
- 
-
   const [cardActions, setCardActions] = useState<boolean>(false);
   const [id, setId] = useState<string | null>(null);
 
   const actionsRef = useRef<null | HTMLDivElement>(null);
 
   useOutsideCloser(actionsRef, cardActions, setCardActions);
-  const { DeleteDevice, CancelDeviceSchedule } = useMutations();
+  const { DeleteDevice } = useMutations();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -240,12 +237,8 @@ const DeviceCard = (props: Props) => {
     setId(null);
   };
 
-  const handleCancelDeviceSchedule = () => {
-    CancelDeviceSchedule.mutateAsync(props._id as string);
-  };
-
   return (
-    <div className="border-[0.4px] font-poppins rounded-xl bg-white shadow-md max-w-[392px]">
+    <div className="flex flex-col border-[0.4px] font-poppins rounded-xl bg-white shadow-md max-w-[392px]">
       <div className="flex-center justify-between px-[10px] border-b p-3 relative">
         <h2 className="font-[600] text-sm font-inter pl-3 capitalize">
           {props.name}
@@ -286,9 +279,9 @@ const DeviceCard = (props: Props) => {
         </div>
       </div>
 
-      <div className="py-2 pl-5">
-      <button
-          onClick={handleOpenLinkDeviceModal} 
+      <div className="py-2 pl-5 mt-auto">
+        <button
+          onClick={handleOpenLinkDeviceModal}
           className="text-[#139EEC] border-[#139EEC] border !rounded-[15.2px] px-4 py-1 flex-center gap-[7px] text-xs font-[400] font-sans"
         >
           <span>Link Device</span>
@@ -297,32 +290,37 @@ const DeviceCard = (props: Props) => {
       </div>
 
       <div
-        className={`flex-center justify-between p-3 px-6 bg-[#DEE7F2] rounded-b-[10px]`}
+        className={`flex-center justify-between p-3 px-6 min-h-[56px] bg-[#DEE7F2] rounded-b-[10px]`}
       >
-        {!props.currentDispatchTime && Boolean(props.currentDispatchStatus) && (
-          <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
-            <IoAlertCircleSharp />
-            <span>Scheduled</span>
-          </div>
-        )}
+        {Boolean(props.currentDispatchStatus) &&
+          props.currentDispatchStatus === CurrentDispatchStatus.Scheduled &&
+          Boolean(!props.currentDispatchTime) && (
+            <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
+              <IoAlertCircleSharp />
+              <span>Scheduled</span>
+            </div>
+          )}
 
-        {Boolean(!props.currentDispatchStatus) && (
+        {(Boolean(!props.currentDispatchStatus) ||
+          props.currentDispatchStatus === CurrentDispatchStatus.Initiated) && (
           <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
             <IoAlertCircleSharp />
             <span>No dispatch scheduled</span>
           </div>
         )}
 
-        {props.currentDispatchTime && (
-          <div className="flex-center gap-1 font-[500] text-xs font-sans">
-            <span className="bg-gradient-to-r from-[#139EEC] to-[#3465AF] bg-clip-text text-transparent text-xs font-[500]">
-              Dispatch scheduled for{" "}
-              {formDateWithTime(props.currentDispatchTime)}
-            </span>
-          </div>
-        )}
+        {props.currentDispatchTime &&
+          props.currentDispatchStatus !== CurrentDispatchStatus.Initiated && (
+            <div className="flex-center gap-1 font-[500] text-xs font-sans">
+              <span className="bg-gradient-to-r from-[#139EEC] to-[#3465AF] bg-clip-text text-transparent text-xs font-[500]">
+                Dispatch scheduled for{" "}
+                {formDateWithTime(props.currentDispatchTime)}
+              </span>
+            </div>
+          )}
 
-        {!props.currentDispatchStatus && (
+        {(!props.currentDispatchStatus ||
+          props.currentDispatchStatus === CurrentDispatchStatus.Initiated) && (
           <Button
             onClick={() => setId(props._id as string)}
             size="sm"
@@ -334,13 +332,13 @@ const DeviceCard = (props: Props) => {
 
         {props.currentDispatchStatus === CurrentDispatchStatus.Scheduled && (
           <Button
-            disabled={CancelDeviceSchedule.isPending}
-            onClick={handleCancelDeviceSchedule}
+            // disabled={CancelDeviceSchedule.isPending}
+            onClick={() => props.setCancelId(props._id as string)}
             variant="outline"
             size="sm"
             className="!rounded-[20px] !px-4 !h-[27px] border-[#B70000] border bg-white text-center"
           >
-            {CancelDeviceSchedule.isPending ? (
+            {false ? (
               <ThreeDots
                 visible={true}
                 height="40"
@@ -363,10 +361,9 @@ const DeviceCard = (props: Props) => {
       {isLinkDeviceModalOpen && (
         <LinkDeviceModal
           onClose={handleCloseLinkDeviceModal}
-          deviceId= {props._id}
+          deviceId={props._id}
         />
       )}
-      
     </div>
   );
 };

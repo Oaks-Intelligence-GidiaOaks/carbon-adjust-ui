@@ -17,6 +17,7 @@ export enum DeviceTabs {
 export enum CurrentDispatchStatus {
   Scheduled = "scheduled",
   Activated = "dispatched",
+  Initiated = "initiated",
 }
 
 export enum DeviceStatus {
