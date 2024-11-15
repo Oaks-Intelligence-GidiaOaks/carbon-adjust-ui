@@ -2,15 +2,18 @@ export const types = [
   { label: "Washing Machine", value: "Washing Machine" },
   { label: "Washing Dryer", value: "Washing Dryer" },
   { label: "Dish Washer", value: "Dish Washer" },
+  { label: "Electric OVEN", value: "Electric OVEN" },
+  { label: "Electric Iron", value: "Electric Iron" },
+  // { label: "Electric Kettle/Jug", value: "Electric Kettle/Jug" },
+  // { label: "EV Charger", value: "EV Charger" },
   // { label: "Fridge", value: "Fridge" },
   // { label: "Freezer", value: "Freezer" },
   // { label: "Gas Cooker", value: "Gas Cooker" },
-  // { label: "Electric Cooker", value: "Electric Cooker" },
-  // { label: "Electric Iron", value: "Electric Iron" },
   // { label: "Air Fryer", value: "Air Fryer" },
   // { label: "Vacuum Cleaner", value: "Vacuum Cleaner" },
-  // { label: "Electric OVEN", value: "Electric OVEN" },
 ];
+
+// Washing Machine, Washing Dryer, Fridge, Freezer, Dish Washer, Gas Cooker, Electric Cooker, Electric Iron , Air Fryer, Vacuum Cleaner,
 
 export const energySources = [
   { label: "Electricity", value: "Electricity" },
