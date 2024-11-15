@@ -321,6 +321,72 @@ export const validateTransportInputs = (formData: ITransport) => {
   return error ? error.details[0].message : null;
 };
 
+const optimizeSchema = Joi.object({
+  startLocation: Joi.object({
+    address: Joi.string().required().messages({
+      "any.required": "Address is required",
+    }),
+    latitude: Joi.number().required().messages({
+      "any.required": "Latitude is required",
+      "number.base": "Latitude must be a number",
+    }),
+    longitude: Joi.number().required().messages({
+      "any.required": "Longitude is required",
+      "number.base": "Longitude must be a number",
+    }),
+  })
+    .required()
+    .messages({
+      "any.required": "Start Location is required",
+    }),
+  destinationLocation: Joi.object({
+    address: Joi.string().required().messages({
+      "any.required": "Address is required",
+    }),
+    latitude: Joi.number().required().messages({
+      "any.required": "Latitude is required",
+      "number.base": "Latitude must be a number",
+    }),
+    longitude: Joi.number().required().messages({
+      "any.required": "Longitude is required",
+      "number.base": "Longitude must be a number",
+    }),
+  })
+    .required()
+    .messages({
+      "any.required": "Destination Location is required",
+    }),
+  modeOfTransport: Joi.string().required().messages({
+    "string.empty": "Mode of transport is required",
+  }),
+  durationOfTravelWindow: Joi.string().required().messages({
+    "string.empty": "Travel Window is required",
+  }),
+  routePreference: Joi.string().required().messages({
+    "string.empty": "route Preference is required",
+  }),
+  transportDetails: Joi.string().required().messages({
+    "string.empty": "transport details is required",
+  }),
+  transportation: Joi.string().messages({
+    string: "transportation must be a string",
+  }),
+  plateNumber: Joi.string().messages({
+    string: "plate number details must be a string",
+  }),
+  startTimeWindow: Joi.string().messages({
+    string: "start Time Window must be a string",
+  }),
+  latestArrivalTime: Joi.string().messages({
+    string: "latest Arrival Time must be a string",
+  }),
+});
+
+export const validateOptimizeInputs = (formData: any[]) => {
+  const { error } = optimizeSchema.validate(formData);
+  return error ? error.details[0].message : null;
+};
+
 export const getRemainingHours = (): string[] => {
   const currentDate = new Date();
   const currentHour = currentDate.getHours(); // Get the current hour (0-23)

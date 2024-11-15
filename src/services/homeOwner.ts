@@ -271,7 +271,6 @@ export const getGrantSubCategory = async ({
   return data;
 };
 
-
 export const getBuildingData = async (limit: number = 5, page: number = 1) => {
   const queryParams = new URLSearchParams();
   queryParams.append("limit", limit.toString());
@@ -383,9 +382,12 @@ export const getTransportsHistory = async (
   return data;
 };
 
-export const getOptimizeChart = async (ids: string) => {
-  const url = `/transportation/analytics?ids=${encodeURIComponent(ids)}`;
-  const { data } = await axiosInstance.get(url);
+export const getOptimizeChart = async (transportationIds: any[]) => {
+  const payload = { transportationIds: transportationIds };
+  const { data } = await axiosInstance.post(
+    "/transportation/analytics",
+    payload
+  );
   return data;
 };
 
