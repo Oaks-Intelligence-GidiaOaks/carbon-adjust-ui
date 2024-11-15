@@ -48,12 +48,14 @@ const TransportCard = (props: Transport) => {
               </h4>
             </div>
           </div>
-          <input
-            type="checkbox"
-            checked={checked}
-            onChange={() => toggleChecked(_id)}
-            className="mr-4 cursor-pointer"
-          />
+          {(totalProjectedCarbonOffset || totalEmission) && (
+            <input
+              type="checkbox"
+              checked={checked}
+              onChange={() => toggleChecked(_id)}
+              className="mr-4 cursor-pointer"
+            />
+          )}
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 py-5">
