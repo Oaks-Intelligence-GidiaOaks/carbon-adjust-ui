@@ -43,14 +43,18 @@ export const useChatbotInput = (): ChatbotInputHook => {
   const [inputText, setInputText] = useState<string>("");
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
+  const [conversationId, setConversationId] = useState<string>("");
 
   useEffect(() => {
     const handleMessagesChange = (state: IMessage[]) => setMessages([...state]);
     const handleSocketConnectionChange = (state: boolean) =>
       setIsSocketConnected(state);
+    const handleConversationIdChange = (state: string) =>
+      setConversationId(state);
 
     ChatSocketService.emitter.on("new_message", handleMessagesChange);
     ChatSocketService.emitter.on("isConnected", handleSocketConnectionChange);
+    ChatSocketService.emitter.on("idChange", handleConversationIdChange);
 
     return () => {
       ChatSocketService.emitter.off("new_message", handleMessagesChange);
@@ -58,6 +62,7 @@ export const useChatbotInput = (): ChatbotInputHook => {
         "isConnected",
         handleSocketConnectionChange
       );
+      ChatSocketService.emitter.off("idChange", handleConversationIdChange);
     };
   }, []);
 
@@ -87,7 +92,7 @@ export const useChatbotInput = (): ChatbotInputHook => {
 
   const handleSend = (msg: string): void => {
     ChatSocketService.sendMessage({
-      conversation_id: "",
+      conversation_id: conversationId,
       query: msg,
       user_id: user?._id as string,
     });

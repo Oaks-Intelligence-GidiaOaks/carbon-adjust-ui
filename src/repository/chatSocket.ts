@@ -13,6 +13,7 @@ class ChatSocket {
   private socket: Socket | null = null;
   private chatMessages: IMessage[] = [];
   private isConnected: boolean = false;
+  private conversationId: string | null = null;
 
   constructor(readonly emitter: EventEmitter, url?: string) {
     this.url = url || (import.meta.env.VITE_CHATBOT_SOCKET_URL as string);
@@ -50,6 +51,11 @@ class ChatSocket {
       });
 
       this.socket.on(ChatEvent.AI_MESSAGE, (data: IAiMesssage) => {
+        if (!this.conversationId) {
+          this.conversationId = data.conversation_id;
+          this.emitter.emit("idChange", this.conversationId);
+        }
+
         this.chatMessages.push({
           isAiMessage: true,
           conversationId: data.conversation_id,
