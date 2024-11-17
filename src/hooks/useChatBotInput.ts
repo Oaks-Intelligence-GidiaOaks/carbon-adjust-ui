@@ -33,6 +33,7 @@ interface ChatbotInputHook {
 
   messages: IMessage[];
   isSocketConnected: boolean;
+  thinking: boolean;
 }
 
 export const useChatbotInput = (): ChatbotInputHook => {
@@ -44,6 +45,7 @@ export const useChatbotInput = (): ChatbotInputHook => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false);
   const [conversationId, setConversationId] = useState<string>("");
+  const [thinking, setThinking] = useState<boolean>(false);
 
   useEffect(() => {
     const handleMessagesChange = (state: IMessage[]) => setMessages([...state]);
@@ -51,10 +53,12 @@ export const useChatbotInput = (): ChatbotInputHook => {
       setIsSocketConnected(state);
     const handleConversationIdChange = (state: string) =>
       setConversationId(state);
+    const handleThinkingChange = (state: boolean) => setThinking(state);
 
     ChatSocketService.emitter.on("new_message", handleMessagesChange);
     ChatSocketService.emitter.on("isConnected", handleSocketConnectionChange);
     ChatSocketService.emitter.on("idChange", handleConversationIdChange);
+    ChatSocketService.emitter.on("thinking", handleThinkingChange);
 
     return () => {
       ChatSocketService.emitter.off("new_message", handleMessagesChange);
@@ -63,6 +67,7 @@ export const useChatbotInput = (): ChatbotInputHook => {
         handleSocketConnectionChange
       );
       ChatSocketService.emitter.off("idChange", handleConversationIdChange);
+      ChatSocketService.emitter.off("thinking", handleThinkingChange);
     };
   }, []);
 
@@ -135,5 +140,6 @@ export const useChatbotInput = (): ChatbotInputHook => {
 
     messages,
     isSocketConnected,
+    thinking,
   };
 };

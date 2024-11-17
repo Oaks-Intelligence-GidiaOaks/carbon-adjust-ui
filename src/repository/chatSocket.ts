@@ -14,6 +14,7 @@ class ChatSocket {
   private chatMessages: IMessage[] = [];
   private isConnected: boolean = false;
   private conversationId: string | null = null;
+  private thinking: boolean = false;
 
   constructor(readonly emitter: EventEmitter, url?: string) {
     this.url = url || (import.meta.env.VITE_CHATBOT_SOCKET_URL as string);
@@ -62,7 +63,8 @@ class ChatSocket {
           text: data.reply_text,
         });
 
-        console.log(`captured ai message`, data);
+        this.thinking = false;
+        this.emitter.emit("thinking", this.thinking);
 
         this.emitter.emit("new_message", this.chatMessages);
       });
@@ -80,7 +82,9 @@ class ChatSocket {
     }
 
     this.socket?.emit(event, payload);
-    console.log("event emitted: ", event, payload);
+    this.thinking = true;
+    this.emitter.emit("thinking", this.thinking);
+    // console.log("event emitted: ", event, payload);
   }
 
   sendMessage(payload: IChatUserMessage): void {
