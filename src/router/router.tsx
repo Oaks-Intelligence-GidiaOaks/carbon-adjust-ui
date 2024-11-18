@@ -72,6 +72,7 @@ import AssetsLayout from "@/layouts/AssetsLayout";
 import ComingSoon from "@/components/reusables/ComingSoon";
 import ZohoPage from "@/pages/public/test";
 import BuildingList from "@/components/containers/buildings/BuildingList";
+import LoginTest from "@/pages/public/Login_test";
 
 const Router = createBrowserRouter([
   {
@@ -495,6 +496,10 @@ const Router = createBrowserRouter([
   {
     path: "*",
     element: <_404 />,
+  },
+  {
+    path: "/login-test",
+    element: <LoginTest />,
   },
 ]);
 
