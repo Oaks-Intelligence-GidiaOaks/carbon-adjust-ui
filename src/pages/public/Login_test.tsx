@@ -38,11 +38,11 @@ const LoginTest = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<LoginTestFormContext > = async () => {
-    console.log("object");
+  const onSubmit: SubmitHandler<LoginTestFormContext > = async (data) => {
+  
     try {
       await loginUser.mutateAsync({
-        email: "emmaotuonye1@gmail.com",
+        email: data.email,
       });
     } catch (err) {
       console.error("Login failed:", err);
@@ -62,7 +62,6 @@ const LoginTest = () => {
                   type="text"
                   labelClassName="text-sm 2xl:text-base font-normal"
                   name="email"
-                  value={"emmaotuonye1@gmail.com"}
                   register={register}
                   wrapperClassName="mt-4"
                   placeholder="Email"
