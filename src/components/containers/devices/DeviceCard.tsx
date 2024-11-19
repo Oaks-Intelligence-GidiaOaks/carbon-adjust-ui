@@ -62,8 +62,8 @@ const DeviceCard = (props: Props) => {
 
   const ListTile = (props: { name: string; listing: string | number }) => (
     <div className="space-y-[1]">
-      <h5 className="text-[#767A85] text-xs  font-[400]">{props.name}</h5>
-      <p className="font-[600] text-[#1F2026] text-[10px]">{props.listing}</p>
+      <h5 className="text-[#767A85] text-xs  font-[400]">{props?.name}</h5>
+      <p className="font-[600] text-[#1F2026] text-[10px]">{props?.listing}</p>
     </div>
   );
 
@@ -241,7 +241,7 @@ const DeviceCard = (props: Props) => {
     <div className="flex flex-col border-[0.4px] font-poppins rounded-xl bg-white shadow-md max-w-[392px]">
       <div className="flex-center justify-between px-[10px] border-b p-3 relative">
         <h2 className="font-[600] text-sm font-inter pl-3 capitalize">
-          {props.name}
+          {props?.name}
         </h2>
 
         {DeleteDevice.isPending ? (
@@ -266,16 +266,20 @@ const DeviceCard = (props: Props) => {
 
       <div className="flex items-start gap-4 border-b border-[0.4px] p-3 md:pl-[30px]">
         <img
-          src={props.file}
+          src={props?.file}
           alt=""
           className="w-[180px] h-[160px] rounded-md"
         />
 
         <div className="flex flex-col gap-[10px] ">
           {/* <ListTile name="Address" listing="Fulham rd." key={1} /> */}
-          <ListTile name="Serial number" listing={props.serialNos} key={2} />
-          <ListTile name="Power rating" listing={props.powerRating} key={3} />
-          <ListTile name="Voltage level" listing={props.voltageLevel} key={4} />
+          <ListTile name="Serial number" listing={props?.serialNos} key={2} />
+          <ListTile name="Power rating" listing={props?.powerRating} key={3} />
+          <ListTile
+            name="Voltage level"
+            listing={props?.voltageLevel}
+            key={4}
+          />
         </div>
       </div>
 
@@ -292,35 +296,35 @@ const DeviceCard = (props: Props) => {
       <div
         className={`flex-center justify-between p-3 px-6 min-h-[56px] bg-[#DEE7F2] rounded-b-[10px]`}
       >
-        {Boolean(props.currentDispatchStatus) &&
-          props.currentDispatchStatus === CurrentDispatchStatus.Scheduled &&
-          Boolean(!props.currentDispatchTime) && (
+        {Boolean(props?.currentDispatchStatus) &&
+          props?.currentDispatchStatus === CurrentDispatchStatus.Scheduled &&
+          Boolean(!props?.currentDispatchTime) && (
             <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
               <IoAlertCircleSharp />
               <span>Scheduled</span>
             </div>
           )}
 
-        {(Boolean(!props.currentDispatchStatus) ||
-          props.currentDispatchStatus === CurrentDispatchStatus.Initiated) && (
+        {(Boolean(!props?.currentDispatchStatus) ||
+          props?.currentDispatchStatus === CurrentDispatchStatus.Initiated) && (
           <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
             <IoAlertCircleSharp />
             <span>No dispatch scheduled</span>
           </div>
         )}
 
-        {props.currentDispatchTime &&
-          props.currentDispatchStatus !== CurrentDispatchStatus.Initiated && (
+        {props?.currentDispatchTime &&
+          props?.currentDispatchStatus !== CurrentDispatchStatus.Initiated && (
             <div className="flex-center gap-1 font-[500] text-xs font-sans">
               <span className="bg-gradient-to-r from-[#139EEC] to-[#3465AF] bg-clip-text text-transparent text-xs font-[500]">
                 Dispatch scheduled for{" "}
-                {formDateWithTime(props.currentDispatchTime)}
+                {formDateWithTime(props?.currentDispatchTime)}
               </span>
             </div>
           )}
 
-        {(!props.currentDispatchStatus ||
-          props.currentDispatchStatus === CurrentDispatchStatus.Initiated) && (
+        {(!props?.currentDispatchStatus ||
+          props?.currentDispatchStatus === CurrentDispatchStatus.Initiated) && (
           <Button
             onClick={() => setId(props._id as string)}
             size="sm"
@@ -330,11 +334,11 @@ const DeviceCard = (props: Props) => {
           </Button>
         )}
 
-        {(props.currentDispatchStatus === CurrentDispatchStatus.Scheduled ||
-          props.currentDispatchStatus === CurrentDispatchStatus.Activated) && (
+        {(props?.currentDispatchStatus === CurrentDispatchStatus.Scheduled ||
+          props?.currentDispatchStatus === CurrentDispatchStatus.Activated) && (
           <Button
             // disabled={CancelDeviceSchedule.isPending}
-            onClick={() => props.setCancelId(props._id as string)}
+            onClick={() => props?.setCancelId(props._id as string)}
             variant="outline"
             size="sm"
             className="!rounded-[20px] !px-4 !h-[27px] border-[#B70000] border bg-white text-center"
