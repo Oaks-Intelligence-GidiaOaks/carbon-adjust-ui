@@ -1,120 +1,116 @@
 import PurchasesEmptyState from "@/components/containers/purchases/emptyState";
 import PurchaseHistoryCard from "@/components/containers/purchases/purchaseHistoryCard";
 import UploadPurchaseDocumentModal from "@/components/dialogs/PurchaseDoc";
+import { getPurchasesData } from "@/services/homeOwner";
+import Skeleton from "@mui/material/Skeleton";
+import Box from "@mui/material/Box";
+import Paginate from "@/components/reusables/Paginate";
+import { PaginateProps } from "@/types/general";
+import { useQuery } from "@tanstack/react-query";
 import { PlusCircleIcon, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdFilterList } from "react-icons/md";
+import UsageSummary from "@/components/containers/purchases/BarChartPurchases";
+import TrendingProjections from "@/components/containers/purchases/LineChartPurchases";
+
 
 
 const PurchaseList = () => {
-  const purchases = [
-    {
-      id: "PUR-001",
-      dateOfUpload: "2023-11-01",
-      totalEmission: 1200,
-      documentsUploaded: 2,
-      documents: [
-        {
-          id: "DOC-001",
-          description: "Invoice",
-          fileUrl: "/files/invoice.pdf",
-          fileType: "pdf",
-        },
-        {
-          id: "DOC-002",
-          description: "Receipt",
-          fileUrl: "/files/receipt.pdf",
-          fileType: "pdf",
-        },
-      ],
-      emissionData: {
-        scope1Emission: "300 kg CO2",
-        scope2Emission: "400 kg CO2",
-        scope3Emission: "500 kg CO2",
-        emissionScore: "85%",
-        carbonFootprintTracker: "High",
-        percentageContribution: "40%",
-      },
-      onDownloadAll: () => console.log("Download all for PUR-001"),
-      onSelect: (id: any) => console.log("Selected purchase ID:", id),
-      isSelected: false,
-    },
-    {
-      id: "PUR-002",
-      dateOfUpload: "2023-10-15",
-      totalEmission: 1500,
-      documentsUploaded: 1,
-      documents: [
-        {
-          id: "DOC-003",
-          description: "Bill of Lading",
-          fileUrl: "/files/bill-of-lading.pdf",
-          fileType: "pdf",
-        },
-      ],
-      emissionData: {
-        scope1Emission: "500 kg CO2",
-        scope2Emission: "600 kg CO2",
-        scope3Emission: "400 kg CO2",
-        emissionScore: "90%",
-        carbonFootprintTracker: "Medium",
-        percentageContribution: "30%",
-      },
-      onDownloadAll: () => console.log("Download all for PUR-002"),
-      onSelect: (id: any) => console.log("Selected purchase ID:", id),
-      isSelected: false,
-    },
-    {
-      id: "PUR-003",
-      dateOfUpload: "2023-09-30",
-      totalEmission: 1000,
-      documentsUploaded: 3,
-      documents: [
-        {
-          id: "DOC-004",
-          description: "Purchase Order",
-          fileUrl: "/files/purchase-order.pdf",
-          fileType: "pdf",
-        },
-        {
-          id: "DOC-005",
-          description: "Invoice",
-          fileUrl: "/files/invoice-2.pdf",
-          fileType: "pdf",
-        },
-        {
-          id: "DOC-006",
-          description: "Certificate of Origin",
-          fileUrl: "/files/certificate-of-origin.pdf",
-          fileType: "pdf",
-        },
-      ],
-      emissionData: {
-        scope1Emission: "200 kg CO2",
-        scope2Emission: "300 kg CO2",
-        scope3Emission: "500 kg CO2",
-        emissionScore: "70%",
-        carbonFootprintTracker: "Low",
-        percentageContribution: "20%",
-      },
-      onDownloadAll: () => console.log("Download all for PUR-003"),
-      onSelect: (id: any) => console.log("Selected purchase ID:", id),
-      isSelected: false,
-    },
-  ];
+ 
   const [searchQuery, setSearchQuery] = useState("");
   const [filterDate, setFilterDate] = useState("");
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPurchase, setSelectedPurchase] = useState<string[]>([]);
+  const [pagination, setPagination] = useState<
+    Omit<PaginateProps, "onPageChange">
+  >({
+    currentPage: 1,
+    limit: 20,
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+  });
 
+   // Create a ref for the chart area
+   const chartAreaRef = useRef<HTMLDivElement>(null);
+
+  // Fetch purchases data
+  const { data: purchases, isLoading, error } = useQuery({
+    queryKey: ["purchases-data", pagination.currentPage],
+    queryFn: () => getPurchasesData(pagination.limit, pagination.currentPage), 
+  })
+ 
+
+  const purchasesData = purchases?.data?.purchases || [];
+ 
+
+
+  useEffect(() => {
+    if (purchases)
+      setPagination({
+        currentPage: purchases?.data?.page,
+        hasNextPage: purchases?.data?.hasNextPage,
+        hasPrevPage: purchases?.data?.hasPrevPage,
+        limit: purchases?.data?.limit,
+        totalPages: purchases?.data?.totalPages,
+      });
+  }, [purchases]);
+
+  const handlePageChange = (pgNo: number) => {
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: pgNo,
+    }));
+  };
+
+
+  if (error) return <div>Error loading buildings data</div>;
+
+  if (isLoading) {
+    return (
+      <div className="w-[100%] mx-auto mt-10 flex flex-col gap-4 ">
+        {Array.from({ length: 3 }, (_, i) => (
+        <Box key={i} sx={{ width: "100%" }}>
+          <Skeleton variant="rectangular" width={"100%"} height={100} />
+          <Skeleton width={"100%"} />
+          <Skeleton width={"50%"} animation="wave" />
+        </Box>
+      ))}
+      </div>
+    );
+  }
+
+
+   // Function to toggle selection of buildings
+   const handleSelectPurchase = (purchaseId: string) => {
+    setSelectedPurchase((prev) => {
+      let newSelection;
+      if (prev.includes(purchaseId)) {
+        // Remove the building if it's already selected
+        newSelection = prev.filter(id => id !== purchaseId);
+      } else {
+        // Add the building if it's not already selected
+        newSelection = [...prev, purchaseId];
+      }
+      
+      // Scroll to the chart area if any building is selected
+      if (newSelection.length > 0) {
+        chartAreaRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }
+      
+      return newSelection;
+    });
+  };
+  
   return (
     <div className="py-6">
       <div className="h-[150px]  bg-[#F5FAFF] flex items-center justify-between pl-6 lg:pl-[50px]">
         <h2 className="font-[500] text-xl">Purchases</h2>
       </div>
-
+      <div className="px-8 md:px-10">
       {/* Search, Filter, and Upload Section */}
-      <div className="flex flex-col px-8 md:px-10 sm:flex-row sm:items-center sm:justify-between my-6">
+      <div className="flex flex-col   sm:flex-row sm:items-center sm:justify-between my-6">
         <div className="flex items-center space-x-4">
           {/* Toggle Date Picker */}
           <div className="relative">
@@ -162,20 +158,35 @@ const PurchaseList = () => {
         </button>
       </div>
 
-      {purchases.length > 0 ? (
-        purchases.map((purchase) => (
-          <div className="px-8 md:px-10 lg:w-full mx-auto mt-[10px] space-y-[38px]">
+      {purchasesData.length > 0 ? (
+        purchasesData.map((purchase:any) => (
+          <div className=" lg:w-full mx-auto mt-[10px] space-y-[38px]">
             <PurchaseHistoryCard
-              key={purchase.id}
+              key={purchase._id}
               {...purchase}
-              isSelected={false}
-              onSelect={(id) => console.log("Selected purchase ID:", id)}
+              onSelect={handleSelectPurchase}
+              isSelected={selectedPurchase.includes(purchase._id)}
             />
           </div>
         ))
       ) : (
         <PurchasesEmptyState />
       )}
+
+       {/* Pagination */}
+       {purchasesData && (
+        <div className="mt-8 pr-12 w-fit mx-auto ">
+          <Paginate {...pagination} onPageChange={handlePageChange} />
+        </div>
+      )}
+
+       {/* Charts */}
+       <div ref={chartAreaRef} className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm">
+        <UsageSummary purchaseId={selectedPurchase} />
+      </div>
+      <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm ">
+        <TrendingProjections purchaseId={selectedPurchase}/> 
+      </div>
 
       {/* Modal */}
       {isModalOpen && (
@@ -184,6 +195,7 @@ const PurchaseList = () => {
           onClose={() => setIsModalOpen(false)}
         />
       )}
+       </div>
     </div>
   );
 };

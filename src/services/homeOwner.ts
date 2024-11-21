@@ -426,3 +426,36 @@ export const linkDevice = async (buildingId: string, deviceIds: string[]) => {
   );
   return data;
 };
+
+// GET UPLOADED PURCHASES DATA
+export const uploadPurchasesData = async (formData: FormData) => {
+  const { data } = await axiosInstance.post(`/purchase/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data;
+};
+
+// GET PURCHASES DATA
+export const getPurchasesData = async (limit: number = 5, page: number = 1) => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("limit", limit.toString());
+  queryParams.append("page", page.toString());
+
+  const url = `/purchase?${queryParams.toString()}`;
+
+  const { data } = await axiosInstance.get(url);
+
+  return data;
+};
+
+
+//GET PURCHASES CHART
+export const getPurchasesChart = async (purchaseIds: string[]) => {
+  const { data } = await axiosInstance.post(`/purchase/chats-response`, {
+    purchase_ids: purchaseIds,
+  });
+  return data;
+};
+
