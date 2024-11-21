@@ -1,4 +1,4 @@
-import ComingSoon from "@/components/reusables/ComingSoon";
+// import ComingSoon from "@/components/reusables/ComingSoon";
 import WalletCard from "@/components/ui/WalletCard";
 import { IComponentMap } from "@/types/general";
 import { memo, useState } from "react";
@@ -6,7 +6,11 @@ import TabToggler from "../TabToggler";
 import { useQuery } from "@tanstack/react-query";
 import { getWalletBalance } from "@/services/adminService";
 import Loading from "@/components/reusables/Loading";
-import RestrictedWalletCard from "@/components/ui/RestrictedWalletCard";
+// import RestrictedWalletCard, {
+//   CashWalletCard,
+// } from "@/components/ui/RestrictedWalletCard";
+import PointWallet from "@/components/ui/PointWalletCard";
+import CashWallet from "../wallet/CashWallet";
 
 type Props = {
   WalletTitle?: string;
@@ -20,8 +24,6 @@ const WalletTabs = (props: Props) => {
     queryFn: () => getWalletBalance(),
   });
 
-  console.log(data, "data");
-
   const walletData = {
     actualBalance: data?.data?.actualBalance || 0,
     ledgerBalance: data?.data?.ledgerBalance || 0,
@@ -31,10 +33,11 @@ const WalletTabs = (props: Props) => {
     "Carbon-Credit wallet": (
       <WalletCard
         {...walletData}
-        organisation={props?.WalletTitle ?? "Admin"} />
+        organisation={props?.WalletTitle ?? "Admin"}
+      />
     ),
-    "Cash Wallet":  <RestrictedWalletCard />,
-    "Coin Wallet": <ComingSoon height="h-[200px]" />,
+    "Cash Wallet": <CashWallet />,
+    "Point Wallet": <PointWallet />,
   };
 
   if (isLoading) {
@@ -58,7 +61,7 @@ const WalletTabs = (props: Props) => {
         <TabToggler
           activeTab={activeTab}
           onClick={setActiveTab}
-          tabs={["Carbon-Credit wallet", "Cash Wallet", "Coin Wallet"]}
+          tabs={["Carbon-Credit wallet", "Cash Wallet", "Point Wallet"]}
         />
       </div>
 

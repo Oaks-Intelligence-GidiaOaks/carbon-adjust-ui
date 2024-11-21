@@ -1,5 +1,6 @@
 import { FC } from "react";
-import RestrictedWalletCard from "@/components/ui/RestrictedWalletCard";
+// import RestrictedWalletCard from "@/components/ui/RestrictedWalletCard";
+import MerchantCashWallet from "@/components/containers/wallet/MerchantCashWallet";
 
 const Wallet: FC = () => {
   return (
@@ -12,7 +13,8 @@ const Wallet: FC = () => {
       </div>
 
       <div className="mt-10 flex justify-between flex-wrap">
-        <RestrictedWalletCard />
+        <MerchantCashWallet />
+        {/* <RestrictedWalletCard /> */}
       </div>
     </div>
   );

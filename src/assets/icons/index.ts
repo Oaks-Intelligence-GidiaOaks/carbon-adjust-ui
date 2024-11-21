@@ -48,6 +48,9 @@ import ApprovedClaimIcon from "./approved-claim-icon.svg?react";
 import RejectedClaimIcon from "./rejected-claim-icon.svg?react";
 import TotalClaimIcon from "./total-claim-icon.svg?react";
 import UntreatedClaimIcon from "./untreated-claims-icon.svg?react";
+import TickCircle from "./tick-circle.svg?react";
+import CreditCard from "./credit-card-icon.svg?react";
+import BankIcon from "./bank-icon.svg?react";
 
 export {
   ApprovedClaimIcon,
@@ -100,4 +103,7 @@ export {
   UserIcon,
   DeleteIcon,
   EditIcon,
+  TickCircle,
+  CreditCard,
+  BankIcon,
 };
