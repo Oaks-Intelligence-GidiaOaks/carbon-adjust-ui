@@ -135,7 +135,11 @@ const Vehicles = () => {
             ) : (
               <div className="h-32 grid place-items-center max-w-[98%]">
                 {searchQuery ? (
-                  <div>No Result matched your query</div>
+                  <NoDevices
+                  empty={true}
+                  link="/dashboard/transport/add"
+                  text="Transport"
+                />
                 ) : (
                   <NoDevices link="/dashboard/transport/add" text="Transport" />
                 )}

@@ -68,9 +68,13 @@ export interface IDispatchDevice {
   actualCC: number;
   status: DeviceDispatchStatus;
 }
+export interface ITrans {
+  activeTab: string;
+}
 
 export interface IAsset {
   device: IDispatchData;
+  transport: ITrans;
 }
 
 export interface Device {

@@ -145,9 +145,10 @@ const TransportLIneChart = ({ ids }: TransportLineChartProps) => {
           <Loading message="Transition score loading..." />
         </div>
       ) : (
-        <div ref={chartRef}>
-          <LineChart data={data} options={options} />
-        </div>
+        <div ref={chartRef} style={{ height: "400px", width: "100%" }}>
+        <LineChart data={data} options={options} />
+      </div>
+      
       )}
     </div>
   );
