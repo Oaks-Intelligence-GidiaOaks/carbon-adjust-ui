@@ -1,5 +1,5 @@
 import { IoClose } from "react-icons/io5";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import uploadfileIcon from "@/assets/icons/upload-file.svg";
 import { FaTrashCan } from "react-icons/fa6";
 import FileUpload from "@/components/reusables/FileUpload";

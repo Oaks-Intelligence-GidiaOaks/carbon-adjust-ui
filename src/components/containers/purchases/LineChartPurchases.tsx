@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import LineChart from "@/components/charts/LineChart";
-import { getEnergyChart, getPurchasesChart } from "@/services/homeOwner";
+import { getPurchasesChart } from "@/services/homeOwner";
 import { useEffect, useRef } from "react";
 import Loading from "@/components/reusables/Loading";
 import { GoDownload } from "react-icons/go";
