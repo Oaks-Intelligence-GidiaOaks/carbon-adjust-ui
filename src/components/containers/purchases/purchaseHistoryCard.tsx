@@ -184,7 +184,7 @@ const PurchaseHistoryCard = ({
               <div className="flex flex-col lg:flex-row gap-5">
                 <div>
                   {attachments?.length ? (
-                    <ul className="flex flex-col lg:flex-row gap-10 items-center">
+                    <ul className="flex flex-row gap-10 items-center">
                       {attachments.map((doc) => (
                         <li
                           key={doc.id}
@@ -202,7 +202,7 @@ const PurchaseHistoryCard = ({
                 </div>
 
                 {/* Emission Data Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
                   {emissionData && emissionData.length > 0 ? (
                     emissionData.map(({ key, value }) => (
                       <div key={key}>
