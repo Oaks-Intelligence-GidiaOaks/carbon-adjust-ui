@@ -36,7 +36,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   return (
     <div className="w-full">
       <label className="block text-sm font-medium text-gray-700">
-        {title}*
+        {title} <span className="text-red-600">*</span>
       </label>
       <div
         onDrop={handleDrop}
