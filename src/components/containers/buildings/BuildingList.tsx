@@ -45,7 +45,7 @@ const BuildingList = () => {
   const buildingData = buildings?.data?.buildings || [];
      
 
-  console.log('h', buildingData)
+ 
 
   useEffect(() => {
     if (buildings)
@@ -145,7 +145,7 @@ const BuildingList = () => {
     });
   };
 
-  // const reversedBuildingData = filteredBuildingData.reverse();
+
 
   return (
     <div className="py-6">
@@ -214,7 +214,7 @@ const BuildingList = () => {
             voltageLevel={building.voltageLevel}
             floors={building.numberOfFloors}
             postCode={building.address.postalCode}
-          optimizationStatus={building.optimizationStatus}
+            optimizationStatus={building.optimizationStatus}
             city={building.address.cityOrProvince}
             onSelect={handleSelectBuilding} 
             isSelected={selectedBuildings.includes(building._id)} 

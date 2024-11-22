@@ -1,5 +1,3 @@
-// this page shows the list of orders
-
 import OrderCard from "@/components/reusables/OrderCard";
 import { IPackageOrder } from "@/interfaces/order.interface";
 import { getHoOrders } from "@/services/homeOwner";
@@ -19,6 +17,8 @@ import {
 } from "@/interfaces/events.interface";
 import Paginate from "@/components/reusables/Paginate";
 import { PaginateProps } from "@/types/general";
+import { Button } from "@/components/ui";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
@@ -37,6 +37,8 @@ const OrderList = (_: Props) => {
     hasPrevPage: false,
     totalPages: 1,
   });
+
+
 
   const pageEventPayload: IPageViewPayload = {
     name: PageEvent.ORDER_LIST,
@@ -88,13 +90,17 @@ const OrderList = (_: Props) => {
     }));
   };
 
+
   return (
     <div className="">
-      <div className="h-[150px] bg-[#F5FAFF] flex items-center pl-6 lg:pl-[50px]">
+      <div className="h-[150px] bg-[#F5FAFF] flex items-center justify-between pl-6 lg:pl-[50px]">
         <h2 className="font-[500] text-xl">Order List</h2>
+        <Link to="/dashboard/purchases">
+          <Button className="font-poppins mr-10">Purchases</Button>
+        </Link>
       </div>
 
-      {/* flat list */}
+      {/* Content Section */}
       <div
         ref={scrollRef}
         className="px-2 md:px-4 lg:w-5/6 mx-auto mt-[79px] space-y-[38px]"
@@ -107,8 +113,8 @@ const OrderList = (_: Props) => {
         )}
       </div>
 
-      {/* pagination */}
-      {/*  */}
+      {/* Pagination */}
+
       <div className="mt-8 pr-12 w-fit mx-auto">
         <Paginate {...pagination} onPageChange={handlePageChange} />
       </div>
