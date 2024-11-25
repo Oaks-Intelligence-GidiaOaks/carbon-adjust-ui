@@ -1,0 +1,54 @@
+[
+  {
+    "_id": "67406b3017484539e69d89d0",
+    "cashWalletId": "67325d35d725c420faebc5c1",
+    "userId": "66622a60fa9153dfc09b7d33",
+    "amount": 13,
+    "date": "2024-11-22T11:29:52.163Z",
+    "walletType": "CASH_WALLET",
+    "transactionType": "CREDIT",
+    "description": "Credited rMCBs balance from coin conversion",
+    "createdAt": "2024-11-22T11:29:52.163Z",
+    "updatedAt": "2024-11-22T11:29:52.163Z",
+    "__v": 0
+  },
+  {
+    "_id": "674069dd17484539e69d89ba",
+    "cashWalletId": "67325d35d725c420faebc5bf",
+    "userId": "66622a60fa9153dfc09b7d33",
+    "amount": 6,
+    "date": "2024-11-22T11:24:13.059Z",
+    "walletType": "CASH_WALLET",
+    "transactionType": "DEBIT",
+    "description": "Debited amount from sender wallet",
+    "createdAt": "2024-11-22T11:24:13.060Z",
+    "updatedAt": "2024-11-22T11:24:13.060Z",
+    "__v": 0
+  },
+  {
+    "_id": "674068b7130a315787c05e37",
+    "cashWalletId": "67325d35d725c420faebc5bf",
+    "userId": "66622a60fa9153dfc09b7d33",
+    "amount": 3,
+    "date": "2024-11-22T11:19:19.511Z",
+    "walletType": "CASH_WALLET",
+    "transactionType": "DEBIT",
+    "description": "Debited amount from sender wallet",
+    "createdAt": "2024-11-22T11:19:19.516Z",
+    "updatedAt": "2024-11-22T11:19:19.516Z",
+    "__v": 0
+  },
+  {
+    "_id": "674067d3893da22287d55ec8",
+    "cashWalletId": "67325d35d725c420faebc5bf",
+    "userId": "66622a60fa9153dfc09b7d33",
+    "amount": 15,
+    "date": "2024-11-22T11:15:31.713Z",
+    "walletType": "CASH_WALLET",
+    "transactionType": "DEBIT",
+    "description": "Debited amount from sender wallet",
+    "createdAt": "2024-11-22T11:15:31.718Z",
+    "updatedAt": "2024-11-22T11:15:31.718Z",
+    "__v": 0
+  }
+]

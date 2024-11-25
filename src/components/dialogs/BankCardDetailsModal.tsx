@@ -1,36 +1,66 @@
 import React from "react";
 import Modal from "./Modal";
 
-const BankCardDetails: React.FC = () => {
+interface BankCardDetailsProps {
+  goBack: () => void;
+  verify: () => void;
+}
+
+const BankCardDetails: React.FC<BankCardDetailsProps> = ({
+  goBack,
+  verify,
+}) => {
   return (
     <Modal>
-      <div className="flex justify-center items-center w-full min-h-screen bg-transparent">
-        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+      <div className="flex justify-center items-center w-full min-h-screen bg-transparent font-kumbh">
+        <div className="bg-white max-h-[500px] overflow-y-scroll scrollbar-hide shadow-md rounded-lg p-8 pt-0 w-full md:w-[650px] animate-bounceIn mx-5">
           {/* Back Button */}
-          <button className="text-blue-500 text-sm mb-4">&larr; Back</button>
+          <div className="bg-white sticky top-0 pt-5">
+            <button onClick={goBack} className="text-blue-500  text-sm mb-4">
+              &larr; Back
+            </button>
+          </div>
 
           {/* Current Details Section */}
           <div className="bg-gray-100 p-4 rounded-lg mb-6">
             <h4 className="text-gray-700 font-medium">Current details</h4>
-            <div className="text-sm text-gray-600 mt-2">
-              <p>
-                <strong>Card Number:</strong> 3489 XXXX XXXX XXXX
-              </p>
-              <p>
-                <strong>Card Type:</strong> Mastercard
-              </p>
-              <p>
-                <strong>Owner Name:</strong> James Gardner
-              </p>
-              <p>
-                <strong>Expiry Date:</strong> 07/25
-              </p>
+
+            <div className=" text-gray-600 mt-2 space-y-2 grid grid-cols-2 text-xs">
+              <div className="flex flex-col gap-1">
+                <span className="uppercase">Card Number</span>
+                <span className="font-[700] text-xs text-[#2C2C2C]">
+                  3489 XXXX XXXX XXXX
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="uppercase">Card Type</span>
+                <span className="font-[700] text-xs text-[#2C2C2C]">
+                  Mastercard
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="uppercase">Owner Name</span>
+                <span className="font-[700] text-xs text-[#2C2C2C]">
+                  James Gardner
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="uppercase">Expiry Date</span>
+                <span className="font-[700] text-xs text-[#2C2C2C]">07/25</span>
+              </div>
             </div>
           </div>
 
           {/* Card Details Form */}
-          <form>
-            <h4 className="text-gray-700 font-medium mb-4">Card details</h4>
+          <div>
+            <h4 className="text-gray-700 font-medium mb-2">Card details</h4>
+            <p className="font-[400] text-[#8083A3] mb-4">
+              This is where your earnings will be paid into
+            </p>
+
             <div className="space-y-4">
               {/* Card Number */}
               <div>
@@ -114,12 +144,13 @@ const BankCardDetails: React.FC = () => {
 
             {/* Verify Button */}
             <button
+              onClick={verify}
               type="submit"
-              className="mt-6 w-full bg-blue-500 text-white rounded-lg py-2 font-medium hover:bg-blue-600"
+              className="mt-6 w-fit text-white rounded-[24px] px-8 md:w-1/4 blue-gradient py-2 font-medium hover:bg-blue-600"
             >
               Verify
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </Modal>

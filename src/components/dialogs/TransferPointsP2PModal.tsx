@@ -24,7 +24,7 @@ const TransferPointsP2PModal: React.FC<TransferPointsP2PModalProps> = ({
   return (
     <Modal>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg w-[414px] p-6 shadow-lg">
+        <div className="bg-white rounded-lg w-[414px] p-6 shadow-lg animate-bounceIn mx-4">
           <div className="w-fit ml-auto">
             <button
               onClick={onClose}

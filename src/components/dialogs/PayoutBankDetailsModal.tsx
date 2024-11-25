@@ -1,38 +1,70 @@
 import React from "react";
 import Modal from "./Modal";
 
-const PayoutBankDetailsModal: React.FC = () => {
+interface PayoutBankDetailsModalProps {
+  goBack: () => void;
+  verify: () => void;
+}
+
+const PayoutBankDetailsModal: React.FC<PayoutBankDetailsModalProps> = ({
+  goBack,
+  verify,
+}) => {
   return (
     <Modal>
-      <div className="flex justify-center items-center w-full min-h-screen bg-transparent">
-        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+      <div className="flex justify-center relative items-center w-full min-h-screen bg-transparent font-kumbh">
+        <div className="bg-white max-h-[500px] overflow-y-scroll scrollbar-hide shadow-md rounded-lg pt-0 p-5 md:p-8 w-full md:w-[650px] animate-bounceIn mx-5">
           {/* Back Button */}
-          <button className="text-blue-500 text-sm mb-4">&larr; Back</button>
+          <div className="bg-white sticky top-0 pt-6">
+            <button onClick={goBack} className="text-blue-500  text-sm mb-4">
+              &larr; Back
+            </button>
+          </div>
 
           {/* Current Details Section */}
-          <div className="bg-gray-100 p-4 rounded-lg mb-6">
-            <h4 className="text-gray-700 font-medium">Current details</h4>
-            <div className="text-sm text-gray-600 mt-2 space-y-2">
-              <p>
-                <strong>Account Number:</strong> 987654321
-              </p>
-              <p>
-                <strong>Bank Name:</strong> First National Bank
-              </p>
-              <p>
-                <strong>ABA Routing Number:</strong> 123456789
-              </p>
-              <p>
-                <strong>Account Holder Name:</strong> James Gardner
-              </p>
+          <div className="bg-gray-100 p-6 rounded-lg mb-6">
+            <h4 className="font-medium text-[#21A0FC]">Current details</h4>
+
+            <div className=" text-gray-600 mt-2 space-y-2 grid grid-cols-2 text-xs">
+              <div className="flex flex-col gap-1">
+                <span className="uppercase">Account Number</span>
+                <span className="font-[700] text-xs text-[#2C2C2C]">
+                  987654321
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="uppercase">Bank Name:</span>
+                <span className="font-[700] text-xs text-[#2C2C2C]">
+                  First National Bank
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="uppercase">Account Holder Name</span>
+                <span className="font-[700] text-xs text-[#2C2C2C]">
+                  James Gardner
+                </span>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="uppercase">ABA Routing Number</span>
+                <span className="font-[700] text-xs text-[#2C2C2C]">
+                  123456789
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Payout Bank Details Form */}
-          <form>
-            <h4 className="text-gray-700 font-medium mb-4">
+          <div>
+            <h4 className="text-gray-700 font-medium mb-2 ">
               Payout Bank details
             </h4>
+
+            <p className="font-[400] text-[#8083A3] mb-4">
+              This is where your earnings will be paid into
+            </p>
 
             {/* Bank Name */}
             <div className="mb-4">
@@ -114,12 +146,13 @@ const PayoutBankDetailsModal: React.FC = () => {
 
             {/* Verify Button */}
             <button
+              onClick={verify}
               type="submit"
-              className="mt-6 w-full bg-blue-500 text-white rounded-lg py-2 font-medium hover:bg-blue-600"
+              className="mt-6 w-fit text-white rounded-[24px] px-8 md:w-1/4 blue-gradient py-2 font-medium hover:bg-blue-600"
             >
               Verify
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </Modal>

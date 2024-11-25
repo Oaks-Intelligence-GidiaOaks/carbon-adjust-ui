@@ -2,7 +2,7 @@ import { CashWalletCard } from "@/components/ui/RestrictedWalletCard";
 
 const CashWallet = () => {
   return (
-    <div className="flex gap-5">
+    <div className="flex gap-3 md:gap-5 overflow-x-scroll scrollbar-hide scroll-smooth max-w-[90vw] md:max-w-[82vw] lg:max-w-[88vw] xl:max-w-[88vw]">
       <CashWalletCard
         key={1}
         type="total"

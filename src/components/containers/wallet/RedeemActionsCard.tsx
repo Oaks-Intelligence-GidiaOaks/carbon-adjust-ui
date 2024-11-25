@@ -10,7 +10,7 @@ const RedeemActionsCard: React.FC<RedeemActionsCardProps> = ({
   setActiveModal,
 }) => {
   return (
-    <div className="flex flex-col items-center p-6 w-[230px] bg-gray-100 rounded-lg shadow-lg">
+    <div className="flex flex-col items-center p-3 md:p-6 flex-[0.4] md:flex-initial md:w-[200px] md:shrink-0 bg-gray-100 rounded-lg shadow-lg">
       {/* Icon */}
       <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
         <GrantPkgIcon />
@@ -19,14 +19,14 @@ const RedeemActionsCard: React.FC<RedeemActionsCardProps> = ({
       {/* Buttons */}
       <button
         onClick={() => setActiveModal(PointWalletDialog.P2P)}
-        className="mb-4 px-6 py-2 border border-[#0E89F7] text-[#0E89F7] rounded-[16px] text-xs hover:bg-blue-50 transition"
+        className="mb-4 px-3  md:px-6 py-2 border border-[#0E89F7] text-[#0E89F7] rounded-[16px] text-xxs md:text-xs hover:bg-blue-50 transition "
       >
-        Transfer to friend
+        <span className="whitespace-nowrap truncate">Transfer to friend</span>
       </button>
 
       <button
         onClick={() => setActiveModal(PointWalletDialog.TRANSFER)}
-        className="px-6 py-2 bg-gradient-to-r from-[#2E599A] to-[#0B8DFF] text-white text-xs rounded-[16px] hover:from-blue-600 hover:to-blue-700 transition"
+        className="px-4 whitespace-nowrap md:px-6 py-2 bg-gradient-to-r from-[#2E599A] to-[#0B8DFF] text-white text-[9px] md:text-xs rounded-[16px] hover:from-blue-600 hover:to-blue-700 transition"
       >
         Redeem as Cash
       </button>

@@ -25,7 +25,7 @@ const ConfirmPointTransactionModal: React.FC<
   return (
     <Modal>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg w-[478px] p-6 shadow-lg text-center relative">
+        <div className="bg-white rounded-lg w-[478px] p-6 shadow-lg text-center relative animate-bounceIn mx-4">
           {/* Close Button */}
           <div className="ml-auto w-fit cursor-pointer " onClick={onClose}>
             <MdClose size={20} />

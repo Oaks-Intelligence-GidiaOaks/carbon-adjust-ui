@@ -46,4 +46,44 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+export const AxiosTest = axios.create({
+  baseURL: import.meta.env.VITE_WALLET_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+});
+
+// Add a request interceptor
+AxiosTest.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token") || store.getState().user.token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add a response interceptor
+AxiosTest.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      persistor.pause();
+      persistor.flush().then(() => {
+        return persistor.purge();
+      });
+      localStorage.removeItem("token");
+      window.location.assign("/login?ie=unauthorized");
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default axiosInstance;

@@ -27,6 +27,7 @@ module.exports = {
         poppins: ['"Poppins"', "sans-serif"],
         inter: ["Inter", "sans-serif"],
         "dm-sans": ["DM Sans", "sans-serif"],
+        kumbh: ["Kumbh Sans", "sans-serif"],
       },
       backgroundImage: {
         "register-image": "url('/assets/graphics/register-graphic.svg')",
@@ -117,6 +118,9 @@ module.exports = {
       textFillColor: {
         transparent: "transparent",
       },
+      fontSize: {
+        xxs: "10px",
+      },
       textColor: {
         "ca-blue": "#2196F3",
         "ca-cyan": "#139EEC",
@@ -153,6 +157,15 @@ module.exports = {
           from: { opacity: "0", transform: "translateX(-2px)" },
           to: { opacity: "1", transform: "translateX(0)" },
         },
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+        bounceIn: {
+          "0%": { opacity: 0, transform: "scale(0.8) translateY(-50px)" },
+          "50%": { opacity: 1, transform: "scale(1.08) translateY(0px)" },
+          "100%": { opacity: 1, transform: "scale(1) translateY(0px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -165,6 +178,8 @@ module.exports = {
         slideRightAndFade:
           "slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)",
         "spin-slow": "spin 15s linear infinite",
+        fadeIn: "fadeIn 0.3s ease-in-out",
+        bounceIn: "bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
       },
     },
     container: {

@@ -28,31 +28,35 @@ export const PointWalletCard: React.FC<PointWalletCardProps> = ({
   onRedeem,
 }) => {
   return (
-    <div className="w-full drop-shadow-md max-w-[400px] rounded-[19.2px] shadow-lg bg-gradient-to-b from-[#1381E7] to-blue-600 text-white ">
+    <div className="w-full drop-shadow-md md:w-[400px] shrink-0 rounded-[19.2px] shadow-lg bg-gradient-to-b from-[#1381E7] to-blue-600 text-white font-inter">
       {/* Top Section */}
       <div className="p-6">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-xs tracking-tight">Coin Wallet</h2>
+            <h2 className="text-xs font-poppins font-light">Coin Wallet</h2>
             <p className="text-base font-[400]">{userName}</p>
           </div>
           <div className="text-right">
-            <h2 className="text-xs tracking-tight">Wallet ID</h2>
+            <h2 className="text-xs font-poppins font-light">Wallet ID</h2>
             <p className="text-base font-[400]">{walletId}</p>
           </div>
         </div>
 
         <div className="flex-center justify-between mb-4">
           <div>
-            <h2 className="text-xs tracking-tight">Current Coin Balance</h2>
+            <h2 className="text-xs font-poppins font-light">
+              Current Coin Balance
+            </h2>
             <p className="text-xl font-[500]]">
               {currentBalance.toLocaleString()}
             </p>
           </div>
 
           <div>
-            <h2 className="text-xs tracking-tight">Redeemable Coins</h2>
-            <p className="text-xl font-[500]]">
+            <h2 className="text-xs font-poppins font-light">
+              Redeemable Coins
+            </h2>
+            <p className="text-xl font-[500] text-right">
               {redeemableCoins.toLocaleString()}
             </p>
           </div>
@@ -65,12 +69,14 @@ export const PointWalletCard: React.FC<PointWalletCardProps> = ({
           <p className="text-2xl font-[500]">
             {allTimeEarnings.toLocaleString()}
           </p>
-          <h2 className="text-xs">All-time coin earnings</h2>
+          <h2 className="text-xs font-light font-poppins">
+            All-time coin earnings
+          </h2>
         </div>
 
         <button
           onClick={onRedeem}
-          className="hover:bg-white hover:text-blue-600 font-[400] tracking-tight px-4 py-2 border hover:border-0 text-xs rounded-lg text-gray-100 transition"
+          className="hover:bg-white hover:text-blue-600 font-light px-4 py-2 border-2 hover:border-0 text-xxs rounded-xl text-gray-100 transition font-poppins"
         >
           Redeem coins
         </button>
@@ -81,12 +87,18 @@ export const PointWalletCard: React.FC<PointWalletCardProps> = ({
 
 const PointWallet = () => {
   const [activeModal, setActiveModal] = useState<PointWalletDialog | null>(
-    PointWalletDialog.TRANSFER
+    null
   );
+
+  const [isTextCopied, setIsTextCopied] = useState<boolean>(false);
 
   const handleCopyReferralCode = () => {
     navigator.clipboard.writeText("DannyWalters8012345k");
-    alert("Referral code copied to clipboard!");
+    setIsTextCopied(true);
+
+    setTimeout(() => {
+      setIsTextCopied(false);
+    }, 4000);
   };
 
   // @ts-ignore
@@ -143,15 +155,18 @@ const PointWallet = () => {
   };
 
   return (
-    <div className="flex-center gap-8">
+    <div className="flex flex-col lg:flex-row gap-x-3 gap-y-6 md:gap-x-5 flex-wrap md:flex-nowrap xl:w-[70vw]">
       <PointWalletCard {...dataWallet} onRedeem={() => {}} />
 
-      <RedeemActionsCard setActiveModal={setActiveModal} />
+      <div className="flex gap-x-3 md:gap-x-5">
+        <RedeemActionsCard setActiveModal={setActiveModal} />
 
-      <ReferralInfoCard
-        referralCode="DannyWalters8012345k"
-        onCopy={handleCopyReferralCode}
-      />
+        <ReferralInfoCard
+          referralCode="DannyWalters8012345k"
+          onCopy={handleCopyReferralCode}
+          showCopied={isTextCopied}
+        />
+      </div>
 
       {activeModal && getActiveModal[activeModal]}
     </div>

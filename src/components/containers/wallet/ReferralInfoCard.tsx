@@ -5,14 +5,16 @@ import { MdOutlineContentCopy } from "react-icons/md";
 interface ReferralInfoCardProps {
   referralCode: string; // The referral code to display
   onCopy: () => void; // Callback for copying the referral code
+  showCopied: boolean;
 }
 
 const ReferralInfoCard: React.FC<ReferralInfoCardProps> = ({
   referralCode,
   onCopy,
+  showCopied,
 }) => {
   return (
-    <div className="p-4 text-xs bg-white rounded-lg shadow-md border border-gray-200 w-80">
+    <div className="p-4 text-xs flex-shrink bg-white flex-[0.6] md:flex-initial rounded-lg shadow-md border border-gray-200 ">
       {/* Referral Code Section */}
       <div className="mb-4 bg-gray-50 border border-gray-300 rounded-lg px-3 py-2">
         <label className=" font-medium text-gray-700">Referral code:</label>
@@ -23,9 +25,12 @@ const ReferralInfoCard: React.FC<ReferralInfoCardProps> = ({
           </span>
           <button
             onClick={onCopy}
-            className="text-blue-500 hover:text-blue-700 transition-colors"
+            className="text-blue-500 hover:text-blue-700 transition-colors flex-center gap-1"
             aria-label="Copy referral code"
           >
+            {showCopied && (
+              <span className="text-[10px] tracking-tight ">Copied</span>
+            )}
             {/* copy */}
             <MdOutlineContentCopy />
           </button>

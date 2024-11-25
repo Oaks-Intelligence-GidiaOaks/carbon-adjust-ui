@@ -18,7 +18,7 @@ const MerchantWalletCard: React.FC<MerchantWalletCardProps> = ({
 }) => {
   return (
     <div
-      className={`w-[462px] rounded-[20px] ${
+      className={`w-[300px] md:w-[412px] shrink-0 rounded-[20px] ${
         type === "total" ? "bg-[#2C5C9F]" : "bg-[#232E3C]"
       }  px-8 py-8 text-white font-poppins relative overflow-hidden text-xs`}
     >

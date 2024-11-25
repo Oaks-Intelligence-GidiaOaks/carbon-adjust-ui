@@ -1,6 +1,7 @@
-import axiosInstance from "@/api/axiosInstance";
+import axiosInstance, { AxiosTest } from "@/api/axiosInstance";
 import { IDispatchData } from "@/interfaces/device.interface";
 import { IAddReview } from "@/interfaces/product.interface";
+import { WalletType } from "@/interfaces/transaction.interface";
 import { formatNumber } from "@/lib/utils";
 
 export const getAllPackageCategories = async () => {
@@ -311,8 +312,10 @@ export const uploadBuildingImage = async (
 };
 
 //RESTRICTED CARDS
-export const getRestrictedWallet = async () => {
-  const { data } = await axiosInstance.get(`wallet/info?walletType=RESTRICTED`);
+export const getRestrictedWallet = async (
+  walletType: WalletType = WalletType.CARBON_CREDIT
+) => {
+  const { data } = await AxiosTest.get(`wallet/info?walletType=${walletType}`);
   return data;
 };
 //UPLOAD ENERGY biLLS
@@ -452,7 +455,6 @@ export const getPurchasesData = async (limit: number = 5, page: number = 1) => {
   return data;
 };
 
-
 //GET PURCHASES CHART
 export const getPurchasesChart = async (purchaseIds: string[]) => {
   const { data } = await axiosInstance.post(`/purchase/chats-response`, {
@@ -460,4 +462,3 @@ export const getPurchasesChart = async (purchaseIds: string[]) => {
   });
   return data;
 };
-

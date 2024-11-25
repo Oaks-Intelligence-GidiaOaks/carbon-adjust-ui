@@ -9,7 +9,7 @@ import Loading from "@/components/reusables/Loading";
 // import RestrictedWalletCard, {
 //   CashWalletCard,
 // } from "@/components/ui/RestrictedWalletCard";
-import PointWallet from "@/components/ui/PointWalletCard";
+import PointWallet from "@/components/ui/PointWallet";
 import CashWallet from "../wallet/CashWallet";
 
 type Props = {

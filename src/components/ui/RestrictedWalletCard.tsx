@@ -5,12 +5,13 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useState } from "react";
 import { CiCircleAlert } from "react-icons/ci";
 import { IoLockOpen } from "react-icons/io5";
+import { WalletType } from "@/interfaces/transaction.interface";
 
 const RestrictedWalletCard = () => {
   // Fetch wallet data using useQuery
   const { data, isLoading, isError } = useQuery({
     queryKey: ["restricted-wallet"],
-    queryFn: () => getRestrictedWallet(),
+    queryFn: () => getRestrictedWallet(WalletType.CARBON_CREDIT),
   });
 
   if (isLoading) {
@@ -105,17 +106,18 @@ export const CashWalletCard: React.FC<WalletCardProps> = ({
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
       }}
-      className="w-[450px] h-auto p-6 rounded-[16px] shadow-lg bg text-white relative overflow-hidden text-xs"
+      className="w-[310px] md:w-[450px] shrink-0 h-auto p-6 rounded-[16px] shadow-lg bg text-white relative overflow-hidden text-xs font-inter"
     >
       {/* Top Section */}
       <div className="flex justify-between items-center">
         <div>
-          <p className="text-sm font-light">Cash Wallet</p>
-          <p className="text-base">{name}</p>
+          <p className="md:text-sm font-light">Cash Wallet</p>
+          <p className="text-sm md:text-base">{name}</p>
         </div>
+
         <div className="text-right">
-          <p className="text-sm font-light">Wallet ID</p>
-          <p className="text-base">{walletId}</p>
+          <p className="md:text-sm font-light">Wallet ID</p>
+          <p className="text-sm md:text-base">{walletId}</p>
         </div>
       </div>
 
@@ -141,12 +143,12 @@ export const CashWalletCard: React.FC<WalletCardProps> = ({
             </div>
           )}
 
-          <p className="text-2xl flex items-center">
+          <p className="text-xl md:text-2xl flex items-center">
             {balanceHidden ? "*********" : totalCWB || rcwb}
 
             {type === "total" && (
               <span
-                className="ml-2 text-xl cursor-pointer"
+                className="ml-2 text-lg md:text-xl cursor-pointer"
                 onClick={hideBalance}
               >
                 <MdOutlineRemoveRedEye />
@@ -154,7 +156,9 @@ export const CashWalletCard: React.FC<WalletCardProps> = ({
             )}
           </p>
 
-          {type === "total" && <p className="text-sm font-light">Total CWB</p>}
+          {type === "total" && (
+            <p className="text-xs md:text-sm font-light">Total CWB</p>
+          )}
         </div>
 
         <div className="text-right">
@@ -169,10 +173,11 @@ export const CashWalletCard: React.FC<WalletCardProps> = ({
               </div>
             </div>
           )}
-          <p className="text-2xl">{grantCredit || ucwb}</p>
+
+          <p className="text-xl md:text-2xl">{grantCredit || ucwb}</p>
 
           {type === "total" && (
-            <p className="text-sm font-light"> Grant Credit</p>
+            <p className="text-xs md:text-sm font-light"> Grant Credit</p>
           )}
         </div>
       </div>
