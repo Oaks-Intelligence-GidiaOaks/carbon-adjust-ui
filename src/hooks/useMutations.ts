@@ -1,4 +1,9 @@
-import { cancelDeviceSchedule, deleteDevice } from "@/services/homeOwner";
+import {
+  cancelDeviceSchedule,
+  deleteDevice,
+  movePointToCash,
+  transferCashP2P,
+} from "@/services/homeOwner";
 import { useMutation } from "@tanstack/react-query";
 // import { Dispatch, SetStateAction } from "react";
 import toast from "react-hot-toast";
@@ -27,9 +32,23 @@ const useMutations = () => {
     },
   });
 
+  // WALLET
+  const TransferPointToCash = useMutation({
+    mutationKey: ["point-cash-wallet"],
+    mutationFn: (amount: number) => movePointToCash(amount),
+  });
+
+  const TransferCashP2P = useMutation({
+    mutationKey: ["cash-p2p"],
+    mutationFn: (arg: { amount: number; walletAddress: string }) =>
+      transferCashP2P(arg),
+  });
+
   return {
     DeleteDevice,
     CancelDeviceSchedule,
+    TransferPointToCash,
+    TransferCashP2P,
   };
 };
 
