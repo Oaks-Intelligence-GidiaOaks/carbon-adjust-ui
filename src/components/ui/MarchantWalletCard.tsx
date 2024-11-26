@@ -1,5 +1,6 @@
 import { WalletBg } from "@/assets/images";
-import React from "react";
+import React, { useState } from "react";
+import { MdContentCopy } from "react-icons/md";
 
 interface MerchantWalletCardProps {
   name: string; // Name of the wallet owner
@@ -7,18 +8,35 @@ interface MerchantWalletCardProps {
   type: "total" | "split";
   totalEarnings: string; // Total earnings
   onWithdraw: () => void; // Callback for withdraw button
+  rmcb?: number;
+  umcb?: number;
+  walletAddress: string;
 }
 
 const MerchantWalletCard: React.FC<MerchantWalletCardProps> = ({
   name,
   walletType,
   totalEarnings,
+  rmcb,
+  umcb,
+  walletAddress,
   type = "total",
   onWithdraw,
 }) => {
+  const [isTextCopied, setIsTextCopied] = useState<boolean>(false);
+
+  const handleCopy = () => {
+    setIsTextCopied(true);
+    navigator.clipboard.writeText(walletAddress);
+
+    setTimeout(() => {
+      setIsTextCopied(false);
+    }, 3000);
+  };
+
   return (
     <div
-      className={`w-[300px] md:w-[412px] shrink-0 rounded-[20px] ${
+      className={`w-[330px] md:w-[412px] shrink-0 rounded-[20px] ${
         type === "total" ? "bg-[#2C5C9F]" : "bg-[#232E3C]"
       }  px-8 py-8 text-white font-poppins relative overflow-hidden text-xs`}
     >
@@ -26,9 +44,29 @@ const MerchantWalletCard: React.FC<MerchantWalletCardProps> = ({
 
       <div className="z-[50] relative flex flex-col justify-between h-full">
         {/* Wallet Details */}
-        <div className="mb-5">
-          <p className="text-xs font-light capitalize">{name}</p>
-          <p className="text-sm font-[500]">{walletType}</p>
+        <div className="flex justify-between">
+          <div className="mb-5">
+            <p className="text-xs font-light capitalize">{name}</p>
+            <p className="text-sm font-[500]">{walletType}</p>
+          </div>
+
+          <div className="mb-5">
+            <div className="flex-center gap-3">
+              <p className="text-xs font-light capitalize">Wallet ID</p>
+
+              {isTextCopied ? (
+                <span className="text-blue-200"> copied</span>
+              ) : (
+                <MdContentCopy
+                  className="cursor-pointer"
+                  onClick={handleCopy}
+                />
+              )}
+            </div>
+            <p className="text-sm font-[500] max-w-24  md:max-w-36 truncate">
+              {walletAddress}
+            </p>
+          </div>
         </div>
 
         {/* Total Earnings */}
@@ -54,13 +92,13 @@ const MerchantWalletCard: React.FC<MerchantWalletCardProps> = ({
             <div className="space-y-2">
               <p className="">Money from UMCB</p>
 
-              <p className="text-base">£296,789.00</p>
+              <p className="text-base">£{umcb?.toLocaleString()}</p>
             </div>
 
             <div className="space-y-2">
               <p className="">Money from RMCB</p>
 
-              <p className="text-base">£236,000.00</p>
+              <p className="text-base">£{rmcb?.toLocaleString()}</p>
             </div>
           </div>
         )}

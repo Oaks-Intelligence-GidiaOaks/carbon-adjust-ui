@@ -9,14 +9,21 @@ export enum TransactionType {
   DEBIT = "DEBIT",
 }
 
+export enum TransactionStatus {
+  PENDING = "pending",
+  COMPLETED = "completed",
+  FAILED = "failed",
+}
+
 export interface ITransaction {
   _id: string;
   cashWalletId: string;
   userId: string;
-  amount: number;
   date: string;
   walletType: WalletType;
   transactionType: TransactionType;
+  amount: number;
+  status: TransactionStatus;
   description: string;
   createdAt: string;
   updatedAt: string;

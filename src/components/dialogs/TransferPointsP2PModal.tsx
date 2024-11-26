@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import { MdClose } from "react-icons/md";
+import { useQuery } from "@tanstack/react-query";
+import { getCoinSettings } from "@/services/adminService";
 
 interface TransferPointsP2PModalProps {
   maxCoins: number; // The maximum number of convertible coins
@@ -11,15 +13,23 @@ interface TransferPointsP2PModalProps {
 
 const TransferPointsP2PModal: React.FC<TransferPointsP2PModalProps> = ({
   maxCoins,
+  // @ts-ignore
   cashEquivalent,
   onClose,
   onConfirm,
 }) => {
   const [amount, setAmount] = useState<number>(0);
 
+  const { data } = useQuery({
+    queryKey: ["coin-settings"],
+    queryFn: getCoinSettings,
+  });
+
+  let conversionRate = data?.data?.coinConversionRate;
+
   // Calculate percentage and cash equivalent dynamically
   //   const percentage = (amount / maxCoins) * 100 || 0;
-  const cashValue = (amount / maxCoins) * cashEquivalent || 0;
+  const cashValue = conversionRate ? (amount / maxCoins) * conversionRate : 0;
 
   return (
     <Modal>

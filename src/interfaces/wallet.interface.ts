@@ -6,6 +6,12 @@ export enum PointWalletDialog {
   P2P_SUCCESS = "p2p_success",
 }
 
+export enum CashWalletDialog {
+  TRANSFER = "transfer",
+  SUCCESS = "success",
+  CONFIRM_TRANSACTION = "confirm_transaction",
+}
+
 export enum WithdrawalWalletDialog {
   WITHDRAWAL_METHOD = "withdrawal_method",
   BANK_PAYOUT = "bank_payout",

@@ -462,3 +462,23 @@ export const getPurchasesChart = async (purchaseIds: string[]) => {
   });
   return data;
 };
+
+// WALLET
+export const movePointToCash = async (coinAmount: number) => {
+  const { data } = await AxiosTest.post(`/wallet/convert-coins-to-rcmbs`, {
+    coinAmount,
+  });
+
+  return data;
+};
+
+export const transferCashP2P = async (arg: {
+  amount: number;
+  walletAddress: string;
+}) => {
+  const { data } = await AxiosTest.patch(`/wallet/transfer-rcmbs`, {
+    ...arg,
+  });
+
+  return data;
+};

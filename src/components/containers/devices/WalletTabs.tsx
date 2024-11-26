@@ -11,6 +11,9 @@ import Loading from "@/components/reusables/Loading";
 // } from "@/components/ui/RestrictedWalletCard";
 import PointWallet from "@/components/ui/PointWallet";
 import CashWallet from "../wallet/CashWallet";
+import { WalletType } from "@/interfaces/transaction.interface";
+import CarbonCreditWallet from "../wallet/CarbonCreditWallet";
+import MerchantCashWallet from "../wallet/MerchantCashWallet";
 
 type Props = {
   WalletTitle?: string;
@@ -69,5 +72,42 @@ const WalletTabs = (props: Props) => {
     </div>
   );
 };
+
+export const MerchantWalletTabs = memo(() => {
+  const [activeTab, setActiveTab] = useState<WalletType | string>(
+    WalletType.CARBON_CREDIT
+  );
+
+  const getActiveTab: IComponentMap = {
+    [WalletType.CARBON_CREDIT]: <CarbonCreditWallet />,
+    [WalletType.CASH_WALLET]: <MerchantCashWallet />,
+    [WalletType.COIN_WALLET]: <PointWallet />,
+  };
+
+  return (
+    <div className="">
+      <div className="">
+        <h2 className="text-[#333333] font-[600] text-[24px]">Wallet</h2>
+        <p className="text-[#575757] text-base ">
+          Manage your payments and transactions
+        </p>
+      </div>
+
+      <div className="md:w-3/4 mt-5">
+        <TabToggler
+          activeTab={activeTab}
+          onClick={setActiveTab}
+          tabs={[
+            WalletType.CARBON_CREDIT,
+            WalletType.CASH_WALLET,
+            WalletType.COIN_WALLET,
+          ]}
+        />
+      </div>
+
+      <div className="mt-5">{getActiveTab[activeTab]}</div>
+    </div>
+  );
+});
 
 export default memo(WalletTabs);

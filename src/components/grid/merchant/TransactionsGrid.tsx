@@ -19,26 +19,27 @@ import { useEffect, useState } from "react";
 import { fetchTransactions } from "@/services/merchant";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import transDummy from "@/dummy/transaction.json";
-import { ITransaction } from "@/interfaces/transaction.interface";
-import { formatDateTime } from "@/lib/utils";
+import {
+  ITransaction,
+  TransactionStatus,
+} from "@/interfaces/transaction.interface";
+import { cn, formatDateTime } from "@/lib/utils";
+import { IComponentMap } from "@/types/general";
 
-// interface TransactionsGridProps<TData, TValue> {
-//   columns: ColumnDef<TData, TValue>[];
-// data: TData[];
-//   fetchData: (
-//     pageNumber: number,
-//     limit: number
-//   ) => Promise<{
-//     data: TData[];
-//     total: number;
-//   }>;
-// }
+const getStatusStyle: IComponentMap = {
+  [TransactionStatus.PENDING]:
+    "text-[#CDBC05] bg-gradient-to-r from-[#FEFEF0] to-[#FFFEF2]",
+  [TransactionStatus.FAILED]:
+    "text-[#BF0508] bg-gradient-to-r from-[#FFF0F1] to-[#FFDFE0]",
+  [TransactionStatus.COMPLETED]:
+    "text-[#069662] bg-gradient-to-r from-[#EDFDF7] to-[#E5ECF6]",
+};
 
 export const columns: ColumnDef<ITransaction>[] = [
   {
     id: "_id",
-    header: () => <div className="">S/N</div>,
-    cell: ({ row }) => <span className="text-xxs">{row.index + 1}</span>,
+    header: () => <div className="pl-2">S/N</div>,
+    cell: ({ row }) => <span className="text-xxs pl-2">{row.index + 1}</span>,
   },
   {
     accessorKey: "_id",
@@ -47,13 +48,13 @@ export const columns: ColumnDef<ITransaction>[] = [
       <div className="capitalize text-xxs">{row.getValue("_id")}</div>
     ),
   },
-  {
-    accessorKey: "userId",
-    header: () => <div className="whitespace-nowrap"> User ID</div>,
-    cell: ({ row }) => (
-      <div className="capitalize text-xxs">{row.getValue("userId")}</div>
-    ),
-  },
+  // {
+  //   accessorKey: "userId",
+  //   header: () => <div className="whitespace-nowrap"> User ID</div>,
+  //   cell: ({ row }) => (
+  //     <div className="capitalize text-xxs">{row.getValue("userId")}</div>
+  //   ),
+  // },
   {
     accessorKey: "createdAt",
     header: () => <div className="w-32">Timestamp</div>,
@@ -83,9 +84,23 @@ export const columns: ColumnDef<ITransaction>[] = [
   },
   {
     accessorKey: "amount",
-    header: () => <div className="w-32">Amount</div>,
+    header: () => <div className="w-20">Amount</div>,
     cell: ({ row }) => (
       <div className="capitalize text-xxs">{row.getValue("amount")}</div>
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: () => <div className="w-28 text-center">Status</div>,
+    cell: ({ row }) => (
+      <div
+        className={`capitalize text-xxs rounded-[16px] text-center py-[2px] ${
+          // @ts-ignore
+          getStatusStyle[row.getValue("status")]
+        }`}
+      >
+        {row.getValue("status")}
+      </div>
     ),
   },
   {
@@ -97,7 +112,7 @@ export const columns: ColumnDef<ITransaction>[] = [
   },
 ];
 
-export function TransactionsGrid() {
+export function TransactionsGrid({ className }: { className?: string }) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [limit] = useState<number>(20);
 
@@ -153,13 +168,15 @@ export function TransactionsGrid() {
   };
 
   return (
-    <div className="">
+    <div className={cn("w-full", className)}>
       <div className="pb-3 flex-center justify-between">
         <h2 className="text-xl whitespace-nowrap font-[500]">
           Transaction History
         </h2>
 
         <Input
+          wrapperClassName=""
+          inputClassName="bg-transparent !h-full"
           name="search"
           placeholder="Search"
           value={
@@ -168,7 +185,7 @@ export function TransactionsGrid() {
           onChange={(event: any) =>
             table.getColumn("walletType")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm border rounded-xl px-4 ml-auto"
+          className="max-w-sm border rounded-xl px-4 ml-auto text-xs h-[38px] text-gray-600"
         />
       </div>
 
@@ -235,7 +252,7 @@ export function TransactionsGrid() {
       </Table>
 
       {(transactions?.transactions || true) && (
-        <div className="mt-4 flex-center w-fit ml-auto text-gray-500">
+        <div className="mt-4 flex-center w-fit ml-auto text-gray-500 text-xs font-kumbh">
           <div className="flex-center gap-1 ">
             <span>6</span>-<span>9</span>
             of
@@ -246,7 +263,9 @@ export function TransactionsGrid() {
             <button
               disabled={currentPage <= 1}
               onClick={handleClickPrev}
-              className="grid place-items-center px-6 py-2 rounded-2xl"
+              className={`${
+                currentPage <= 1 && "cursor-not-allowed text-muted"
+              } grid place-items-center px-6 py-2 rounded-2xl`}
             >
               <FaChevronLeft />
             </button>
@@ -254,7 +273,7 @@ export function TransactionsGrid() {
             <button
               disabled={currentPage === transactions?.totalPages}
               onClick={handleClickNext}
-              className="grid place-items-center px-6 py-2 rounded-2xl"
+              className="grid place-items-center pl-6 py-2 rounded-2xl"
             >
               <FaChevronRight />
             </button>

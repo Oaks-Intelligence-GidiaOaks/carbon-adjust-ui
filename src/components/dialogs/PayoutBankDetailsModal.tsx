@@ -13,7 +13,7 @@ const PayoutBankDetailsModal: React.FC<PayoutBankDetailsModalProps> = ({
   return (
     <Modal>
       <div className="flex justify-center relative items-center w-full min-h-screen bg-transparent font-kumbh">
-        <div className="bg-white max-h-[500px] overflow-y-scroll scrollbar-hide shadow-md rounded-lg pt-0 p-5 md:p-8 w-full md:w-[650px] animate-bounceIn mx-5">
+        <div className="bg-white max-h-[500px] overflow-y-scroll scrollbar-hide shadow-md rounded-lg pt-0 p-5 md:p-8 md:pt-0 w-full md:w-[650px] animate-bounceIn mx-5">
           {/* Back Button */}
           <div className="bg-white sticky top-0 pt-6">
             <button onClick={goBack} className="text-blue-500  text-sm mb-4">

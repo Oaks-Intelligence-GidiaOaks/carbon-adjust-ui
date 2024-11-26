@@ -70,7 +70,7 @@ const RestrictedWalletCard = () => {
   );
 };
 
-interface WalletCardProps {
+interface CashWalletCardProps {
   name: string; // Name of the wallet owner
   walletId: string; // Wallet ID
   totalCWB?: string; // Total CWB amount
@@ -78,9 +78,10 @@ interface WalletCardProps {
   rcwb?: string;
   ucwb?: string;
   type: "total" | "rcwb";
+  onTransfer?: () => void;
 }
 
-export const CashWalletCard: React.FC<WalletCardProps> = ({
+export const CashWalletCard: React.FC<CashWalletCardProps> = ({
   name,
   walletId,
   totalCWB,
@@ -88,6 +89,7 @@ export const CashWalletCard: React.FC<WalletCardProps> = ({
   rcwb,
   ucwb,
   grantCredit,
+  onTransfer,
 }) => {
   const [balanceHidden, setBalanceHidden] = useState<boolean>(false);
 
@@ -117,7 +119,9 @@ export const CashWalletCard: React.FC<WalletCardProps> = ({
 
         <div className="text-right">
           <p className="md:text-sm font-light">Wallet ID</p>
-          <p className="text-sm md:text-base">{walletId}</p>
+          <p className="text-xs md:text-sm  max-w-32 md:max-w-52 truncate">
+            {walletId}
+          </p>
         </div>
       </div>
 
@@ -186,18 +190,49 @@ export const CashWalletCard: React.FC<WalletCardProps> = ({
 
       {type === "rcwb" && (
         <div className="flex-center gap-2 pt-1 justify-center">
-          <button className="text-white rounded-2xl px-6 py-2 bg-[#139EEC]">
+          <button
+            onClick={onTransfer}
+            className="text-white rounded-2xl px-6 py-2 bg-[#139EEC]"
+          >
             Transfer
           </button>
 
-          <button className="text-white rounded-2xl border border-white px-6 py-2">
+          {/* <button className="text-white rounded-2xl border border-white px-6 py-2">
             Withdraw
-          </button>
+          </button> */}
         </div>
       )}
 
       {/* Background Pattern */}
       {/* <div className="absolute top-0 right-0 w-40 h-40 bg-white opacity-10 rounded-full -translate-y-6 translate-x-6"></div> */}
+    </div>
+  );
+};
+
+export const CashWalletCardSkeleton = () => {
+  return (
+    <div className="animate-pulse bg-[#e8e8e87b] h-48 flex flex-col justify-between w-[310px] md:w-[450px] p-6 rounded-[24px]">
+      {/* Header Section */}
+      <div className="flex justify-between items-center">
+        <div className="h-4 w-24 bg-gray-300 rounded"></div> {/* Wallet Type */}
+        <div className="h-4 w-36 bg-gray-300 rounded"></div> {/* Wallet ID */}
+      </div>
+      {/* Name Section */}
+      <div className="h-4 w-32 bg-gray-300 rounded mt-2"></div> {/* Name */}
+      {/* Divider */}
+      <div className="w-full h-[1px] bg-gray-300 my-2"></div>
+      {/* Bottom Section */}
+      <div className="flex justify-between items-center">
+        <div>
+          <div className="h-6 w-8 bg-gray-300 rounded"></div> {/* Icon */}
+          <div className="h-4 w-16 bg-gray-300 rounded mt-1"></div>{" "}
+          {/* Total CWB */}
+        </div>
+        <div>
+          <div className="h-4 w-12 bg-gray-300 rounded"></div>
+          {/* Grant Credit */}
+        </div>
+      </div>
     </div>
   );
 };
