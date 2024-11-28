@@ -1,23 +1,12 @@
 import { motion } from "framer-motion";
-import Image1 from "../../assets/image-1.png";
-import Image2 from "../../assets/image-2.png";
-import Image3 from "../../assets/image-3.png";
-import Image4 from "../../assets/image-4.png";
-import Image5 from "../../assets/image-5.png";
-import Image6 from "../../assets/image-6.png";
-import Image7 from "../../assets/image-7.png";
-import Image8 from "../../assets/image-8.png";
-import Image9 from "../../assets/image-9.svg";
-import Image10 from "../../assets/image-10.svg";
 import { Button } from "@/components/ui";
-import Marquee from "react-fast-marquee";
 import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
     <section className="relative font-poppins ">
-      <div className="lg:container lg:flex flex-row-reverse w-full lg:flex-row lg:items-center lg:gap-12 mt-14 lg:mt-20">
-        <motion.div
+      <div className="lg:container lg:flex flex-col w-full lg:items-center lg:gap-12 mt-14 lg:mt-20">
+        {/* <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
@@ -35,9 +24,9 @@ const Hero = () => {
               className="max-w-full h-auto sm:max-w-full absolute bottom-0 z-10"
             />
           </div>
-        </motion.div>
+        </motion.div> */}
 
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
@@ -50,45 +39,59 @@ const Hero = () => {
           />
           <img
             src={"/assets/graphics/hero-house.svg"}
-            alt=""
+          alt=""
             className="max-w-full h-auto sm:max-w-full absolute bottom-0 z-10"
           />
-        </motion.div>
+        </motion.div> */}
 
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="flex px-4 lg:px-0 lg:!w-[40%] flex-col items-center lg:items-start mb-8 lg:mb-0"
+          className="flex px-4 lg:px-0 lg:!w-[100%] h-[100vh] flex-col justify-center items-center mb-8 lg:mt-5 lg:mb-0 w-full"
         >
-          <h2 className="gradient-text text-2xl lg:text-[2.5rem] font-semibold lg:leading-[3rem] text-center lg:text-left mb-2">
-            One Platform:
+          <h2 className="text-[#eceeef] text-xl font-[600] text-center lg:text-left mb-10 capitalize">
+            All in One Sustainability Platform
           </h2>
-          <p className="text-[#191F23] text-2xl lg:text-4xl font-normal text-center lg:text-left mb-4">
-            That's all it takes to "Master Your Home's Energy"
-          </p>
-          <div className="bg-gradient-text h-[2px] w-full" />
-          <p className="text-[#191F23] text-lg lg:text-lg mt-4 max-w-[720px] font-medium">
-            PLANNING A HOME ENERGY UPGRADE?
-          </p>
-          <p className="text-[#191F23] text-base text-center lg:text-base lg:text-left mb-6 mt-2 max-w-[720px]">
-            Home is a place of great emotional significance, and while projects
-            can take 3-8 months from initial survey to completion, scheduling a
-            Home Energy Plan today allows you to confidently connect with the
-            right professionals offering you tailored retrofit services to get
-            your desired outcome.
+          <h2 className="text-2xl text-[#eceeef] lg:text-[8.5rem] font-[600] lg:leading-[3rem] text-center capitalize mb-2">
+            carbon - adjust
+          </h2>
+
+          <p className="text-[#eff3f6] font-[600] text-base !text-center  lg:text-left my-16 max-w-[820px]">
+            Welcome to Carbon-Adjust, a lifestyle platform designed to help you
+            live more sustainably. Whether you're looking to reduce energy use
+            at home, manage your devices efficiently, or make greener
+            transportation choices, Carbon-Adjust brings all the tools you need
+            to lower your carbon footprint.
           </p>
 
           <div className="flex justify-center flex-wrap gap-6">
             <Link to={"/login"} preventScrollReset={false}>
-              <Button className="bg-gradient-text px-10">Get started</Button>
+              <Button
+                size={"lg"}
+                className="bg-gradient-text rounded-[20px] px-10"
+              >
+                Join Waitlist
+              </Button>
             </Link>
+          </div>
+          <div className="flex items-center justify-center lg:justify-start gap-6 mt-5 lg:mt-[15rem] lg:ml-[-60rem]">
+            <motion.img
+              className=""
+              src="/assets/graphics/Google.svg"
+              alt="Lifecycle Model"
+            />
+            <motion.img
+              className=""
+              src="/assets/graphics/Apple.svg"
+              alt="Lifecycle Model"
+            />
           </div>
         </motion.div>
       </div>
 
-      <div className="mt-20 lg:px-0 relative">
-        {/* <h2 className="mb-6 text-center">Supported by</h2> */}
+      {/* <div className="mt-20 lg:px-0 relative">
+        <h2 className="mb-6 text-center">Supported by</h2> 
         <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 h-24 bg-gradient-to-b from-cyan-500 to-transparent via-transparent via-15% from-0% to-90% w-[50%] -z-[1] rounded-t-[100px]" />
         <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 h-20 bg-gray-100 w-[50%] -z-[1] rounded-t-[100px]" />
         <Marquee
@@ -183,7 +186,7 @@ const Hero = () => {
             />
           </div>
         </Marquee>
-      </div>
+      </div> */}
     </section>
   );
 };

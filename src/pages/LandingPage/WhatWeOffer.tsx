@@ -1,98 +1,215 @@
 import React from "react";
 import { motion } from "framer-motion";
-import "tailwindcss/tailwind.css";
-import { Link } from "react-router-dom";
 
-const WhatWeOffer: React.FC = () => {
-  const features = [
+const WhatWeOffer = () => {
+  const dummyData = [
     {
       id: 1,
-      title: "Get your bespoke home energy plan as you interact with Pavlos",
+      title: "Smart Travel",
       description:
-        "Schedule an appointment for your bespoke home energy plan today",
+        "Make your trips more efficient with less traffic; discover eco-friendly routes that your carbon footprint.",
+      image: "/assets/graphics/whatweoffer4.png",
+      hoverImage: "/assets/graphics/whatweoffer4.png",
     },
     {
       id: 2,
-      title:
-        "Schedule a call back with Artemis and get your complimentary access to an Energy Consultant",
+      title: "Devices",
       description:
-        "Schedule a call back with one of our qualified consultants for personalized advice on investing in home energy efficiency improvements.",
+        "Reduce cost, and lower your carbon footprints, all while getting notifications to keep you in control.",
+      image: "/assets/graphics/whatweoffer3.png",
+      hoverImage: "/assets/graphics/whatweoffer3b.png",
     },
     {
       id: 3,
-      title:
-        "Chat up Stella as you download your complementary E-book on Carbon-Adjust",
+      title: "Smart Purchases",
       description:
-        "Download your complimentary E-Book on Carbon-Adjust for tips on the latest innovation in home energy efficiency improvements.",
-    },
-    {
-      id: 4,
-      title: "Access to Kommunita",
-      description:
-        "Join the conversation today on Kommunita with like-minded homeowners documenting and sharing their experiences on home energy efficiency improvements. No sign ups needed!",
-    },
-    {
-      id: 5,
-      title:
-        "Access Cassandra in generating your complimentary Carbon Footprint Tracker",
-      description:
-        "Understand how you contribute to climate change through your energy consumption via Carbon-Adjust.",
-    },
-    {
-      id: 6,
-      title:
-        "Check-in with Anastasia on your complimentary Climate Transition Score",
-      description:
-        "Leverage Carbon-Adjust in understanding how government policies and your energy use can impact on your energy burden and property value.",
-    },
-    {
-      id: 7,
-      title:
-        "Engage Yanis in exploring your complimentary access to our Optimal Decarbonisation Scheduler",
-      description:
-        "Understand via Carbon-Adjust your return on investments from a range of energy efficiency measures.",
+        "By tracking your purchase, you gain a clear, accurate understanding of your impact on the environment-no more guesswork.",
+      image: "/assets/graphics/whatweoffer2.png",
+      hoverImage: "/assets/graphics/whatweoffer2b.png",
     },
   ];
-
   return (
-    <div className="container mx-auto flex-col lg:flex-row lg:w-[80%] px-4 py-12 flex justify-between gap-6 relative">
-      <div className="flex flex-col justify-between lg:w-[40%] font-poppins">
-        <div className="flex justify-start flex-col">
-          <div className="mx-auto flex justify-center lg:justify-start flex-col">
-            <h2 className="text-2xl font-semibold text-center mb-4 text-white">
-              What we offer
-            </h2>
-            <Link to={"/login"}>
-              <button className="w-fit mb-8 block px-6 py-2 bg-gradient-text text-white rounded-md h-10">
-                Get started
-              </button>
-              `
-            </Link>
+    <>
+      <div className=" flex flex-col items-center justify-center p-4 font-poppins my-20">
+        <motion.div
+          className="w-full my-5"
+          initial={{ opacity: 0, y: -50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 1, type: "spring" }}
+        >
+          <div className="flex flex-col items-center justify-center text-center">
+            <h1 className="text-3xl md:text-[4rem] md:leading-[60px] font-medium text-center">
+              <span className="text-[#043A3A]"> What We </span>
+              <span className="text-[#0B8DFF]">Offer</span>
+            </h1>
           </div>
+        </motion.div>
+        <div className="flex flex-col gap-[10rem] mt-20 w-full">
+          <motion.div
+            className="w-full  "
+            initial={{ opacity: 0, y: -50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 1, type: "spring" }}
+          >
+            <div>
+              <Heading
+                title="Marketplace"
+                index="01"
+                text=" Our platform offers a vibrant marketplace where merchants can showcase
+        their sustainable products and services to individuals and
+        corporations."
+              />
+              {/* <div
+                style={{
+                  backgroundImage: `url("/assets/graphics/whatweoffer1.png")`,
+                }}
+                className={`flex rounded-2xl bg-cover lg:bg-cover bg-center h-[350px] lg:h-[80vh] mt-10 md:w-[100%] max-h-[800px]`}
+              ></div> */}
+              <motion.img
+                className="w-full mt-10"
+                src="/assets/graphics/whatweoffer1.png"
+                alt="Lifecycle Model"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 1 }}
+              />
+            </div>
+          </motion.div>
+
+          <div className="mb-[-100px]">
+            <Heading
+              title="Operations Hub"
+              index="02"
+              text="Our Operations Hub allows You to stay smart, be efficient and sustainable in how You use energy, make purchases, and travel."
+            />
+          </div>
+          {/* this section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {dummyData.map((item) => (
+              <motion.div
+                key={item.id}
+                className="w-full"
+                initial={{ opacity: 0, y: -50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 1, type: "spring" }}
+              >
+                <div className="relative group h-[600px] mt-10 md:w-[100%] rounded-2xl overflow-hidden">
+                  {/* Default Background */}
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-100 group-hover:opacity-0"
+                    style={{
+                      backgroundImage: `url("${item.image}")`,
+                    }}
+                  ></div>
+
+                  {/* Hover Background */}
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                    style={{
+                      backgroundImage: `url("${item.hoverImage}")`,
+                    }}
+                  ></div>
+
+                  {/* Content */}
+                  <div className="absolute bottom-5 left-5 text-white text-lg z-10 lg:w-[500px]">
+                    <h2 className="transition-all duration-300 text-[2rem] lg:text-[3rem] leading-10 font-semibold">
+                      {item.title}
+                    </h2>
+
+                    <div className="h-0 text-xl lg:text-2xl group-hover:h-auto transition-all duration-300 overflow-hidden my-2">
+                      <p>{item.description}</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+
+            <motion.div
+              className="w-full  bg-[#F5F8FF] mt-10 py-10 px-10 lg:px-20 rounded-2xl h-[600px] flex items-center justify-center"
+              initial={{ opacity: 0, y: -50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 1, type: "spring" }}
+            >
+              <div className="flex flex-col items-center justify-center text-left">
+                <h1 className="text-xl md:text-[2rem] md:leading-[38px] font-medium text-left">
+                  <span className="text-[#043A3A]">Carbon-Adjust </span>
+                  <span className="text-[#0B8DFF]">
+                    isn’t just for individuals.
+                  </span>
+                </h1>
+                <p className="text-[##525252] font-[500] text-lg md:leading-[28px] my-10 max-w-[1000px]">
+                  We’ve also built a powerful system for businesses, local
+                  government authorities, and charities to Measure their Carbon
+                  footprint from all Purchase made.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+          <motion.div
+            className="w-full mt-[-150px] "
+            initial={{ opacity: 0, y: -50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 1, type: "spring" }}
+          >
+            <div className="relative group h-[600px] mt-10 md:w-[100%] rounded-2xl overflow-hidden">
+              {/* Default Background */}
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-100 group-hover:opacity-0"
+                style={{
+                  backgroundImage: `url("/assets/graphics/whatweoffer5.png")`,
+                }}
+              ></div>
+
+              {/* Hover Background */}
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                style={{
+                  backgroundImage: `url("/assets/graphics/whatweoffer5b.png")`, // Replace with your hover image URL
+                }}
+              ></div>
+
+              {/* Content */}
+              <div className="absolute bottom-5 left-5 text-white text-lg z-10 ">
+                <h2 className="transition-all duration-300 text-[2rem] lg:text-[4rem] font-semibold">
+                  Built Environment
+                </h2>
+
+                <div className="h-0 text-xl lg:text-3xl group-hover:h-auto transition-all duration-300 delay-150 overflow-hidden my-10">
+                  <p>
+                   Explore best practices in sustainable biomass production and efficient energy conversion technologies that maximize environmental impact.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
-      <div className="grid flex-1 font-poppins grid-cols-1 sm:grid-cols-2 gap-6 gap-y-8">
-        {features.map((feature, index) => (
-          <motion.div
-            key={feature.id}
-            className="p-6 pt-2 pb-0 rounded-none border-l border-gray-400"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.2 }}
-            viewport={{ once: true }}
-          >
-            <span className="text-white font-semibold text-base">
-              0{index + 1}.
-            </span>{" "}
-            <h3 className="text-xl font-medium mb-2 text-white">
-              {feature.title}
-            </h3>
-            <p className="text-white/70">{feature.description}</p>
-          </motion.div>
-        ))}
-      </div>
-    </div>
+    </>
   );
 };
 
 export default WhatWeOffer;
+
+interface HeadingProps {
+  title: string;
+  index: string;
+  text: string;
+}
+
+const Heading: React.FC<HeadingProps> = ({ title, index, text }) => {
+  return (
+    <div className="flex w-full flex-col md:flex-row justify-between items-start gap-5">
+      <div className="flex gap-5 items-center">
+        <h1 className="text-2xl md:text-3xl font-semibold">{index}</h1>
+        <h1 className="text-2xl md:text-4xl font-semibold">{title}</h1>
+      </div>
+      <div className="text-xl text-[#6B7280] lg:w-[600px]">{text}</div>
+    </div>
+  );
+};
