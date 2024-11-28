@@ -18,7 +18,7 @@ export interface Transport {
   city: string;
   emissionFactor: string;
   licensePlateNumber: string;
-  setIds: Dispatch<SetStateAction<string[]>>
+  setIds: Dispatch<SetStateAction<string[]>>;
   ids: string[];
   totalEmission: string;
   totalProjectedCarbonOffset: string;
@@ -77,6 +77,7 @@ export interface Trips {
       min_emission: string;
       projected_arbitrage: string;
       best_time?: string;
+      status: string;
       best_route?: {
         route_emission?: number;
         factor?: {

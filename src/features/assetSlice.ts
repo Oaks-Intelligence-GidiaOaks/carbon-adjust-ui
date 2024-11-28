@@ -11,6 +11,9 @@ const initialState: IAsset = {
       mm: 0,
     },
   },
+  transport: {
+    activeTab: "Transport",
+  },
 };
 
 const assetSlice = createSlice({
@@ -35,8 +38,12 @@ const assetSlice = createSlice({
     clearDevice: (state) => {
       state.device = initialState.device;
     },
+    setTransportTab: (state, action: PayloadAction<string>) => {
+      state.transport.activeTab = state.transport.activeTab = action.payload;
+    },
   },
 });
 
-export const { deviceChanged, timeChanged, clearDevice } = assetSlice.actions;
+export const { deviceChanged, timeChanged, clearDevice, setTransportTab } =
+  assetSlice.actions;
 export default assetSlice.reducer;
