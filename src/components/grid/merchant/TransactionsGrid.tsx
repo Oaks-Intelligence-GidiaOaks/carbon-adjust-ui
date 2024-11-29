@@ -2,6 +2,8 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -134,10 +136,17 @@ export function TransactionsGrid({ className }: { className?: string }) {
     totalTransactions = 0,
   } = transactions?.data || {};
 
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const table = useReactTable({
     data: transactionsData,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting: sorting,
+    },
+    onSortingChange: setSorting,
   });
 
   const LoadingState = () => (
@@ -213,8 +222,9 @@ export function TransactionsGrid({ className }: { className?: string }) {
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
-                    className="font-poppins font-bold  text-[#3C3E41]"
+                    className="font-poppins font-bold  text-[#3C3E41] cursor-pointer"
                     key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
                   >
                     {header.isPlaceholder
                       ? null
