@@ -8,15 +8,15 @@ const WhatWeOffer = () => {
       title: "Smart Travel",
       description:
         "Make your trips more efficient with less traffic; discover eco-friendly routes that your carbon footprint.",
-      image: "/assets/graphics/whatweoffer4.png",
-      hoverImage: "/assets/graphics/whatweoffer4.png",
+      image: "/assets/graphics/whatweoffer4.svg",
+      hoverImage: "/assets/graphics/whatweoffer4b.svg",
     },
     {
       id: 2,
       title: "Devices",
       description:
         "Reduce cost, and lower your carbon footprints, all while getting notifications to keep you in control.",
-      image: "/assets/graphics/whatweoffer3.png",
+      image: "/assets/graphics/whatweoffer3.svg",
       hoverImage: "/assets/graphics/whatweoffer3b.png",
     },
     {

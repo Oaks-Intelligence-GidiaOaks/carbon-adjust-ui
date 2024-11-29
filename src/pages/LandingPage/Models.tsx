@@ -4,7 +4,8 @@ import { FaCheck } from "react-icons/fa6";
 const Models = () => {
   return (
     <>
-      <div className="flex bg-[#F5F5F5] flex-col items-center justify-center p-4 font-poppins">
+      <div className="flex bg-gradient-to-bl from-[rgba(173,216,230,0.5)] via-white to-[rgba(173,216,230,0.5)] flex-col items-center justify-center p-4 font-poppins">
+     
         <motion.div
           className="w-full my-20"
           initial={{ opacity: 0, y: -50 }}

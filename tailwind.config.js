@@ -39,6 +39,7 @@ module.exports = {
         'model1': "url('/assets/graphics/model1.png')",
         "cash-wallet-01": "url('/assets/graphics/cash-wallet-bg-01.svg')",
         "cash-wallet-02": "url('/assets/graphics/cash-wallet-bg-02.svg')",
+        
       },
       colors: {
         "light-green": "#1BAF9E",
