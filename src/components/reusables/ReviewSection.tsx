@@ -29,8 +29,8 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({
               You can't review until you have purchased the product
             </p>
              {/* Link to check out */}
-            <Link className="w-5/6" to={`/dashboard/checkout`}>
-                <button className="w-full py-2 text-center text-white blue-gradient rounded-full">
+            <Link className="" to={`/dashboard/checkout`}>
+                <button className="w-fit px-3 mt-3 py-2 text-center text-white blue-gradient rounded-full">
                   Buy Now
                 </button>
             </Link>
