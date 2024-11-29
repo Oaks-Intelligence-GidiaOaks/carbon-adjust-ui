@@ -1,4 +1,4 @@
-import axiosInstance, { AxiosTest } from "@/api/axiosInstance";
+import axiosInstance from "@/api/axiosInstance";
 import {
   TransactionType,
   WalletType,
@@ -211,6 +211,6 @@ export const fetchTransactions = async (
   const queryString = new URLSearchParams(params).toString();
   url += `?${queryString}`;
 
-  const { data } = await AxiosTest.get(url);
+  const { data } = await axiosInstance.get(url);
   return data;
 };

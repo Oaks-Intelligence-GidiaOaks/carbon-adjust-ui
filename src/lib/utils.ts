@@ -588,3 +588,18 @@ export function generateKML(data: any[]) {
 export const copyClipboardText = (txt: string) => {
   navigator.clipboard.writeText(txt);
 };
+
+export const serializeGridData = (
+  data: any[],
+  currentPage: number,
+  limit: number
+) => {
+  let startIndex = (currentPage - 1) * limit + 1;
+
+  let paginatedData = data.map((item, i) => ({
+    id: startIndex + i,
+    ...item,
+  }));
+
+  return paginatedData;
+};

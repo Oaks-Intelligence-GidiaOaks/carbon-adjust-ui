@@ -12,17 +12,18 @@ import { CashWalletDialog } from "@/interfaces/wallet.interface";
 import { validateTransferCashInputs } from "@/lib/utils";
 import { getRestrictedWallet } from "@/services/homeOwner";
 import { IComponentMap } from "@/types/general";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
 const CashWallet = () => {
+  const queryClient = useQueryClient();
   const [activeModal, setActiveModal] = useState<CashWalletDialog | null>(null);
 
-  const { TransferCashP2P } = useMutations();
+  const { SendRcmbOTP, VerifyRcmbOtp } = useMutations();
 
-  const { data, isLoading, isRefetching } = useQuery({
-    queryKey: ["get-wallet-info"],
+  const { data, isLoading } = useQuery({
+    queryKey: ["get-wallet-info", WalletType.CASH_WALLET],
     queryFn: () => getRestrictedWallet(WalletType.CASH_WALLET),
     refetchInterval: 300000,
   });
@@ -39,11 +40,11 @@ const CashWallet = () => {
       return toast.error(errors[0]);
     }
 
-    TransferCashP2P.mutate(
-      { amount, walletAddress },
+    SendRcmbOTP.mutate(
+      { amount, receiverWalletAddress: walletAddress },
       {
         onSuccess: () => {
-          setActiveModal(CashWalletDialog.SUCCESS);
+          setActiveModal(CashWalletDialog.CONFIRM_TRANSACTION);
         },
         onError: (ex: any) => {
           toast.error(
@@ -52,6 +53,26 @@ const CashWallet = () => {
         },
       }
     );
+  };
+
+  const handleVerifyOtp = (otp: string) => {
+    if (!otp.length) {
+      return toast.error("Please enter a value for otp");
+    }
+
+    VerifyRcmbOtp.mutate(otp, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["get-wallet-info", WalletType.CASH_WALLET],
+        });
+        setActiveModal(CashWalletDialog.SUCCESS);
+      },
+      onError: (ex: any) => {
+        toast.error(
+          ex.response.data.message || "Error occurred. Please try again"
+        );
+      },
+    });
   };
 
   const closeModal = () => {
@@ -64,15 +85,16 @@ const CashWallet = () => {
         onConfirm={handleConfirm}
         maxCash={walletData?.restrictedMonetizedCashBenefitBalance}
         onClose={closeModal}
-        isPending={TransferCashP2P.isPending}
+        isPending={SendRcmbOTP.isPending}
       />
     ),
     [CashWalletDialog.CONFIRM_TRANSACTION]: (
       <ConfirmPointTransactionModal
         onResend={() => {}}
-        onConfirm={() => setActiveModal(CashWalletDialog.SUCCESS)}
+        onConfirm={handleVerifyOtp}
         email=""
         onClose={closeModal}
+        isPending={VerifyRcmbOtp.isPending}
       />
     ),
     [CashWalletDialog.SUCCESS]: (
@@ -85,7 +107,7 @@ const CashWallet = () => {
     ),
   };
 
-  if (isLoading || isRefetching) {
+  if (isLoading) {
     return (
       <div className="flex gap-3 md:gap-5 overflow-x-scroll scrollbar-hide scroll-smooth max-w-[90vw] md:max-w-[82vw] lg:max-w-[88vw] xl:max-w-[88vw]">
         {Array.from({ length: 2 }, (_, i) => (

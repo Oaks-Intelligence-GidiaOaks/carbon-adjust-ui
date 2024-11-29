@@ -75,10 +75,6 @@ export const useChatbotInput = (): ChatbotInputHook => {
     setInputText(transcript);
   }, [transcript]);
 
-  useEffect(() => {
-    console.log(messages, "messages");
-  }, [messages]);
-
   const {
     isRecording,
     isPlaying,
