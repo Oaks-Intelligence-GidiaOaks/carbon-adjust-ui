@@ -9,12 +9,12 @@ import klarna from "@/assets/Klarna.svg";
 import wallet from "@/assets/wallet.svg";
 // import { RootState } from "@/app/store";
 // import { initiatePayment } from "@/services/homeOwner";
-import {
-  Elements,
-  PaymentElement,
-  // useStripe,
-  // useElements,
-} from "@stripe/react-stripe-js";
+// import {
+//   Elements,
+//   PaymentElement,
+//   // useStripe,
+//   // useElements,
+// } from "@stripe/react-stripe-js";
 // @ts-ignore
 import { loadStripe } from "@stripe/stripe-js";
 // import { useMutation } from "@tanstack/react-query";
@@ -33,7 +33,7 @@ import { loadStripe } from "@stripe/stripe-js";
 // } from "@/interfaces/events.interface";
 
 // Load your publishable key
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
+// const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
 interface PaymentMethodProps {
   selectedTab: "single" | "combo";
@@ -389,13 +389,13 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
             </div>
           ) : (
             <div className="mt-6 p-4 border rounded-md bg-white shadow-sm">
-              <Elements
+              {/* <Elements
                 stripe={stripePromise}
                 // @ts-ignore
                 options={options}
-              >
+              > */}
                 <form className="space-y-6 text-sm">
-                  <PaymentElement />
+                  {/* <PaymentElement /> */}
                   {/* Name on Card */}
                   <div>
                     <label htmlFor="cardName" className="block text-sm ">
@@ -464,7 +464,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
                   {/* Submit Button */}
                   <button
                   type="submit"
-                  // onClick={handleFormSubmit}
+                  onClick={handleFormSubmit}
                   className="w-full blue-gradient text-white py-3 px-4 rounded-full font-medium"
                 >
                   Next
@@ -495,7 +495,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
                     </button> */}
                   {/* </div> */}
                 </form>
-              </Elements>
+              {/* </Elements> */}
             </div>
           )}
         </div>
