@@ -7,20 +7,24 @@ import Hero from "./Hero";
 // import CarouselComponent from "../../components/reuseable/CarouselComponent";
 // import PackageSection from "./PackageSection";
 import ProjectSection from "./ProjectSection";
-import Faq from "./Faq";
 // import GetStarted from "./GetStarted";
 import { AiOutlineClose } from "react-icons/ai";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import Footer from "./Footer";
-import { motion, useAnimation } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
+//import { useInView } from "react-intersection-observer";
 // import { RootState } from "@/app/store";
 // import { useSelector } from "react-redux";
 import { Button } from "@/components/ui";
+import AboutUs from "./AboutUs";
+import Faq from "./Faq";
+import Review from "./Review";
+import Waitlist from "./Waitlist";
+import Lifecycle from "./Lifecycle";
+import News from "./News";
+import Models from "./Models";
 import WhatWeOffer from "./WhatWeOffer";
-import HomeEnergyPlan from "./HomeEnergyPlan";
-import MarketPlace from "./MarketPlace";
-import GetInTouch from "./GetInTouch";
+import Introduction from "./Introduction";
 
 const useScrollToHash = () => {
   const location = useLocation();
@@ -45,51 +49,46 @@ const LandingPage = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const controls = useAnimation();
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+ // const controls = useAnimation();
+  // const { ref, inView } = useInView({
+  //   triggerOnce: true,
+  //   threshold: 0.1,
+  // });
 
-  useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    } else {
-      controls.start("hidden");
-    }
-  }, [controls, inView]);
+  // useEffect(() => {
+  //   if (inView) {
+  //     controls.start("visible");
+  //   } else {
+  //     controls.start("hidden");
+  //   }
+  // }, [controls, inView]);
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, staggerChildren: 0.2 },
-    },
-  };
+  // const containerVariants = {
+  //   hidden: { opacity: 0, y: 50 },
+  //   visible: {
+  //     opacity: 1,
+  //     y: 0,
+  //     transition: { duration: 0.6, staggerChildren: 0.2 },
+  //   },
+  // };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
+  // const itemVariants = {
+  //   hidden: { opacity: 0, y: 50 },
+  //   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  // };
 
   return (
     <motion.div initial="initial" animate="animate" className="overflow-hidden">
-      <div
-        className="font-poppins relative bg-cover bg-no-repeat bg-origin-content min-h-screen after:absolute after:inset-0 after:-z-[1px] after:bg-[url(/assets/graphics/hero-bg.svg)] after:bg-no-repeat after:bg-cover after:opacity-50"
-        // style={{ backgroundImage: `url(/assets/graphics/hero-bg.svg)` }}
-      >
-        <header className="lg:container px-4 lg:px-0 !border-none relative z-10">
-          <nav className="lg:container flex justify-between items-center ">
-            <div className="py-3 flex flex-start" id="home">
+      <div>
+        <header className="lg:container px-4 lg:px-0 relative z-10 bg-white h-2">
+          <nav className="lg:container py-3 flex justify-between items-center  ">
+            <div className=" flex flex-start" id="home">
               <img src={CarbonAdjustLogo} alt="" className="xl:w-[200px]" />
             </div>
 
-            {/* <ul className=" hidden sm:flex justify-center flex-1 items-center gap-6">
+            <ul className=" hidden sm:flex justify-center flex-1 items-center gap-6 font-poppins font-medium">
               <Link to={"#home"}>
-                <li className={`cursor-pointer py-4 base px-2 text-black`}>
-                  Home
-                </li>
+                <li className={`cursor-pointer py-4  px-2 text-black`}>Home</li>
               </Link>
               <Link to={"#about-us"}>
                 <li className={`cursor-pointer py-4 base px-2 text-black`}>
@@ -106,7 +105,7 @@ const LandingPage = () => {
                   Contact us
                 </li>
               </Link>
-            </ul> */}
+            </ul>
 
             <div className="gap-6">
               <Link to={"/login"}>
@@ -122,9 +121,9 @@ const LandingPage = () => {
                   className={`rotate text-ca-blue ${
                     isMenuOpen ? "rotate-180" : ""
                   }`}
-                />
-              ) : (
-                <FaBars
+                  />
+                  ) : (
+                    <FaBars
                   size={24}
                   onClick={toggleMenu}
                   className=" text-ca-blue"
@@ -133,75 +132,97 @@ const LandingPage = () => {
             </div> */}
           </nav>
         </header>
+      </div>
 
-        {/* Harmburger menu */}
-        <section
-          className={`top-0 hidden h-screen w-full text-5xl flex-col opacity- justify-items-center z-20 origin-top animate-open-menu ${
-            isMenuOpen ? "animation-open-menu" : "hidden"
-          }`}
-          style={{
-            background: "rgba(255, 255, 255, 0.1)",
-            backdropFilter: "blur(15px)",
-          }}
-        >
-          {/* Close button */}
-          {isMenuOpen && (
-            <button
-              className="absolute top-0 right-0 px-4 py-[18px]"
-              onClick={toggleMenu}
-            >
-              <AiOutlineClose
-                size={25}
-                className={`rotate text-ca-blue ${
-                  isMenuOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-          )}
-          <nav
-            className="flex flex-col  items-center py-8 px-40 rounded-b-lg"
-            aria-label="mobile"
+      {/* Harmburger menu */}
+      <section
+        className={`top-0 hidden h-screen w-full text-5xl flex-col opacity- justify-items-center z-20 origin-top animate-open-menu ${
+          isMenuOpen ? "animation-open-menu" : "hidden"
+        }`}
+        style={{
+          background: "rgba(255, 255, 255, 0.1)",
+          backdropFilter: "blur(15px)",
+        }}
+      >
+        {/* Close button */}
+        {isMenuOpen && (
+          <button
+            className="absolute top-0 right-0 px-4 py-[18px]"
+            onClick={toggleMenu}
           >
+            <AiOutlineClose
+              size={25}
+              className={`rotate text-ca-blue ${
+                isMenuOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+        )}
+        <nav
+          className="flex flex-col  items-center py-8 px-40 rounded-b-lg"
+          aria-label="mobile"
+        >
+          <NavLink
+            to="/"
+            onClick={toggleMenu}
+            className="font-poppins text-xl flex items-center justify-center font-medium w-full text-center py-3 text-ca-blue"
+          >
+            Home
+          </NavLink>
+
+          <div className="flex flex-col w-full absolute top-40 px-10">
             <NavLink
-              to="/"
-              onClick={toggleMenu}
-              className="font-poppins text-xl flex items-center justify-center font-medium w-full text-center py-3 text-ca-blue"
+              to="https://kommunita-web.netlify.app/login"
+              className="font-poppins text-lg font-medium w-full text-center bg-ca-blue text-white rounded-md py-2 mt-4"
             >
-              Home
+              Kommunita
             </NavLink>
+            <NavLink
+              to="/register"
+              className="font-poppins text-lg font-medium w-full text-center py-2 bg-ca-blue  text-white rounded-md mt-4"
+            >
+              Sign up
+            </NavLink>
+            <NavLink
+              to="/login"
+              className="font-poppins text-lg font-medium w-full text-center bg-ca-blue text-white rounded-md py-2 mt-4"
+            >
+              Login
+            </NavLink>
+          </div>
+        </nav>
+      </section>
 
-            <div className="flex flex-col w-full absolute top-40 px-10">
-              <NavLink
-                to="https://kommunita-web.netlify.app/login"
-                className="font-poppins text-lg font-medium w-full text-center bg-ca-blue text-white rounded-md py-2 mt-4"
-              >
-                Kommunita
-              </NavLink>
-              <NavLink
-                to="/register"
-                className="font-poppins text-lg font-medium w-full text-center py-2 bg-ca-blue  text-white rounded-md mt-4"
-              >
-                Sign up
-              </NavLink>
-              <NavLink
-                to="/login"
-                className="font-poppins text-lg font-medium w-full text-center bg-ca-blue text-white rounded-md py-2 mt-4"
-              >
-                Login
-              </NavLink>
-            </div>
-          </nav>
-        </section>
+      <div className="font-poppins relative max-h-[90vh] bg-cover bg-no-repeat bg-origin-content">
+        {/* Background Video */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover z-[-1] opacity-100"
+          src="../../assets/hero-bg.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        ></video>
 
-        {/* Hero section */}
+        {/* Hero Section */}
         <div className="relative z-10">
           <Hero />
         </div>
       </div>
-
-      <div className="relative max-w-[1440px] mx-auto" id="about-us">
-        <HomeEnergyPlan />
+      <div>
+        <Introduction />
       </div>
+
+      <div className="max-w-[1440px] mx-auto" id="about-us">
+        <AboutUs />
+      </div>
+      <div className=" max-w-[1440px] mx-auto" id="about-us" >
+        <WhatWeOffer />
+      </div>
+
+      {/* <div className="relative max-w-[1440px] mx-auto" id="about-us">
+        <HomeEnergyPlan />
+      </div> */}
 
       <div className="relative bg-[#F1F7FE]">
         <ProjectSection />
@@ -220,23 +241,7 @@ const LandingPage = () => {
           // transition={{ duration: 0.6 }}
         />
       </div>
-      <div className="bg-custom-radial relative" id="what-we-offer">
-        <motion.div
-          ref={ref}
-          initial="hidden"
-          animate={controls}
-          variants={containerVariants}
-          className="p-4 lg:p-8"
-        >
-          <motion.div variants={itemVariants}>
-            <WhatWeOffer />
-          </motion.div>
-        </motion.div>
-        <img
-          src={"/assets/graphics/hero-graphic.svg"}
-          alt=""
-          className="hidden lg:block max-w-full h-auto sm:max-w-full animate-spin-slow absolute top-0 left-0 !-translate-x-1/3 !translate-y-[40%]"
-        />
+      {/* <div className="bg-custom-radial relative" id="what-we-offer">
         <motion.img
           src="/assets/graphics/offer-graphic.png"
           className="hidden min-[1330px]:block absolute bottom-0 left-0 min-[1330px]:h-[65%] lg:w-auto"
@@ -248,24 +253,30 @@ const LandingPage = () => {
           src="/assets/graphics/account-setup-scribble-right.svg"
           className="hidden lg:block absolute bottom-0 -right-[2%] h-fit"
         />
+      </div> */}
+
+      <div className="">
+        <Lifecycle />
+        <Models />
+        <Review />
       </div>
 
-      <div className="">{/* <Review /> */}</div>
-
-      <div className="bg-[#F0F0F0]">
+      {/* <div className="bg-[#F0F0F0]">
         <MarketPlace />
-      </div>
-      <div id="faqs">
+      </div> */}
+      <div className="max-w-[1440px] mx-auto" id="faqs">
         <Faq />
+        <News />
+        <Waitlist />
       </div>
-      <div
+      {/* <div
         className="bg-[url(/assets/graphics/get-in-touch-bg.jpeg)] bg-no-repeat bg-cover bg-gray-900/100"
         id="contact-us"
       >
         <div className="bg-[#003584]/20">
           <GetInTouch />
         </div>
-      </div>
+      </div> */}
 
       <div className="bg-[#D7E7FF]">
         <Footer />
