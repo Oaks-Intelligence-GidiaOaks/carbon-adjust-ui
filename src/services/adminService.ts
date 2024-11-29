@@ -1,6 +1,7 @@
-import axiosInstance, { AxiosTest } from "@/api/axiosInstance";
+import axiosInstance from "@/api/axiosInstance";
 import { IAds } from "@/interfaces/ads.interface";
 import { IDeviceChartData, IPowerLimit } from "@/interfaces/device.interface";
+import { WalletCoinSettingsInput } from "@/interfaces/wallet.interface";
 
 export const fetchUsersRegistration = async ({
   accountType,
@@ -283,7 +284,13 @@ export const getWalletBalance = async () => {
 };
 
 export const getCoinSettings = async () => {
-  const { data } = await AxiosTest.get(`/wallet/coin-settings`);
+  const { data } = await axiosInstance.get(`/wallet/coin-settings`);
+
+  return data;
+};
+
+export const setCoinSettings = async (settings: WalletCoinSettingsInput) => {
+  const { data } = await axiosInstance.patch(`/wallet/coin-settings`, settings);
 
   return data;
 };

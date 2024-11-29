@@ -7,11 +7,12 @@ interface ConfirmPointTransactionModalProps {
   onClose: () => void; // Callback to close the modal
   onConfirm: (otp: string) => void; // Callback when OTP is confirmed
   onResend: () => void; // Callback to resend OTP
+  isPending: boolean;
 }
 
 const ConfirmPointTransactionModal: React.FC<
   ConfirmPointTransactionModalProps
-> = ({ email, onClose, onConfirm, onResend }) => {
+> = ({ email, onClose, onConfirm, onResend, isPending }) => {
   const [otp, setOtp] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,11 +68,11 @@ const ConfirmPointTransactionModal: React.FC<
           {/* Confirm Button */}
           <button
             onClick={() => onConfirm(otp)}
-            disabled={otp.length !== 6}
+            disabled={otp.length !== 6 || isPending}
             className={`w-full py-3 text-xs text-white rounded-[24px] focus:outline-none ${
-              otp.length === 6
-                ? "blue-gradient"
-                : "bg-blue-300 cursor-not-allowed"
+              otp.length !== 6 || isPending
+                ? "bg-blue-300 cursor-not-allowed"
+                : "blue-gradient"
             }`}
           >
             Confirm

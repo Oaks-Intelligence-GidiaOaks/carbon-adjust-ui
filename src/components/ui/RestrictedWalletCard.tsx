@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { getRestrictedWallet } from "@/services/homeOwner";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { MdContentCopy, MdOutlineRemoveRedEye } from "react-icons/md";
 import { useState } from "react";
 import { CiCircleAlert } from "react-icons/ci";
 import { IoLockOpen } from "react-icons/io5";
 import { WalletType } from "@/interfaces/transaction.interface";
+import { copyClipboardText } from "@/lib/utils";
 
 const RestrictedWalletCard = () => {
   // Fetch wallet data using useQuery
@@ -92,9 +93,19 @@ export const CashWalletCard: React.FC<CashWalletCardProps> = ({
   onTransfer,
 }) => {
   const [balanceHidden, setBalanceHidden] = useState<boolean>(false);
+  const [isTextCopied, setIsTextCopied] = useState<boolean>(false);
 
   const hideBalance = () => {
     setBalanceHidden(!balanceHidden);
+  };
+
+  const handleCopy = () => {
+    setIsTextCopied(true);
+    copyClipboardText(walletId);
+
+    setTimeout(() => {
+      setIsTextCopied(false);
+    }, 3000);
   };
 
   return (
@@ -118,7 +129,15 @@ export const CashWalletCard: React.FC<CashWalletCardProps> = ({
         </div>
 
         <div className="text-right">
-          <p className="md:text-sm font-light">Wallet ID</p>
+          <div className="flex-center gap-3">
+            <p className="md:text-sm font-light">Wallet ID</p>
+            {isTextCopied ? (
+              <span className="text-blue-200"> copied</span>
+            ) : (
+              <MdContentCopy className="cursor-pointer" onClick={handleCopy} />
+            )}
+          </div>
+
           <p className="text-xs md:text-sm  max-w-32 md:max-w-52 truncate">
             {walletId}
           </p>

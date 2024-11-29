@@ -18,3 +18,11 @@ export enum WithdrawalWalletDialog {
   CARD_PAYOUT = "card_payout",
   SUCCESS = "withdrawal_success",
 }
+
+export interface WalletCoinSettingsInput {
+  coinConversionRate: number;
+  defaultLoginCoinReward: number;
+  minimumAmountOfCoin: number;
+  yearlyCarbonOffset: number;
+  firstPurchaseForMarketPlaceReward: number;
+}
