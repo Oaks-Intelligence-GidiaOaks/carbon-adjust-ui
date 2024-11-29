@@ -24,7 +24,8 @@ import {
 } from "@/constants/transport";
 import { formatTimeToISO, validateOptimizeInputs } from "@/lib/utils";
 import { RotatingLines } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setTransportTab } from "@/features/assetSlice";
 
 const Modes = [
   { name: "Car", Icon: taxi },
@@ -44,7 +45,7 @@ type OptimizeModalProps = {
 };
 
 const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [mode, setMode] = useState<string>("Car");
   const [optBy, setOptBy] = useState({
     label: "Start time of travel window",
@@ -112,7 +113,7 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
       toast.success(sx.message);
       resetForm();
       setShowModal(false);
-      navigate(`/dashboard/transport`);
+      dispatch(setTransportTab("Travel History"));
     },
     onError: (ex: any) => {
       toast.error(ex.response.data.message);

@@ -7,10 +7,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "./app/store";
 import SocketService from "@/repository/socket";
 import ChatSocketService from "./repository/chatSocket";
+import useNetworkStatus from "./hooks/useNetworkStatus";
+import NetworkBanner from "./layouts/NetworkBanner";
 
 function App() {
   const queryClient = new QueryClient();
   const { user } = useSelector((state: RootState) => state.user);
+  const isOnline = useNetworkStatus();
 
   useEffect(() => {
     if (user?._id) {
@@ -25,17 +28,21 @@ function App() {
   }, [user?._id]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={Router} />
-      <Toaster
-        toastOptions={{
-          style: {
-            zIndex: 999999, // For toasts
-          },
-          duration: 7000,
-        }}
-      />
-    </QueryClientProvider>
+    <div>
+      <NetworkBanner isOnline={isOnline} />
+
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={Router} />
+        <Toaster
+          toastOptions={{
+            style: {
+              zIndex: 999999,
+            },
+            duration: 7000,
+          }}
+        />
+      </QueryClientProvider>
+    </div>
   );
 }
 

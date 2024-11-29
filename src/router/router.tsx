@@ -19,6 +19,7 @@ import {
   AdminOrderDetails,
   AdminOrders,
   AdminPackages,
+  AdminSettings,
   AdminStaff,
   AdminWallet,
   AdmnLog,
@@ -495,6 +496,10 @@ const Router = createBrowserRouter([
             element: <AdminAddStaff />,
           },
         ],
+      },
+      {
+        path: "settings",
+        element: <AdminSettings />,
       },
     ],
   },

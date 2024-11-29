@@ -66,7 +66,7 @@ const TransportCard = (props: Transport) => {
           <VehicleDetail title="fuel type" des={fuelType} />
           <VehicleDetail
             title="Total Projected Carbon Offset"
-            des={totalProjectedCarbonOffset}
+            des={totalProjectedCarbonOffset + ' tonnes'}
           />
           <VehicleDetail title="Total Actual Carbon Offset" des={"N/A"} />
           <VehicleDetail title="Total Actual emission" des={totalEmission} />

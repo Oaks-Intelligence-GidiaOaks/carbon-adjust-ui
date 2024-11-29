@@ -2,9 +2,7 @@
 import { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { IoFilterSharp } from "react-icons/io5";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui";
-import { PlusIcon } from "@/assets/icons";
 import TransportHistoryCard from "./TransportHistoryCard";
 import { PaginateProps } from "@/types/general";
 import { getTransportsHistory } from "@/services/homeOwner";
@@ -81,14 +79,14 @@ const TransportHistory = () => {
             />
           </div>
         </div>
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <Link className="ml-5" to="/dashboard/transport/add">
             <Button className="rounded-[20px] flex-center gap-1 ">
               <span>Add Transport</span>
               <PlusIcon />
             </Button>
           </Link>
-        </div>
+        </div> */}
       </div>
 
       <div className="mt-[20px] space-y-[38px]">
@@ -110,11 +108,11 @@ const TransportHistory = () => {
               ))
             ) : (
               <div className="h-32 grid place-items-center max-w-[98%]">
-                {searchQuery ? (
-                  <div>No Result matched your query</div>
-                ) : (
-                  <NoDevices link="/dashboard/transport/add" text="Transport" />
-                )}
+                <NoDevices
+                  empty={true}
+                  link="/dashboard/transport/add"
+                  text="Transport"
+                />
               </div>
             )}
           </>

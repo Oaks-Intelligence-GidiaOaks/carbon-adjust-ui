@@ -1,4 +1,8 @@
 import axiosInstance from "@/api/axiosInstance";
+import {
+  TransactionType,
+  WalletType,
+} from "@/interfaces/transaction.interface";
 import { UserRole } from "@/interfaces/user.interface";
 
 export const getPackageCategories = () => {
@@ -179,5 +183,34 @@ export const createFacilitator = async (dt: {
 }) => {
   const { data } = await axiosInstance.post(`users/create-facilitator`, dt);
 
+  return data;
+};
+
+// TRANSACTIONS
+export const fetchTransactions = async (
+  page: number = 1,
+  limit: number = 20,
+  walletType?: WalletType,
+  transactionType?: TransactionType
+) => {
+  let url = "/wallet/transactions";
+
+  const params: any = {
+    page,
+    limit,
+  };
+
+  if (walletType) {
+    params.walletType = walletType;
+  }
+
+  if (transactionType) {
+    params.transactionType = transactionType;
+  }
+
+  const queryString = new URLSearchParams(params).toString();
+  url += `?${queryString}`;
+
+  const { data } = await axiosInstance.get(url);
   return data;
 };

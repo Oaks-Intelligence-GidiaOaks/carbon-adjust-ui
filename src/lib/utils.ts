@@ -316,9 +316,32 @@ const transportSchema = Joi.object({
   }),
 });
 
+const transferCashSchema = Joi.object({
+  walletAddress: Joi.string().required().messages({
+    "string.empty": "Wallet Address is required",
+    "any.required": "Wallet Address is required",
+  }),
+  amount: Joi.number().positive().required().messages({
+    "number.base": "Amount must be a number",
+    "number.positive": "Amount must be greater than 0",
+    "any.required": "Amount is required",
+  }),
+});
+
 export const validateTransportInputs = (formData: ITransport) => {
   const { error } = transportSchema.validate(formData);
   return error ? error.details[0].message : null;
+};
+
+export const validateTransferCashInputs = (inputs: {
+  walletAddress: string;
+  amount: number;
+}) => {
+  const { error, value } = transferCashSchema.validate(inputs);
+
+  console.log(error, value);
+
+  return error ? error.details.map((e) => e.message) : null;
 };
 
 const optimizeSchema = Joi.object({
@@ -561,3 +584,22 @@ export function generateKML(data: any[]) {
 
   return root.end({ prettyPrint: true });
 }
+
+export const copyClipboardText = (txt: string) => {
+  navigator.clipboard.writeText(txt);
+};
+
+export const serializeGridData = (
+  data: any[],
+  currentPage: number,
+  limit: number
+) => {
+  let startIndex = (currentPage - 1) * limit + 1;
+
+  let paginatedData = data.map((item, i) => ({
+    id: startIndex + i,
+    ...item,
+  }));
+
+  return paginatedData;
+};

@@ -36,6 +36,20 @@ const TransportHistoryCard = (props: Trips) => {
     saveAs(blob, "optimized-coordinates.kml");
   }
 
+  const getStatusClasses = (status: string) => {
+    const statusLowerCase = status?.toLowerCase();
+  
+    switch (statusLowerCase) {
+      case "completed":
+        return "text-green-800 bg-green-100";
+      case "pending":
+        return "text-yellow-800 bg-yellow-100";
+      default:
+        return "text-red-800 bg-red-100";
+    }
+  };
+  
+
   return (
     <>
       <div className="flex  bg-[#Fff] border rounded-lg py-5 px-5 sm:px-10 ">
@@ -51,21 +65,17 @@ const TransportHistoryCard = (props: Trips) => {
                 </h4>
               </div>
             </div>
+
             <div className="flex flex-col gap-y-2">
-              <div className="flex flex-col gap-y-2">
-                <h3 className="text-sm font-normal text-gray-700">Status</h3>
-                <div
-                  className={`${
-                    tripQueueResponse?.status?.toLowerCase() === "completed"
-                      ? "text-green-800 bg-green-100"
-                      : "text-red-800 bg-red-100"
-                  } text-sm px-3 rounded-lg inline-flex items-center`}
-                >
-                  <span>
-                    <LuDot />
-                  </span>
-                  {tripQueueResponse?.status?.toLowerCase() ?? "pending"}
-                </div>
+              <h3 className="text-sm font-normal text-gray-700">Status</h3>
+              <div
+                className={`${getStatusClasses(tripQueueResponse?.status || 'pending')}
+                  } text-sm px-2  rounded-sm inline-flex items-center capitalize`}
+              >
+                <span>
+                  <LuDot />
+                </span>
+                {tripQueueResponse?.status?.toLowerCase() ?? "pending"}
               </div>
             </div>
           </div>
