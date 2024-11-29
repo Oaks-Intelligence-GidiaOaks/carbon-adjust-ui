@@ -1,12 +1,12 @@
 
 import BestSellers from "@/components/containers/home/BestSellers";
-import CategoriesLoading from "@/components/reusables/CategoriesLoading";
-import ProductsCategory from "@/components/reusables/ProductsCategory";
+// import CategoriesLoading from "@/components/reusables/CategoriesLoading";
+// import ProductsCategory from "@/components/reusables/ProductsCategory";
 import { clearOrder } from "@/features/orderSlice";
 import { clearProduct } from "@/features/productSlice";
-import { IProdCategory } from "@/interfaces/product.interface";
-import { getHomePagePackages } from "@/services/homeOwner";
-import { useQuery } from "@tanstack/react-query";
+// import { IProdCategory } from "@/interfaces/product.interface";
+// import { getHomePagePackages } from "@/services/homeOwner";
+// import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -60,17 +60,17 @@ const Market = (_: Props) => {
     dispatch(clearProduct());
   }, []);
 
-  const homePagePackages = useQuery({
-    queryKey: ["get-home-packages"],
-    queryFn: () => getHomePagePackages(),
-  });
+  // const homePagePackages = useQuery({
+  //   queryKey: ["get-home-packages"],
+  //   queryFn: () => getHomePagePackages(),
+  // });
 
-  const categories: IProdCategory[] = homePagePackages.isSuccess
-    ? homePagePackages.data.data
-    : [];
+  // const categories: IProdCategory[] = homePagePackages.isSuccess
+  //   ? homePagePackages.data.data
+  //   : [];
 
 
-    console.log('hi', homePagePackages)
+
 
     const cards = [
       {

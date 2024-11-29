@@ -25,7 +25,7 @@ const Product = () => {
       rating: 4,
     },
     {
-      id: 2,
+      id: 3,
       name: "Darrell Steward",
       avatar: `${image1}`,
       reviewText:
@@ -33,7 +33,7 @@ const Product = () => {
       rating: 4,
     },
     {
-      id: 2,
+      id: 4,
       name: "Darrell Steward",
       avatar: `${image1}`,
       reviewText:
