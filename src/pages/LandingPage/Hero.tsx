@@ -45,7 +45,7 @@ const Hero = () => {
               </Button>
             </Link>
           </div>
-          <div className="flex items-center justify-center lg:justify-start gap-6 mt-5 md:mt-10 lg:mt-[10rem] lg:ml-[-40rem]">
+          <div className="flex items-center justify-center lg:justify-start gap-6 mt-5 md:mt-10 lg:mt-[20rem] lg:ml-[-40rem]">
             <motion.img
               className=""
               src="/assets/graphics/Google.svg"
