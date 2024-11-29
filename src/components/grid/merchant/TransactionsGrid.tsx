@@ -22,6 +22,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 import {
   ITransaction,
+  WalletType,
   // TransactionStatus,
 } from "@/interfaces/transaction.interface";
 import { cn, formatDateTime, serializeGridData } from "@/lib/utils";
@@ -108,7 +109,13 @@ export const columns: ColumnDef<ITransaction>[] = [
   },
 ];
 
-export function TransactionsGrid({ className }: { className?: string }) {
+export function TransactionsGrid({
+  className,
+  walletType,
+}: {
+  className?: string;
+  walletType: WalletType;
+}) {
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 20,
@@ -116,8 +123,14 @@ export function TransactionsGrid({ className }: { className?: string }) {
   });
 
   const { data: transactions, isLoading } = useQuery({
-    queryKey: ["get-transactions", pagination.page, pagination.limit],
-    queryFn: () => fetchTransactions(pagination.page, pagination.limit),
+    queryKey: [
+      "get-transactions",
+      pagination.page,
+      pagination.limit,
+      walletType,
+    ],
+    queryFn: () =>
+      fetchTransactions(pagination.page, pagination.limit, walletType),
   });
 
   let transactionsData = useMemo(() => {
