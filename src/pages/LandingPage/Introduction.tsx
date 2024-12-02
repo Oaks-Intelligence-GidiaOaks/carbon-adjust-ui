@@ -6,7 +6,7 @@ const Introduction = () => {
       <div>
         <div className="bg-[#EDF2FF] font-poppins py-5 px-5 lg:px-0  max-width-[1440px]">
           <motion.div
-            className="w-full mt-5 lg:mt-20 "
+            className="w-full mt-5 lg:mt-20"
             initial={{ opacity: 0, y: -50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}

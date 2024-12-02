@@ -78,9 +78,9 @@ const LandingPage = () => {
   // };
 
   return (
-    <motion.div initial="initial" animate="animate" className="overflow-hidden">
+    <motion.div initial="initial" animate="animate" className="overflow-hidden"> 
       <div>
-        <header className="lg:container px-4 lg:px-0 relative z-10 bg-white h-2">
+        <header className="lg:container px-4 lg:px-0  z-10 bg-white">
           <nav className="lg:container py-3 flex justify-between items-center  ">
             <div className=" flex flex-start" id="home">
               <img src={CarbonAdjustLogo} alt="" className="xl:w-[200px]" />
@@ -193,22 +193,13 @@ const LandingPage = () => {
         </nav>
       </section>
 
-      <div className="font-poppins relative max-h-[90vh] bg-cover bg-no-repeat bg-origin-content">
-        {/* Background Video */}
-        <video
-          className="absolute inset-0 w-full h-full object-cover z-[-1] opacity-100"
-          src="../../assets/hero-bg.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-        ></video>
+    
 
         {/* Hero Section */}
         <div className="relative z-10">
           <Hero />
         </div>
-      </div>
+    
 
 
 
