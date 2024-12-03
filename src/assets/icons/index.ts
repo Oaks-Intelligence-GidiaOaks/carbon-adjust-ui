@@ -51,6 +51,7 @@ import UntreatedClaimIcon from "./untreated-claims-icon.svg?react";
 import TickCircle from "./tick-circle.svg?react";
 import CreditCard from "./credit-card-icon.svg?react";
 import BankIcon from "./bank-icon.svg?react";
+import BoxCarton from "./box-carton.svg?react";
 
 export {
   ApprovedClaimIcon,
@@ -106,4 +107,5 @@ export {
   TickCircle,
   CreditCard,
   BankIcon,
+  BoxCarton,
 };
