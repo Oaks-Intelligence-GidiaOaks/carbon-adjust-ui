@@ -60,24 +60,6 @@ const Login = () => {
       );
     },
     onSuccess: (data) => {
-      // const { user }: { user: AuthUserProfile } = data.data.data;
-
-      // const loginEventPayload: ILoginEventPayload = {
-      //   userId: user._id,
-      //   time: Date.now(),
-      //   eventName: SubLevelEvent.LOGIN_USER_EVENT,
-      // };
-
-      // SocketService.connect(user._id);
-      // ChatSocketService.connect();
-
-      // SocketService.on("connect", () => {
-      //   SocketService.emit(
-      //     MonitoringEvent.NEW_SUBLEVEL_EVENT,
-      //     loginEventPayload
-      //   );
-      // });
-
       dispatch(setToken(data.data.data.access_token));
       dispatch(setKommunitaToken(data.data.data.kommunita_access_token));
 
