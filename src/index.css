@@ -302,6 +302,7 @@ react-calendar__tile react-calendar__month-view__days__day {
   .blue-gradient-2 {
     @apply bg-gradient-to-r from-[#2E599A] to-[#0B8DFF];
   }
+
 }
 
 input::-webkit-outer-spin-button,

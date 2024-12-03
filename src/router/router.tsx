@@ -47,6 +47,7 @@ import {
 } from "@/pages/protected/merchant";
 import {
   UserAppointment,
+  UserCart,
   UserCheckout,
   UserDevices,
   UserMarketGroup,
@@ -176,6 +177,10 @@ const Router = createBrowserRouter([
       {
         path: "checkout",
         element: <UserCheckout />,
+      },
+      {
+        path: "cart",
+        element: <UserCart />,
       },
       {
         path: "devices",

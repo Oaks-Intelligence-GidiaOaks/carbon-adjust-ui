@@ -3,16 +3,28 @@ import {
   ChevronLeft,
   ChevronLeftCircleIcon,
   ChevronRightCircleIcon,
+  ChevronUp,
   ChevronUpCircleIcon,
+  ImageIcon,
   MessageCircle,
+  PlayCircle,
   PlayIcon,
   UserRound,
+  VideoIcon,
 } from "lucide-react";
 import React, { useState } from "react";
-import { BsCart3, BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
+import {
+  BsCart3,
+  BsPlayCircleFill,
+  BsStar,
+  BsStarFill,
+  BsStarHalf,
+} from "react-icons/bs";
 import { Link } from "react-router-dom";
 // import { addProduct } from "@/features/productSlice";
 import { IProduct } from "@/interfaces/product.interface";
+import { PlayCircleIcon } from "@heroicons/react/20/solid";
+import ProductFormV2 from "@/components/containers/checkout/ProductFormV2";
 // import { useDispatch, useSelector } from "react-redux";
 // import { RootState } from "@/app/store";
 // // import {
@@ -21,7 +33,6 @@ import { IProduct } from "@/interfaces/product.interface";
 //   SubLevelEvent,
 // } from "@/interfaces/events.interface";
 // import SocketService from "@/repository/socket";
-
 
 interface Props extends IProduct {
   wrapText?: boolean;
@@ -49,25 +60,23 @@ interface ProductProps extends Props {
 }
 
 const ProductCard: React.FC<ProductProps & { isMerchant?: boolean }> = ({
-name,
-price,
-reviews,
-colors,
-averageRating,
-description,
-images,
-videos,
-// isMerchant = false,
-// ...props
+  name,
+  price,
+  reviews,
+  colors,
+  averageRating,
+  description,
+  images,
+  videos,
 }) => {
-  const [selectedTab, setSelectedTab] = useState<string>("Image");
+  const [showForm, setShowForm] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>(colors[0]?.value);
   const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState<boolean>(false);
-
+  const [selectedTab, setSelectedTab] = useState<string>("Image");
   const handleTabClick = (tab: string) => setSelectedTab(tab);
-  const toggleDescription = () => setIsDescriptionOpen((prev) => !prev);
 
+  const toggleDescription = () => setIsDescriptionOpen((prev) => !prev);
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5 ? 1 : 0;
@@ -89,26 +98,6 @@ videos,
     );
   };
 
-  // const dispatch = useDispatch();
-  // const { user } = useSelector((state: RootState) => state.user);
-
-  // const handleInitiateCheckout = () => {
-  //   dispatch(addProduct({ ...props }));
-
-  //   const basketPayload: IAddToBasketEventPayload = {
-  //     packageId: props?._id,
-  //     packageName: props?.title,
-  //     pakageType: props?.packageType,
-  //     packageCategory: props.category?.name as string,
-  //     packagePrice: Number(props?.rating),
-  //     time: Date.now(),
-  //     userId: user?._id as string,
-  //     eventName: SubLevelEvent.ADD_TO_CART_EVENT,
-  //   };
-
-  //   SocketService.emit(MonitoringEvent.NEW_SUBLEVEL_EVENT, basketPayload);
-  // };
-
   return (
     <div>
       <Link
@@ -117,8 +106,8 @@ videos,
       >
         <ChevronLeft />
       </Link>
-      <div className="px-10 pt-5 mx-auto lg:flex justify-between">
-        <p className="text-[24px]">Product Page</p>
+      <div className="px-10 pt-5 mx-auto lg:flex justify-between border-b pb-4">
+        <p className="text-[20px]">Product Page</p>
         <p className="p-2 border w-fit rounded-full flex gap-1 text-sm">
           <UserRound className="size-4" />
           Princess Diana Energy
@@ -136,7 +125,7 @@ videos,
                   <img
                     src={images[0]}
                     alt="Image Icon"
-                    className="w-40 h-20 object-cover rounded"
+                    className=" object-cover rounded"
                   />
                 ) : (
                   <span>🖼️</span>
@@ -146,19 +135,13 @@ videos,
                 label: "Video",
                 icon: images[0] ? (
                   <div className="relative">
-                  {/* <video
-                    src={images[0]}
-                    className="w-40 h-20 object-cover rounded relative"
-                    muted
-                    loop
-                    autoPlay
-                  /> */}
-                     <img
-                    src={images[0]}
-                    alt="Image Icon"
-                    className="w-40 h-20 object-cover rounded"
-                  />
-                  <PlayIcon className="absolute top-7 right-6" />
+                    <img
+                      src={images[0]}
+                      alt="Image Icon"
+                      className="object-cover rounded"
+                    />
+
+                    <PlayCircleIcon className="absolute top-3 right-4 size-6 text-white" />
                   </div>
                 ) : (
                   <span>🎥</span>
@@ -175,88 +158,112 @@ videos,
           />
         </div>
 
-        {/* Product Info */}
+        {/* Conditional Rendering */}
+
         <div className="space-y-6">
-          <h1 className="text-3xl">{name}</h1>
-          <p className="text-3xl font-bold">£{price.toFixed(2)}</p>
-
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              {renderStars(averageRating)}
-              <p className="text-sm text-gray-600">{reviews} reviews</p>
-            </div>
-            {/* Quantity */}
-            <div className="flex items-center gap-4">
+          {showForm ? (
+            <div>
               <button
-                onClick={() =>
-                  setSelectedQuantity((prev) => Math.max(1, prev - 1))
+                onClick={() => setShowForm(false)}
+                className="mb-4 ml-3 flex items-center gap-2 text-sm"
+              >
+                <ChevronLeft className="size-4" />
+                Back
+              </button>
+              <ProductFormV2
+                setStage={(value) => console.log("Stage:", value)}
+                setShowcheckout={(value) =>
+                  console.log("Show Checkout:", value)
                 }
-                className=" text-3xl text-[#0F172AB2] "
-              >
-                -
-              </button>
-              <span className="text-xl">{selectedQuantity}</span>
-              <button
-                onClick={() => setSelectedQuantity((prev) => prev + 1)}
-                className="text-3xl text-[#0F172AB2] "
-              >
-                +
-              </button>
+                setShowCancel={(value) => setShowForm(!value)}
+              />
             </div>
-          </div>
+          ) : (
+            <>
+              <h1 className="text-2xl">{name}</h1>
+              <p className="text-2xl font-bold">£{price.toFixed(2)}</p>
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  {renderStars(averageRating)}
+                  <p className="text-sm text-gray-600">{reviews} reviews</p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() =>
+                      setSelectedQuantity((prev) => Math.max(1, prev - 1))
+                    }
+                    className="text-2xl text-[#0F172AB2]"
+                  >
+                    -
+                  </button>
+                  <span className="text-lg">{selectedQuantity}</span>
+                  <button
+                    onClick={() => setSelectedQuantity((prev) => prev + 1)}
+                    className="text-2xl text-[#0F172AB2]"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
 
-          {/* Colors */}
-          <div>
-            <p className="text-[#1A1A1A] font-semibold mb-2">Color</p>
-            <div className="flex items-center gap-4">
-              {colors.map((color) => (
-                <button
-                  key={color.value}
-                  onClick={() => setSelectedColor(color.value)}
-                  className={`w-10 h-8 rounded-lg border ${
-                    selectedColor === color.value ? "ring-2 ring-blue-500" : ""
-                  }`}
-                  style={{ backgroundColor: color.value }}
-                />
-              ))}
-            </div>
-          </div>
+              {/* Colors */}
+              <div>
+                <p className="text-[#1A1A1A] font-semibold mb-2">Color</p>
+                <div className="flex items-center gap-4">
+                  {colors.map((color) => (
+                    <button
+                      key={color.value}
+                      onClick={() => setSelectedColor(color.value)}
+                      className={`w-10 h-8 rounded-lg border ${
+                        selectedColor === color.value
+                          ? "ring-2 ring-blue-500"
+                          : ""
+                      }`}
+                      style={{ backgroundColor: color.value }}
+                    />
+                  ))}
+                </div>
+              </div>
 
-          {/* Description */}
-          <div>
-            <div
-              className="flex justify-between items-center  border-b pb-2 cursor-pointer"
-              onClick={toggleDescription}
-            >
-              <h5 className="text-lg font-medium">Description</h5>
-              {isDescriptionOpen ? (
-                <ChevronUpCircleIcon className="text-[#707070]" />
-              ) : (
-                <ChevronDownCircleIcon className="text-[#707070]" />
-              )}
-            </div>
-            {isDescriptionOpen && (
-              <p className="mt-2 text-[#0F172A80]">{description}</p>
-            )}
-          </div>
+              {/* Description */}
+              <div>
+                <div
+                  className="flex justify-between items-center border-b pb-2 cursor-pointer"
+                  onClick={toggleDescription}
+                >
+                  <h5 className="text-lg font-medium">Description</h5>
+                  {isDescriptionOpen ? (
+                    <ChevronUpCircleIcon />
+                  ) : (
+                    <ChevronDownCircleIcon />
+                  )}
+                </div>
+                {isDescriptionOpen && (
+                  <p className="mt-2 text-[#0F172A80]">{description}</p>
+                )}
+              </div>
 
-          {/* Action Buttons */}
-          <div className="space-y-2">
-            <button className="w-full flex mb-5 items-center gap-2 py-2 text-start text-[#4D93FC]">
-              <MessageCircle />
-              Message Vendor
-            </button>
-            <div className="flex gap-5">
-              <button className="w-full py-2 flex items-center justify-center gap-1 text-center border text-[#0B8DFF]  border-[#0B8DFF] rounded-full">
-                <BsCart3 /> Add to Cart
-              </button>
-              <Link className="w-5/6" to={`/dashboard/checkout`}>
-                <button className="w-full py-2 text-center text-white blue-gradient rounded-full">
-                  Buy Now
-                </button>
-              </Link>
-            </div>
-          </div>
+              {/* Action Buttons */}
+              <div className="space-y-2">
+                <div className="flex gap-5">
+                  <button
+                    onClick={() => setShowForm(true)}
+                    className="w-full py-2 flex items-center justify-center gap-1 text-center border text-[#0B8DFF]  border-[#0B8DFF] rounded-full"
+                  >
+                    <BsCart3 /> Add to Cart
+                  </button>
+                  <Link className="w-5/6" to={`/dashboard/checkout`}>
+                    <button
+                      onClick={() => setShowForm(true)}
+                      className="w-full py-2 text-center text-white blue-gradient rounded-full"
+                    >
+                      Buy Now
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -269,27 +276,31 @@ const Tabs: React.FC<{
   onTabClick: (tab: string) => void;
 }> = ({ tabs, selectedTab, onTabClick }) => {
   return (
-    <div className="flex gap-4 mb-4">
+    <div className="flex gap-3 mb-4">
       {tabs.map((tab) => (
         <button
           key={tab.label}
           onClick={() => onTabClick(tab.label)}
-          className={`flex flex-col items-center gap-2 px-4 py-2 ${
+          className={`flex flex-col  gap-2 py-1 ${
             selectedTab === tab.label
-              ? "border-b-2 border-blue-500 text-blue-500"
+              ? "border-b-2 border-black-main"
               : "border-b-2 border-transparent text-gray-500"
           }`}
         >
-          <div className="w-20 mb-3 flex items-center justify-center">
-            {tab.icon}
-          </div>
-          <span className="text-sm">{tab.label}</span>
+          <div className="w-14">{tab.icon}</div>
+          <span className="text-sm flex items-center gap-1">
+            {tab.label.toLowerCase() === "video" ? (
+              <PlayCircle className="size-4" />
+            ) : tab.label.toLowerCase() === "image" ? (
+              <ImageIcon className="size-4" />
+            ) : null}
+            {tab.label}
+          </span>
         </button>
       ))}
     </div>
   );
 };
-
 
 const ImageGallery: React.FC<{ media: string[]; isVideo: boolean }> = ({
   media,
@@ -319,7 +330,7 @@ const ImageGallery: React.FC<{ media: string[]; isVideo: boolean }> = ({
             <img
               src={media[selectedIndex]}
               alt={`Media ${selectedIndex + 1}`}
-              className="w-full object-cover rounded-lg"
+              className="w-full h-[350px] object-cover rounded-lg"
             />
           )}
         </div>
@@ -341,16 +352,23 @@ const ImageGallery: React.FC<{ media: string[]; isVideo: boolean }> = ({
           <button
             key={index}
             onClick={() => setSelectedIndex(index)}
-            className={`w-16 h-16 ${
+            className={`w-16 h-14 ${
               selectedIndex === index
                 ? "ring-2 ring-blue-500"
                 : "ring-1 ring-gray-300"
-            } rounded`}
+            } rounded-sm`}
           >
             {isVideo ? (
-              <video src={item} className="w-full h-full object-cover" />
+              <video
+                src={item}
+                className="w-full h-full object-cover rounded-sm"
+              />
             ) : (
-              <img src={item} alt={`Thumbnail ${index + 1}`} />
+              <img
+                src={item}
+                alt={`Thumbnail ${index + 1}`}
+                className="w-full h-full object-cover rounded-sm"
+              />
             )}
           </button>
         ))}
@@ -360,3 +378,119 @@ const ImageGallery: React.FC<{ media: string[]; isVideo: boolean }> = ({
 };
 
 export default ProductCard;
+
+const QuestionsForm = () => {
+  return (
+    <div className="border border-gray-300 p-6 rounded-md max-w-lg mx-auto">
+      <h2 className="text-lg font-semibold mb-2">Questions</h2>
+      <p className="text-sm text-gray-600 mb-4">
+        Please provide the below answers to the questions to enable us complete
+        your order for this product.
+      </p>
+
+      {/* Reason for applying */}
+      <div className="mb-4">
+        <label
+          htmlFor="reason"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Reason for applying<span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="reason"
+          value="Window Retrofitting"
+          disabled
+          className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
+
+      {/* Name */}
+      <div className="mb-4">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Name<span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="name"
+          placeholder="-Input-"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
+
+      {/* Residential Address */}
+      <div className="mb-4">
+        <label
+          htmlFor="address"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Enter residential address<span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="address"
+          placeholder="-Input-"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
+
+      {/* Phone Number */}
+      <div className="mb-4">
+        <label
+          htmlFor="phone"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Enter phone number<span className="text-red-500">*</span>
+        </label>
+        <div className="flex">
+          <select
+            id="phone-code"
+            className="px-3 py-2 border border-gray-300 rounded-l-md bg-gray-100 focus:outline-none"
+          >
+            <option value="+44">+44</option>
+            {/* Add more country codes as needed */}
+          </select>
+          <input
+            type="text"
+            id="phone"
+            placeholder="-Input-"
+            className="w-full px-3 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex justify-between items-center">
+        <button
+          type="button"
+          className="flex items-center px-4 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-200"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L4 5H2m16 13a2 2 0 11-4 0 2 2 0 014 0zm-6 0a2 2 0 11-4 0 2 2 0 014 0z"
+            />
+          </svg>
+          Add to Cart
+        </button>
+        <button
+          type="button"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        >
+          Proceed to checkout
+        </button>
+      </div>
+    </div>
+  );
+};
