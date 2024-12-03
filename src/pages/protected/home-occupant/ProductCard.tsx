@@ -3,19 +3,14 @@ import {
   ChevronLeft,
   ChevronLeftCircleIcon,
   ChevronRightCircleIcon,
-  ChevronUp,
   ChevronUpCircleIcon,
   ImageIcon,
-  MessageCircle,
   PlayCircle,
-  PlayIcon,
   UserRound,
-  VideoIcon,
 } from "lucide-react";
 import React, { useState } from "react";
 import {
   BsCart3,
-  BsPlayCircleFill,
   BsStar,
   BsStarFill,
   BsStarHalf,
@@ -379,118 +374,4 @@ const ImageGallery: React.FC<{ media: string[]; isVideo: boolean }> = ({
 
 export default ProductCard;
 
-const QuestionsForm = () => {
-  return (
-    <div className="border border-gray-300 p-6 rounded-md max-w-lg mx-auto">
-      <h2 className="text-lg font-semibold mb-2">Questions</h2>
-      <p className="text-sm text-gray-600 mb-4">
-        Please provide the below answers to the questions to enable us complete
-        your order for this product.
-      </p>
 
-      {/* Reason for applying */}
-      <div className="mb-4">
-        <label
-          htmlFor="reason"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Reason for applying<span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          id="reason"
-          value="Window Retrofitting"
-          disabled
-          className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
-
-      {/* Name */}
-      <div className="mb-4">
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Name<span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          id="name"
-          placeholder="-Input-"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
-
-      {/* Residential Address */}
-      <div className="mb-4">
-        <label
-          htmlFor="address"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Enter residential address<span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          id="address"
-          placeholder="-Input-"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
-
-      {/* Phone Number */}
-      <div className="mb-4">
-        <label
-          htmlFor="phone"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Enter phone number<span className="text-red-500">*</span>
-        </label>
-        <div className="flex">
-          <select
-            id="phone-code"
-            className="px-3 py-2 border border-gray-300 rounded-l-md bg-gray-100 focus:outline-none"
-          >
-            <option value="+44">+44</option>
-            {/* Add more country codes as needed */}
-          </select>
-          <input
-            type="text"
-            id="phone"
-            placeholder="-Input-"
-            className="w-full px-3 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
-      </div>
-
-      {/* Buttons */}
-      <div className="flex justify-between items-center">
-        <button
-          type="button"
-          className="flex items-center px-4 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-200"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 mr-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L4 5H2m16 13a2 2 0 11-4 0 2 2 0 014 0zm-6 0a2 2 0 11-4 0 2 2 0 014 0z"
-            />
-          </svg>
-          Add to Cart
-        </button>
-        <button
-          type="button"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-        >
-          Proceed to checkout
-        </button>
-      </div>
-    </div>
-  );
-};
