@@ -628,6 +628,40 @@ export const adminStaffSideBarItems = [
   },
 ];
 
+// ORGANISATION SIDE ITEMS
+export const organisationSideBarItems = [
+  {
+    icon: DashboardIcon,
+    title: "Dashboard",
+    href: "/organisation",
+  },
+  {
+    icon: DashboardIcon,
+    title: "Department",
+    href: "/organisation/departments",
+  },
+  {
+    icon: DashboardIcon,
+    title: "Assets",
+    href: "/organisation/assets",
+  },
+  {
+    icon: DashboardIcon,
+    title: "Wallet",
+    href: "/organisation/wallet",
+  },
+  {
+    icon: DashboardIcon,
+    title: "Profile",
+    href: "/organisation/profile",
+  },
+  {
+    icon: LogoutIcon,
+    title: "Logout",
+    href: "/..",
+  },
+];
+
 export const lineChartOptions = {
   responsive: true,
   maintainAspectRatio: false,

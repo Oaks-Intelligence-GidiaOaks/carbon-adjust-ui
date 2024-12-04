@@ -34,8 +34,12 @@ module.exports = {
         "account-setup-image":
           "url('/assets/graphics/account-setup-graphic.svg')",
         "hero-bg": "url('/assets/graphics/hero-bg.svg')",
+        "gradient-text": "linear-gradient(to right, #2E599A 0%, #0B8DFF 100%)",
+        "custom-radial": "radial-gradient(at 0 0, #1944B7, #0B1E51)",
+        'model1': "url('/assets/graphics/model1.png')",
         "cash-wallet-01": "url('/assets/graphics/cash-wallet-bg-01.svg')",
         "cash-wallet-02": "url('/assets/graphics/cash-wallet-bg-02.svg')",
+        
       },
       colors: {
         "light-green": "#1BAF9E",

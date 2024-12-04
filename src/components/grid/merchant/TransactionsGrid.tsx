@@ -2,6 +2,8 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -20,6 +22,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 import {
   ITransaction,
+  WalletType,
   // TransactionStatus,
 } from "@/interfaces/transaction.interface";
 import { cn, formatDateTime, serializeGridData } from "@/lib/utils";
@@ -106,7 +109,13 @@ export const columns: ColumnDef<ITransaction>[] = [
   },
 ];
 
-export function TransactionsGrid({ className }: { className?: string }) {
+export function TransactionsGrid({
+  className,
+  walletType,
+}: {
+  className?: string;
+  walletType: WalletType;
+}) {
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 20,
@@ -114,8 +123,14 @@ export function TransactionsGrid({ className }: { className?: string }) {
   });
 
   const { data: transactions, isLoading } = useQuery({
-    queryKey: ["get-transactions", pagination.page, pagination.limit],
-    queryFn: () => fetchTransactions(pagination.page, pagination.limit),
+    queryKey: [
+      "get-transactions",
+      pagination.page,
+      pagination.limit,
+      walletType,
+    ],
+    queryFn: () =>
+      fetchTransactions(pagination.page, pagination.limit, walletType),
   });
 
   let transactionsData = useMemo(() => {
@@ -134,10 +149,17 @@ export function TransactionsGrid({ className }: { className?: string }) {
     totalTransactions = 0,
   } = transactions?.data || {};
 
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const table = useReactTable({
     data: transactionsData,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting: sorting,
+    },
+    onSortingChange: setSorting,
   });
 
   const LoadingState = () => (
@@ -213,8 +235,9 @@ export function TransactionsGrid({ className }: { className?: string }) {
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
-                    className="font-poppins font-bold  text-[#3C3E41]"
+                    className="font-poppins font-bold  text-[#3C3E41] cursor-pointer"
                     key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
                   >
                     {header.isPlaceholder
                       ? null
