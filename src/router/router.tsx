@@ -84,6 +84,9 @@ import {
   OrganisationProfile,
   OrganisationWallet,
 } from "@/pages/protected/organisation";
+import SalesLayout from "@/layouts/SalesLayout";
+import Sales from "@/pages/protected/merchant/Sales";
+import Inventory from "@/pages/protected/merchant/Inventory";
 
 const Router = createBrowserRouter([
   {
@@ -275,6 +278,26 @@ const Router = createBrowserRouter([
           {
             path: ":orderId",
             element: <MerchantOrderDetails />,
+          },
+        ],
+      },
+      {
+        path: "sales",
+        element: <SalesLayout />,
+        children: [
+          {
+            path: "",
+            element: <Sales />,
+          },
+        ],
+      },
+      {
+        path: "inventory",
+        element: <SalesLayout />,
+        children: [
+          {
+            path: "",
+            element: <Inventory />,
           },
         ],
       },

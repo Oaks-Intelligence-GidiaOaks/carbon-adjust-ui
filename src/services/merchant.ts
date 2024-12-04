@@ -5,8 +5,8 @@ import {
 } from "@/interfaces/transaction.interface";
 import { UserRole } from "@/interfaces/user.interface";
 
-export const getPackageCategories = () => {
-  return axiosInstance.get("/packages/categories");
+export const getPackageCategories = async () => {
+  return await axiosInstance.get("/packages/categories");
 };
 
 export const getRecentPackagesQuery = () => {
@@ -207,6 +207,59 @@ export const fetchTransactions = async (
   if (transactionType) {
     params.transactionType = transactionType;
   }
+
+  const queryString = new URLSearchParams(params).toString();
+  url += `?${queryString}`;
+
+  const { data } = await axiosInstance.get(url);
+  return data;
+};
+
+export const fetchSales = async (page: number = 1, limit: number = 20) => {
+  let url = "/application/sales";
+
+  const params: any = {
+    page,
+    limit,
+  };
+
+  const queryString = new URLSearchParams(params).toString();
+  url += `?${queryString}`;
+
+  const { data } = await axiosInstance.get(url);
+  return data;
+};
+
+export const createProduct = (data: FormData) => {
+  return axiosInstance.post("/packages", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+export const fetchInventory = async (page: number = 1, limit: number = 20) => {
+  let url = "/packages";
+
+  const params: any = {
+    page,
+    limit,
+  };
+
+  const queryString = new URLSearchParams(params).toString();
+  url += `?${queryString}`;
+
+  const { data } = await axiosInstance.get(url);
+  return data;
+};
+
+export const fetchInventoryHistory = async (page: number = 1, limit: number = 20) => {
+  let url = "/packages/inventory/history";
+
+  const params: any = {
+    page,
+    limit,
+  };
 
   const queryString = new URLSearchParams(params).toString();
   url += `?${queryString}`;
