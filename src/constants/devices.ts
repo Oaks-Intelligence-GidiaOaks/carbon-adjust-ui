@@ -66,3 +66,8 @@ export const electricitySuppliers = [
   { label: "Ovo Energy", value: "Ovo Energy" },
   { label: "Utilita Energy", value: "Utilita Energy" },
 ];
+
+export const earningMethodOptions = [
+  { label: "fixed", value: "fixed" },
+  { label: "on-the-go", value: "on-the-go" },
+];
