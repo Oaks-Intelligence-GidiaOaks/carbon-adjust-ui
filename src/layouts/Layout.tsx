@@ -75,12 +75,15 @@ const Layout = (props: Props) => {
         handleRedirect(userData.data.data, userData.data.data.roles[0]);
       }
     }
+
     // User data loaded successfully and no user data in state
     if (isSuccess && !user) {
       dispatch(setUser(userData.data.data));
+
       if (userData.data.data.roles[0] === "ADMIN") {
         return navigate("/admin");
       }
+
       // NON_FINANCIAL MERCHANT PATH
       if (
         userData.data.data.roles[0] === "MERCHANT" &&
@@ -92,6 +95,7 @@ const Layout = (props: Props) => {
         ) {
           return navigate("/account-setup");
         }
+
         if (
           userData.data.data.nonFinancialMerchantType ===
             "SELF_EMPLOYED_LICENSE" &&
@@ -99,12 +103,14 @@ const Layout = (props: Props) => {
         ) {
           return navigate("/account-setup");
         }
+
         if (
           userData.data.data.nonFinancialMerchantType === "LIMITED_LIABILITY" &&
           uniqueObjectsByIdType(userData.data.data?.doc).length < 3
         ) {
           return navigate("/account-setup");
         }
+
         if (
           userData.data.data.nonFinancialMerchantType ===
             "LIMITED_LIABILITY_LICENSE" &&
@@ -112,20 +118,22 @@ const Layout = (props: Props) => {
         ) {
           return navigate("/account-setup");
         }
+
         if (
           !userData.data.data.nonFinancialMerchantType &&
           uniqueObjectsByIdType(userData.data.data?.doc).length < 4
         ) {
-          console.log("here");
           return navigate("/account-setup");
         }
-        console.log("Here");
+
         if (pathname.includes("merchant")) {
           console.log("Here");
           return;
         }
+
         return navigate("/merchant");
       }
+
       //   // FINANCIAL MERCHANT PATH
       if (
         userData?.data.data.roles[0] === "MERCHANT" &&

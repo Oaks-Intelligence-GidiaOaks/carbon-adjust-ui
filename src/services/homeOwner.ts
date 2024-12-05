@@ -1,4 +1,4 @@
-import axiosInstance, { AxiosTest } from "@/api/axiosInstance";
+import axiosInstance from "@/api/axiosInstance";
 import { IDispatchData } from "@/interfaces/device.interface";
 import { IAddReview } from "@/interfaces/product.interface";
 import { WalletType } from "@/interfaces/transaction.interface";
@@ -315,7 +315,9 @@ export const uploadBuildingImage = async (
 export const getRestrictedWallet = async (
   walletType: WalletType = WalletType.CARBON_CREDIT
 ) => {
-  const { data } = await AxiosTest.get(`wallet/info?walletType=${walletType}`);
+  const { data } = await axiosInstance.get(
+    `wallet/info?walletType=${walletType}`
+  );
   return data;
 };
 //UPLOAD ENERGY biLLS
@@ -465,19 +467,42 @@ export const getPurchasesChart = async (purchaseIds: string[]) => {
 
 // WALLET
 export const movePointToCash = async (coinAmount: number) => {
-  const { data } = await AxiosTest.post(`/wallet/convert-coins-to-rcmbs`, {
+  const { data } = await axiosInstance.post(`/wallet/convert-coins-to-rcmbs`, {
     coinAmount,
   });
 
   return data;
 };
 
-export const transferCashP2P = async (arg: {
+export const sendOtpRcmb = async (arg: {
+  receiverWalletAddress: string;
   amount: number;
-  walletAddress: string;
 }) => {
-  const { data } = await AxiosTest.patch(`/wallet/transfer-rcmbs`, {
-    ...arg,
+  const { data } = await axiosInstance.post(`/wallet/send-otp-rcmbs`, arg);
+
+  return data;
+};
+
+export const sendOtpCoins = async (arg: {
+  receiverWalletAddress: string;
+  amount: number;
+}) => {
+  const { data } = await axiosInstance.post(`/wallet/send-otp-coins`, arg);
+
+  return data;
+};
+
+export const verifyTransferRcmb = async (otp: string) => {
+  const { data } = await axiosInstance.post(`/wallet/verify-transfer-rcmbs`, {
+    otp,
+  });
+
+  return data;
+};
+
+export const verifyTransferCoins = async (otp: string) => {
+  const { data } = await axiosInstance.post(`/wallet/verify-transfer-coins`, {
+    otp,
   });
 
   return data;

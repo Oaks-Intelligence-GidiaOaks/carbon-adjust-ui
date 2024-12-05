@@ -6,15 +6,21 @@ import DeviceGrid from "@/components/grid/admin/DeviceGrid";
 import Loading from "@/components/reusables/Loading";
 // @ts-ignore
 import { Button, Input } from "@/components/ui";
+import { WalletType } from "@/interfaces/transaction.interface";
 import { handleTableDownload } from "@/lib/utils";
 import { getDispatchedDevices } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 const Devices = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["get-devices-dispatch"],
     queryFn: () => getDispatchedDevices(150),
   });
+
+  const [activeTab, setActiveTab] = useState<WalletType>(
+    WalletType.CARBON_CREDIT
+  );
 
   const tData = data
     ? data.data.dispatchDevices.map(({ device, ...rest }: any, i: number) => {
@@ -45,7 +51,7 @@ const Devices = () => {
       {/* <h2>Devices</h2> */}
 
       {/* Wallet */}
-      <WalletTabs />
+      <WalletTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <AdminDeviceChart />
 

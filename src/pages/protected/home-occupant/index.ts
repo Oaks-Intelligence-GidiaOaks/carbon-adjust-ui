@@ -9,5 +9,8 @@ export { default as UserNewTransport } from "./NewTransport";
 export { default as UserWallet } from "./Wallet";
 export { default as UserTransport } from "./Transport";
 export { default as UserPurchases } from "./Purchases";
+export { default as UserProduct } from "./Product";
+export { default as UserCheckout } from "./Checkout";
+
 
 

@@ -24,7 +24,7 @@ const BestSellers = () => {
   }
 
   return (
-    <div className="pb-[70px] pt-[37px]">
+    <div className="pb-[10px] pt-[5px]">
       <ProductsCategory category={category} packages={pkgs} />
     </div>
   ); 

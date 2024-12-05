@@ -2,6 +2,8 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -13,33 +15,35 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { fetchTransactions } from "@/services/merchant";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
-import transDummy from "@/dummy/transaction.json";
+
 import {
   ITransaction,
-  TransactionStatus,
+  WalletType,
+  // TransactionStatus,
 } from "@/interfaces/transaction.interface";
-import { cn, formatDateTime } from "@/lib/utils";
-import { IComponentMap } from "@/types/general";
+import { cn, formatDateTime, serializeGridData } from "@/lib/utils";
+// import { IComponentMap } from "@/types/general";
 
-const getStatusStyle: IComponentMap = {
-  [TransactionStatus.PENDING]:
-    "text-[#CDBC05] bg-gradient-to-r from-[#FEFEF0] to-[#FFFEF2]",
-  [TransactionStatus.FAILED]:
-    "text-[#BF0508] bg-gradient-to-r from-[#FFF0F1] to-[#FFDFE0]",
-  [TransactionStatus.COMPLETED]:
-    "text-[#069662] bg-gradient-to-r from-[#EDFDF7] to-[#E5ECF6]",
-};
+// const getStatusStyle: IComponentMap = {
+//   [TransactionStatus.PENDING]:
+//     "text-[#CDBC05] bg-gradient-to-r from-[#FEFEF0] to-[#FFFEF2]",
+//   [TransactionStatus.FAILED]:
+//     "text-[#BF0508] bg-gradient-to-r from-[#FFF0F1] to-[#FFDFE0]",
+//   [TransactionStatus.COMPLETED]:
+//     "text-[#069662] bg-gradient-to-r from-[#EDFDF7] to-[#E5ECF6]",
+// };
 
 export const columns: ColumnDef<ITransaction>[] = [
   {
-    id: "_id",
+    accessorKey: "id",
     header: () => <div className="pl-2">S/N</div>,
-    cell: ({ row }) => <span className="text-xxs pl-2">{row.index + 1}</span>,
+    cell: ({ row }) => (
+      <span className="text-xxs pl-2">{row.getValue("id")}</span>
+    ),
   },
   {
     accessorKey: "_id",
@@ -48,13 +52,6 @@ export const columns: ColumnDef<ITransaction>[] = [
       <div className="capitalize text-xxs">{row.getValue("_id")}</div>
     ),
   },
-  // {
-  //   accessorKey: "userId",
-  //   header: () => <div className="whitespace-nowrap"> User ID</div>,
-  //   cell: ({ row }) => (
-  //     <div className="capitalize text-xxs">{row.getValue("userId")}</div>
-  //   ),
-  // },
   {
     accessorKey: "createdAt",
     header: () => <div className="w-32">Timestamp</div>,
@@ -89,20 +86,20 @@ export const columns: ColumnDef<ITransaction>[] = [
       <div className="capitalize text-xxs">{row.getValue("amount")}</div>
     ),
   },
-  {
-    accessorKey: "status",
-    header: () => <div className="w-28 text-center">Status</div>,
-    cell: ({ row }) => (
-      <div
-        className={`capitalize text-xxs rounded-[16px] text-center py-[2px] ${
-          // @ts-ignore
-          getStatusStyle[row.getValue("status")]
-        }`}
-      >
-        {row.getValue("status")}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "status",
+  //   header: () => <div className="w-28 text-center">Status</div>,
+  //   cell: ({ row }) => (
+  //     <div
+  //       className={`capitalize text-xxs rounded-[16px] text-center py-[2px] ${
+  //         // @ts-ignore
+  //         getStatusStyle[row.getValue("status")]
+  //       }`}
+  //     >
+  //       {row.getValue("status")}
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "description",
     header: () => <div className="w-40">Description</div>,
@@ -112,29 +109,57 @@ export const columns: ColumnDef<ITransaction>[] = [
   },
 ];
 
-export function TransactionsGrid({ className }: { className?: string }) {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limit] = useState<number>(20);
-
-  const {
-    data: transactions,
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["get-transactions", currentPage, limit],
-    queryFn: () => fetchTransactions(currentPage, limit),
+export function TransactionsGrid({
+  className,
+  walletType,
+}: {
+  className?: string;
+  walletType: WalletType;
+}) {
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 20,
+    totalPages: 1,
   });
 
-  useEffect(() => {
-    if (transactions?.transactions?.length) {
-      refetch();
-    }
-  }, [refetch, currentPage]);
+  const { data: transactions, isLoading } = useQuery({
+    queryKey: [
+      "get-transactions",
+      pagination.page,
+      pagination.limit,
+      walletType,
+    ],
+    queryFn: () =>
+      fetchTransactions(pagination.page, pagination.limit, walletType),
+  });
+
+  let transactionsData = useMemo(() => {
+    return transactions?.data
+      ? serializeGridData(
+          transactions?.data?.transactions,
+          pagination.page,
+          pagination.limit
+        )
+      : [];
+  }, [transactions?.data, pagination.page, pagination.limit]);
+
+  const {
+    page = 1,
+    totalPages = 1,
+    totalTransactions = 0,
+  } = transactions?.data || {};
+
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
-    data: transactions?.transactions || transDummy,
+    data: transactionsData,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting: sorting,
+    },
+    onSortingChange: setSorting,
   });
 
   const LoadingState = () => (
@@ -155,17 +180,31 @@ export function TransactionsGrid({ className }: { className?: string }) {
     </>
   );
 
-  const handleClickPrev = () => {
-    if (currentPage !== 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  useEffect(() => {
+    setPagination((prev) => ({
+      ...prev,
+      page,
+      totalPages,
+    }));
+  }, [page, totalPages]);
 
-  const handleClickNext = () => {
-    if (currentPage < 100) {
-      setCurrentPage(currentPage + 1);
+  const handleClickPrev = useCallback(() => {
+    if (pagination.page > 1) {
+      setPagination((prev) => ({
+        ...prev,
+        page: prev.page - 1,
+      }));
     }
-  };
+  }, [pagination.page]);
+
+  const handleClickNext = useCallback(() => {
+    if (pagination.page < totalPages) {
+      setPagination((prev) => ({
+        ...prev,
+        page: prev.page + 1,
+      }));
+    }
+  }, [pagination.page, totalPages]);
 
   return (
     <div className={cn("w-full", className)}>
@@ -174,7 +213,7 @@ export function TransactionsGrid({ className }: { className?: string }) {
           Transaction History
         </h2>
 
-        <Input
+        {/* <Input
           wrapperClassName=""
           inputClassName="bg-transparent !h-full"
           name="search"
@@ -186,7 +225,7 @@ export function TransactionsGrid({ className }: { className?: string }) {
             table.getColumn("walletType")?.setFilterValue(event.target.value)
           }
           className="max-w-sm border rounded-xl px-4 ml-auto text-xs h-[38px] text-gray-600"
-        />
+        /> */}
       </div>
 
       <Table>
@@ -196,8 +235,9 @@ export function TransactionsGrid({ className }: { className?: string }) {
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
-                    className="font-poppins font-bold  text-[#3C3E41]"
+                    className="font-poppins font-bold  text-[#3C3E41] cursor-pointer"
                     key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
                   >
                     {header.isPlaceholder
                       ? null
@@ -251,35 +291,39 @@ export function TransactionsGrid({ className }: { className?: string }) {
         </TableBody>
       </Table>
 
-      {(transactions?.transactions || true) && (
+      {transactionsData.length ? (
         <div className="mt-4 flex-center w-fit ml-auto text-gray-500 text-xs font-kumbh">
           <div className="flex-center gap-1 ">
-            <span>6</span>-<span>9</span>
+            <span> {transactionsData[0].id} </span>-
+            <span> {transactionsData[transactionsData.length - 1].id} </span>
             of
-            <span>100</span>
+            <span>{totalTransactions}</span>
           </div>
 
           <div className="flex-center">
             <button
-              disabled={currentPage <= 1}
+              disabled={pagination.page <= 1}
               onClick={handleClickPrev}
               className={`${
-                currentPage <= 1 && "cursor-not-allowed text-muted"
+                pagination.page <= 1 && "cursor-not-allowed text-muted"
               } grid place-items-center px-6 py-2 rounded-2xl`}
             >
-              <FaChevronLeft />
+              <FaChevronLeft size={17} />
             </button>
 
             <button
-              disabled={currentPage === transactions?.totalPages}
+              disabled={pagination.page === totalPages}
               onClick={handleClickNext}
-              className="grid place-items-center pl-6 py-2 rounded-2xl"
+              className={`grid place-items-center pl-6 py-2 rounded-2xl ${
+                pagination.page === totalPages &&
+                "cursor-not-allowed text-muted"
+              }`}
             >
-              <FaChevronRight />
+              <FaChevronRight size={17} />
             </button>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

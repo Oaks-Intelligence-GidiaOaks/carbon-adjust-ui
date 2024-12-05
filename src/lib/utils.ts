@@ -288,6 +288,9 @@ export const validateDeviceInputs = (formData: IDevice) => {
     case formData.file === null:
       error = "Add a device Image";
       break;
+    case !Boolean((formData.earningMethod as SelectItem).value.length):
+      error = "Select an Earning Method";
+      break;
     default:
       break;
   }
@@ -587,4 +590,19 @@ export function generateKML(data: any[]) {
 
 export const copyClipboardText = (txt: string) => {
   navigator.clipboard.writeText(txt);
+};
+
+export const serializeGridData = (
+  data: any[],
+  currentPage: number,
+  limit: number
+) => {
+  let startIndex = (currentPage - 1) * limit + 1;
+
+  let paginatedData = data.map((item, i) => ({
+    id: startIndex + i,
+    ...item,
+  }));
+
+  return paginatedData;
 };

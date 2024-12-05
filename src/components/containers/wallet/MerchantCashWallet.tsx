@@ -21,7 +21,7 @@ const MerchantCashWallet = () => {
   );
 
   const { data, isLoading } = useQuery({
-    queryKey: ["restricted-wallet"],
+    queryKey: ["restricted-wallet", WalletType.CASH_WALLET],
     queryFn: () => getRestrictedWallet(WalletType.CASH_WALLET),
   });
 

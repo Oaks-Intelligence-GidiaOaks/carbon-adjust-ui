@@ -43,7 +43,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
   return (
     <>
 
-        <div className="min-w-[228px] group">
+        <div className="min-w-[255px] lg:min-w-[255px] group">
           <div className="relative ">
             <div className="absolute top-[10px] right-[10px] rounded-full w-[32px] h-[32px] bg-white grid place-items-center z-[10]">
               <GrFavorite />
@@ -59,14 +59,14 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
               </span>
             </div>
 
-            <div className="relative h-[304px] border border-[#F3F5F7] grid place-items-center rounded-xl bg-[#F3F5F7]">
+            <div className="relative h-[304px] border border-[#F3F5F7] grid place-items-center rounded-sm bg-[#F3F5F7]">
               <div className="hidden group-hover:flex flex-col absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-20 rounded-lg">
                 {!isMerchant && (
                   <div className="mx-auto mt-auto h-fit pb-[16px] grid place-items-center w-full">
                     <Link
                       onClick={handleInitiateCheckout}
                       className="w-5/6"
-                      to={`/dashboard/marketplace/${props?.category?.slug}?pid=${props._id}`}
+                      to={`/dashboard/product/${props?.category?.slug}?pid=${props._id}`}
                     >
                       <button className=" blue-gradient w-full rounded-[24px] h-[40px] text-center text-white text-base font-[500]">
                         Add to basket
@@ -79,26 +79,20 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
               <img
                 src={props?.attachments?.[0]}
                 alt=""
-                className="w-[228px] h-[304px] rounded-lg object-cover"
+                className="w-[158px] h-[130px] object-fit"
               />
             </div>
 
-            <div className="gap-[3px] mt-1 flex flex-col">
-              <div className="flex-center gap-2">
-                <span className="text-[12.5px] font-[400]">
-                  {/* @ts-ignore */}
-                  {props?.owner?.name!}
-                </span>
-                {[...Array(averageRating)].map((_, idx) => (
-                  <span key={idx} className="text-[#F7871B]">
+            <div className="gap-[3px] mt-3 flex flex-col">
+              <div className="flex-center gap-2 border-b-2 w-fit border-[#575757]">
+              
+
+                <p className="text-[#575757] space-x-3 font-semibold mb-0.5">Rating: {averageRating} star
+                <span className="text-[#F7871B] ml-2">
                     ★
                   </span>
-                ))}
-                {[...Array(5 - averageRating)].map((_, idx) => (
-                  <span key={idx} className="text-[#6C6C6C]">
-                    ★
-                  </span>
-                ))}
+                </p>
+             
               </div>
 
               <h2

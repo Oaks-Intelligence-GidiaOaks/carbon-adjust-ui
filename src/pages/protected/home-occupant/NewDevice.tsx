@@ -2,14 +2,16 @@ import { Button, Input } from "@/components/ui";
 import ImagePreviewCard from "@/components/ui/ImagePreviewCard";
 import SelectInput from "@/components/ui/SelectInput";
 import {
+  earningMethodOptions,
   electricitySuppliers,
   energySources,
   gasSuppliers,
   types,
 } from "@/constants/devices";
-import { IDevice } from "@/interfaces/device.interface";
+import { ICreateDevice, IDevice } from "@/interfaces/device.interface";
 import { validateDeviceInputs } from "@/lib/utils";
 import { addDevice } from "@/services/homeOwner";
+import { SelectItem } from "@/types/formSelect";
 import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -31,6 +33,7 @@ const NewDevice = () => {
     electricityProvider: { label: "", value: "" },
     gasProvider: { label: "", value: "" },
     file: null,
+    earningMethod: { label: "", value: "" },
   };
 
   const [formData, setFormData] = useState<IDevice>(initialState);
@@ -124,25 +127,22 @@ const NewDevice = () => {
 
     const { gasProvider, ...rest } = formData;
 
-    let nData = {
+    let nData: Partial<ICreateDevice> = {
       ...rest,
-      // @ts-ignore
-      type: formData.type.value,
-      // @ts-ignore
-      energySource: formData.energySource.value,
-      // @ts-ignore
-      electricityProvider: formData.electricityProvider.value,
+      type: (formData.type as SelectItem).value,
+      energySource: (formData.energySource as SelectItem).value,
+      electricityProvider: (formData.electricityProvider as SelectItem).value,
+      earningMethod: (formData.earningMethod as SelectItem).value,
     };
 
     if (nData.energySource === "Electricity/Gas") {
-      // @ts-ignore
-      nData["gasProvider"] = gasProvider.value;
+      nData["gasProvider"] = (gasProvider as SelectItem).value;
     }
 
     const deviceData = new FormData();
 
     Object.entries(nData).map((item) => {
-      deviceData.append(item[0], item[1]);
+      deviceData.append(item[0], (item as any)[1]);
     });
 
     CreateDevice.mutate(deviceData);
@@ -208,122 +208,101 @@ const NewDevice = () => {
             </div>
           </div>
 
-          <div className="space-y-2 ">
-            <h2 className="pl-2">Device name</h2>
+          <Input
+            label="Device name"
+            className="border rounded-xl px-2 text-sm bg-[#E4E7E8]"
+            inputClassName="bg-transparent px-0"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
 
-            <Input
-              className="border rounded-xl px-2 text-sm"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-            />
-          </div>
+          <SelectInput
+            label="Device type"
+            options={types}
+            value={formData.type}
+            onChange={(e) => handleSelectInputChange(e, "type")}
+          />
 
-          <div className="space-y-2 px-2">
-            <h2 className="pl-2">Device type</h2>
+          <Input
+            label="Serial number"
+            inputClassName="bg-transparent px-0 "
+            className="border rounded-xl px-3 text-sm bg-[#E4E7E8]"
+            name="serialNos"
+            value={formData.serialNos}
+            onChange={handleInputChange}
+          />
 
+          <Input
+            label="Power rating (W)"
+            inputClassName="bg-transparent px-0"
+            className="border rounded-xl px-3 text-sm bg-[#E4E7E8]"
+            type="number"
+            name="powerRating"
+            value={formData.powerRating}
+            onChange={handleInputChange}
+          />
+
+          <Input
+            label="Voltage level (V)"
+            className="border rounded-xl px-3 text-sm bg-[#E4E7E8]"
+            inputClassName="bg-transparent px-0"
+            type="number"
+            name="voltageLevel"
+            value={formData.voltageLevel}
+            onChange={handleInputChange}
+          />
+
+          <SelectInput
+            label="What is/are your energy source(s)?"
+            options={energySources}
+            value={formData.energySource}
+            onChange={(e) => handleSelectInputChange(e, "energySource")}
+          />
+
+          {Boolean((formData.energySource as SelectItem).value.length) && (
             <SelectInput
-              options={types}
-              value={formData.type}
-              onChange={(e) => handleSelectInputChange(e, "type")}
+              label="Who is your electricity supplier?"
+              options={electricitySuppliers}
+              value={formData.electricityProvider}
+              onChange={(e) =>
+                handleSelectInputChange(e, "electricityProvider")
+              }
             />
-          </div>
+          )}
 
-          <div className="space-y-2 ">
-            <h2 className="pl-2">Serial number</h2>
-
-            <Input
-              className="border rounded-xl px-2 text-sm"
-              // type="number"
-              name="serialNos"
-              value={formData.serialNos}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="space-y-2 ">
-            <h2 className="pl-2">Power rating (W)</h2>
-
-            <Input
-              className="border rounded-xl px-2 text-sm"
-              type="number"
-              name="powerRating"
-              value={formData.powerRating}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="space-y-2 ">
-            <h2 className="pl-2">Voltage level (V)</h2>
-
-            <Input
-              className="border rounded-xl px-2 text-sm"
-              type="number"
-              name="voltageLevel"
-              value={formData.voltageLevel}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="space-y-2 px-2">
-            <h2 className="pl-2">What is/are your energy source(s)?</h2>
-
+          {(formData.energySource as SelectItem).value ===
+            "Electricity/Gas" && (
             <SelectInput
-              options={energySources}
-              value={formData.energySource}
-              onChange={(e) => handleSelectInputChange(e, "energySource")}
+              label="Who is your gas provider?"
+              options={gasSuppliers}
+              value={formData.gasProvider}
+              onChange={(e) => handleSelectInputChange(e, "gasProvider")}
             />
-          </div>
+          )}
 
-          {
-            // @ts-ignore
-            Boolean(formData.energySource.value.length) && (
-              <div className="space-y-2 px-2">
-                <h2 className="pl-2">Who is your electricity supplier?</h2>
+          <SelectInput
+            label="Earning Method"
+            options={earningMethodOptions}
+            value={formData.earningMethod}
+            onChange={(e) => handleSelectInputChange(e, "earningMethod")}
+          />
 
-                <SelectInput
-                  options={electricitySuppliers}
-                  value={formData.electricityProvider}
-                  onChange={(e) =>
-                    handleSelectInputChange(e, "electricityProvider")
-                  }
-                />
-              </div>
-            )
-          }
-
-          {
-            // @ts-ignore
-            formData.energySource.value === "Electricity/Gas" && (
-              <div className="space-y-2 px-2">
-                <h2 className="pl-2">Who is your gas provider?</h2>
-
-                <SelectInput
-                  options={gasSuppliers}
-                  value={formData.gasProvider}
-                  onChange={(e) => handleSelectInputChange(e, "gasProvider")}
-                />
-              </div>
-            )
-          }
-
-          <div className="w-full mx-auto ">
-            <Button disabled={false} className="w-full">
-              {CreateDevice.isPending ? (
-                <Oval
-                  visible={true}
-                  height="20"
-                  width="20"
-                  color="#ffffff"
-                  ariaLabel="oval-loading"
-                  wrapperStyle={{}}
-                  wrapperClass=""
-                />
-              ) : (
-                <span>Create</span>
-              )}
-            </Button>
-          </div>
+          <Button disabled={false} className="w-full">
+            {CreateDevice.isPending ? (
+              <Oval
+                visible={true}
+                height="20"
+                width="20"
+                color="#ffffff"
+                ariaLabel="oval-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+              />
+            ) : (
+              <span>Create</span>
+            )}
+          </Button>
         </div>
       </form>
     </div>
