@@ -146,7 +146,7 @@ const AddInventoryModal = ({ setShowModal, refetchInventory }: AddInventoryModal
       packageType: formData.packageType.value,
       quantity: formData.quantity,
       askPurchaserQuote: formData.askPurchaserQuote,
-      colors: formData.colors,
+      color: formData.colors,
       price: formData.price,
     };
 

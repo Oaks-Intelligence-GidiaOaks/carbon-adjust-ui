@@ -62,7 +62,11 @@ export function AllInventoryGrid({ className }: { className?: string }) {
     setOpenDialogId((prevId) => (prevId === id ? null : id));
   };
 
-  const { data: inventory, isLoading, refetch, } = useQuery({
+  const {
+    data: inventory,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["get-inventory", pagination.page, pagination.limit],
     queryFn: () => fetchInventory(pagination.page, pagination.limit),
   });
@@ -123,9 +127,18 @@ export function AllInventoryGrid({ className }: { className?: string }) {
     {
       accessorKey: "package.color",
       header: () => <div className="w-20">Color</div>,
-      cell: ({ row }) => (
-        <div className="capitalize text-sm">{row.original.color || "N/A"}</div>
-      ),
+      cell: ({ row }) => {
+        const colors = row.original.color || []; // Assume this is an array of strings
+        const displayedColors = colors.slice(0, 2).join(","); // Join the first 2 with spaces
+        const hasMore = colors.length > 2;
+
+        return (
+          <div className="capitalize text-sm">
+            {displayedColors}
+            {hasMore && " ..."}
+          </div>
+        );
+      },
     },
     {
       accessorKey: "package.quantity",
@@ -209,7 +222,11 @@ export function AllInventoryGrid({ className }: { className?: string }) {
     },
   ];
 
-  const { page = 1, totalPages = 1, totalInventories = 0 } = inventory?.data || {};
+  const {
+    page = 1,
+    totalPages = 1,
+    totalInventories = 0,
+  } = inventory?.data || {};
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -304,7 +321,12 @@ export function AllInventoryGrid({ className }: { className?: string }) {
           </Button>
         </div>
       </div>
-      {showModal && <AddInventoryModal setShowModal={setShowModal} refetchInventory={refetch}/>}
+      {showModal && (
+        <AddInventoryModal
+          setShowModal={setShowModal}
+          refetchInventory={refetch}
+        />
+      )}
       {showEditModal && (
         <EditInventoryModal setShowModal={setShowEditModal} data={currentRow} />
       )}
