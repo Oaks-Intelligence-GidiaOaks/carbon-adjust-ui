@@ -25,17 +25,17 @@ import { PlusIcon } from "@/assets/icons";
 import { IoFilterSharp } from "react-icons/io5";
 import { FiUploadCloud } from "react-icons/fi";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { cn, serializeGridData } from "@/lib/utils";
+import { cn, formatDateTime, serializeGridData } from "@/lib/utils";
 import AddInventoryModal from "@/components/containers/merchant/AddInventoryModal";
 import EditInventoryModal from "@/components/containers/merchant/EditInventorymodal";
 
 const getStatusStyle = (status: string): string => {
   switch (status.toLowerCase()) {
-    case "pending":
+    case "re-order":
       return "text-[#A39412] bg-[#FCFFC1]";
-    case "completed":
+    case "in-stock":
       return "text-[#15A312] bg-[#DEFFE5]";
-    case "cancelled":
+    case "out of stock":
       return "text-[#FA4258] bg-[#FFEBEB]";
     default:
       return "text-gray-500 bg-gray-100";
@@ -62,7 +62,7 @@ export function AllInventoryGrid({ className }: { className?: string }) {
     setOpenDialogId((prevId) => (prevId === id ? null : id));
   };
 
-  const { data: inventory, isLoading } = useQuery({
+  const { data: inventory, isLoading, refetch, } = useQuery({
     queryKey: ["get-inventory", pagination.page, pagination.limit],
     queryFn: () => fetchInventory(pagination.page, pagination.limit),
   });
@@ -70,7 +70,7 @@ export function AllInventoryGrid({ className }: { className?: string }) {
   useEffect(() => {
     if (inventory?.data) {
       const serializedData = serializeGridData(
-        inventory.data.packages,
+        inventory.data.inventories,
         pagination.page,
         pagination.limit
       );
@@ -145,7 +145,9 @@ export function AllInventoryGrid({ className }: { className?: string }) {
       accessorKey: "createdAt",
       header: () => <div className="w-32">Date Created</div>,
       cell: ({ row }) => (
-        <div className="text-sm">{row.original.createdAt || "N/A"}</div>
+        <div className="text-sm">
+          {formatDateTime(row.original.createdAt) || "N/A"}
+        </div>
       ),
     },
     {
@@ -153,11 +155,11 @@ export function AllInventoryGrid({ className }: { className?: string }) {
       header: () => <div className="w-32">Status</div>,
       cell: ({ row }) => (
         <div
-          className={`capitalize text-sm py-1 text-center rounded ${getStatusStyle(
-            row.original.status || "n/a"
+          className={`capitalize text-xss py-1 text-center rounded ${getStatusStyle(
+            row.original.inventoryStatus || "n/a"
           )}`}
         >
-          {row.original.status || "N/A"}
+          {row.original.inventoryStatus || "N/A"}
         </div>
       ),
     },
@@ -207,7 +209,7 @@ export function AllInventoryGrid({ className }: { className?: string }) {
     },
   ];
 
-  const { page = 1, totalPages = 1, totalPackages = 0 } = inventory?.data || {};
+  const { page = 1, totalPages = 1, totalInventories = 0 } = inventory?.data || {};
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -302,7 +304,7 @@ export function AllInventoryGrid({ className }: { className?: string }) {
           </Button>
         </div>
       </div>
-      {showModal && <AddInventoryModal setShowModal={setShowModal} />}
+      {showModal && <AddInventoryModal setShowModal={setShowModal} refetchInventory={refetch}/>}
       {showEditModal && (
         <EditInventoryModal setShowModal={setShowEditModal} data={currentRow} />
       )}
@@ -377,7 +379,7 @@ export function AllInventoryGrid({ className }: { className?: string }) {
             <span> {inventoryData[0].id} </span>-
             <span> {inventoryData[inventoryData.length - 1].id} </span>
             of
-            <span>{totalPackages}</span>
+            <span>{totalInventories}</span>
           </div>
 
           <div className="flex-center">

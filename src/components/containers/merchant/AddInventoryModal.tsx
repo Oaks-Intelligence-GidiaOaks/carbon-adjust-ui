@@ -14,6 +14,7 @@ import Select, { MultiValue } from "react-select";
 
 type AddInventoryModalProps = {
   setShowModal: (value: boolean) => void;
+  refetchInventory?:() => void;
 };
 
 type MediaPreview = {
@@ -21,7 +22,7 @@ type MediaPreview = {
   type: string;
 } | null;
 
-const AddInventoryModal = ({ setShowModal }: AddInventoryModalProps) => {
+const AddInventoryModal = ({ setShowModal, refetchInventory }: AddInventoryModalProps) => {
   const transportPhotoRef = useRef<HTMLInputElement | null>(null);
   const [productPreview, setProductPreview] = useState<MediaPreview>(null);
 
@@ -45,10 +46,9 @@ const AddInventoryModal = ({ setShowModal }: AddInventoryModalProps) => {
     }
   };
 
-  const getCategories = useQuery<
-    { data: { categories: { name: string; _id: string }[] } },
-    Error
-  >({
+  const getCategories = useQuery<{
+    data: { categories: { name: string; _id: string }[] };
+  }>({
     queryKey: ["get categories"],
     queryFn: getPackageCategories,
   });
@@ -107,6 +107,7 @@ const AddInventoryModal = ({ setShowModal }: AddInventoryModalProps) => {
   };
 
   const colourOptions = [
+    { value: "black", label: "Black" },
     { value: "red", label: "Red" },
     { value: "blue", label: "Blue" },
     { value: "green", label: "Green" },
@@ -124,6 +125,7 @@ const AddInventoryModal = ({ setShowModal }: AddInventoryModalProps) => {
       }
     ) => createPackageQuery(data),
     onSuccess: () => {
+      refetchInventory()
       toast.success("Inventory created successfully");
       resetForm();
       setShowModal(false);

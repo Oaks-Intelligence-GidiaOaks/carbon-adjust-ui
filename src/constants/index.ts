@@ -145,7 +145,7 @@ export const merchantSideBarItems = [
     href: "/merchant",
   },
   {
-    icon: DashboardIcon,
+    icon: ApplicationsIcon,
     title: "Sales",
     href: "/merchant/sales",
   },

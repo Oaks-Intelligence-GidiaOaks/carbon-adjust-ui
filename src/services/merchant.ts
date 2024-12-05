@@ -239,7 +239,7 @@ export const createProduct = (data: FormData) => {
 };
 
 export const fetchInventory = async (page: number = 1, limit: number = 20) => {
-  let url = "/packages";
+  let url = "/packages/inventory";
 
   const params: any = {
     page,
@@ -267,3 +267,10 @@ export const fetchInventoryHistory = async (page: number = 1, limit: number = 20
   const { data } = await axiosInstance.get(url);
   return data;
 };
+
+export const updateInventory = async (
+  productId: string,
+  data: FormData
+) => { 
+  return axiosInstance.put(`/packages/${productId}/inventry`, data);
+}

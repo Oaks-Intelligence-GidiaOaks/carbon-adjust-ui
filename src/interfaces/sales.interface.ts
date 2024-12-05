@@ -46,7 +46,6 @@ export interface ProductForm {
   productPhoto: string | null;
   title: string;
   description: string;
-  action?: string;
   category:  PropsValue<SelectItem>;
   packageType:  PropsValue<SelectItem>;
   quantity: string;
@@ -57,7 +56,7 @@ export interface ProductForm {
 
 export interface UProductForm {
   title: string;
-  description: string;
+  comment: string;
   action:  PropsValue<SelectItem>;
   quantity: string;
   price: string;
@@ -98,3 +97,18 @@ export interface InventoryAction {
   comment: string;
 }
 
+// {
+//   "_id": "67504c6a93741a78e4e189c9",
+//   "title": "yoga",
+//   "owner": "6662281bfa9153dfc09b7cb2",
+//   "category": {
+//       "_id": "66648d839619f2263c4e4d27",
+//       "name": "Complimentary Benefits"
+//   },
+//   "price": 5000,
+//   "quantity": 56,
+//   "color": [],
+//   "createdAt": "2024-12-04T12:34:50.785Z",
+//   "inventoryStatus": "In-Stock",
+//   "quantityLeft": 56
+// },

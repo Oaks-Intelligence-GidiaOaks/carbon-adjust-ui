@@ -2,7 +2,8 @@ import TabToggler from "@/components/containers/TabToggler";
 import OrgDashboardDetailsCard from "@/components/reusables/OrgDashboardDetailsCard";
 import UseScrollToTop from "@/hooks/useScrollToTop";
 import { SalesTabs } from "@/interfaces/sales.interface";
-import { formatNumberWithCommas } from "@/utils";
+import { fetchInventory, getPackageCategories } from "@/services/merchant";
+import { useQuery } from "@tanstack/react-query";
 import { FC, useRef } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
@@ -30,13 +31,27 @@ const SalesLayout: FC = (_) => {
         return SalesTabs.Sales;
     }
   };
+
+  const {
+    data: categories
+  } = useQuery({
+    queryKey: ["get categories"],
+    queryFn: () => getPackageCategories(),
+    enabled: true,
+  });
+
+  const { data: inventory } = useQuery({
+    queryKey: ["get-inventory"],
+    queryFn: () => fetchInventory(),
+  });
+
   const packagesCount = 0;
   const applicationsCount = 0;
 
   const cardItems = [
     {
       title: "Categories",
-      value: packagesCount,
+      value: categories?.data?.data?.categories?.length,
       icon: (
         <div className="size-7 flex justify-center items-center bg-purple-100 rounded-lg">
           <img src="/assets/icons/org-dashboard/project.svg" />
@@ -46,7 +61,7 @@ const SalesLayout: FC = (_) => {
     },
     {
       title: "Total Products",
-      value: packagesCount,
+      value: inventory?.data?.inventories?.length,
       icon: (
         <div className="size-7 flex justify-center items-center bg-purple-100 rounded-lg">
           <img src="/assets/icons/org-dashboard/helmet.svg" />
@@ -74,16 +89,16 @@ const SalesLayout: FC = (_) => {
       ),
       viewAllUrl: "#",
     },
-    {
-      title: "Total Revenue",
-      value: `£${formatNumberWithCommas("0")}`,
-      icon: (
-        <div className="size-7 flex justify-center items-center bg-purple-100 rounded-lg">
-          <img src="/assets/icons/org-dashboard/doc.svg" />
-        </div>
-      ),
-      viewAllUrl: "#",
-    },
+    // {
+    //   title: "Total Revenue",
+    //   value: `£${formatNumberWithCommas("0")}`,
+    //   icon: (
+    //     <div className="size-7 flex justify-center items-center bg-purple-100 rounded-lg">
+    //       <img src="/assets/icons/org-dashboard/doc.svg" />
+    //     </div>
+    //   ),
+    //   viewAllUrl: "#",
+    // },
   ];
 
   return (

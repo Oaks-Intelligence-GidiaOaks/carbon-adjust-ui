@@ -3,7 +3,10 @@ import { Button, Input } from "@/components/ui";
 import SelectInput from "@/components/ui/SelectInput";
 import TextArea from "@/components/ui/TextArea";
 import { UProductForm } from "@/interfaces/sales.interface";
+import { updateInventory } from "@/services/merchant";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
 
 type EditInventoryModalProps = {
@@ -17,9 +20,9 @@ const EditInventoryModal = ({
 }: EditInventoryModalProps) => {
   const initialState: UProductForm = {
     title: data?.title,
-    description: data?.description,
-    action: { label: data?.action, value: data?.action },
-    quantity: data.package?.quantity,
+    comment: "",
+    action: { label: "", value: "" },
+    quantity: data.quantity,
     price: data?.price,
   };
 
@@ -43,7 +46,38 @@ const EditInventoryModal = ({
       }));
     }
   };
-    const Loading = false;
+
+  const UpdateProduct = useMutation({
+    mutationKey: ["create package"],
+    mutationFn: (productData: any) => updateInventory(data._id, productData),
+    onSuccess: () => {
+      toast.success("Inventory Updated successfully");
+      resetForm();
+      setShowModal(false);
+    },
+    onError: (ex: any) => {
+      toast.error(ex.response.data.message || "Something went wrong");
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const Payload = {
+      title: formData.title,
+      comment: formData.comment,
+      // @ts-ignore
+      action: formData.action.value,
+      quantity: Number(formData.quantity),
+      price: formData.price,
+    };
+
+    UpdateProduct.mutate(Payload);
+  };
+
+  const resetForm = () => {
+    setFormData(initialState);
+  };
   return (
     <>
       <Modal>
@@ -60,7 +94,7 @@ const EditInventoryModal = ({
             <h2 className="text-2xl font-medium text-[#495057] capitalize mb-5 font-poppins">
               {data.title}
             </h2>
-            <form action="">
+            <form action="" onSubmit={handleSubmit}>
               <div className="space-y-2 w-full mt-2">
                 <h2 className="pl-2 text-[#575757] text-sm">Product Name</h2>
 
@@ -81,6 +115,7 @@ const EditInventoryModal = ({
                     inputClassName="border p-3 bg-[#E4E7E8] rounded-[12px] placeholder:text-left placeholder:align-top"
                     placeholder="Input quantity"
                     type="number"
+                    value={formData.quantity}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -106,16 +141,14 @@ const EditInventoryModal = ({
               </div>
 
               <div className="space-y-2 w-full mt-5">
-                <h2 className="pl-2 text-[#575757] text-sm">
-                  Product Description
-                </h2>
+                <h2 className="pl-2 text-[#575757] text-sm">Comment</h2>
                 <TextArea
                   rows={4}
-                  name="description"
-                  value={formData.description}
+                  name="comment"
+                  value={formData.comment}
                   labelClassName="pb-[10px]"
                   inputClassName="border p-3 bg-[#E4E7E8] resize-none h-[100px] rounded-[12px] placeholder:text-left placeholder:align-top"
-                  placeholder="Write a brief Description of the product"
+                  placeholder="Write a brief comment on this update"
                   onChange={handleInputChange}
                 />
               </div>
@@ -124,6 +157,7 @@ const EditInventoryModal = ({
 
                 <Input
                   name="price"
+                  value={formData.price}
                   inputClassName="border p-3 bg-[#E4E7E8] rounded-[12px] placeholder:text-left placeholder:align-top"
                   placeholder="Enter Price"
                   type="number"
@@ -131,8 +165,8 @@ const EditInventoryModal = ({
                 />
               </div>
               <div className="w-full flex mt-5 ">
-                <Button disabled={true} className="w-[80%] mx-auto">
-                  {Loading ? (
+                <Button disabled={false} className="w-[80%] mx-auto">
+                  {UpdateProduct.isPending ? (
                     <Oval
                       visible={true}
                       height="20"
@@ -156,75 +190,3 @@ const EditInventoryModal = ({
 };
 
 export default EditInventoryModal;
-
-// {
-//     "id": 1,
-//     "_id": "6745ac195198c4d50315178d",
-//     "package": {
-//         "_id": "6745a64f10d6de6967b33681",
-//         "title": "Guard paln PlanTests here 561123443",
-//         "category": {
-//             "_id": "66f6b20e8e7ef393ffe0b775",
-//             "name": "Grant for Renewable Wind Projects"
-//         },
-//         "packageType": "Product",
-//         "quantity": 45,
-//         "quantityLeft": 14,
-//         "reOrderPoint": 15,
-//         "color": "Blue"
-//     },
-//     "status": "pending",
-//     "customer": {
-//         "_id": "66622a60fa9153dfc09b7d33",
-//         "name": "Emma Otuonye"
-//     },
-//     "createdAt": "2024-11-26T11:08:09.473Z"
-// }
-
-// {
-//     "_id": "6745a64f10d6de6967b33681",
-//     "title": "Guard paln PlanTests here 561123443",
-//     "category": {
-//         "_id": "66f6b20e8e7ef393ffe0b775",
-//         "name": "Grant for Renewable Wind Projects"
-//     },
-//     "status": "unpublish",
-//     "packageType": "Product",
-//     "price": 300,
-//     "currency": "£"
-// },
-
-// "inventories": [
-//     {
-//         "_id": "674f2e2a111126929da818be",
-//         "packageId": {
-//             "_id": "674f27400de20af5985aff79",
-//             "title": "Smart Plug",
-//             "owner": "6662281bfa9153dfc09b7cb2",
-//             "category": {
-//                 "_id": "66f6b20e8e7ef393ffe0b775",
-//                 "name": "Grant for Renewable Wind Projects"
-//             },
-//             "status": "unpublish",
-//             "packageType": "Product",
-//             "price": 300,
-//             "sku": "PWR0033",
-//             "quantity": 65,
-//             "color": [
-//                 "Blue"
-//             ],
-//             "quantityLeft": 65,
-//             "inventoryStatus": "In-Stock"
-//         },
-//         "creator": {
-//             "_id": "6662281bfa9153dfc09b7cb2",
-//             "name": "Emmanuel Otuonye"
-//         },
-//         "action": "increase",
-//         "createdAt": "2024-12-03T16:13:30.750Z",
-//         "updatedAt": "2024-12-03T16:13:30.750Z",
-//         "comment": "I want to increase quantity",
-//        
-//     }
-// ],
-// "totalInventories": 1,
