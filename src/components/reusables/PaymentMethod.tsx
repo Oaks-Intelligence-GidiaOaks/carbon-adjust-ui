@@ -50,19 +50,15 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
 }) => {
   const [showSingleForm, setShowSingleForm] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [selectedPayments, setSelectedPayments] = useState<string[]>([]);
-  const [showComboModal, setShowComboModal] = useState(false);
+ 
+ 
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowModal(true); // Show the modal on form submission
   };
 
-  const togglePaymentSelection = (id: string) => {
-    setSelectedPayments((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
+ 
 
   const handleNextClick = () => {
     if (selectedPayment) {
@@ -72,34 +68,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
     }
   };
 
-  const handleComboNextClick = () => {
-    // Validation rules
-    if (selectedPayments.length < 2) {
-      toast.error("You must select at least two payment methods.");
-      return;
-    }
-
-    if (selectedPayments.length > 2) {
-      toast.error("You can only select two payment methods.");
-      return;
-    }
-
-    const validCombo =
-      (selectedPayments.includes("wallet") &&
-        selectedPayments.includes("card")) ||
-      (selectedPayments.includes("wallet") &&
-        selectedPayments.includes("klarna"));
-
-    if (!validCombo) {
-      toast.error(
-        "Invalid selection. You can only combine Wallet with Card or Klarna."
-      );
-      return;
-    }
-
-    // If valid, proceed
-    setShowComboModal(true);
-  };
+ 
 
   const [flexibleWallet, setFlexibleWallet] = useState<string>("");
   const [restrictedWallet, setRestrictedWallet] = useState<string>("");
@@ -503,45 +472,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
 
       {selectedTab === "combo" && (
         <div className="space-y-4">
-          {/* Payment options */}
-          {[
-            { id: "card", label: "Pay with card", icon: `${card}` },
-            { id: "klarna", label: "Pay with Klarna", icon: `${klarna}` },
-            { id: "wallet", label: "Pay with Cash Wallet", icon: `${wallet}` },
-          ].map((method) => (
-            <label
-              key={method.id}
-              className={`border rounded-md p-4 flex items-center justify-between space-x-4 cursor-pointer ${
-                selectedPayments.includes(method.id)
-                  ? "border-blue-500 bg-[#E8F3FC]"
-                  : "border-gray-300 bg-[#F6FAFD]"
-              }`}
-            >
-              <input
-                type="checkbox"
-                name="paymentMethods"
-                value={method.id}
-                className="hidden"
-                onChange={() => togglePaymentSelection(method.id)}
-              />
-              <div className="flex items-center gap-3">
-                <img
-                  src={method.icon}
-                  className=" text-white w-10 h-7 flex items-center justify-center "
-                />
-                <p className="text-sm font-medium">{method.label}</p>
-              </div>
-              {selectedPayments.includes(method.id) && (
-                <BsCheckCircleFill className="text-[#0E89F7]" />
-              )}
-            </label>
-          ))}
-          <button
-            className="w-full blue-gradient text-white py-2 px-4 rounded-full mt-4 font-medium"
-            onClick={handleComboNextClick}
-          >
-            Next
-          </button>
+          <ComboPaymentModal  />
         </div>
       )}
 
@@ -603,11 +534,6 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
               </button>
             </div>
           </div>
-        </div>
-      )}
-      {showComboModal && (
-        <div>
-          <ComboPaymentModal onClick={() => setShowComboModal(false)} />
         </div>
       )}
     </div>
