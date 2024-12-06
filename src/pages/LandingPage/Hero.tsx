@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <section className=" font-poppins relative h-[90vh] bg-cover bg-no-repeat bg-origin-content overflow-hidden flex items-center justify-center ">
+    <section className=" font-poppins relative h-[90vh] bg-cover bg-no-repeat bg-origin-content overflow-hidden flex flex-col ">
       {/* Background Video */}
       <video
-        className="absolute inset-0 w-full h-full object-cover z-[-1] opacity-100"
+        className="absolute inset-0 w-full h-full object-fill z-[-1] opacity-100"
         src="../../assets/hero-bg.mp4"
         autoPlay
         loop
@@ -15,17 +15,18 @@ const Hero = () => {
         playsInline
       ></video>
 
-      <div className="lg:container flex flex-col w-full h-[100%] justify-center lg:items-start items-center gap-10 lg:gap-[10rem]">
+      <div className="lg:container flex flex-col w-full h-[100%] justify-center lg:items-center items-center gap-10 lg:gap-[10rem]">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="flex lg:px-0 lg:!w-[100%] flex-col justify-center items-center w-full"
+          className="flex lg:px-0 py-3 lg:!w-[100%] flex-col justify-center items-center w-full bg-gray-700/50 max-w-[1000px] rounded-lg"
+
         >
           <h2 className="text-[#eceeef] text-xl font-[600] text-center lg:text-left mb-2 lg:mb-10 capitalize">
             All in One Sustainability Platform
           </h2>
-          <h2 className="text-2xl text-[#eceeef] lg:text-[7.5rem] font-[600] leading-[3rem] text-center capitalize mb-2">
+          <h2 className="text-2xl text-[#eceeef] lg:text-[7.5rem] font-[400] leading-[3rem] text-center capitalize mb-2">
             carbon - adjust
           </h2>
           <p className="text-[#eff3f6] font-[600] text-base !text-center lg:text-left my-5 lg:my-16 max-w-[820px]">
@@ -47,7 +48,8 @@ const Hero = () => {
             </Link>
           </div>
         </motion.div>
-        <div className="flex items-start justify-start lg:justify-start gap-6 ">
+      </div>
+        <div className="flex items-start justify-start lg:justify-start gap-6 mb-5 ml-10">
           <motion.img
             className="cursor-pointer"
             src="/assets/graphics/Google.svg"
@@ -59,7 +61,6 @@ const Hero = () => {
             alt="Lifecycle Model"
           />
         </div>
-      </div>
     </section>
   );
 };
