@@ -30,7 +30,7 @@ const WhatWeOffer = () => {
   ];
   return (
     <>
-      <div className=" flex flex-col items-center justify-center p-4 font-poppins my-20">
+      <div className=" flex flex-col items-center justify-center font-poppins">
         <motion.div
           className="w-full my-5"
           initial={{ opacity: 0, y: -50 }}
@@ -39,21 +39,26 @@ const WhatWeOffer = () => {
           transition={{ duration: 1, type: "spring" }}
         >
           <div className="flex flex-col items-center justify-center text-center">
-            <h1 className="text-3xl md:text-[4rem] md:leading-[60px] font-medium text-center">
+            <h1 className="text-3xl md:text-[2.5rem] md:leading-[60px] font-medium text-center">
               <span className="text-[#043A3A]"> What We </span>
               <span className="text-[#0B8DFF]">Offer</span>
             </h1>
           </div>
         </motion.div>
-        <div className="flex flex-col gap-[10rem] mt-20 w-full">
-          <motion.div
-            className="w-full  "
-            initial={{ opacity: 0, y: -50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 1, type: "spring" }}
-          >
-            <div>
+        <div className="flex flex-col  mt-5 w-full">
+          <div className="relative bg-gradient-to-tl from-[rgba(200,230,250,0.3)] via-[rgba(255,255,255,0.8)] to-[rgba(200,230,250,0.5)] pt-4 px-4">
+          <img
+          src="/assets/icons/marketplace1.png"
+          alt="Decorative Top Left"
+          className="absolute bottom-0 left-0 hidden lg:block lg:w-[120px] lg:h-[70px] max:w-[200px] max:h-[100px]"
+        />
+            <motion.div
+              className="w-full lg:w-[80%] max:w-[70%] mx-auto max-w-[1440px]"
+              initial={{ opacity: 0, y: -50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 1, type: "spring" }}
+            >
               <Heading
                 title="Marketplace"
                 index="01"
@@ -61,133 +66,150 @@ const WhatWeOffer = () => {
         their sustainable products and services to individuals and
         corporations."
               />
-              {/* <div
-                style={{
-                  backgroundImage: `url("/assets/graphics/whatweoffer1.png")`,
-                }}
-                className={`flex rounded-2xl bg-cover lg:bg-cover bg-center h-[350px] lg:h-[80vh] mt-10 md:w-[100%] max-h-[800px]`}
-              ></div> */}
-              <motion.img
-                className="w-full mt-10"
-                src="/assets/graphics/whatweoffer1.png"
-                alt="Lifecycle Model"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 1 }}
+              <div className="rounded-lg pt-2 lg:pt-10 px-5 lg:px-20 bg-[#C4C4C4] mt-10 mx-auto">
+                <motion.img
+                  className="w-full mt-10"
+                  src="/assets/graphics/whatweoffer1.svg"
+                  alt="Lifecycle Model"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 1 }}
+                />
+              </div>
+              <img
+          src="/assets/icons/marketplace2.png"
+          alt="Decorative Bottom Right"
+          className="absolute bottom-0 right-0 hidden lg:block lg:w-[120px] lg:h-[70px] max:w-[200px] max:h-[100px] "
+        />
+            </motion.div>
+          </div>
+          <div className="w-full bg-gradient-to-r from-white via-white to-[#f0f4ff] pt-20 pb-10">
+            <div className=" lg:w-[80%] max:w-[70%] mx-auto max-w-[1440px] w-full px-4">
+              <Heading
+                title="Operations Hub"
+                index="02"
+                text="Our Operations Hub allows You to stay smart, be efficient and sustainable in how You use energy, make purchases, and travel."
               />
             </div>
-          </motion.div>
-
-          <div className="mb-[-100px]">
-            <Heading
-              title="Operations Hub"
-              index="02"
-              text="Our Operations Hub allows You to stay smart, be efficient and sustainable in how You use energy, make purchases, and travel."
-            />
           </div>
-          {/* this section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {dummyData.map((item) => (
-              <motion.div
-                key={item.id}
-                className="w-full"
+          <div className="bg-gradient-to-tl from-[rgba(200,230,250,0.3)] via-[rgba(255,255,255,0.8)] to-[rgba(200,230,250,0.5)] w-full px-4">
+            {/* this section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full lg:w-[80%] max:w-[70%] mx-auto max-w-[1440px]">
+              {dummyData.map((item) => (
+                <motion.div
+                  key={item.id}
+                  className="w-full"
+                  initial={{ opacity: 0, y: -50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 1, type: "spring" }}
+                >
+                  <div className="relative group h-[300px] mt-10 md:w-[100%] rounded-2xl overflow-hidden">
+                    {/* Default Background */}
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-100 group-hover:opacity-0"
+                      style={{
+                        backgroundImage: `url("${item.image}")`,
+                      }}
+                    ></div>
+
+                    {/* Hover Background */}
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                      style={{
+                        backgroundImage: `url("${item.hoverImage}")`,
+                      }}
+                    ></div>
+
+                    {/* Content */}
+                    <div className="absolute bottom-5 left-2 text-white text-wrap text-lg z-10 lg:w-full">
+                      <h2 className="transition-all duration-300 text-lg lg:text-[2rem] leading-10 font-semibold">
+                        {item.title}
+                      </h2>
+
+                      <div className="h-0 text-sm px-2 group-hover:h-auto transition-all duration-300 overflow-hidden my-2">
+                        <p className="break-words">{item.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* <motion.div
+                className="w-full  bg-[#F5F8FF] mt-10 py-10 px-10 lg:px-20 rounded-2xl h-[600px] flex items-center justify-center"
                 initial={{ opacity: 0, y: -50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 1, type: "spring" }}
               >
-                <div className="relative group h-[600px] mt-10 md:w-[100%] rounded-2xl overflow-hidden">
-                  {/* Default Background */}
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-100 group-hover:opacity-0"
-                    style={{
-                      backgroundImage: `url("${item.image}")`,
-                    }}
-                  ></div>
-
-                  {/* Hover Background */}
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-                    style={{
-                      backgroundImage: `url("${item.hoverImage}")`,
-                    }}
-                  ></div>
-
-                  {/* Content */}
-                  <div className="absolute bottom-5 left-5 text-white text-lg z-10 lg:w-[500px]">
-                    <h2 className="transition-all duration-300 text-[2rem] lg:text-[3rem] leading-10 font-semibold">
-                      {item.title}
-                    </h2>
-
-                    <div className="h-0 text-xl lg:text-2xl group-hover:h-auto transition-all duration-300 overflow-hidden my-2">
-                      <p>{item.description}</p>
-                    </div>
-                  </div>
+                <div className="flex flex-col items-center justify-center text-left">
+                  <h1 className="text-xl md:text-[2rem] md:leading-[38px] font-medium text-left">
+                    <span className="text-[#043A3A]">Carbon-Adjust </span>
+                    <span className="text-[#0B8DFF]">
+                      isn’t just for individuals.
+                    </span>
+                  </h1>
+                  <p className="text-[##525252] font-[500] text-lg md:leading-[28px] my-10 max-w-[1000px]">
+                    We’ve also built a powerful system for businesses, local
+                    government authorities, and charities to Measure their
+                    Carbon footprint from all Purchase made.
+                  </p>
                 </div>
-              </motion.div>
-            ))}
-
+              </motion.div> */}
+            </div>
             <motion.div
-              className="w-full  bg-[#F5F8FF] mt-10 py-10 px-10 lg:px-20 rounded-2xl h-[600px] flex items-center justify-center"
+              className="w-full lg:w-[80%] max:w-[70%] mx-auto max-w-[1440px]"
               initial={{ opacity: 0, y: -50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 1, type: "spring" }}
             >
-              <div className="flex flex-col items-center justify-center text-left">
-                <h1 className="text-xl md:text-[2rem] md:leading-[38px] font-medium text-left">
-                  <span className="text-[#043A3A]">Carbon-Adjust </span>
-                  <span className="text-[#0B8DFF]">
-                    isn’t just for individuals.
-                  </span>
-                </h1>
-                <p className="text-[##525252] font-[500] text-lg md:leading-[28px] my-10 max-w-[1000px]">
-                  We’ve also built a powerful system for businesses, local
-                  government authorities, and charities to Measure their Carbon
-                  footprint from all Purchase made.
-                </p>
-              </div>
-            </motion.div>
-          </div>
-          <motion.div
-            className="w-full mt-[-150px] "
-            initial={{ opacity: 0, y: -50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 1, type: "spring" }}
-          >
-            <div className="relative group h-[600px] mt-10 md:w-[100%] rounded-2xl overflow-hidden">
-              {/* Default Background */}
-              <div
-                className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-100 group-hover:opacity-0"
-                style={{
-                  backgroundImage: `url("/assets/graphics/whatweoffer5.png")`,
-                }}
-              ></div>
+              <div className="relative group h-[400px] mt-10 md:w-[100%] rounded-2xl overflow-hidden">
+                {/* Default Background */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-100 group-hover:opacity-0"
+                  style={{
+                    backgroundImage: `url("/assets/graphics/whatweoffer5.png")`,
+                  }}
+                ></div>
 
-              {/* Hover Background */}
-              <div
-                className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-                style={{
-                  backgroundImage: `url("/assets/graphics/whatweoffer5b.png")`, // Replace with your hover image URL
-                }}
-              ></div>
+                {/* Hover Background */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                  style={{
+                    backgroundImage: `url("/assets/graphics/whatweoffer5b.png")`, // Replace with your hover image URL
+                  }}
+                ></div>
 
-              {/* Content */}
-              <div className="absolute bottom-5 left-5 text-white text-lg z-10 ">
-                <h2 className="transition-all duration-300 text-[2rem] lg:text-[4rem] font-semibold">
-                  Built Environment
-                </h2>
+                {/* Content */}
+                <div className="absolute bottom-5 left-5 text-white text-lg z-10 ">
+                  <h2 className="transition-all duration-300 text-[1rem] lg:text-[3rem] font-semibold">
+                    Built Environment
+                  </h2>
 
-                <div className="h-0 text-xl lg:text-3xl group-hover:h-auto transition-all duration-300 delay-150 overflow-hidden my-10">
-                  <p>
-                   Explore best practices in sustainable biomass production and efficient energy conversion technologies that maximize environmental impact.
-                  </p>
+                  <div className="h-0 text-lg lg:text-xl group-hover:h-auto transition-all duration-300 delay-150 overflow-hidden my-10">
+                    <p>
+                      Explore best practices in sustainable biomass production
+                      and efficient energy conversion technologies that maximize
+                      environmental impact.
+                    </p>
+                  </div>
                 </div>
               </div>
+            </motion.div>
+            <div className="w-full lg:w-[80%] max:w-[70%] mx-auto max-w-[1440px] my-2 p-5">
+              <h1 className="text-lg font-medium">
+                <span className="text-[#0B8DFF]">Carbon-Adjust</span>
+                <span className="text-[#043A3A]"> isn’t just for individuals.</span>
+              </h1>
+              <p>
+                We’ve also built a powerful system for businesses, local
+                government authorities, and charities to Measure their Carbon
+                footprint from all Purchase made.
+              </p>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </>

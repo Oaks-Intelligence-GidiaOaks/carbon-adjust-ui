@@ -28,6 +28,8 @@ module.exports = {
         inter: ["Inter", "sans-serif"],
         "dm-sans": ["DM Sans", "sans-serif"],
         kumbh: ["Kumbh Sans", "sans-serif"],
+        Bricolage: ["Bricolage Grotesque", "sans-serif"],
+        Mulish: ["Mulish", "sans-serif"],
       },
       backgroundImage: {
         "register-image": "url('/assets/graphics/register-graphic.svg')",

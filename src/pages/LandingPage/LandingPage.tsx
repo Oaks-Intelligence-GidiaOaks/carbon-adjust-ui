@@ -49,7 +49,7 @@ const LandingPage = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
- // const controls = useAnimation();
+  // const controls = useAnimation();
   // const { ref, inView } = useInView({
   //   triggerOnce: true,
   //   threshold: 0.1,
@@ -80,7 +80,7 @@ const LandingPage = () => {
   return (
     <motion.div initial="initial" animate="animate" className="overflow-hidden">
       <div>
-        <header className="lg:container px-4 lg:px-0 relative z-10 bg-white h-2">
+        <header className="lg:container px-4 lg:px-0  z-10 bg-white">
           <nav className="lg:container py-3 flex justify-between items-center  ">
             <div className=" flex flex-start" id="home">
               <img src={CarbonAdjustLogo} alt="" className="xl:w-[200px]" />
@@ -193,35 +193,35 @@ const LandingPage = () => {
         </nav>
       </section>
 
-      <div className="font-poppins relative max-h-[90vh] bg-cover bg-no-repeat bg-origin-content">
-        {/* Background Video */}
-        <video
-          className="absolute inset-0 w-full h-full object-cover z-[-1] opacity-100"
-          src="../../assets/hero-bg.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-        ></video>
-
-        {/* Hero Section */}
-        <div className="relative z-10">
-          <Hero />
-        </div>
+      {/* Hero Section */}
+      <div className="relative z-10">
+        <Hero />
       </div>
 
-
-
-
-      
       <div>
         <Introduction />
       </div>
 
-      <div className="max-w-[1440px] mx-auto" id="about-us">
+      <div className="relative mx-auto bg-gradient-to-r from-white via-white to-[#f0f4ff] pb-10 lg:pb-[10rem]" id="about-us">
+        {/* Top-left Image */}
+        <img
+          src="/assets/icons/AboutUs1.png"
+          alt="Decorative Top Left"
+          className="absolute top-0 left-0 w-16 h-16 max:w-fit max:h-fit"
+        />
+
+        {/* AboutUs Component */}
         <AboutUs />
+
+        {/* Bottom-right Image */}
+        <img
+          src="/assets/icons/AboutUs2.png"
+          alt="Decorative Bottom Right"
+          className="absolute bottom-0 right-0 w-16 h-16 max:w-fit max:h-fit"
+        />
       </div>
-      <div className=" max-w-[1440px] mx-auto" id="about-us" >
+
+      <div className=" mx-auto" id="about-us">
         <WhatWeOffer />
       </div>
 
@@ -269,7 +269,7 @@ const LandingPage = () => {
       {/* <div className="bg-[#F0F0F0]">
         <MarketPlace />
       </div> */}
-      <div className="max-w-[1440px] mx-auto" id="faqs">
+      <div className="lg:max-w-[1100px] max:max-w-[1440px] mx-auto" id="faqs">
         <Faq />
         <News />
         <Waitlist />
