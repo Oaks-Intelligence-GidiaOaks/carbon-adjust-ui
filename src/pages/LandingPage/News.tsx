@@ -13,12 +13,12 @@ const News = () => {
           transition={{ duration: 1, type: "spring" }}
         >
           <div className="flex flex-col items-center justify-center text-center">
-            <h1 className="text-3xl md:text-[4rem] md:leading-[60px] font-semibold text-center">
+            <h1 className="text-3xl lg:text-[2.5rem] max:text-[3rem] md:leading-[60px] font-semibold text-center">
               <span className="text-[#0B8DFF]">New Articles</span>
               <span className="text-[#043A3A]"> and Knowledge </span>
             </h1>
 
-            <p className="text-[#191F23] font-[500] text-lg md:leading-[35px] my-10 max-w-[1000px]">
+            <p className="text-[#525252] font-[500] text-lg md:leading-[35px] my-5 max-w-[900px]">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
               hendrerit suscipit egestas. Nunc eget congue ante. Vivamus ut
               sapien et ex volutpat tincidunt eget at felis vivamus hendrerit.
@@ -68,13 +68,13 @@ const NewsCard: React.FC<NewsCardProps> = ({ title, description, date }) => {
   return (
     <div className="bg-white rounded-2xl flex flex-col gap-3 justify-center max-w-[500px] shadow-2xl">
       <div className="flex items-center gap-5 h-[250px] bg-gray-600 rounded-t-2xl"></div>
-      <div className="flex flex-col py-5 px-7">
-        <p className="gradient-text font-[mulish] text-base mt-2">{date}</p>
-        <h2 className="text-[#043A3A] font-semibold font-[Bricolage-Grotesque] text-3xl my-5">
+      <div className="flex flex-col py-1 px-7">
+        <p className="gradient-text font-Mulish text-base mt-2">{date}</p>
+        <h2 className="text-[#043A3A] font-semibold font-Bricolage text-xl my-2 max:my-5">
           {title}
         </h2>
-        <p className="text-[#525252] font-[mulish] font-medium text-xl">{description}</p>
-        <div className="flex mt-3">
+        <p className="text-[#525252] font-[mulish] font-medium  max:text-xl">{description}</p>
+        <div className="flex my-3">
           <Link to={"/login"} preventScrollReset={false}>
             <div className="gradient-text flex items-center gap-2">
               <span>Read More...</span>
