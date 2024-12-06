@@ -47,14 +47,12 @@ import {
 } from "@/pages/protected/merchant";
 import {
   UserAppointment,
-  UserCheckout,
   UserDevices,
   UserMarketGroup,
   UserMarketPlace,
   UserNewDevice,
   UserNewTransport,
   UserOrderList,
-  UserProduct,
   UserProfile,
   UserPurchases,
   UserTransport,
@@ -73,7 +71,6 @@ import TermsAndConditions from "@/pages/public/TermsAndConditions";
 import MerchantTermsAndConditions from "@/pages/public/MerchantTermsAndConditions";
 import { AdminStaffOrders } from "@/pages/protected/staffAdmin";
 import AssetsLayout from "@/layouts/AssetsLayout";
-import ComingSoon from "@/components/reusables/ComingSoon";
 import ZohoPage from "@/pages/public/test";
 import BuildingList from "@/components/containers/buildings/BuildingList";
 import LoginTest from "@/pages/public/Login_test";

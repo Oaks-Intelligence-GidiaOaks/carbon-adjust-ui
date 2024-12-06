@@ -17,8 +17,7 @@ import {
 } from "@/interfaces/events.interface";
 import Paginate from "@/components/reusables/Paginate";
 import { PaginateProps } from "@/types/general";
-import { Button } from "@/components/ui";
-import { Link } from "react-router-dom";
+
 
 type Props = {};
 
