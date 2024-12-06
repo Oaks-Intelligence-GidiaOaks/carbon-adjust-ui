@@ -5,7 +5,6 @@ export enum AssetTabs {
   Devices = "Devices",
   Buildings = "Buildings",
   Transport = "Transport",
-  Others = "Purchases",
   Purchases = "Purchases",
 }
 
