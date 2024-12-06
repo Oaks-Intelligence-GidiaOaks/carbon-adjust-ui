@@ -52,6 +52,8 @@ export interface ProductForm {
   askPurchaserQuote: boolean;
   colors: string[];
   price: string;
+  sku: string;
+  reOrderPoint: string;
 }
 
 export interface UProductForm {

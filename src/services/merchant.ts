@@ -274,3 +274,9 @@ export const updateInventory = async (
 ) => { 
   return axiosInstance.put(`/packages/${productId}/inventry`, data);
 }
+
+export const deleteInventory = async (inventoryId: string) => {
+  const { data } = await axiosInstance.delete(`/packages/${inventoryId}`);
+
+  return data;
+};

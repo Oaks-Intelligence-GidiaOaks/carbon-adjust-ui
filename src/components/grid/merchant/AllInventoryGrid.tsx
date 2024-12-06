@@ -15,9 +15,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { fetchInventory } from "@/services/merchant";
+import { deleteInventory, fetchInventory } from "@/services/merchant";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { Button } from "@/components/ui";
 import { BiSearch } from "react-icons/bi";
@@ -28,6 +28,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { cn, formatDateTime, serializeGridData } from "@/lib/utils";
 import AddInventoryModal from "@/components/containers/merchant/AddInventoryModal";
 import EditInventoryModal from "@/components/containers/merchant/EditInventorymodal";
+import toast from "react-hot-toast";
 
 const getStatusStyle = (status: string): string => {
   switch (status.toLowerCase()) {
@@ -69,6 +70,21 @@ export function AllInventoryGrid({ className }: { className?: string }) {
   } = useQuery({
     queryKey: ["get-inventory", pagination.page, pagination.limit],
     queryFn: () => fetchInventory(pagination.page, pagination.limit),
+  });
+
+  const DeleteInventory = useMutation({
+    mutationKey: ["delete-inventory"],
+    mutationFn: (inventoryId: string) => deleteInventory(inventoryId),
+    onError: (err: any) => {
+      toast.error(
+        err.response.data.message ||
+          "Error deleting device. Please try again..."
+      );
+    },
+    onSuccess: (sx: any) => {
+      refetch()
+      toast.success(sx.message);
+    },
   });
 
   useEffect(() => {
@@ -125,11 +141,18 @@ export function AllInventoryGrid({ className }: { className?: string }) {
       ),
     },
     {
+      accessorKey: "package.sku",
+      header: () => <div className="whitespace-nowrap">SKU</div>,
+      cell: ({ row }) => (
+        <div className="capitalize text-sm">{row.original.sku || "N/A"}</div>
+      ),
+    },
+    {
       accessorKey: "package.color",
       header: () => <div className="w-20">Color</div>,
       cell: ({ row }) => {
-        const colors = row.original.color || []; // Assume this is an array of strings
-        const displayedColors = colors.slice(0, 2).join(","); // Join the first 2 with spaces
+        const colors = row.original.colors || []; 
+        const displayedColors = colors.slice(0, 2).join(","); 
         const hasMore = colors.length > 2;
 
         return (
@@ -182,11 +205,11 @@ export function AllInventoryGrid({ className }: { className?: string }) {
       cell: ({ row }) => {
         const handleActionClick = (action: "update" | "delete") => {
           if (action === "update") {
-            setShowEditModal(true); // Open modal
-            setCurrentRow(row.original); // Set the current row data
+            setShowEditModal(true); 
+            setCurrentRow(row.original); 
           } else {
-            // Handle delete action (you can add your logic here)
-            console.log("Delete row:", row.original);
+           
+            DeleteInventory.mutate(row.original._id); 
           }
         };
 

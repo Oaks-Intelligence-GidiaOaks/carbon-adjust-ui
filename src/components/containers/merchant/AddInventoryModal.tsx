@@ -30,12 +30,14 @@ const AddInventoryModal = ({ setShowModal, refetchInventory }: AddInventoryModal
     productPhoto: null,
     title: "",
     description: "",
+    sku:"",
     category: { label: "", value: "" },
     packageType: { label: "", value: "" },
     quantity: "",
     askPurchaserQuote: false,
     colors: [],
     price: "",
+    reOrderPoint:"",
   };
 
   const [formData, setFormData] = useState<ProductForm>(initialState);
@@ -146,8 +148,10 @@ const AddInventoryModal = ({ setShowModal, refetchInventory }: AddInventoryModal
       packageType: formData.packageType.value,
       quantity: formData.quantity,
       askPurchaserQuote: formData.askPurchaserQuote,
-      color: formData.colors,
+      colors: formData.colors,
       price: formData.price,
+      sku: formData.sku,
+      reOrderPoint: formData.reOrderPoint
     };
 
     CreateProduct.mutate(Payload);
@@ -280,6 +284,18 @@ const AddInventoryModal = ({ setShowModal, refetchInventory }: AddInventoryModal
               </div>
 
               <div className="space-y-2 w-full mt-5">
+                <h2 className="pl-2 text-[#575757] text-sm">SKU</h2>
+
+                <Input
+                  name="sku"
+                  inputClassName="border p-3 bg-[#E4E7E8] rounded-[12px] placeholder:text-left placeholder:align-top"
+                  placeholder="Enter product SKU"
+                  value={formData.sku}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="space-y-2 w-full mt-5">
                 <h2 className="pl-2 text-[#575757] text-sm">Quantity</h2>
 
                 <Input
@@ -290,6 +306,20 @@ const AddInventoryModal = ({ setShowModal, refetchInventory }: AddInventoryModal
                   onChange={handleInputChange}
                 />
               </div>
+
+              <div className="space-y-2 w-full mt-5">
+                <h2 className="pl-2 text-[#575757] text-sm">Reorder Point</h2>
+
+                <Input
+                  name="reOrderPoint"
+                  inputClassName="border p-3 bg-[#E4E7E8] rounded-[12px] placeholder:text-left placeholder:align-top"
+                  placeholder="Enter Reorder Point"
+                  type="number"
+                  onChange={handleInputChange}
+                />
+              </div>
+
+
               <div className="space-y-2 w-full mt-5">
                 <h2 className="pl-2 text-[#575757] text-sm">Colors</h2>
                 <Select
