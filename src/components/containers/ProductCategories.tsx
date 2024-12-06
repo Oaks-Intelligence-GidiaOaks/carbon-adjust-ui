@@ -114,7 +114,7 @@ const ProductCategories: React.FC = () => {
                         name: category.name,
                         slug: category.slug,
                       }}
-                      color="" // Default value for color
+                      color={[]} // Default value for color
                       regions={[]} // Default value for regions
                       country="" // Default value for country
                       status="" // Default value for status
