@@ -19,7 +19,7 @@ export interface IProduct {
   _id: string;
   title: string;
   attachments: string[];
-  color:string;
+  color:string[];
   media?: string[];
   hasDownloadedableFile?: boolean;
   owner?: {
