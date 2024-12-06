@@ -162,10 +162,6 @@ const Router = createBrowserRouter([
         element: <UserOrderList />,
       },
       {
-        path: "purchases",
-        element: <UserPurchases />,
-      },
-      {
         path: "devices",
         element: <AssetsLayout />,
         children: [
@@ -212,12 +208,12 @@ const Router = createBrowserRouter([
         ],
       },
       {
-        path: "others",
+        path: "purchases",
         element: <AssetsLayout />,
         children: [
           {
             path: "",
-            element: <ComingSoon />,
+            element: <UserPurchases />,
           },
         ],
       },
