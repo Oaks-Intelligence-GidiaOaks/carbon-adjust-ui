@@ -1,3 +1,4 @@
+// @ts-ignore
 import store, { persistor } from "@/app/store";
 import axios from "axios";
 
@@ -29,21 +30,21 @@ axiosInstance.interceptors.request.use(
 );
 
 // Add a response interceptor
-axiosInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response.status === 401) {
-      persistor.pause();
-      persistor.flush().then(() => {
-        return persistor.purge();
-      });
-      localStorage.removeItem("token");
-      window.location.assign("/login?ie=unauthorized");
-    }
-    return Promise.reject(error);
-  }
-);
+// axiosInstance.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   (error) => {
+//     if (error.response.status === 401) {
+//       persistor.pause();
+//       persistor.flush().then(() => {
+//         return persistor.purge();
+//       });
+//       localStorage.removeItem("token");
+//       window.location.assign("/login?ie=unauthorized");
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 export default axiosInstance;

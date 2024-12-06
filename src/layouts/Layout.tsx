@@ -5,8 +5,10 @@ import SideMenu from "@/components/containers/SideMenu";
 import Sidebar from "@/components/containers/Sidebar";
 import TopBar from "@/components/containers/TopBar";
 import ChatBot from "@/components/dialogs/ChatBot";
+// @ts-ignore
 import InactivityWrapper from "@/components/hoc/InactivityWrapper";
 import { setUser } from "@/features/userSlice";
+// @ts-ignore
 import ProtectedRoute from "@/guards/ProtectedRoute";
 import UseScrollToTop from "@/hooks/useScrollToTop";
 import { AuthUserProfile } from "@/types/general";
@@ -150,6 +152,7 @@ const Layout = (props: Props) => {
     }
   }, [isSuccess]);
 
+  // @ts-ignore
   const handleLogout = () => {
     // pause();
     persistor.flush().then(() => {
@@ -161,49 +164,49 @@ const Layout = (props: Props) => {
   UseScrollToTop(contentRef);
 
   return (
-    <ProtectedRoute role={user?.roles[0]}>
-      <InactivityWrapper onLogout={() => handleLogout()}>
-        <div className="flex max-h-screen max-w-screen overflow-hidden overflow-y-scroll no-scrollbar">
-          {props.sidebarType === "home-occupant" ? (
-            <SideMenu
-              accountType={props.sidebarType}
-              mobileMenuIsOpen={mobileMenuIsOpen}
-              setMobileMenuIsOpen={setMobileMenuIsOpen}
-            />
-          ) : (
-            <Sidebar
-              accountType={props.sidebarType}
-              mobileMenuIsOpen={mobileMenuIsOpen}
-              setMobileMenuIsOpen={setMobileMenuIsOpen}
-            />
-          )}
+    // <ProtectedRoute role={user?.roles[0]}>
+    //   <InactivityWrapper onLogout={() => handleLogout()}>
+    <div className="flex max-h-screen max-w-screen overflow-hidden overflow-y-scroll no-scrollbar">
+      {props.sidebarType === "home-occupant" ? (
+        <SideMenu
+          accountType={props.sidebarType}
+          mobileMenuIsOpen={mobileMenuIsOpen}
+          setMobileMenuIsOpen={setMobileMenuIsOpen}
+        />
+      ) : (
+        <Sidebar
+          accountType={props.sidebarType}
+          mobileMenuIsOpen={mobileMenuIsOpen}
+          setMobileMenuIsOpen={setMobileMenuIsOpen}
+        />
+      )}
 
-          <div className="flex-1 items-center">
-            <TopBar
-              mobileMenuIsOpen={mobileMenuIsOpen}
-              setMobileMenuIsOpen={setMobileMenuIsOpen}
-            />
-            <div
-              ref={contentRef}
-              className={cn(
-                "font-poppins w-full max-w-[1440px] pb-16 mx-auto h-full overflow-y-scroll",
-                pathname.includes("dashboard/applications") && "px-0",
-                pathname === "/dashboard/devices" && "px-0",
-                pathname === "/dashboard/profile" && "px-0"
-              )}
-            >
-              <div className="relative ">
-                <div className="relative z-10">
-                  <Outlet />
-                  <ChatBot />
-                </div>
-                <Footer />
-              </div>
+      <div className="flex-1 items-center">
+        <TopBar
+          mobileMenuIsOpen={mobileMenuIsOpen}
+          setMobileMenuIsOpen={setMobileMenuIsOpen}
+        />
+        <div
+          ref={contentRef}
+          className={cn(
+            "font-poppins w-full max-w-[1440px] pb-16 mx-auto h-full overflow-y-scroll",
+            pathname.includes("dashboard/applications") && "px-0",
+            pathname === "/dashboard/devices" && "px-0",
+            pathname === "/dashboard/profile" && "px-0"
+          )}
+        >
+          <div className="relative ">
+            <div className="relative z-10">
+              <Outlet />
+              <ChatBot />
             </div>
+            <Footer />
           </div>
         </div>
-      </InactivityWrapper>
-    </ProtectedRoute>
+      </div>
+    </div>
+    //   </InactivityWrapper>
+    // </ProtectedRoute>
   );
 };
 
