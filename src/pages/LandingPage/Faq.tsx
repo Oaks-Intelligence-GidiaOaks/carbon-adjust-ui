@@ -13,12 +13,12 @@ const Faq = () => {
           transition={{ duration: 1, type: "spring" }}
         >
           <div className="flex flex-col items-center justify-center text-center">
-            <h1 className="text-3xl md:text-[4rem] md:leading-[60px] font-semibold text-center">
+            <h1 className="text-3xl lg:text-[2.5rem] max:text-[3rem] md:leading-[60px] font-semibold text-center">
               <span className="text-[#043A3A]"> Frequently Asked </span>
               <span className="text-[#0B8DFF]">Questions</span>
             </h1>
 
-            <p className="text-[##525252] font-[500] text-lg md:leading-[28px] my-10 max-w-[1000px]">
+            <p className="text-[##525252] font-[500] text-lg md:leading-[28px] my-5 max-w-[900px]">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
               hendrerit suscipit egestas. Nunc eget congue ante. Vivamus ut
               sapien et ex volutpat tincidunt eget at felis vivamus hendrerit.
@@ -27,7 +27,7 @@ const Faq = () => {
         </motion.div>
 
         <motion.div
-          className="w-full  "
+          className="w-full mt-5"
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
@@ -66,7 +66,7 @@ interface FaqCardProps {
 
 const FaqCard: React.FC<FaqCardProps> = ({ title, description }) => {
   return (
-    <div className="bg-white rounded-lg p-8 flex gap-3 justify-center max-w-[700px] shadow-2xl">
+    <div className="bg-white rounded-lg p-8 flex gap-3 justify-center  max:max-w-[700px] shadow-2xl">
       <div className="w-[50px] h-[50px] p-3 flex items-center justify-center rounded-[50%] border-[5px] border-[#1944B7] bg-white">
         <FaQuestion color="#1944B7" size={20} /> {/* Fixed icon size */}
       </div>
@@ -74,7 +74,7 @@ const FaqCard: React.FC<FaqCardProps> = ({ title, description }) => {
         <h2 className="text-[#043A3A] text-xl lg:text-2xl font-medium leading-10">
           {title}
         </h2>
-        <p className="text-[#404745] text-lg mt-2">{description}</p>
+        <p className="text-[#404745] text-sm lg:text-lg mt-2">{description}</p>
       </div>
     </div>
   );

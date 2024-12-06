@@ -5,7 +5,6 @@ const Models = () => {
   return (
     <>
       <div className="flex bg-gradient-to-bl from-[rgba(173,216,230,0.5)] via-white to-[rgba(173,216,230,0.5)] flex-col items-center justify-center p-4 font-poppins">
-     
         <motion.div
           className="w-full my-20"
           initial={{ opacity: 0, y: -50 }}
@@ -14,14 +13,14 @@ const Models = () => {
           transition={{ duration: 1, type: "spring" }}
         >
           <div className="flex flex-col items-center justify-center text-center">
-            <h1 className="text-3xl md:text-[4rem] md:leading-[60px] font-semibold text-center">
+            <h1 className="text-3xl lg:text-[2.5rem] max:text-[3rem] md:leading-[60px] font-semibold text-center">
               <span className="text-[#043A3A]">Carbon-Adjust </span>
               <span className="text-[#0B8DFF]">Models</span>
             </h1>
           </div>
         </motion.div>
 
-        <div className="flex flex-col w-full justify-center items-center gap-10 pb-7">
+        <div className="flex flex-col w-full justify-center items-center gap-10 lg:pb-7 lg:px-10 max-w-[1440px]">
           <ModelCard
             title="Payment Models"
             contents={[
@@ -60,14 +59,8 @@ const Models = () => {
             title="CARBON CREDIT WALLET"
             contents={[
               {
-                title: "Pre-paid offsets:",
-                description:
-                  "Credits are paid for based on projected carbon offsets, covering a year’s expected reductions.",
-              },
-              {
-                title: "Post-paid offsets:",
-                description:
-                  "Credits are paid immediately upon validation of completed load-shifting activities.",
+                title: "Credits are stored in a restricted wallet:",
+                description: "These credits can only be used on the platform to buy smart plugs, energy-saving devices, or other platform services.",
               },
             ]}
           />
@@ -120,36 +113,36 @@ const ModelCard: React.FC<NewsCardProps> = ({ title, contents }) => {
 
   return (
     <motion.div
-      className="w-[100%] max-w-[1400px]  bg-white rounded-2xl p-5 lg:p-20 flex justify-center items-center"
+      className="w-[100%] lg:max-w-[1000px] max:max-w-full bg-white rounded-2xl p-5 py-10 flex justify-center items-center"
       initial={{ opacity: 0, y: -50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.5 }}
       transition={{ duration: 1, type: "spring" }}
     >
-      <div className="flex gap-10 w-full flex-col md:flex-row">
+      <div className="flex gap-10 w-full flex-col md:flex-row items-center">
         <div className="flex flex-col w-[100%] md:w-[60%]">
           <div className="flex flex-col">
             <div
               className={`${getClassForTitle(
                 title
-              )} p-2  font-medium  text-xl rounded-lg uppercase w-fit shadow-inner`}
+              )} p-2  font-medium  lg:text-xl rounded-lg uppercase w-fit shadow-inner`}
             >
               <p>{title}</p>
             </div>
             <div className="mt-10 py-5 max-w-[700px]">
               {contents?.map((item, index) => (
-                <div className="flex gap-5 mb-10" key={index}>
+                <div className="flex gap-5 mb-5" key={index}>
                   <div
                     className={`w-[50px] h-[50px] p-4 flex items-center justify-center rounded-[50%] !text-[2rem] ${getClassForTitle(
                       title
                     )}`}
                   >
-                    <FaCheck size={90}/>
+                    <FaCheck size={90} />
                   </div>
 
                   <div>
-                    <h2 className="font-semibold text-xl mb-2">{item.title}</h2>
-                    <p className="text-xl">{item.description}</p>
+                    <h2 className="font-semibold lg:text-xl">{item.title}</h2>
+                    <p className="lg:text-xl">{item.description}</p>
                   </div>
                 </div>
               ))}
@@ -158,7 +151,7 @@ const ModelCard: React.FC<NewsCardProps> = ({ title, contents }) => {
         </div>
         <div
           style={{ backgroundImage: `url(${getClassForBg(title)})` }}
-          className={`flex  bg-cover bg-center h-[450px] w-[100%] md:w-[40%]`}
+          className={`flex  bg-cover bg-center h-[200px] w-[100%] md:w-[40%] lg:h-[350px]`}
         ></div>
       </div>
     </motion.div>

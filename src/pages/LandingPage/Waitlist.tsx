@@ -14,7 +14,7 @@ const Waitlist = () => {
           transition={{ duration: 1, type: "spring" }}
         >
           <div className="flex flex-col items-center lg:items-start justify-center ">
-            <h1 className="text-3xl md:text-[3rem] md:leading-[60px] font-semibold text-center lg:text-left">
+            <h1 className="text-3xl lg:text-[2.5rem] max:text-[3rem] md:leading-[60px] font-medium text-center lg:text-left">
               <span className="text-[#043A3A]"> Fill the Form to </span>
               <span className="text-[#0B8DFF]">join the Waitlist</span>
             </h1>

@@ -288,6 +288,9 @@ export const validateDeviceInputs = (formData: IDevice) => {
     case formData.file === null:
       error = "Add a device Image";
       break;
+    case !Boolean((formData.earningMethod as SelectItem).value.length):
+      error = "Select an Earning Method";
+      break;
     default:
       break;
   }
