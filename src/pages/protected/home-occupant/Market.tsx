@@ -24,8 +24,11 @@ import HomeBanner from "@/components/containers/HomeBanner";
 import ProductShowcase from "@/components/containers/Categories";
 import featured from "@/assets/featured-device.svg"
 import placeholder from "@/assets/placeholder1.svg"
-import placeholder2 from "@/assets/placeholder2.svg"
-import placeholder3 from "@/assets/placeholder3.svg"
+import ProductCategories from "@/components/containers/ProductCategories";
+import { useQuery } from "@tanstack/react-query";
+import { IProdCategory } from "@/interfaces/product.interface";
+import { getHomePagePackages } from "@/services/homeOwner";
+
 
 type Props = {};
 
@@ -60,42 +63,39 @@ const Market = (_: Props) => {
     dispatch(clearProduct());
   }, []);
 
-  // const homePagePackages = useQuery({
-  //   queryKey: ["get-home-packages"],
-  //   queryFn: () => getHomePagePackages(),
+  const homePagePackages = useQuery({
+    queryKey: ["get-home-packages"],
+    queryFn: () => getHomePagePackages(),
+  });
+
+  const categories: IProdCategory[] = homePagePackages.isSuccess
+    ? homePagePackages.data.data
+    : [];
+
+
+   // Fetch package reviews using useQuery
+  //  const data2 = useQuery({
+  //   queryKey: ["package-details"],
+  //   queryFn: () => AllPackageCategories(),
   // });
 
-  // const categories: IProdCategory[] = homePagePackages.isSuccess
-  //   ? homePagePackages.data.data
-  //   : [];
+
+  console.log('date', categories)
 
 
 
 
-    const cards = [
-      {
-        id: 1,
-        title: "Device Hub",
-        description: "Manage energy smartly",
-        image: `${placeholder}`,
-        buttonText: "See More",
-      },
-      {
-        id: 2,
-        title: "Energy Saving Advisory",
-        description: "Energy Savings Made Easy",
-        image: `${placeholder2}`,
-        buttonText: "See More",
-      },
-      {
-        id: 3,
-        title: "Energy Efficient Product",
-        description: "Innovative Efficiency",
-        image: `${placeholder3}`,
-        buttonText: "See More",
-      },
-      
-    ];
+    // Extract the first 3 categories with their first package image
+  const categoryCards = categories.slice(0, 3).map((category, index) => {
+    const firstPackage = category.packages?.[0]; // Get the first package
+    const image =
+      firstPackage?.attachments?.[0] || placeholder; // Use the first attachment image or fallback to placeholder
+    return {
+      id: index + 1,
+      title: category.category.name, // Use category name
+      image, // First package attachment image
+    };
+  });
 
     const featuredProduct = {
       image: `${featured}`,
@@ -106,10 +106,12 @@ const Market = (_: Props) => {
   return (
     <div className="">
       <HomeBanner />
-      <ProductShowcase cards={cards} featuredProduct={featuredProduct} />
+      <ProductShowcase cards={categoryCards} featuredProduct={featuredProduct} />
       <BestSellers />
+      <ProductCategories />
     </div>
   );
 };
 
 export default Market;
+

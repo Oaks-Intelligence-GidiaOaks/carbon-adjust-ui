@@ -171,7 +171,7 @@ const Router = createBrowserRouter([
         element: <UserPurchases />,
       },
       {
-        path: "product/:category",
+        path: "product/:packageId",
         element: <UserProduct />,
       },
       {

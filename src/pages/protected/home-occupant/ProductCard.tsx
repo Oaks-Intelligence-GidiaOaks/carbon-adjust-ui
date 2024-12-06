@@ -9,29 +9,15 @@ import {
   UserRound,
 } from "lucide-react";
 import React, { useState } from "react";
-import {
-  BsCart3,
-  BsStar,
-  BsStarFill,
-  BsStarHalf,
-} from "react-icons/bs";
+import { BsCart3, BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
 import { Link } from "react-router-dom";
-// import { addProduct } from "@/features/productSlice";
-import { IProduct } from "@/interfaces/product.interface";
+import { IQuestion } from "@/interfaces/product.interface";
 import { PlayCircleIcon } from "@heroicons/react/20/solid";
 import ProductFormV2 from "@/components/containers/checkout/ProductFormV2";
-// import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "@/app/store";
-// // import {
-//   IAddToBasketEventPayload,
-//   MonitoringEvent,
-//   SubLevelEvent,
-// } from "@/interfaces/events.interface";
-// import SocketService from "@/repository/socket";
 
-interface Props extends IProduct {
-  wrapText?: boolean;
-}
+// interface Props extends IProduct {
+//   wrapText?: boolean;
+// }
 
 interface Tab {
   label: string;
@@ -43,7 +29,7 @@ interface ColorOption {
   value: string;
 }
 
-interface ProductProps extends Props {
+interface ProductProps {
   name: string;
   price: number;
   reviews: number;
@@ -52,9 +38,11 @@ interface ProductProps extends Props {
   description: string;
   images: string[];
   videos: string[];
+  questions: IQuestion[];
+  owner: string;
 }
 
-const ProductCard: React.FC<ProductProps & { isMerchant?: boolean }> = ({
+const ProductDetails: React.FC<ProductProps & { isMerchant?: boolean }> = ({
   name,
   price,
   reviews,
@@ -63,9 +51,13 @@ const ProductCard: React.FC<ProductProps & { isMerchant?: boolean }> = ({
   description,
   images,
   videos,
+  questions,
+  owner
 }) => {
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [selectedColor, setSelectedColor] = useState<string>(colors[0]?.value);
+  const [selectedColor, setSelectedColor] = useState<string>(
+    colors && colors.length > 0 ? colors[0].value : ""
+  );
   const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<string>("Image");
@@ -105,7 +97,7 @@ const ProductCard: React.FC<ProductProps & { isMerchant?: boolean }> = ({
         <p className="text-[20px]">Product Page</p>
         <p className="p-2 border w-fit rounded-full flex gap-1 text-sm">
           <UserRound className="size-4" />
-          Princess Diana Energy
+          {owner}
         </p>
       </div>
 
@@ -120,7 +112,7 @@ const ProductCard: React.FC<ProductProps & { isMerchant?: boolean }> = ({
                   <img
                     src={images[0]}
                     alt="Image Icon"
-                    className=" object-cover rounded"
+                    className=" object-cover border rounded h-[40px]"
                   />
                 ) : (
                   <span>🖼️</span>
@@ -129,14 +121,14 @@ const ProductCard: React.FC<ProductProps & { isMerchant?: boolean }> = ({
               {
                 label: "Video",
                 icon: images[0] ? (
-                  <div className="relative">
+                  <div className="relative ">
                     <img
                       src={images[0]}
                       alt="Image Icon"
-                      className="object-cover rounded"
+                      className="object-cover border rounded h-[40px]"
                     />
 
-                    <PlayCircleIcon className="absolute top-3 right-4 size-6 text-white" />
+                    <PlayCircleIcon className="absolute top-2 right-6 size-6 text-white" />
                   </div>
                 ) : (
                   <span>🎥</span>
@@ -165,13 +157,7 @@ const ProductCard: React.FC<ProductProps & { isMerchant?: boolean }> = ({
                 <ChevronLeft className="size-4" />
                 Back
               </button>
-              <ProductFormV2
-                setStage={(value) => console.log("Stage:", value)}
-                setShowcheckout={(value) =>
-                  console.log("Show Checkout:", value)
-                }
-                setShowCancel={(value) => setShowForm(!value)}
-              />
+              <ProductFormV2 questions={ questions }/>
             </div>
           ) : (
             <>
@@ -204,20 +190,26 @@ const ProductCard: React.FC<ProductProps & { isMerchant?: boolean }> = ({
               {/* Colors */}
               <div>
                 <p className="text-[#1A1A1A] font-semibold mb-2">Color</p>
-                <div className="flex items-center gap-4">
-                  {colors.map((color) => (
-                    <button
-                      key={color.value}
-                      onClick={() => setSelectedColor(color.value)}
-                      className={`w-10 h-8 rounded-lg border ${
-                        selectedColor === color.value
-                          ? "ring-2 ring-blue-500"
-                          : ""
-                      }`}
-                      style={{ backgroundColor: color.value }}
-                    />
-                  ))}
-                </div>
+                {colors && colors.length > 0 ? (
+                  <div className="flex items-center gap-4">
+                    {colors.map((color) => (
+                      <button
+                        key={color.value}
+                        onClick={() => setSelectedColor(color.value)}
+                        className={`w-10 h-8 rounded-lg border ${
+                          selectedColor === color.value
+                            ? "ring-2 ring-blue-500"
+                            : ""
+                        }`}
+                        style={{ backgroundColor: color.value }}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500">
+                    No colors available for this product.
+                  </p>
+                )}
               </div>
 
               {/* Description */}
@@ -247,14 +239,13 @@ const ProductCard: React.FC<ProductProps & { isMerchant?: boolean }> = ({
                   >
                     <BsCart3 /> Add to Cart
                   </button>
-                  <Link className="w-5/6" to={`/dashboard/checkout`}>
+                  
                     <button
                       onClick={() => setShowForm(true)}
                       className="w-full py-2 text-center text-white blue-gradient rounded-full"
                     >
                       Buy Now
                     </button>
-                  </Link>
                 </div>
               </div>
             </>
@@ -310,6 +301,15 @@ const ImageGallery: React.FC<{ media: string[]; isVideo: boolean }> = ({
   const prevSlide = () => {
     setSelectedIndex((prev) => (prev - 1 + media.length) % media.length);
   };
+
+   // Handle empty media
+   if (media.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-64 bg-gray-100 rounded-lg">
+        <p className="text-gray-500">No media for this product</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex gap-3  justify-between">
@@ -372,6 +372,4 @@ const ImageGallery: React.FC<{ media: string[]; isVideo: boolean }> = ({
   );
 };
 
-export default ProductCard;
-
-
+export default ProductDetails;

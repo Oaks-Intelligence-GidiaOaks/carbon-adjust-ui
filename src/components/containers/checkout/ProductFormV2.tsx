@@ -14,7 +14,7 @@ import {
 } from "@/features/orderSlice";
 // import { clearProduct } from "@/features/productSlice";
 
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { IComponentMap } from "@/types/general";
@@ -25,18 +25,19 @@ import { SelectItem } from "@/types/formSelect";
 import { Country, State } from "country-state-city";
 import Phoneinput from "@/components/ui/PhoneInput";
 // import { MdArrowBack } from "react-icons/md";
-import { IQuestion, PackageDomain } from "@/interfaces/product.interface";
+import { IQuestion } from "@/interfaces/product.interface";
 import { BsCart3 } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import router from "@/router/router";
 
-const ProductFormV2 = (props: {
-  setStage: Dispatch<SetStateAction<number>>;
-  setShowcheckout: Dispatch<SetStateAction<boolean>>;
-  setShowCancel: Dispatch<SetStateAction<boolean>>;
-}) => {
+interface ProductFormV2Props {
+  questions: IQuestion[];
+}
+
+const ProductFormV2 = ({questions}: ProductFormV2Props) => {
   const dispatch = useDispatch();
 
-  const { product, order, user }: RootState = useSelector(
+  const {order, user }: RootState = useSelector(
     (state: RootState) => state
   );
 
@@ -72,13 +73,13 @@ const ProductFormV2 = (props: {
 
   // filter to get required responses and compare with required questions.
   const isDisabled: boolean = Boolean(
-    product.questions.filter((item) => item.isRequired).length !==
+    questions.filter((item) => item.isRequired).length !==
       responses.filter((item) => item.isRequired).length ||
       isFormValues ||
       !isLocation
   );
 
-  const RenderQuestions = product.questions?.map((item: IQuestion) => {
+  const RenderQuestions = questions?.map((item: IQuestion) => {
     const responseIndex = responses.findIndex(
       (it: any) => it.question === item._id
     );
@@ -110,8 +111,7 @@ const ProductFormV2 = (props: {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const updateOrAddObject = (arr: IResponse[], newObj: IResponse) => {
-      // console.log(arr, " array");
-      // console.log(newObj, "new obj");
+
 
       if (!arr.length) {
         let responseData = [newObj];
@@ -354,11 +354,12 @@ const ProductFormV2 = (props: {
   });
 
   const handleProceed = () => {
-    if (product.packageDomain === PackageDomain.SUB_PACKAGE) {
-      props.setStage(6);
-    } else {
-      props.setStage(3);
-    }
+    // if (product.packageDomain === PackageDomain.SUB_PACKAGE) {
+    //   props.setStage(6);
+    // } else {
+    //   props.setStage(3);
+    // }
+    router.navigate('/dashboard/cart');
   };
 
   return (
@@ -519,8 +520,9 @@ const ProductFormV2 = (props: {
 
           {/* proceed */}
           <div className="flex gap-2 items-center">
-          <Link to={"/dashboard/cart"} className="w-full">
-          <button className="w-full py-2 flex items-center justify-center gap-1 text-center border text-[#0B8DFF]  border-[#0B8DFF] rounded-full">
+          <Link to={""} className="w-full">
+          <button disabled={isDisabled} className={`${
+              isDisabled ? "border-gray-300 text-gray-600 cursor-not-allowed" : "bg-transparent text-[#0B8DFF] border-[#0B8DFF]"} w-full py-2 flex items-center justify-center gap-1 text-center border  rounded-full`}>
           <BsCart3 /> Add to Cart
           </button>
           </Link>
