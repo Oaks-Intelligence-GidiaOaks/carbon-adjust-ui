@@ -9,6 +9,7 @@ import RecorderIndicator from "../ui/RecorderIndicator";
 import { MdOutlineTranscribe } from "react-icons/md";
 import useScrollIntoView from "@/hooks/useScrollIntoView";
 import toast from "react-hot-toast";
+import { ThreeDots } from "react-loader-spinner";
 
 const ChatBot = () => {
   const [openChat, setOpenChat] = useState<boolean>(false);
@@ -41,6 +42,7 @@ const ChatBot = () => {
 
     messages,
     isSocketConnected,
+    thinking,
   } = useChatbotInput();
 
   const startTimer = () => {
@@ -141,6 +143,21 @@ const ChatBot = () => {
                 isLoggedInUser={!msg.isAiMessage}
               />
             ))}
+
+            {thinking && (
+              <div>
+                <ThreeDots
+                  visible={true}
+                  height="50"
+                  width="50"
+                  color="#c1c1c1"
+                  radius="10"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
+              </div>
+            )}
 
             <div ref={scrollRef} className="h-1"></div>
           </div>

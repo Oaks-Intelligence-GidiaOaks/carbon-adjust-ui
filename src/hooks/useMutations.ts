@@ -1,4 +1,14 @@
-import { cancelDeviceSchedule, deleteDevice } from "@/services/homeOwner";
+import { WalletCoinSettingsInput } from "@/interfaces/wallet.interface";
+import { setCoinSettings } from "@/services/adminService";
+import {
+  cancelDeviceSchedule,
+  deleteDevice,
+  movePointToCash,
+  sendOtpCoins,
+  sendOtpRcmb,
+  verifyTransferCoins,
+  verifyTransferRcmb,
+} from "@/services/homeOwner";
 import { useMutation } from "@tanstack/react-query";
 // import { Dispatch, SetStateAction } from "react";
 import toast from "react-hot-toast";
@@ -27,9 +37,49 @@ const useMutations = () => {
     },
   });
 
+  // WALLET
+  const TransferPointToCash = useMutation({
+    mutationKey: ["point-cash-wallet"],
+    mutationFn: (amount: number) => movePointToCash(amount),
+  });
+
+  const SendRcmbOTP = useMutation({
+    mutationKey: ["send-rcmb-otp"],
+    mutationFn: (arg: { receiverWalletAddress: string; amount: number }) =>
+      sendOtpRcmb(arg),
+  });
+
+  const SendCoinsOTP = useMutation({
+    mutationKey: ["send-coins-otp"],
+    mutationFn: (arg: { receiverWalletAddress: string; amount: number }) =>
+      sendOtpCoins(arg),
+  });
+
+  const VerifyRcmbOtp = useMutation({
+    mutationKey: ["verify-rcmb-otp"],
+    mutationFn: (otp: string) => verifyTransferRcmb(otp),
+  });
+
+  const VerifyCoinsOtp = useMutation({
+    mutationKey: ["verify-coins-otp"],
+    mutationFn: (otp: string) => verifyTransferCoins(otp),
+  });
+
+  const UpdateCoinSettings = useMutation({
+    mutationKey: ["set-coin-settings"],
+    mutationFn: (settings: WalletCoinSettingsInput) =>
+      setCoinSettings(settings),
+  });
+
   return {
     DeleteDevice,
     CancelDeviceSchedule,
+    TransferPointToCash,
+    SendRcmbOTP,
+    SendCoinsOTP,
+    VerifyRcmbOtp,
+    VerifyCoinsOtp,
+    UpdateCoinSettings,
   };
 };
 

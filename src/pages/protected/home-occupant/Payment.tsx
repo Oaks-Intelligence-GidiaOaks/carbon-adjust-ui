@@ -133,6 +133,10 @@ const CheckoutForm = () => {
     }
   };
 
+  const paymentElementOptions = {
+    layout: "accordion",
+  };
+
   return (
     <div className="border px-3 py-6  md:p-6 md:px-6 bg-white shadow-lg rounded-xl bg-gradient-to-b from-[#abbaab34] to-[#ffffff]">
       <div className="flex-center justify-between mb-8">
@@ -151,8 +155,8 @@ const CheckoutForm = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="">
-        <PaymentElement />
+      <form id="payment-form" onSubmit={handleSubmit} className="">
+        <PaymentElement id="payment-element" options={paymentElementOptions} />
 
         <div className="mx-auto w-full my-6 font-[600] font-poppins">
           <button

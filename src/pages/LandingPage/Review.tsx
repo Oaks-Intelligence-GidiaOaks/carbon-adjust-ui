@@ -1,10 +1,10 @@
 import { FaStar } from "react-icons/fa";
-import Francis from "../../assets/Francis.svg";
-import Morea from "../../assets/Morea.svg";
-import Maria from "../../assets/Maria.svg";
+import { motion } from "framer-motion";
+// import Francis from "../../assets/Francis.svg";
+// import Morea from "../../assets/Morea.svg";
+// import Maria from "../../assets/Maria.svg";
 
-const Review = (props: any) => {
-  const starSize = 16;
+const Review = () => {
   // const [_, setRating] = useState(0);
 
   // // Catch Rating value
@@ -19,161 +19,111 @@ const Review = (props: any) => {
   // const onPointerMove = (value: any, index: any) => console.log(value, index);
 
   return (
-    <div className=" font-poppins pb-10 bg-[#4688E9]">
-      <div className="pt-8 lg:container">
-        <h2 className="text-2xl  font-poppins text-white font-medium flex justify-center items-center ">
-          Reviews
-        </h2>
-        <div className=" bg-white rounded mx-4  lg:mx-40 mt-8 ">
-          <div className=" flex items-center justify-center px-2 lg:px-4 py-1">
-            <div>
-              <div className="flex items-center gap-2">
-                <img src={Francis} alt="" />
-                <h2 className="text-sm text-left text-ca-blue">Maria Cooper</h2>
-              </div>
+    <div className=" font-poppins py-5 px-5 lg:px-0 bg-[#EDF2FF] max-width-[1440px]">
+      <motion.div
+        className="w-full my-20"
+        initial={{ opacity: 0, y: -50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 1, type: "spring" }}
+      >
+        <div className="flex flex-col items-center justify-center text-center">
+          <h1 className="text-2xl lg:text-[2.5rem] max:text-[3rem] md:leading-[60px] font-semibold text-center">
+            <span className="text-[#043A3A]"> Listen to what our</span>
+            <span className="text-[#0B8DFF]"> customers say</span>
+          </h1>
 
-              <div className="pl-10">
-                <div className="flex item pt-1  gap-6">
-                  <div className="flex">
-                    {Array(5)
-                      .fill(0)
-                      .map((_, idx) => (
-                        <FaStar
-                          size={starSize}
-                          key={idx}
-                          color={
-                            idx < props.ratingValue ? "#ffcc00" : "#ffcc00"
-                          } // Use yellow color code (#ffcc00) for filled stars
-                          onMouseEnter={() => props.onPointerEnter(idx + 1)}
-                          onMouseLeave={props.onPointerLeave}
-                          onClick={() => props.handleRating(idx + 1)}
-                        />
-                      ))}
-                  </div>
-
-                  <div>
-                    <p className=" text-ca-blue text-sm">
-                      {" "}
-                      4/5 - Exceptional and Essential
-                    </p>
-                  </div>
-                </div>
-
-                <div>
-                  <p className="text-xs pt-2 font-poppins">
-                    Wow, I am thoroughly impressed with this software
-                    application! From the moment I started using it, I could
-                    tell that it was meticulously designed with the user in
-                    mind. The interface is incredibly intuitive, allowing even
-                    those without much technical expertise to dive right in and
-                    start using its powerful features.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <p className="text-[#525252] font-[500] text-lg md:leading-[28px] my-10 max-w-[900px] font-Mulish">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+            hendrerit suscipit egestas. Nunc eget congue ante. Vivamus ut sapien
+            et ex volutpat tincidunt eget at felis vivamus hendrerit.
+          </p>
         </div>
-        <div className=" bg-white rounded mx-4  lg:mx-40 mt-1 pb-2">
-          <div className=" flex items-center justify-center px-2 lg:px-4 py-1">
-            <div>
-              <div className="flex items-center gap-2">
-                <img src={Morea} alt="" />
-                <h2 className="text-sm text-left text-ca-blue">Maria Cooper</h2>
-              </div>
-
-              <div className="pl-10">
-                <div className="flex item pt-1  gap-6">
-                  <div className="flex">
-                    {Array(5)
-                      .fill(0)
-                      .map((_, idx) => (
-                        <FaStar
-                          size={starSize}
-                          key={idx}
-                          color={
-                            idx < props.ratingValue ? "#ffcc00" : "#ffcc00"
-                          } // Use yellow color code (#ffcc00) for filled stars
-                          onMouseEnter={() => props.onPointerEnter(idx + 1)}
-                          onMouseLeave={props.onPointerLeave}
-                          onClick={() => props.handleRating(idx + 1)}
-                        />
-                      ))}
-                  </div>
-
-                  <div>
-                    <p className=" text-ca-blue text-sm">
-                      {" "}
-                      4/5 - Exceptional and Essential
-                    </p>
-                  </div>
-                </div>
-
-                <div>
-                  <p className="text-xs pt-2 font-poppins">
-                    Wow, I am thoroughly impressed with this software
-                    application! From the moment I started using it, I could
-                    tell that it was meticulously designed with the user in
-                    mind. The interface is incredibly intuitive, allowing even
-                    those without much technical expertise to dive right in and
-                    start using its powerful features.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+      </motion.div>
+      <motion.div
+        className="w-full lg:container mb-20"
+        initial={{ opacity: 0, y: -50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 1, type: "spring" }}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <ReviewCard
+            name="simon cooper"
+            description="Phasellus fermentum orci non nunc fermentum mattis. In eleifend vehicula justo, sed pulvinar erat scelerisque vel. Vestibulum eu erat elit. Etiam mattis feugiat finibus."
+            ratingValue={5}
+          />
+          <ReviewCard
+            name="simon cooper"
+            description="Phasellus fermentum orci non nunc fermentum mattis. In eleifend vehicula justo, sed pulvinar erat scelerisque vel. Vestibulum eu erat elit. Etiam mattis feugiat finibus."
+            ratingValue={5}
+          />
+          <ReviewCard
+            name="simon cooper"
+            description="Phasellus fermentum orci non nunc fermentum mattis. In eleifend vehicula justo, sed pulvinar erat scelerisque vel. Vestibulum eu erat elit. Etiam mattis feugiat finibus."
+            ratingValue={5}
+          />
+          <ReviewCard
+            name="simon cooper"
+            description="Phasellus fermentum orci non nunc fermentum mattis. In eleifend vehicula justo, sed pulvinar erat scelerisque vel. Vestibulum eu erat elit. Etiam mattis feugiat finibus."
+            ratingValue={5}
+          />
+          <ReviewCard
+            name="simon cooper"
+            description="Phasellus fermentum orci non nunc fermentum mattis. In eleifend vehicula justo, sed pulvinar erat scelerisque vel. Vestibulum eu erat elit. Etiam mattis feugiat finibus."
+            ratingValue={5}
+          />
+          <ReviewCard
+            name="simon cooper"
+            description="Phasellus fermentum orci non nunc fermentum mattis. In eleifend vehicula justo, sed pulvinar erat scelerisque vel. Vestibulum eu erat elit. Etiam mattis feugiat finibus."
+            ratingValue={5}
+          />
         </div>
-        <div className=" bg-white rounded mx-4  lg:mx-40 mt-1 pb-2">
-          <div className=" flex items-center justify-center px-2 lg:px-4 py-1">
-            <div>
-              <div className="flex items-center gap-2">
-                <img src={Maria} alt="" />
-                <h2 className="text-sm text-left text-ca-blue">Maria Cooper</h2>
-              </div>
-
-              <div className="pl-10">
-                <div className="flex item pt-1  gap-6">
-                  <div className="flex">
-                    {Array(5)
-                      .fill(0)
-                      .map((_, idx) => (
-                        <FaStar
-                          size={starSize}
-                          key={idx}
-                          color={
-                            idx < props.ratingValue ? "#ffcc00" : "#ffcc00"
-                          } // Use yellow color code (#ffcc00) for filled stars
-                          onMouseEnter={() => props.onPointerEnter(idx + 1)}
-                          onMouseLeave={props.onPointerLeave}
-                          onClick={() => props.handleRating(idx + 1)}
-                        />
-                      ))}
-                  </div>
-
-                  <div>
-                    <p className=" text-ca-blue text-sm">
-                      {" "}
-                      4/5 - Exceptional and Essential
-                    </p>
-                  </div>
-                </div>
-
-                <div>
-                  <p className="text-xs pt-2 font-poppins">
-                    Wow, I am thoroughly impressed with this software
-                    application! From the moment I started using it, I could
-                    tell that it was meticulously designed with the user in
-                    mind. The interface is incredibly intuitive, allowing even
-                    those without much technical expertise to dive right in and
-                    start using its powerful features.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
 
 export default Review;
+
+interface ReviewCardProps {
+  name: string;
+  description: string;
+  ratingValue: number;
+}
+
+const ReviewCard: React.FC<ReviewCardProps> = ({
+  name,
+  description,
+  ratingValue,
+}) => {
+  return (
+    <div className="bg-white rounded-2xl p-8 flex flex-col gap-3 justify-center max-w-[500px] shadow-2xl">
+      <div className="flex items-center gap-5">
+        <div className="w-[70px] h-[70px] p-3 flex items-center justify-center rounded-[50%] bg-gray-400 "></div>
+        <div className="flex flex-col gap-2">
+          <h2 className="text-[#043A3A] lg:text-xl font-semibold leading-10 font-Bricolage">
+            {name}
+          </h2>
+          <div className="flex gap-2">
+            {Array(5)
+              .fill(0)
+              .map((_, idx) => (
+                <FaStar
+                  size={16}
+                  key={idx}
+                  color={idx < ratingValue ? "#ffcc00" : "#ffcc00"} // Use yellow color code (#ffcc00) for filled stars
+                  // onMouseEnter={() => props.onPointerEnter(idx + 1)}
+                  // onMouseLeave={props.onPointerLeave}
+                  // onClick={() => props.handleRating(idx + 1)}
+                />
+              ))}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <p className="text-[#404745] text-base mt-2 font-Mulish">{description}</p>
+      </div>
+    </div>
+  );
+};

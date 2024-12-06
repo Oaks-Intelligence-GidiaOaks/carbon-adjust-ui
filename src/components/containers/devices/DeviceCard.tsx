@@ -330,7 +330,8 @@ const DeviceCard = (props: Props) => {
           </Button>
         )}
 
-        {props.currentDispatchStatus === CurrentDispatchStatus.Scheduled && (
+        {(props.currentDispatchStatus === CurrentDispatchStatus.Scheduled ||
+          props.currentDispatchStatus === CurrentDispatchStatus.Activated) && (
           <Button
             // disabled={CancelDeviceSchedule.isPending}
             onClick={() => props.setCancelId(props._id as string)}

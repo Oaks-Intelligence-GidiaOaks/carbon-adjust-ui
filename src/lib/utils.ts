@@ -288,6 +288,9 @@ export const validateDeviceInputs = (formData: IDevice) => {
     case formData.file === null:
       error = "Add a device Image";
       break;
+    case !Boolean((formData.earningMethod as SelectItem).value.length):
+      error = "Select an Earning Method";
+      break;
     default:
       break;
   }
@@ -316,8 +319,97 @@ const transportSchema = Joi.object({
   }),
 });
 
+const transferCashSchema = Joi.object({
+  walletAddress: Joi.string().required().messages({
+    "string.empty": "Wallet Address is required",
+    "any.required": "Wallet Address is required",
+  }),
+  amount: Joi.number().positive().required().messages({
+    "number.base": "Amount must be a number",
+    "number.positive": "Amount must be greater than 0",
+    "any.required": "Amount is required",
+  }),
+});
+
 export const validateTransportInputs = (formData: ITransport) => {
   const { error } = transportSchema.validate(formData);
+  return error ? error.details[0].message : null;
+};
+
+export const validateTransferCashInputs = (inputs: {
+  walletAddress: string;
+  amount: number;
+}) => {
+  const { error, value } = transferCashSchema.validate(inputs);
+
+  console.log(error, value);
+
+  return error ? error.details.map((e) => e.message) : null;
+};
+
+const optimizeSchema = Joi.object({
+  startLocation: Joi.object({
+    address: Joi.string().required().messages({
+      "any.required": "Address is required",
+    }),
+    latitude: Joi.number().required().messages({
+      "any.required": "Latitude is required",
+      "number.base": "Latitude must be a number",
+    }),
+    longitude: Joi.number().required().messages({
+      "any.required": "Longitude is required",
+      "number.base": "Longitude must be a number",
+    }),
+  })
+    .required()
+    .messages({
+      "any.required": "Start Location is required",
+    }),
+  destinationLocation: Joi.object({
+    address: Joi.string().required().messages({
+      "any.required": "Address is required",
+    }),
+    latitude: Joi.number().required().messages({
+      "any.required": "Latitude is required",
+      "number.base": "Latitude must be a number",
+    }),
+    longitude: Joi.number().required().messages({
+      "any.required": "Longitude is required",
+      "number.base": "Longitude must be a number",
+    }),
+  })
+    .required()
+    .messages({
+      "any.required": "Destination Location is required",
+    }),
+  modeOfTransport: Joi.string().required().messages({
+    "string.empty": "Mode of transport is required",
+  }),
+  durationOfTravelWindow: Joi.string().required().messages({
+    "string.empty": "Travel Window is required",
+  }),
+  routePreference: Joi.string().required().messages({
+    "string.empty": "route Preference is required",
+  }),
+  transportDetails: Joi.string().required().messages({
+    "string.empty": "transport details is required",
+  }),
+  transportation: Joi.string().messages({
+    string: "transportation must be a string",
+  }),
+  plateNumber: Joi.string().messages({
+    string: "plate number details must be a string",
+  }),
+  startTimeWindow: Joi.string().messages({
+    string: "start Time Window must be a string",
+  }),
+  latestArrivalTime: Joi.string().messages({
+    string: "latest Arrival Time must be a string",
+  }),
+});
+
+export const validateOptimizeInputs = (formData: any[]) => {
+  const { error } = optimizeSchema.validate(formData);
   return error ? error.details[0].message : null;
 };
 
@@ -495,3 +587,22 @@ export function generateKML(data: any[]) {
 
   return root.end({ prettyPrint: true });
 }
+
+export const copyClipboardText = (txt: string) => {
+  navigator.clipboard.writeText(txt);
+};
+
+export const serializeGridData = (
+  data: any[],
+  currentPage: number,
+  limit: number
+) => {
+  let startIndex = (currentPage - 1) * limit + 1;
+
+  let paginatedData = data.map((item, i) => ({
+    id: startIndex + i,
+    ...item,
+  }));
+
+  return paginatedData;
+};

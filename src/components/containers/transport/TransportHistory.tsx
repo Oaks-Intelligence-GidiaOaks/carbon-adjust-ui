@@ -1,12 +1,9 @@
 // import Loading from "@/components/reusables/Loading";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { IoFilterSharp } from "react-icons/io5";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui";
-import { PlusIcon } from "@/assets/icons";
 import TransportHistoryCard from "./TransportHistoryCard";
-import TransportChartCard from "./TransportChartCard";
 import { PaginateProps } from "@/types/general";
 import { getTransportsHistory } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
@@ -18,8 +15,6 @@ import TransportHistoryCardSkeleton from "./CardSkeleton";
 
 const TransportHistory = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [ids, setIds] = useState("");
-  const chartAreaRef = useRef<HTMLDivElement>(null);
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
   >({
@@ -43,12 +38,6 @@ const TransportHistory = () => {
   });
 
   const Histories = transportsHistory?.data?.trips?.length > 0;
-
-  useEffect(() => {
-    if (ids.length > 0) {
-      chartAreaRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [ids]);
 
   useEffect(() => {
     setPagination({
@@ -83,21 +72,21 @@ const TransportHistory = () => {
             />
             <input
               name="search"
-              placeholder="Search here"
+              placeholder="Search transport type, mode of transport"
               className="h-full w-full pl-10 m-0 bg-transparent text-sm outline-none border-none"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <Link className="ml-5" to="/dashboard/transport/add">
             <Button className="rounded-[20px] flex-center gap-1 ">
               <span>Add Transport</span>
               <PlusIcon />
             </Button>
           </Link>
-        </div>
+        </div> */}
       </div>
 
       <div className="mt-[20px] space-y-[38px]">
@@ -115,17 +104,15 @@ const TransportHistory = () => {
             {/* Render transport records if available */}
             {Histories ? (
               Array.from(transportsHistory.data.trips as Trips[], (it, i) => (
-                <TransportHistoryCard
-                  {...it}
-                  key={i}
-                  setIds={setIds}
-                  ids={ids}
-                />
+                <TransportHistoryCard {...it} key={i} />
               ))
             ) : (
-              // Render "No Devices" message if there are no records
               <div className="h-32 grid place-items-center max-w-[98%]">
-                <NoDevices link="/dashboard/transport/add" text="Transport" />
+                <NoDevices
+                  empty={true}
+                  link="/dashboard/transport/add"
+                  text="Transport"
+                />
               </div>
             )}
           </>
@@ -135,11 +122,6 @@ const TransportHistory = () => {
       {Histories && (
         <div className="mt-8 pr-12 w-fit mx-auto">
           <Paginate {...pagination} onPageChange={handlePageChange} />
-        </div>
-      )}
-      {Histories && (
-        <div ref={chartAreaRef}>
-          <TransportChartCard ids={ids} />
         </div>
       )}
     </div>

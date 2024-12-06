@@ -44,6 +44,7 @@ export interface IDevice {
   energySource: PropsValue<SelectItem>;
   electricityProvider: PropsValue<SelectItem>;
   gasProvider: PropsValue<SelectItem>;
+  earningMethod: PropsValue<SelectItem>;
   file: File | null;
 }
 
@@ -56,7 +57,8 @@ export interface ICreateDevice {
   energySource: string;
   electricityProvider: string;
   gasProvider: string;
-  file: File | null;
+  file: File | null | Blob;
+  earningMethod: string;
 }
 
 export interface IDispatchDevice {
@@ -69,9 +71,13 @@ export interface IDispatchDevice {
   actualCC: number;
   status: DeviceDispatchStatus;
 }
+export interface ITrans {
+  activeTab: string;
+}
 
 export interface IAsset {
   device: IDispatchData;
+  transport: ITrans;
 }
 
 export interface Device {

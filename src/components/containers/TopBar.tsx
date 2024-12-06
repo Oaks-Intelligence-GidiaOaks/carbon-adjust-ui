@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { cn } from "@/utils";
 import { UserRole } from "@/interfaces/user.interface";
+import { IoSettingsSharp } from "react-icons/io5";
 
 type Props = {
   mobileMenuIsOpen: boolean;
@@ -179,6 +180,15 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
                 </Link>
               )}
             </div>
+
+            {isAdmin && (
+              <Link
+                to={"/admin/settings"}
+                className="w fit ml-auto cursor-pointer"
+              >
+                <IoSettingsSharp size={20} />
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -27,12 +27,21 @@ module.exports = {
         poppins: ['"Poppins"', "sans-serif"],
         inter: ["Inter", "sans-serif"],
         "dm-sans": ["DM Sans", "sans-serif"],
+        kumbh: ["Kumbh Sans", "sans-serif"],
+        Bricolage: ["Bricolage Grotesque", "sans-serif"],
+        Mulish: ["Mulish", "sans-serif"],
       },
       backgroundImage: {
         "register-image": "url('/assets/graphics/register-graphic.svg')",
         "account-setup-image":
           "url('/assets/graphics/account-setup-graphic.svg')",
         "hero-bg": "url('/assets/graphics/hero-bg.svg')",
+        "gradient-text": "linear-gradient(to right, #2E599A 0%, #0B8DFF 100%)",
+        "custom-radial": "radial-gradient(at 0 0, #1944B7, #0B1E51)",
+        'model1': "url('/assets/graphics/model1.png')",
+        "cash-wallet-01": "url('/assets/graphics/cash-wallet-bg-01.svg')",
+        "cash-wallet-02": "url('/assets/graphics/cash-wallet-bg-02.svg')",
+        
       },
       colors: {
         "light-green": "#1BAF9E",
@@ -105,15 +114,18 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      backgroundImage: {
-        "gradient-text": "linear-gradient(to right, #2E599A 0%, #0B8DFF 100%)",
-        "custom-radial": "radial-gradient(at 0 0, #1944B7, #0B1E51)",
-      },
+      // backgroundImage: {
+      //   "gradient-text": "linear-gradient(to right, #2E599A 0%, #0B8DFF 100%)",
+      //   "custom-radial": "radial-gradient(at 0 0, #1944B7, #0B1E51)",
+      // },
       backgroundClip: {
         text: "text",
       },
       textFillColor: {
         transparent: "transparent",
+      },
+      fontSize: {
+        xxs: "10px",
       },
       textColor: {
         "ca-blue": "#2196F3",
@@ -151,6 +163,15 @@ module.exports = {
           from: { opacity: "0", transform: "translateX(-2px)" },
           to: { opacity: "1", transform: "translateX(0)" },
         },
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+        bounceIn: {
+          "0%": { opacity: 0, transform: "scale(0.8) translateY(-50px)" },
+          "50%": { opacity: 1, transform: "scale(1.08) translateY(0px)" },
+          "100%": { opacity: 1, transform: "scale(1) translateY(0px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -163,6 +184,8 @@ module.exports = {
         slideRightAndFade:
           "slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)",
         "spin-slow": "spin 15s linear infinite",
+        fadeIn: "fadeIn 0.3s ease-in-out",
+        bounceIn: "bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
       },
     },
     container: {

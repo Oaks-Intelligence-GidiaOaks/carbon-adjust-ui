@@ -1,19 +1,23 @@
-import { FC } from "react";
-import RestrictedWalletCard from "@/components/ui/RestrictedWalletCard";
+import { FC, useState } from "react";
+import { TransactionsGrid } from "@/components/grid/merchant/TransactionsGrid";
+import { MerchantWalletTabs } from "@/components/containers/devices/WalletTabs";
+import { WalletType } from "@/interfaces/transaction.interface";
 
 const Wallet: FC = () => {
+  const [activeTab, setActiveTab] = useState<WalletType>(
+    WalletType.CARBON_CREDIT
+  );
+
   return (
-    <div className="px-6">
-      <p className="font-poppins text-2xl mt-10 text-blue-950">Wallet</p>
-      <div className="flex items-center gap-10 mt-2">
-        <h2 className="text-[#212121] leading-[19.53px] font-normal font-poppins text-[14px]">
-          Manage your payments and transactions
-        </h2>
+    <div className="px-6 w-full">
+      <div className="mt-10 w-full ">
+        <MerchantWalletTabs activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
-      <div className="mt-10 flex justify-between flex-wrap">
-        <RestrictedWalletCard />
-      </div>
+      <TransactionsGrid
+        walletType={activeTab}
+        className="mt-8 max-w-[90vw] md:max-w-[60vw] lg:max-w-[70vw] xl:max-w-[75vw]"
+      />
     </div>
   );
 };

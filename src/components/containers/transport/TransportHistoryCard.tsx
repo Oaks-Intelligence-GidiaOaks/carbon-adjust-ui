@@ -17,33 +17,15 @@ const TransportHistoryCard = (props: Trips) => {
     modeOfTransport,
     transportDetails,
     startTimeWindow,
+    latestArrivalTime,
     durationOfTravelWindow,
     plateNumber,
     carName,
     tripQueueResponse,
-    setIds,
-    ids,
-    _id,
   } = props;
 
   const [showMore, setShowMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
-  const toggleChecked = (id: string) => {
-    const idsArray = ids ? ids.split(",") : [];
-
-    if (idsArray.includes(id)) {
-      const updatedIds = idsArray.filter(
-        (existingId: string) => existingId !== id
-      );
-      setIds(updatedIds.join(","));
-    } else {
-      idsArray.push(id);
-      setIds(idsArray.join(","));
-    }
-  };
-
-  const checked = ids.split(",").includes(_id);
 
   function downloadKML(data: any[]) {
     const kmlContent = generateKML(data);
@@ -54,32 +36,26 @@ const TransportHistoryCard = (props: Trips) => {
     saveAs(blob, "optimized-coordinates.kml");
   }
 
+  const getStatusClasses = (status: string) => {
+    const statusLowerCase = status?.toLowerCase();
+  
+    switch (statusLowerCase) {
+      case "completed":
+        return "text-green-800 bg-green-100";
+      case "pending":
+        return "text-yellow-800 bg-yellow-100";
+      default:
+        return "text-red-800 bg-red-100";
+    }
+  };
+  
+
   return (
     <>
       <div className="flex  bg-[#Fff] border rounded-lg py-5 px-5 sm:px-10 ">
-        {tripQueueResponse?.status?.toLowerCase() === "completed" && (
-          <div className="sm:flex hidden">
-            <input
-              type="checkbox"
-              checked={checked}
-              onChange={() => toggleChecked(_id)}
-              className="mr-4 cursor-pointer"
-            />
-          </div>
-        )}
         <div className="flex-1 flex-col sm:p-5 divide-y-2">
           <div className="flex justify-between items-center my-2">
             <div className="flex items-center">
-              {tripQueueResponse?.status?.toLowerCase() === "completed" && (
-                <div className="sm:hidden block">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => toggleChecked(_id)}
-                    className="mr-4 cursor-pointer"
-                  />
-                </div>
-              )}
               <div className="flex flex-col">
                 <h3 className="text-sm font-normal text-gray-700">
                   Plate Number
@@ -89,21 +65,17 @@ const TransportHistoryCard = (props: Trips) => {
                 </h4>
               </div>
             </div>
+
             <div className="flex flex-col gap-y-2">
-              <div className="flex flex-col gap-y-2">
-                <h3 className="text-sm font-normal text-gray-700">Status</h3>
-                <div
-                  className={`${
-                    tripQueueResponse?.status?.toLowerCase() === "completed"
-                      ? "text-green-800 bg-green-100"
-                      : "text-red-800 bg-red-100"
-                  } text-sm px-3 rounded-lg inline-flex items-center`}
-                >
-                  <span>
-                    <LuDot />
-                  </span>
-                  {tripQueueResponse?.status?.toLowerCase() ?? "pending"}
-                </div>
+              <h3 className="text-sm font-normal text-gray-700">Status</h3>
+              <div
+                className={`${getStatusClasses(tripQueueResponse?.status || 'pending')}
+                  } text-sm px-2  rounded-sm inline-flex items-center capitalize`}
+              >
+                <span>
+                  <LuDot />
+                </span>
+                {tripQueueResponse?.status?.toLowerCase() ?? "pending"}
               </div>
             </div>
           </div>
@@ -117,10 +89,17 @@ const TransportHistoryCard = (props: Trips) => {
               title="Destination"
               des={destinationLocation?.address || "N/A"}
             />
-            <VehicleDetail
-              title="Start time of travel window"
-              des={formatTimeToISO(startTimeWindow)}
-            />
+            {startTimeWindow ? (
+              <VehicleDetail
+                title="Start time of travel window"
+                des={formatTimeToISO(startTimeWindow)}
+              />
+            ) : (
+              <VehicleDetail
+                title="Latest arrival time"
+                des={formatTimeToISO(latestArrivalTime)}
+              />
+            )}
             <VehicleDetail
               title="Duration of travel window"
               des={durationOfTravelWindow}

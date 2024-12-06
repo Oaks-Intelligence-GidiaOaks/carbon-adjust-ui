@@ -1,6 +1,7 @@
 import axiosInstance from "@/api/axiosInstance";
 import { IDispatchData } from "@/interfaces/device.interface";
 import { IAddReview } from "@/interfaces/product.interface";
+import { WalletType } from "@/interfaces/transaction.interface";
 import { formatNumber } from "@/lib/utils";
 
 export const getAllPackageCategories = async () => {
@@ -271,7 +272,6 @@ export const getGrantSubCategory = async ({
   return data;
 };
 
-
 export const getBuildingData = async (limit: number = 5, page: number = 1) => {
   const queryParams = new URLSearchParams();
   queryParams.append("limit", limit.toString());
@@ -312,8 +312,12 @@ export const uploadBuildingImage = async (
 };
 
 //RESTRICTED CARDS
-export const getRestrictedWallet = async () => {
-  const { data } = await axiosInstance.get(`wallet/info?walletType=RESTRICTED`);
+export const getRestrictedWallet = async (
+  walletType: WalletType = WalletType.CARBON_CREDIT
+) => {
+  const { data } = await axiosInstance.get(
+    `wallet/info?walletType=${walletType}`
+  );
   return data;
 };
 //UPLOAD ENERGY biLLS
@@ -383,9 +387,12 @@ export const getTransportsHistory = async (
   return data;
 };
 
-export const getOptimizeChart = async (ids: string) => {
-  const url = `/transportation/analytics?ids=${encodeURIComponent(ids)}`;
-  const { data } = await axiosInstance.get(url);
+export const getOptimizeChart = async (transportationIds: any[]) => {
+  const payload = { transportationIds: transportationIds };
+  const { data } = await axiosInstance.post(
+    "/transportation/analytics",
+    payload
+  );
   return data;
 };
 
@@ -450,7 +457,6 @@ export const getPurchasesData = async (limit: number = 5, page: number = 1) => {
   return data;
 };
 
-
 //GET PURCHASES CHART
 export const getPurchasesChart = async (purchaseIds: string[]) => {
   const { data } = await axiosInstance.post(`/purchase/chats-response`, {
@@ -459,3 +465,45 @@ export const getPurchasesChart = async (purchaseIds: string[]) => {
   return data;
 };
 
+// WALLET
+export const movePointToCash = async (coinAmount: number) => {
+  const { data } = await axiosInstance.post(`/wallet/convert-coins-to-rcmbs`, {
+    coinAmount,
+  });
+
+  return data;
+};
+
+export const sendOtpRcmb = async (arg: {
+  receiverWalletAddress: string;
+  amount: number;
+}) => {
+  const { data } = await axiosInstance.post(`/wallet/send-otp-rcmbs`, arg);
+
+  return data;
+};
+
+export const sendOtpCoins = async (arg: {
+  receiverWalletAddress: string;
+  amount: number;
+}) => {
+  const { data } = await axiosInstance.post(`/wallet/send-otp-coins`, arg);
+
+  return data;
+};
+
+export const verifyTransferRcmb = async (otp: string) => {
+  const { data } = await axiosInstance.post(`/wallet/verify-transfer-rcmbs`, {
+    otp,
+  });
+
+  return data;
+};
+
+export const verifyTransferCoins = async (otp: string) => {
+  const { data } = await axiosInstance.post(`/wallet/verify-transfer-coins`, {
+    otp,
+  });
+
+  return data;
+};

@@ -19,6 +19,7 @@ import {
   AdminOrderDetails,
   AdminOrders,
   AdminPackages,
+  AdminSettings,
   AdminStaff,
   AdminWallet,
   AdmnLog,
@@ -46,12 +47,14 @@ import {
 } from "@/pages/protected/merchant";
 import {
   UserAppointment,
+  UserCheckout,
   UserDevices,
   UserMarketGroup,
   UserMarketPlace,
   UserNewDevice,
   UserNewTransport,
   UserOrderList,
+  UserProduct,
   UserProfile,
   UserPurchases,
   UserTransport,
@@ -73,6 +76,14 @@ import AssetsLayout from "@/layouts/AssetsLayout";
 import ComingSoon from "@/components/reusables/ComingSoon";
 import ZohoPage from "@/pages/public/test";
 import BuildingList from "@/components/containers/buildings/BuildingList";
+import LoginTest from "@/pages/public/Login_test";
+import {
+  OrganisationAssets,
+  OrganisationDashboard,
+  OrganisationDepartment,
+  OrganisationProfile,
+  OrganisationWallet,
+} from "@/pages/protected/organisation";
 
 const Router = createBrowserRouter([
   {
@@ -481,6 +492,10 @@ const Router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "settings",
+        element: <AdminSettings />,
+      },
     ],
   },
   {
@@ -493,9 +508,40 @@ const Router = createBrowserRouter([
       },
     ],
   },
+  // CORPORATE USER ROUTES
+  {
+    path: "/organisation",
+    element: <Layout sidebarType="organisation" />,
+    children: [
+      {
+        path: "",
+        element: <OrganisationDashboard />,
+      },
+      {
+        path: "departments",
+        element: <OrganisationDepartment />,
+      },
+      {
+        path: "assets",
+        element: <OrganisationAssets />,
+      },
+      {
+        path: "wallet",
+        element: <OrganisationWallet />,
+      },
+      {
+        path: "profile",
+        element: <OrganisationProfile />,
+      },
+    ],
+  },
   {
     path: "*",
     element: <_404 />,
+  },
+  {
+    path: "/login-test",
+    element: <LoginTest />,
   },
 ]);
 

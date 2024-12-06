@@ -1,5 +1,4 @@
 import store, { persistor } from "@/app/store";
-// import { baseURL } from "./../constants/api";
 import axios from "axios";
 
 const token = localStorage.getItem("token") || store.getState().user.token; // Assuming your token is stored in the user slice; // Replace with your Bearer token
@@ -28,6 +27,7 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 // Add a response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {

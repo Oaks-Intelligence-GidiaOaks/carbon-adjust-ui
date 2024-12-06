@@ -31,7 +31,9 @@ const Tab: FC<tabProps> = ({ isActive, text, onClick, variant }) => {
           : " text-[#667085] "
       } font-[700] text-lg  max-w-[98%] flex-1 h-full text-center grid place-items-center  cursor-pointer p-2`}
     >
-      <span className="text-[10px] px-[2px]">{text.replace(/_/g, " ")}</span>
+      <span className="text-[10px] px-[2px] whitespace-nowrap">
+        {text.replace(/_/g, " ")}
+      </span>
     </div>
   );
 };

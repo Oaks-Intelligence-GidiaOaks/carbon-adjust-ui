@@ -1,4 +1,5 @@
 import { SelectItem } from "@/types/formSelect";
+import { Dispatch, SetStateAction } from "react";
 import { PropsValue } from "react-select";
 
 export enum TransportTabs {
@@ -17,6 +18,10 @@ export interface Transport {
   city: string;
   emissionFactor: string;
   licensePlateNumber: string;
+  setIds: Dispatch<SetStateAction<string[]>>;
+  ids: string[];
+  totalEmission: string;
+  totalProjectedCarbonOffset: string;
 }
 
 export interface ITransport {
@@ -64,8 +69,6 @@ export interface Trips {
   routePreference: string;
   latestArrivalTime: string;
   carName: string;
-  setIds: (value: string) => void;
-  ids: string;
   tripQueueResponse: {
     response: {
       transport_id?: string;
@@ -74,6 +77,7 @@ export interface Trips {
       min_emission: string;
       projected_arbitrage: string;
       best_time?: string;
+      status: string;
       best_route?: {
         route_emission?: number;
         factor?: {

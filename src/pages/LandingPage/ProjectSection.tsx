@@ -17,11 +17,12 @@ const ProjectSection = () => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-          className="text-xl font-semibold leading-8"
+          className="text-2xl font-semibold leading-10"
         >
-          Carbon-Adjust is a pioneering global platform that empowers homeowners
-          to confidently carry out end-to-end energy efficiency improvements in
-          their homes.
+          Carbon-Adjust is your one-stop shop for staying smart and sustainable.
+          Access our Marketplace for the latest in smart appliances and services
+          and leverage our Operations Hub to build resilience against climate
+          transition risks.
         </motion.div>
         <motion.div
           initial={{ opacity: 0, x: 50 }}
@@ -31,10 +32,12 @@ const ProjectSection = () => {
           className="text-[#191F23]"
         >
           <div className="bg-gradient-text h-[2px] mb-4 w-full my-6 lg:my-0" />
-          We capitalize on being the comprehensive one-stop marketplace for
-          everything related to home energy efficiency improvements. From
-          bespoke energy audits and plans to experienced professionals and an
-          extensive catalogue of products and services, you are in safe hands.
+          We capitalise on our ability to enable You utilise the amazing
+          capabilities of AI in enhancing your everyday experiences. From
+          optimal use of energy to participation in balancing the electricity
+          grid we've got You covered. With loads of amazing deals on our
+          Marketplace and a community of like minds, You can never get bored on
+          Carbon-Adjust.
         </motion.div>
       </motion.div>
       <motion.div
