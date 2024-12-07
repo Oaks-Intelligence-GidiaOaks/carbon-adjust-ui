@@ -1,3 +1,4 @@
+import { FaAngleUp } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import { AiOutlineDownload } from "react-icons/ai";
 import { Button } from "@/components/ui";
@@ -23,7 +24,9 @@ const TransportHistoryCard = (props: Trips) => {
     tripQueueResponse,
   } = props;
 
+  const [showMore, setShowMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
 
   function downloadKML(data: any[]) {
     const kmlContent = generateKML(data);
@@ -134,27 +137,53 @@ const TransportHistoryCard = (props: Trips) => {
               }
             />
           </div>
+          <div
+            className={`flex flex-col sm:flex-row gap-5 my-5  sm:items-center items-start transition-all duration-500 ease-in-out overflow-hidden ${
+              showMore
+                ? "max-h-[1000px] opacity-100 py-2 visible"
+                : "max-h-0 opacity-0 invisible"
+            }`}
+            style={{ transitionProperty: "max-height, opacity" }}
+          >
+            <Button
+              onClick={() =>
+                tripQueueResponse?.response?.best_route?.route_coordinate &&
+                downloadKML(
+                  tripQueueResponse?.response?.best_route?.route_coordinate
+                )
+              }
+              className="rounded-[20px] flex-center gap-1 mt-2 w-[150px] h-[30px]"
+            >
+              <span>Download Route</span>
+              <AiOutlineDownload />
+            </Button>
+            <Button
+              onClick={() => {
+                setShowModal(true);
+              }}
+              className="rounded-[20px] flex-center gap-1 mt-2 w-[150px] h-[30px]"
+            >
+              <span>View Route</span>
+            </Button>
+          </div>
           {tripQueueResponse?.response?.best_route?.route_coordinate && (
-            <div className="flex flex-row gap-5 sm:items-center items-start overflow-hidden ">
+            <div className="flex justify-center items-center p-3 ">
               <Button
-                onClick={() =>
-                  tripQueueResponse?.response?.best_route?.route_coordinate &&
-                  downloadKML(
-                    tripQueueResponse?.response?.best_route?.route_coordinate
-                  )
-                }
-                className="rounded-[20px] flex-center gap-1 mt-5 w-[150px] h-[30px]"
+                variant={"ghost"}
+                className="gap-2"
+                onClick={() => setShowMore(!showMore)}
               >
-                <span>Download Route</span>
-                <AiOutlineDownload />
-              </Button>
-              <Button
-                onClick={() => {
-                  setShowModal(true);
-                }}
-                className="rounded-[20px] flex-center gap-1 mt-5 w-[150px] h-[30px]"
-              >
-                <span>View Route</span>
+                {showMore ? (
+                  <>
+                    <span>Collapse</span>
+                    <FaAngleUp />
+                  </>
+                ) : (
+                  <>
+                    <span>Expand</span>
+                    <FaAngleUp />
+                  </>
+                )}
               </Button>
             </div>
           )}

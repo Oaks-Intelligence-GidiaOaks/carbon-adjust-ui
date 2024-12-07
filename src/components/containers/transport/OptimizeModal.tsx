@@ -18,7 +18,6 @@ import { getSuggestions, getTransports, Optimize } from "@/services/homeOwner";
 import { TravelDetails } from "@/interfaces/transport.interface";
 import {
   OptimizeBy,
-  Routes,
   TransportDetails,
   TravelWindow,
 } from "@/constants/transport";
@@ -72,7 +71,6 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
     transportation: { label: "", value: "" },
     startTimeWindow: "",
     durationOfTravelWindow: "",
-    routePreference: { label: "", value: "" },
     latestArrivalTime: "",
   };
 
@@ -212,7 +210,6 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
     const Payload: any = {
       ...restOfFormData,
       transportDetails: restOfFormData.transportDetails.value,
-      routePreference: restOfFormData.routePreference.value,
       durationOfTravelWindow: restOfFormData.durationOfTravelWindow.value,
     };
     if (startTimeWindow) {
@@ -278,7 +275,7 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
   return (
     <>
       <Modal>
-        <div className="w-[90%] sm:w-[50%] bg-white h-[90%] rounded-lg p-5 overflow-y-scroll">
+        <div className="w-[90%] lg:w-[50%] bg-white h-[90%] rounded-lg p-5 overflow-y-scroll">
           <div className="sticky top-0 flex justify-end  p-5">
             <button
               className="text-gray-500 text-2xl"
@@ -417,19 +414,6 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                 </div>
 
                 <div className="space-y-2 w-full">
-                  <h2 className="pl-2 text-sm">Route</h2>
-
-                  <SelectInput
-                    options={Routes}
-                    value={formData.routePreference}
-                    onChange={(e) =>
-                      handleSelectInputChange(e, "routePreference")
-                    }
-                  />
-                </div>
-              </div>
-              <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 mt-3 sm:mt-10">
-                <div className="space-y-2 w-full">
                   <h2 className="pl-2 text-sm">Transport Details</h2>
 
                   <SelectInput
@@ -440,6 +424,9 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                     }
                   />
                 </div>
+              </div>
+              <div className="flex sm:flex-row flex-col justify-between w-full lg:w-1/2 sm:items-center items-start  gap-5 mt-3 sm:mt-10">
+              
                 {formData.transportDetails.value === "Other" ? (
                   <div className="space-y-2 w-full">
                     <h2 className="pl-2 text-sm">Plate Number</h2>
