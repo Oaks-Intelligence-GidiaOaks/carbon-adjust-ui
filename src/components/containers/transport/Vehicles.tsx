@@ -78,7 +78,7 @@ const Vehicles = () => {
   const toggleMasterChecked = (checked: boolean) => {
     setIsChecked(checked);
     if (checked) {
-      const allIds = transportData?.map((item) => item._id) || [];
+      const allIds = transportData?.map((item:any) => item._id) || [];
       setIds(allIds);
     } else {
       setIds([]);

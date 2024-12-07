@@ -1,4 +1,3 @@
-import { FaAngleUp } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import { AiOutlineDownload } from "react-icons/ai";
 import { Button } from "@/components/ui";
@@ -24,7 +23,6 @@ const TransportHistoryCard = (props: Trips) => {
     tripQueueResponse,
   } = props;
 
-  const [showMore, setShowMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   function downloadKML(data: any[]) {
