@@ -8,8 +8,6 @@ export enum AssetTabs {
   Others = "Others",
 }
 
-
-
 export enum DeviceTabs {
   AddedDevices = "Added Devices",
   DispatchedDevices = "Dispatched Devices",

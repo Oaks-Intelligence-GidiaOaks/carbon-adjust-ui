@@ -5,7 +5,7 @@ import {
   adminStaffSideBarItems,
   homeOwnerSideBarItems,
   merchantSideBarItems,
-  organisationSideBarItems,
+  organizationSideBarItems,
   staffSideBarItems,
 } from "@/constants";
 import { SideBarItem, SideBarProps } from "@/types/general";
@@ -44,8 +44,8 @@ const Sidebar = ({
         return adminSideBarItems;
       case "admin-staff":
         return adminStaffSideBarItems;
-      case "organisation":
-        return organisationSideBarItems;
+      case "organization":
+        return organizationSideBarItems;
       default:
         return homeOwnerSideBarItems;
     }

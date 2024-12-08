@@ -4,7 +4,11 @@ import { AssetTabs } from "@/interfaces/device.interface";
 import { FC, useRef } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
-const AssetsLayout: FC = (_) => {
+interface AssetsLayoutProps {
+  type?: string;
+}
+
+const AssetsLayout: FC<AssetsLayoutProps> = ({ type = "home-occupant" }) => {
   const tabs: AssetTabs[] = [
     AssetTabs.Devices,
     AssetTabs.Buildings,
@@ -20,7 +24,9 @@ const AssetsLayout: FC = (_) => {
   UseScrollToTop(contentRef);
 
   const handleTabSwitch = (tab: string) => {
-    navigate(`/dashboard/${tab.toLocaleLowerCase()}`);
+    type === "home-occupant"
+      ? navigate(`/dashboard/${tab.toLocaleLowerCase()}`)
+      : navigate(`/organization/${tab.toLocaleLowerCase()}`);
   };
 
   const getActiveTab = (pathString: string) => {

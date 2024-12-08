@@ -78,12 +78,12 @@ import ZohoPage from "@/pages/public/test";
 import BuildingList from "@/components/containers/buildings/BuildingList";
 import LoginTest from "@/pages/public/Login_test";
 import {
-  OrganisationAssets,
-  OrganisationDashboard,
-  OrganisationDepartment,
-  OrganisationProfile,
-  OrganisationWallet,
-} from "@/pages/protected/organisation";
+  OrganizationDashboard,
+  OrganizationDepartment,
+  OrganizationDevices,
+  OrganizationProfile,
+  OrganizationWallet,
+} from "@/pages/protected/organization";
 import SalesLayout from "@/layouts/SalesLayout";
 import Sales from "@/pages/protected/merchant/Sales";
 import Inventory from "@/pages/protected/merchant/Inventory";
@@ -545,28 +545,42 @@ const Router = createBrowserRouter([
   },
   // CORPORATE USER ROUTES
   {
-    path: "/organisation",
-    element: <Layout sidebarType="organisation" />,
+    path: "/organization",
+    element: <Layout sidebarType="organization" />,
     children: [
       {
         path: "",
-        element: <OrganisationDashboard />,
+        element: <OrganizationDashboard />,
       },
       {
         path: "departments",
-        element: <OrganisationDepartment />,
+        element: <OrganizationDepartment />,
       },
       {
-        path: "assets",
-        element: <OrganisationAssets />,
+        path: "devices",
+        element: <AssetsLayout type="organization" />,
+        children: [
+          {
+            path: "",
+            element: <OrganizationDevices />,
+          },
+          {
+            path: "add",
+            element: <UserNewDevice />,
+          },
+          {
+            path: ":deviceId/edit",
+            element: <UserNewDevice />,
+          },
+        ],
       },
       {
         path: "wallet",
-        element: <OrganisationWallet />,
+        element: <OrganizationWallet />,
       },
       {
         path: "profile",
-        element: <OrganisationProfile />,
+        element: <OrganizationProfile />,
       },
     ],
   },

@@ -634,31 +634,31 @@ export const adminStaffSideBarItems = [
 ];
 
 // ORGANISATION SIDE ITEMS
-export const organisationSideBarItems = [
+export const organizationSideBarItems = [
   {
     icon: DashboardIcon,
     title: "Dashboard",
-    href: "/organisation",
+    href: "/organization",
   },
   {
     icon: DashboardIcon,
     title: "Department",
-    href: "/organisation/departments",
+    href: "/organization/departments",
   },
   {
     icon: DashboardIcon,
     title: "Assets",
-    href: "/organisation/assets",
+    href: "/organization/devices",
   },
   {
     icon: DashboardIcon,
     title: "Wallet",
-    href: "/organisation/wallet",
+    href: "/organization/wallet",
   },
   {
     icon: DashboardIcon,
     title: "Profile",
-    href: "/organisation/profile",
+    href: "/organization/profile",
   },
   {
     icon: LogoutIcon,
