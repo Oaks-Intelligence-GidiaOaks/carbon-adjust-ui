@@ -3,11 +3,6 @@ export const TransportDetails = [
   { label: "Other", value: "Other" },
 ];
 
-export const Routes = [
-  { label: "By Distance", value: "ByDistance" },
-  { label: "By Time", value: "ByTime" },
-];
-
 export const TravelWindow = [
   { label: "01:00", value: "01:00" },
   { label: "02:00", value: "02:00" },

@@ -388,9 +388,6 @@ const optimizeSchema = Joi.object({
   durationOfTravelWindow: Joi.string().required().messages({
     "string.empty": "Travel Window is required",
   }),
-  routePreference: Joi.string().required().messages({
-    "string.empty": "route Preference is required",
-  }),
   transportDetails: Joi.string().required().messages({
     "string.empty": "transport details is required",
   }),
