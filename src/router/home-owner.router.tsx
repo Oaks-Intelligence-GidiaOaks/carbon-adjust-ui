@@ -17,7 +17,6 @@ import {
 } from "@/pages/protected/home-occupant";
 import AssetsLayout from "@/layouts/AssetsLayout";
 import BuildingList from "@/components/containers/buildings/BuildingList";
-import ComingSoon from "@/components/reusables/ComingSoon";
 import Payment from "@/pages/protected/home-occupant/Payment";
 import PaymentSuccess from "@/components/containers/checkout/PaymentSuccess";
 
@@ -50,10 +49,6 @@ export const homeOwnerRoutes = [
       {
         path: "orders",
         element: <UserOrderList />,
-      },
-      {
-        path: "purchases",
-        element: <UserPurchases />,
       },
       {
         path: "product/:category",
@@ -110,12 +105,12 @@ export const homeOwnerRoutes = [
         ],
       },
       {
-        path: "others",
+        path: "purchases",
         element: <AssetsLayout />,
         children: [
           {
             path: "",
-            element: <ComingSoon />,
+            element: <UserPurchases />,
           },
         ],
       },

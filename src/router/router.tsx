@@ -1,8 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Calendar, Home, Login, Register, _404 } from "@/pages/public";
-import AccountSetup from "@/pages/protected/shared/account-setup/AccountSetup";
-import Layout from "@/layouts/Layout";
 
+<<<<<<< Updated upstream
 import PendingVerification from "@/pages/protected/shared/PendingVerification";
 
 import DashboardLanding from "@/pages/protected/shared/DashboardLanding";
@@ -563,6 +561,22 @@ const Router = createBrowserRouter([
     path: "/login-test",
     element: <LoginTest />,
   },
+=======
+import { publicRoutes } from "./public.router";
+import { homeOwnerRoutes } from "./home-owner.router";
+import { merchantRoutes } from "./merchant.router";
+import { organisationRoutes } from "./organisation.router";
+import { adminRoutes } from "./admin.router";
+import { staffRoutes } from "./staff.router";
+
+const Router = createBrowserRouter([
+  ...publicRoutes,
+  ...homeOwnerRoutes,
+  ...merchantRoutes,
+  ...staffRoutes,
+  ...adminRoutes,
+  ...organisationRoutes,
+>>>>>>> Stashed changes
 ]);
 
 export default Router;
