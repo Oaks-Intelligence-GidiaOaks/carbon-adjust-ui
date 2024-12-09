@@ -14,6 +14,7 @@ const initialState: IProduct = {
     name: "",
     slug: "",
   },
+  color: [],
   regions: [],
   country: "",
   status: "",

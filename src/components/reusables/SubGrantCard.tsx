@@ -48,7 +48,7 @@ const SubGrantCard = ({ isMerchant = false, ...props }: Props) => {
         </div>
 
         {/* Discount Badge */}
-        {props.discount > 0 && (
+        {typeof props.discount === "number" && props.discount > 0  && (
           <div className="absolute font-inter top-10 left-2 bg-[#0E89F7] text-[#FEFEFE] text-xs font-semibold px-4 py-1 rounded-md">
             -{props.discount}%
           </div>

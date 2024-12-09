@@ -236,6 +236,16 @@ export const addReview = async (formData: IAddReview) => {
   return data;
 };
 
+//PACKAGE DETAILS
+export const getPackageDetails = async ({
+  packageId,
+}: {
+  packageId: string;
+}) => {
+  const { data } = await axiosInstance.get(`/packages/${packageId}`);
+  return data;
+};
+
 //ACCEPT GRANT
 export const acceptGrant = async (applicationId: string) => {
   const { data } = await axiosInstance.put("application/accept", {
