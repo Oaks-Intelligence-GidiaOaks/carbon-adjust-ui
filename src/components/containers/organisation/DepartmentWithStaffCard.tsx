@@ -93,6 +93,7 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
                   {...stf}
                   onAssignRole={() => {}}
                   onRemoveStaff={() => {}}
+                  className="w-full"
                 />
               ))}
             </div>

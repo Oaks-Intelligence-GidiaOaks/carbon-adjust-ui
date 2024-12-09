@@ -1,3 +1,4 @@
+import { cn } from "@/utils";
 import { FC } from "react";
 
 interface StaffRequestCardProps {
@@ -10,6 +11,7 @@ interface StaffRequestCardProps {
   onDecline: () => void;
   onViewDetails: () => void;
   profileImage: string;
+  className?: string;
 }
 
 const StaffRequestCard: FC<StaffRequestCardProps> = ({
@@ -22,9 +24,15 @@ const StaffRequestCard: FC<StaffRequestCardProps> = ({
   onDecline,
   onViewDetails,
   profileImage,
+  className,
 }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-sm">
+    <div
+      className={cn(
+        "bg-white shadow-md rounded-lg p-4 w-full max-w-sm",
+        className
+      )}
+    >
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-sm font-semibold text-gray-700">Staff Request</h3>

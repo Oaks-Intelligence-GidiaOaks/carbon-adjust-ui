@@ -1,3 +1,4 @@
+import BackButton from "@/components/reusables/BackButton";
 import { Button, Input } from "@/components/ui";
 import { ChangeEvent } from "react";
 
@@ -14,34 +15,37 @@ const NewUnit = () => {
   };
 
   return (
-    <div className=" shadow-md rounded-2xl  md:w-2/3 mx-auto p-10 px-14 bg-white">
-      <form action="" onSubmit={handleSubmit} className="space-y-6">
-        <h2 className="text-center font-[600] font-inter text-2xl">
-          Create Unit
-        </h2>
+    <div className="">
+      <BackButton className="text-lg mt-6" />
+      <div className="mt-10 shadow-md rounded-2xl  md:w-2/3 mx-auto p-10 px-14 bg-white">
+        <form action="" onSubmit={handleSubmit} className="space-y-6">
+          <h2 className="text-center font-[600] font-inter text-2xl">
+            Create Unit
+          </h2>
 
-        <Input
-          name="name"
-          label="Enter name"
-          className=" rounded-xl px-3 text-sm bg-[#E4E7E863]"
-          inputClassName="bg-transparent px-0"
-          value={""}
-          onChange={handleInputChange}
-        />
+          <Input
+            name="name"
+            label="Enter name"
+            className=" rounded-xl px-3 text-sm bg-[#E4E7E863]"
+            inputClassName="bg-transparent px-0"
+            value={""}
+            onChange={handleInputChange}
+          />
 
-        <Input
-          name="name"
-          label="Enter Function"
-          className=" rounded-xl px-3 text-sm bg-[#E4E7E863]"
-          inputClassName="bg-transparent px-0"
-          value={""}
-          onChange={handleInputChange}
-        />
+          <Input
+            name="name"
+            label="Enter Function"
+            className=" rounded-xl px-3 text-sm bg-[#E4E7E863]"
+            inputClassName="bg-transparent px-0"
+            value={""}
+            onChange={handleInputChange}
+          />
 
-        <Button className="w-full">
-          <span>Create</span>
-        </Button>
-      </form>
+          <Button className="w-full">
+            <span>Create</span>
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };

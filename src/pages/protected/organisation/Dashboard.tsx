@@ -7,20 +7,28 @@ import { HiMiniUsers } from "react-icons/hi2";
 
 import DepartmentWithStaffCard from "@/components/containers/organisation/DepartmentWithStaffCard";
 import StaffRequestCard from "@/components/ui/StaffRequestCard";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const infoCards = [
     {
-      title: "Departments",
+      title: "Units",
       count: 0,
-      buttonText: "View All Departments",
+      buttonText: "View All Units",
+      icon: FaBuilding,
+      iconStyle: "bg-yellow-100 text-yellow-500",
+    },
+    {
+      title: "Sub Units",
+      count: 0,
+      buttonText: "View All Units",
       icon: FaBuilding,
       iconStyle: "bg-yellow-100 text-yellow-500",
     },
     {
       title: "Staff",
       count: 0,
-      buttonText: "View All Staf",
+      buttonText: "View All Staff",
       icon: HiMiniUsers,
       iconStyle: "bg-[#E5E4FF] text-[#5233FF]",
     },
@@ -66,7 +74,9 @@ const Dashboard = () => {
         <div className="flex-center justify-between">
           <h2 className="font-semibold">Requests</h2>
 
-          <button>See all</button>
+          <Link to="/organisation/requests">
+            <button>See all</button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-3 gap-4 gap-y-5">
@@ -77,7 +87,7 @@ const Dashboard = () => {
               department="Marketing Department"
               requestDetails="Has made a request to register buildings and add assets."
               status="Pending"
-              profileImage="https://via.placeholder.com/150" // Replace with actual image URL
+              profileImage="https://via.placeholder.com/150"
               onApprove={() => alert("Request Approved!")}
               onDecline={() => alert("Request Declined!")}
               onViewDetails={() => alert("Viewing Details...")}
