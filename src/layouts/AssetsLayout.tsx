@@ -9,7 +9,7 @@ const AssetsLayout: FC = (_) => {
     AssetTabs.Devices,
     AssetTabs.Buildings,
     AssetTabs.Transport,
-    AssetTabs.Others,
+    AssetTabs.Purchases,
   ];
 
   const { pathname } = useLocation();
@@ -32,10 +32,11 @@ const AssetsLayout: FC = (_) => {
       case pathString.includes("transport"):
         return AssetTabs.Transport;
       default:
-        return AssetTabs.Others;
+        return AssetTabs.Purchases;
     }
   };
 
+ 
   return (
     <div
       ref={contentRef}
