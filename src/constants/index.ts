@@ -643,7 +643,7 @@ export const organisationSideBarItems = [
   {
     icon: DashboardIcon,
     title: "Department",
-    href: "/organisation/departments",
+    href: "/organisation/units",
   },
   {
     icon: DashboardIcon,

@@ -1,9 +1,11 @@
 import Layout from "@/layouts/Layout";
+import UnitsLayout from "@/layouts/UnitsLayout";
 import {
   OrganisationAssets,
   OrganisationDashboard,
-  OrganisationDepartment,
+  OrganisationNewUnit,
   OrganisationProfile,
+  OrganisationUnit,
   OrganisationWallet,
 } from "@/pages/protected/organisation";
 
@@ -17,8 +19,18 @@ export const organisationRoutes = [
         element: <OrganisationDashboard />,
       },
       {
-        path: "departments",
-        element: <OrganisationDepartment />,
+        path: "units",
+        element: <UnitsLayout />,
+        children: [
+          {
+            path: "",
+            element: <OrganisationUnit />,
+          },
+          {
+            path: "new",
+            element: <OrganisationNewUnit />,
+          },
+        ],
       },
       {
         path: "assets",
