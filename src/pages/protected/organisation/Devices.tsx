@@ -2,7 +2,7 @@ import TabToggler from "@/components/containers/TabToggler";
 import { DeviceTabs } from "@/interfaces/device.interface";
 import { useState } from "react";
 import { IComponentMap } from "@/types/general";
-import { OrganizationAddedDevices } from "@/components/containers/organization/devices";
+import { OrganizationAddedDevices } from "@/components/containers/organisation/devices";
 
 const Devices = () => {
   const tabs: DeviceTabs[] = [

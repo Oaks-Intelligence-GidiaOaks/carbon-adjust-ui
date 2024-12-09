@@ -78,12 +78,12 @@ import ZohoPage from "@/pages/public/test";
 import BuildingList from "@/components/containers/buildings/BuildingList";
 import LoginTest from "@/pages/public/Login_test";
 import {
-  OrganizationDashboard,
-  OrganizationDepartment,
+  OrganisationDashboard,
+  OrganisationDepartment,
   OrganizationDevices,
-  OrganizationProfile,
-  OrganizationWallet,
-} from "@/pages/protected/organization";
+  OrganisationProfile,
+  OrganisationWallet,
+} from "@/pages/protected/organisation";
 import SalesLayout from "@/layouts/SalesLayout";
 import Sales from "@/pages/protected/merchant/Sales";
 import Inventory from "@/pages/protected/merchant/Inventory";
@@ -545,16 +545,16 @@ const Router = createBrowserRouter([
   },
   // CORPORATE USER ROUTES
   {
-    path: "/organization",
-    element: <Layout sidebarType="organization" />,
+    path: "/organisation",
+    element: <Layout sidebarType="organisation" />,
     children: [
       {
         path: "",
-        element: <OrganizationDashboard />,
+        element: <OrganisationDashboard />,
       },
       {
         path: "departments",
-        element: <OrganizationDepartment />,
+        element: <OrganisationDepartment />,
       },
       {
         path: "devices",
@@ -576,11 +576,11 @@ const Router = createBrowserRouter([
       },
       {
         path: "wallet",
-        element: <OrganizationWallet />,
+        element: <OrganisationWallet />,
       },
       {
         path: "profile",
-        element: <OrganizationProfile />,
+        element: <OrganisationProfile />,
       },
     ],
   },

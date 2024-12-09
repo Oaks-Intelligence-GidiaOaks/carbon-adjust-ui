@@ -634,7 +634,7 @@ export const adminStaffSideBarItems = [
 ];
 
 // ORGANISATION SIDE ITEMS
-export const organizationSideBarItems = [
+export const organisationSideBarItems = [
   {
     icon: DashboardIcon,
     title: "Dashboard",

@@ -5,7 +5,7 @@ import { AiTwotoneCreditCard } from "react-icons/ai";
 import { FaBuilding } from "react-icons/fa";
 import { HiMiniUsers } from "react-icons/hi2";
 
-import DepartmentWithStaffCard from "@/components/containers/organization/DepartmentWithStaffCard";
+import DepartmentWithStaffCard from "@/components/containers/organisation/DepartmentWithStaffCard";
 import StaffRequestCard from "@/components/ui/StaffRequestCard";
 
 const Dashboard = () => {
