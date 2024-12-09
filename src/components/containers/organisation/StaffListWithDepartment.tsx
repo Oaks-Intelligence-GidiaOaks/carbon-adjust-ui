@@ -1,22 +1,24 @@
-import { Button } from "@/components/ui";
+import StaffCard from "@/components/ui/StaffCard";
+import React from "react";
 
-const StaffListWithDepartment = () => {
+type StaffListWithDepartmentProps = {
+  unitName: string;
+  staffList: any[];
+};
+
+const StaffListWithDepartment: React.FC<StaffListWithDepartmentProps> = ({
+  staffList,
+  unitName,
+}) => {
   return (
-    <div>
-      <h2 className="">Staff</h2>
+    <div className="space-y-5">
+      <h2 className="text-[#495057] font-[600] text-xl">{unitName}</h2>
 
-      <div className="flex-center">
-        {/* filter */}
-
-        {/* search */}
-
-        {/* button */}
-        <Button className="rounded-lg text-white mt-4 w-full h-11">
-          <span>Add Staff</span>
-        </Button>
+      <div className="grid grid-cols-3 gap-6">
+        {Array.from(staffList, (stf, i) => (
+          <StaffCard {...stf} key={i} className="w-full" />
+        ))}
       </div>
-
-      <div className="">{/* <h2></h2> */}</div>
     </div>
   );
 };

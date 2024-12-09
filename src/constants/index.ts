@@ -642,7 +642,7 @@ export const organisationSideBarItems = [
   },
   {
     icon: DashboardIcon,
-    title: "Department",
+    title: "Units",
     href: "/organisation/units",
   },
   {

@@ -23,7 +23,7 @@ const UnitsLayout: FC = () => {
       case pathString.includes(UnitTabs.UNIT.toLowerCase()):
         return UnitTabs.UNIT;
       case pathString.includes(UnitTabs.STAFF.toLowerCase()):
-        return UnitTabs.UNIT;
+        return UnitTabs.STAFF;
       default:
         return UnitTabs.UNIT;
     }

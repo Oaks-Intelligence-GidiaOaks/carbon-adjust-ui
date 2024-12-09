@@ -1,13 +1,14 @@
-import DepartmentWithStaffCard from "@/components/containers/organisation/DepartmentWithStaffCard";
 import Paginate from "@/components/reusables/Paginate";
 import { Button } from "@/components/ui";
 import Search from "@/components/ui/Search";
 import { PaginateProps } from "@/types/general";
 import { PlusCircle } from "lucide-react";
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import staffMembers from "@/dummy/staff-members.json";
+import { useState } from "react";
+import StaffListWithDepartment from "@/components/containers/organisation/StaffListWithDepartment";
 
-const Units = () => {
+const OrganisationStaff = () => {
   // @ts-ignore
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
@@ -37,23 +38,21 @@ const Units = () => {
 
         <Search />
 
-        <Link to="/organisation/units/new" className="w-fit ml-auto">
+        <Link to="/organisation/staff/new" className="w-fit ml-auto">
           <Button className="gap-3 rounded-[24px]">
-            <span>Create Unit</span>
+            <span>Add Staff</span>
             <PlusCircle />
           </Button>
         </Link>
       </div>
 
       {/* container for cards */}
-      <div className="space-y-6">
+      <div className="space-y-10">
         {Array.from({ length: 5 }, (_, i) => (
-          <DepartmentWithStaffCard
+          <StaffListWithDepartment
+            unitName="Design Department"
+            staffList={staffMembers}
             key={i}
-            departmentName="Marketing Department"
-            staffCount={10}
-            assetsCount={4}
-            climateScore={4}
           />
         ))}
       </div>
@@ -66,4 +65,4 @@ const Units = () => {
   );
 };
 
-export default Units;
+export default OrganisationStaff;

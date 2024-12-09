@@ -3,8 +3,12 @@ import UnitsLayout from "@/layouts/UnitsLayout";
 import {
   OrganisationAssets,
   OrganisationDashboard,
+  OrganisationNewStaff,
   OrganisationNewUnit,
   OrganisationProfile,
+  OrganisationRequests,
+  OrganisationStaff,
+  OrganisationStaffRequestDetails,
   OrganisationUnit,
   OrganisationWallet,
 } from "@/pages/protected/organisation";
@@ -33,6 +37,20 @@ export const organisationRoutes = [
         ],
       },
       {
+        path: "staff",
+        element: <UnitsLayout />,
+        children: [
+          {
+            path: "",
+            element: <OrganisationStaff />,
+          },
+          {
+            path: "new",
+            element: <OrganisationNewStaff />,
+          },
+        ],
+      },
+      {
         path: "assets",
         element: <OrganisationAssets />,
       },
@@ -43,6 +61,19 @@ export const organisationRoutes = [
       {
         path: "profile",
         element: <OrganisationProfile />,
+      },
+      {
+        path: "requests",
+        children: [
+          {
+            path: "",
+            element: <OrganisationRequests />,
+          },
+          {
+            path: ":requestId",
+            element: <OrganisationStaffRequestDetails />,
+          },
+        ],
       },
     ],
   },
