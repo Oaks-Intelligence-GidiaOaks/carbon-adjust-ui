@@ -13,7 +13,7 @@ const AssetsLayout: FC<AssetsLayoutProps> = ({ type = "home-occupant" }) => {
     AssetTabs.Devices,
     AssetTabs.Buildings,
     AssetTabs.Transport,
-    AssetTabs.Others,
+    AssetTabs.Purchases,
   ];
 
   const { pathname } = useLocation();
@@ -38,10 +38,11 @@ const AssetsLayout: FC<AssetsLayoutProps> = ({ type = "home-occupant" }) => {
       case pathString.includes("transport"):
         return AssetTabs.Transport;
       default:
-        return AssetTabs.Others;
+        return AssetTabs.Purchases;
     }
   };
 
+ 
   return (
     <div
       ref={contentRef}
