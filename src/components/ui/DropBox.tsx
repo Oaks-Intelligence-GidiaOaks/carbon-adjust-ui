@@ -108,7 +108,7 @@ const DropBox = ({
       } else {
         
         if (validFiles.length > 0) {
-          setFile(validFiles[0]); // Optionally set the first valid file
+          setFile(validFiles[0]);
           setFileSizeError(hasLargeFile);
           localStorage.setItem("file", JSON.stringify(validFiles));
           setFileList(validFiles);
