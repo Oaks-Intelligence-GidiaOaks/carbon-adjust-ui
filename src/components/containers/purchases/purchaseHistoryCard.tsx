@@ -41,6 +41,7 @@ type PurchaseHistoryCardProps = {
   scope3Emission: number;
   carbornFootPrint: number;
   optimizationStatus: string;
+  transitionScore: number;
 };
 
 // PurchaseHistoryCard Component
@@ -56,6 +57,7 @@ const PurchaseHistoryCard = ({
   scope2Emission,
   percentageContribution,
   scope3Emission,
+  transitionScore,
   carbornFootPrint,
   optimizationStatus,
 }: PurchaseHistoryCardProps) => {
@@ -78,6 +80,15 @@ const PurchaseHistoryCard = ({
     });
   };
 
+    // Round numeric values
+    const roundedScope1Emission = Math.ceil(scope1Emission);
+    const roundedScope2Emission = Math.ceil(scope2Emission);
+    const roundedScope3Emission = Math.ceil(scope3Emission);
+    const roundedTransitionScore = Math.ceil(transitionScore);
+    const roundedCarbornFootPrint = Math.ceil(carbornFootPrint);
+    const roundedPercentageContribution = Math.ceil(percentageContribution);
+    const roundedTotalEmission = Math.ceil(totalEmission);
+
 
   // Define color classes based on optimization status
   const getStatusStyles = () => {
@@ -99,29 +110,33 @@ const PurchaseHistoryCard = ({
   const emissionData = [
     {
       key: "Scope 1 Emission",
-      value: scope1Emission,
+      value: `${roundedScope1Emission} tCO2e`,
     },
     {
       key: "Scope 2 Emission",
-      value: scope2Emission,
+      value: `${roundedScope2Emission} tCO2e`,
     },
     {
       key: "Scope 3 Emission",
-      value: scope3Emission,
+      value: `${roundedScope3Emission} tCO2e`,
     },
     {
-      key: "Carbon Footprint tracker",
-      value: carbornFootPrint,
+      key: "Emission Score",
+      value: `${roundedTransitionScore} tCO2e`,
+    },
+    {
+      key: "Carbon Footprint Tracker",
+      value: `${roundedCarbornFootPrint} V`,
     },
     {
       key: "Percentage Contribution",
-      value: percentageContribution,
+      value: `${roundedPercentageContribution} %`,
     },
   ];
 
   return (
     <div className="bg-white border-[0.5px] mb-7 rounded-md shadow-sm flex flex-col md:flex-row p-4 lg:p-6 text-sm lg:text-base cursor-pointer">
-       {optimizationStatus && (
+       {optimizationStatus === 'completed' && (
         <input
           type="checkbox"
           checked={isSelected}
@@ -164,7 +179,7 @@ const PurchaseHistoryCard = ({
           </div>
           <div>
             <h4 className="text-[#212121]">Total Emission</h4>
-            <p className="text-[#4C5563] text-xs sm:text-sm">{totalEmission || "N/A"}</p>
+            <p className="text-[#4C5563] text-xs sm:text-sm">{roundedTotalEmission || "N/A"} tCO2e</p>
           </div>
           <div>
             <h4 className="text-[#212121]">Documents Uploaded</h4>
