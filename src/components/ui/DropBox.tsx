@@ -1,10 +1,12 @@
 import { JPGIcon, PDFIcon, PNGIcon, UploadDoc } from "@/assets/icons";
 import { DropBoxProps } from "@/types/general";
-import { InformationCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { MdOutlineDelete } from "react-icons/md";
 import { ChangeEvent, useRef, useState } from "react";
 import { Button } from "./Button";
 import { CameraIcon } from "@heroicons/react/20/solid";
 import { formatBytes } from "@/utils";
+import toast from "react-hot-toast";
 
 const DropBox = ({
   value,
@@ -13,6 +15,7 @@ const DropBox = ({
   setSelectedFiles,
   docName,
   disabled,
+  isMultiple,
 }: DropBoxProps) => {
   // interface HTMLInputEvent extends Event {
   //   target: HTMLInputElement & EventTarget;
@@ -51,32 +54,80 @@ const DropBox = ({
   };
 
   // const onFileChange = () => {};
-
   const onFileDrop = (e: ChangeEvent<HTMLInputElement>) => {
-    const newFile = e?.target?.files?.length ? e?.target?.files[0] : null;
-    if (newFile) {
-      if (newFile.size > 2 * 1024 * 1024) {
-        setFileSizeError(true);
+    const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+    const files = e?.target?.files ? Array.from(e.target.files) : [];
+
+    if (isMultiple && files.length > 5) {
+      const toastId = toast.error(`You can only upload Max five files.`);
+      setTimeout(() => {
+        toast.dismiss(toastId); 
+      }, 3000);
+
+      return;
+    }
+
+    if (files.length > 0) {
+      const validFiles: File[] = [];
+      let hasLargeFile = false;
+
+      files.forEach((file) => {
+        if (file.size > MAX_FILE_SIZE) {
+          hasLargeFile = true;
+        } else {
+          validFiles.push(file);
+        }
+      });
+
+      if (!isMultiple) {
+       
+        const newFile = validFiles[0] || null;
+
+        if (newFile) {
+          setFile(newFile);
+          setFileSizeError(false);
+          localStorage.setItem("file", JSON.stringify(newFile));
+          const updatedList = [newFile];
+          setFileList(updatedList);
+
+          if (setStateFile) {
+            setStateFile((prev) => ({ ...prev, doc: updatedList }));
+          }
+          if (setSelectedFiles) {
+            setSelectedFiles(updatedList);
+          }
+          if (setStateOrgFiles) {
+            setStateOrgFiles((prev) => ({
+              ...prev,
+              ...(docName ? { [docName]: updatedList } : {}),
+            }));
+          }
+        } else {
+          setFileSizeError(true);
+        }
       } else {
-        setFile(newFile);
-        setFileSizeError(false);
-        localStorage.setItem("file", JSON.stringify(newFile));
-        const updatedList = [newFile];
-        setFileList(updatedList);
-        if (setStateFile) {
-          setStateFile((prev) => ({ ...prev, doc: updatedList }));
+        
+        if (validFiles.length > 0) {
+          setFile(validFiles[0]);
+          setFileSizeError(hasLargeFile);
+          localStorage.setItem("file", JSON.stringify(validFiles));
+          setFileList(validFiles);
+
+          if (setStateFile) {
+            setStateFile((prev) => ({ ...prev, doc: validFiles }));
+          }
+          if (setSelectedFiles) {
+            setSelectedFiles(validFiles);
+          }
+          if (setStateOrgFiles) {
+            setStateOrgFiles((prev) => ({
+              ...prev,
+              ...(docName ? { [docName]: validFiles } : {}),
+            }));
+          }
+        } else {
+          setFileSizeError(true);
         }
-        if (setSelectedFiles) {
-          setSelectedFiles(updatedList);
-        }
-        if (setStateOrgFiles) {
-          setStateOrgFiles((prev) => ({
-            ...prev,
-            ...(docName ? { [docName]: updatedList } : {}),
-          }));
-        }
-        // onFileChange(updatedList);
-        // onFileChange(newFile);
       }
     }
   };
@@ -110,23 +161,36 @@ const DropBox = ({
         className="border relative border-dashed border-grey-swatch-500 mt-3 flex justify-center rounded-lg p-6 bg-white"
       >
         <div className="flex flex-col items-center">
-          <UploadDoc className="mb-2" />
-          <p className="text-sm font-poppins text-grey-swatch-600">
-            {" "}
-            Drag and drop files or{" "}
-            <Button
-              variant={"link"}
-              className="px-0 hover:underline underline-offset-1"
-            >
-              Browse
-            </Button>
-          </p>
-          <p className="text-xs text-center font-poppins">
-            Support jpg, png, pdf
-          </p>
-          <div className="flex justify-center mt-2">
-            <CameraIcon width={24} />
-          </div>
+          {isMultiple ? (
+            <div className="w-fit h-fit grid place-items-center space-y-2">
+              <div className="w-[40px] h-[40px] rounded-full bg-[#E4E7E863] grid place-items-center">
+                <img src="/assets/graphics/uploadIcon.svg" alt="" />
+              </div>
+
+              <h2>Click to Upload your images or videos </h2>
+              <p className="text-sm text-gray-500">or drag and drop</p>
+            </div>
+          ) : (
+            <>
+              <UploadDoc className="mb-2" />
+              <p className="text-sm font-poppins text-grey-swatch-600">
+                {" "}
+                Drag and drop files or{" "}
+                <Button
+                  variant={"link"}
+                  className="px-0 hover:underline underline-offset-1"
+                >
+                  Browse
+                </Button>
+              </p>
+              <p className="text-xs text-center font-poppins">
+                Support jpg, png, pdf
+              </p>
+              <div className="flex justify-center mt-2">
+                <CameraIcon width={24} />
+              </div>
+            </>
+          )}
           <input
             type="file"
             ref={fileInputRef}
@@ -134,17 +198,19 @@ const DropBox = ({
             className="opacity-0 absolute inset-0 h-full w-full cursor-pointer"
             onChange={onFileDrop}
             id="file"
+            multiple={isMultiple}
+            data-max-files={isMultiple ? 5 : undefined}
             disabled={disabled}
           />
         </div>
         {/* {children} */}
       </div>
       {fileList.length > 0 ? (
-        <div className="flex justify-center w-full">
+        <div className="flex flex-col justify-center w-full">
           {fileList.map((item, index) => (
             <div
               key={index}
-              className="flex gap-2 mt-2 items-center gap-x-4 mb-[10px] rounded-[5px] px-4  bg-[#FFFFFF] w-[clamp(240px,100%,720px)] h-[50px] "
+              className="flex gap-2 mt-2 items-center justify-between gap-x-4 mb-[10px] rounded-[5px] px-4  bg-[#FFFFFF] w-[clamp(240px,100%,720px)] h-[50px] "
               style={{ boxShadow: "0px 0px 8px 1px rgba(0, 0, 0, 0.05)" }}
             >
               {generateFileTypeIcon(item.type.split("/")[1])}
@@ -160,7 +226,7 @@ const DropBox = ({
                 className="drop-file-preview__item__del flex items-center justify-center hover:bg-gray-200 rounded-full"
                 onClick={() => fileRemove(item)}
               >
-                <XMarkIcon />
+                <MdOutlineDelete color="red" />
               </button>
             </div>
           ))}

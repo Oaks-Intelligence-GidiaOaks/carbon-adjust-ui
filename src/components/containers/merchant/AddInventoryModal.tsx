@@ -313,7 +313,7 @@ const AddInventoryModal = ({ setShowModal, refetchInventory }: AddInventoryModal
                 <Input
                   name="reOrderPoint"
                   inputClassName="border p-3 bg-[#E4E7E8] rounded-[12px] placeholder:text-left placeholder:align-top"
-                  placeholder="Enter Reorder Point"
+                  placeholder="Enter carbon footprint"
                   type="number"
                   onChange={handleInputChange}
                 />

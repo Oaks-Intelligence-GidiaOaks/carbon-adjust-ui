@@ -1,7 +1,7 @@
 import { IoArrowBack } from "react-icons/io5";
 
 import ProductCard from "@/components/reusables/ProductCard";
-import { Button, CountryRegionDropdown, DropBox, Input } from "@/components/ui";
+import { Button, DropBox, Input } from "@/components/ui";
 import SelectInput from "@/components/ui/SelectInput";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ import {
   getPackageCategories,
   getRecentPackagesQuery,
 } from "@/services/merchant";
-import { Country, State } from "country-state-city";
+// import { Country, State } from "country-state-city";
 import Select, {
   CSSObjectWithLabel,
   GroupBase,
@@ -74,14 +74,14 @@ export type PackageState = {
     label: string;
     value: string;
   };
+  carbonFootPrint: string;
+  sku: string;
+  colors: string[];
+  quantity: string;
+  reOrderPoint: string;
   description: string;
-  country: {
-    label: string;
-    value: string;
-  };
   price: string;
   discount: string;
-  regions: MultiValue<any>;
   allowPartPayment: boolean;
   percentPayment: string;
   hasSchedule: boolean;
@@ -195,14 +195,13 @@ const NewPackage = (_: Props) => {
       value: "",
     },
     description: "",
-    country: {
-      label: "",
-      value: "",
-    },
+    sku: "",
+    reOrderPoint: "",
+    carbonFootPrint: "",
+    colors: [],
+    quantity: "",
     price: "",
     discount: "",
-
-    regions: [] as MultiValue<any>,
     allowPartPayment: false,
     percentPayment: "",
     hasSchedule: false,
@@ -217,11 +216,29 @@ const NewPackage = (_: Props) => {
     },
   });
 
+  const handleColorsChange = (
+    selectedOptions: MultiValue<{ value: string; label: string }>
+  ) => {
+    setPackageState((prev) => ({
+      ...prev,
+      colors: selectedOptions.map((opt) => opt.value),
+    }));
+  };
+
+  const colourOptions = [
+    { value: "black", label: "Black" },
+    { value: "red", label: "Red" },
+    { value: "blue", label: "Blue" },
+    { value: "green", label: "Green" },
+    { value: "yellow", label: "Yellow" },
+    { value: "purple", label: "Purple" },
+    { value: "orange", label: "Orange" },
+  ];
+
   const createPackageMutation = useMutation({
     mutationKey: ["create package"],
     mutationFn: (data: any) => createPackageQuery(data),
     onSuccess: (data) => {
-      console.log(data);
       if (data.data.data.hasSchedule) {
         navigate(`/merchant/packages/schedule/${data.data.data._id}`);
         toast.success("Package created successfully");
@@ -260,13 +277,20 @@ const NewPackage = (_: Props) => {
     if (packageState.isAiEnergyPackage) {
       formData.append("aiPackageType", packageState.aiPackageType.value);
     }
-    if (packageState.country) {
-      formData.append("country", packageState.country.label);
-    }
     if (packageState.description) {
       formData.append("description", packageState.description);
     }
-    if (Boolean(packageState.price)) {
+
+    formData.append("sku", packageState.sku);
+    formData.append("reOrderPoint", packageState.reOrderPoint);
+    formData.append("carbonFootPrint", packageState.carbonFootPrint);
+    formData.append("quantity", packageState.quantity);
+    packageState.colors?.forEach((color) => {
+      formData.append("colors", color);
+    });
+    
+
+    if (packageState.price) {
       formData.append(
         "price",
         convertFormattedStringToNumber(packageState.price).toString()
@@ -278,12 +302,7 @@ const NewPackage = (_: Props) => {
         convertFormattedStringToNumber(packageState.discount).toString()
       );
     }
-    if (packageState.regions) {
-      formData.append(
-        "regions",
-        JSON.stringify(packageState.regions.map((region) => region.label))
-      );
-    }
+
     // allowPartPayment: false,
     // percentPayment: "",
     // hasSchedule: false,
@@ -332,6 +351,12 @@ const NewPackage = (_: Props) => {
       );
     }
 
+    console.log("FormData contents:");
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    
+
     createPackageMutation.mutate(formData);
   };
 
@@ -372,7 +397,7 @@ const NewPackage = (_: Props) => {
           {/* image upload */}
           <div className="flex flex-col">
             <h2 className="text-black-main font-[400] ">Package Image</h2>
-            <DropBox value={file} setSelectedFiles={setFile} />
+            <DropBox value={file} setSelectedFiles={setFile} isMultiple={true} />
             {/* <div className="h-[150px] flex  flex-col  items-center justify-center gap-[] w-full border border-dotted ">
               <div className="h-[42px] w-[42px] rounded-full bg-[#F2F4F7] grid place-items-center">
                 <img src="/assets/icons/upload-cloud.svg" alt="" />
@@ -565,8 +590,8 @@ const NewPackage = (_: Props) => {
 
           {/* optional content starts here */}
           {!packageState.askPurchaserQuote && (
-            <div className="flex-center">
-              <div className="w-1/2 pr-[20px]">
+            <div className="flex flex-col lg:flex-row gap-3">
+              <div className="lg:w-1/2 ">
                 <Input
                   name="price"
                   label="Price"
@@ -587,7 +612,7 @@ const NewPackage = (_: Props) => {
                 />
               </div>
 
-              <div className="w-1/2">
+              <div className="lg:w-1/2 ">
                 <Input
                   name="discount"
                   label="Discount"
@@ -609,7 +634,95 @@ const NewPackage = (_: Props) => {
               </div>
             </div>
           )}
+          <div className="w-full space-y-2">
+            <h2 className="pl-2 text-[#575757] text-sm">SKU</h2>
 
+            <Input
+              name="sku"
+              inputClassName="border p-3 bg-[#E4E7E8] rounded-[12px] placeholder:text-left placeholder:align-top"
+              placeholder="Enter product SKU"
+              value={packageState!.sku}
+              onChange={(e) =>
+                setPackageState!((prev) => {
+                  return {
+                    ...prev,
+                    sku: e.target.value,
+                  };
+                })
+              }
+            />
+          </div>
+          <div className="flex flex-col lg:flex-row gap-3">
+            <div className="space-y-2 lg:w-1/2">
+              <h2 className="pl-2 text-[#575757] text-sm">Quantity</h2>
+
+              <Input
+                name="quantity"
+                inputClassName="border p-3 bg-[#E4E7E8] rounded-[12px] placeholder:text-left placeholder:align-top"
+                placeholder="Input quantity"
+                type="number"
+                onChange={(e) =>
+                  setPackageState!((prev) => {
+                    return {
+                      ...prev,
+                      quantity: e.target.value,
+                    };
+                  })
+                }
+              />
+            </div>
+            <div className="space-y-2  lg:w-1/2">
+              <h2 className="pl-2 text-[#575757] text-sm">Reorder Point</h2>
+
+              <Input
+                name="reOrderPoint"
+                inputClassName="border p-3 bg-[#E4E7E8] rounded-[12px] placeholder:text-left placeholder:align-top"
+                placeholder="Enter Reorder Point"
+                type="number"
+                onChange={(e) =>
+                  setPackageState!((prev) => {
+                    return {
+                      ...prev,
+                      reOrderPoint: e.target.value,
+                    };
+                  })
+                }
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2 w-full mt-5">
+            <h2 className="pl-2 text-[#575757] text-sm">Carbon Footprint</h2>
+
+            <Input
+              name="carbonFootPrint"
+              inputClassName="border p-3 bg-[#E4E7E8] rounded-[12px] placeholder:text-left placeholder:align-top"
+              placeholder="Enter carbon footprint"
+              type="number"
+              onChange={(e) =>
+                setPackageState!((prev) => {
+                  return {
+                    ...prev,
+                    carbonFootPrint: e.target.value,
+                  };
+                })
+              }
+            />
+          </div>
+
+          <div className="space-y-2 w-full mt-2">
+            <h2 className="pl-2 text-[#575757] text-sm">Colors</h2>
+            <Select
+              isMulti
+              name="colors"
+              options={colourOptions}
+              className="basic-multi-select"
+              classNamePrefix="select"
+              onChange={handleColorsChange}
+            />
+          </div>
+
+          {/* 
           <CountryRegionDropdown
             name="country"
             labelClassName={labelStyle}
@@ -630,9 +743,9 @@ const NewPackage = (_: Props) => {
                 country: value,
               }));
             }}
-          />
+          /> */}
 
-          <h2 className="text-black-main font-[400] ">City</h2>
+          {/* <h2 className="text-black-main font-[400] ">City</h2>
           <Select
             isMulti={true as any}
             name="city"
@@ -664,7 +777,7 @@ const NewPackage = (_: Props) => {
                 regions: value || [], // Ensure it's always an array, even if value is null
               }));
             }}
-          />
+          /> */}
 
           {/* optional checkbox */}
           <div className="flex-center gap-[11px]">

@@ -172,6 +172,7 @@ export type DropBoxProps = {
   setSelectedFiles?: React.Dispatch<React.SetStateAction<File[] | null>>;
   children?: ReactNode;
   disabled?: boolean;
+  isMultiple?: boolean;
 };
 
 export type SideBarItem = {

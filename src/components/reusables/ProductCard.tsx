@@ -43,7 +43,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
   return (
     <>
 
-        <div className="min-w-[255px] lg:min-w-[255px] group">
+        <div className="min-w-[255px] lg:max-w-[315px] group">
           <div className="relative ">
             <div className="absolute top-[10px] right-[10px] rounded-full w-[32px] h-[32px] bg-white grid place-items-center z-[10]">
               <GrFavorite />
