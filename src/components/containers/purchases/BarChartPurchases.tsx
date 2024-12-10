@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import BarChart from "@/components/charts/BarChart";
-import { getPurchasesChart } from "@/services/homeOwner";
 import Loading from "@/components/reusables/Loading";
-import { GoDownload } from "react-icons/go";
-import html2canvas from "html2canvas";
 import { useRef } from "react";
+import html2canvas from "html2canvas";
+import { GoDownload } from "react-icons/go";
+import { getPurchasesChart } from "@/services/homeOwner";
 
 interface UsageSummaryProps {
   purchaseId: string[];
@@ -13,34 +13,29 @@ interface UsageSummaryProps {
 const UsageSummary = ({ purchaseId }: UsageSummaryProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
-  //Fetch data from the API
   const { data: response, isLoading, error } = useQuery({
     queryKey: ["purchase-chart", purchaseId],
     queryFn: () => getPurchasesChart(purchaseId),
-    // enabled: purchaseId.length > 0,
   });
 
-  // Fallback empty data structure
-  const aggregateEnergyBill = response?.data?.aggregate_bill || {};
-  const currentElectricityDemand = aggregateEnergyBill.current_electricity_demand || 0;
-  const currentElectricityCharge = aggregateEnergyBill.current_electricity_charge || 0;
-  const currentGasDemand = aggregateEnergyBill.current_gas_demand || 0;
-  const currentGasCharge = aggregateEnergyBill.current_gas_charge || 0;
-
+  const totalCummulativeScope = response?.data?.total_cummulative_scope || {};
   const data = {
     labels: ["Electricity"],
     datasets: [
       {
-        label: "Demand",
-        data: [currentElectricityDemand, currentGasDemand],
-        backgroundColor: "rgba(54, 162, 235)",
-        yAxisID: "y",
+        label: "Scope 1",
+        data: [totalCummulativeScope.scope_1 || 0],
+        backgroundColor: "rgba(255, 99, 132, 0.8)", // Color for Scope 1
       },
       {
-        label: "Charges",
-        data: [currentElectricityCharge, currentGasCharge],
-        backgroundColor: "rgba(255, 206, 86)",
-        yAxisID: "y1",
+        label: "Scope 2",
+        data: [totalCummulativeScope.scope_2 || 0],
+        backgroundColor: "rgba(54, 162, 235, 0.8)", // Color for Scope 2
+      },
+      {
+        label: "Scope 3",
+        data: [totalCummulativeScope.scope_3 || 0],
+        backgroundColor: "rgba(75, 192, 192, 0.8)", // Color for Scope 3
       },
     ],
   };
@@ -49,33 +44,53 @@ const UsageSummary = ({ purchaseId }: UsageSummaryProps) => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: true, position: "top", labels: { boxWidth: 10 } },
-      title: { display: true, text: "Current Usage Summary" },
+      legend: {
+        display: true,
+        position: "top",
+        labels: {
+          boxWidth: 10,
+        },
+      },
+      title: {
+        display: true,
+        text: "Electricity Usage by Scope",
+      },
     },
     scales: {
-      x: { title: { display: true, text: "Energy Source" }, grid: { display: false } },
-      y: { title: { display: true, text: "Demand" }, grid: { display: false }, min: 0, max: 1000 },
-      y1: { type: "linear", position: "right", title: { display: true, text: "Charges (€)" }, grid: { drawOnChartArea: false }, min: 0, max: 800 },
+      x: {
+        stacked: true,
+        title: {
+          display: true,
+          text: "Energy Source",
+        },
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        stacked: true,
+        title: {
+          display: true,
+          text: "Emissions (kg CO2)",
+        },
+        grid: {
+          display: false,
+        },
+      },
     },
   };
 
   const downloadChart = async () => {
     if (chartRef.current) {
-      const originalHeight = chartRef.current.style.height; // Store original height
-      chartRef.current.style.height = '600px'; // Increase height for download
-
       const canvas = await html2canvas(chartRef.current, {
-        scale: 2, // For better quality
+        scale: 2,
         useCORS: true,
-        backgroundColor: 'white'  // Optional: For transparent backgrounds
+        backgroundColor: "white",
       });
-
-      // Reset the original height after capturing
-      chartRef.current.style.height = originalHeight;
 
       const link = document.createElement("a");
       link.href = canvas.toDataURL("image/png");
-      link.download = "TrendingProjectionsChart.png";
+      link.download = "ElectricityUsageChart.png";
       link.click();
     }
   };
@@ -83,19 +98,20 @@ const UsageSummary = ({ purchaseId }: UsageSummaryProps) => {
   if (isLoading) {
     return (
       <div className="h-32 grid place-items-center">
-        <Loading message="Aggregate Bill loading..." />
+        <Loading message="Loading data..." />
       </div>
     );
   }
+
   if (error) return <div>Error loading data</div>;
 
   return (
     <div className="h-[400px] w-[90%]" ref={chartRef}>
-      <div className="flex flex-col md:flex-row justify-between items-center">
-        <h3 className="font-semibold">Aggregate Bill </h3>
+      <div className="flex justify-between items-center">
+        <h3 className="font-semibold">Electricity Usage</h3>
         <button
           onClick={downloadChart}
-          className="flex items-center justify-center hover:bg-[#3465AF] hover:text-white w-fit text-sm gap-2 py-1 mt-2 md:mt-0 md:py-[6px] px-5 border-2 rounded-3xl text-gray-500 border-[#3465AF]"
+          className="flex items-center text-sm gap-2 py-1 px-5 border-2 rounded-3xl hover:bg-blue-600 hover:text-white"
         >
           <span>Download</span>
           <GoDownload />
@@ -107,5 +123,3 @@ const UsageSummary = ({ purchaseId }: UsageSummaryProps) => {
 };
 
 export default UsageSummary;
-
-

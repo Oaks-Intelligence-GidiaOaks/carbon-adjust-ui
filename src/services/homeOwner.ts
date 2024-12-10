@@ -22,7 +22,6 @@ export const getHomePageFreebies = async () => {
 
 export const getBestSellerPackages = async () => {
   const { data } = await axiosInstance.get(`/packages/store/best-sellers`);
-
   return data;
 };
 
