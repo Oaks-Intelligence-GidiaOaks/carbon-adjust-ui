@@ -1,3 +1,4 @@
+import { cn } from "@/utils";
 import { FC, useState } from "react";
 import { FaEllipsisV } from "react-icons/fa";
 
@@ -8,6 +9,7 @@ interface StaffCardProps {
   image: string;
   onAssignRole: () => void;
   onRemoveStaff: () => void;
+  className?: string;
 }
 
 const StaffCard: FC<StaffCardProps> = ({
@@ -17,11 +19,17 @@ const StaffCard: FC<StaffCardProps> = ({
   image,
   onAssignRole,
   onRemoveStaff,
+  className,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <div className="p-6 w-[300px] shrink-0 px-6 border-[0.5px] bg-white shadow rounded-lg relative">
+    <div
+      className={cn(
+        "p-6 w-[300px] shrink-0 px-6 border-[0.5px] bg-white shadow rounded-lg relative",
+        className
+      )}
+    >
       {/* Dropdown Menu */}
       <div className="relative w-fit ml-auto">
         <button
