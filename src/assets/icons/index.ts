@@ -52,6 +52,8 @@ import TickCircle from "./tick-circle.svg?react";
 import CreditCard from "./credit-card-icon.svg?react";
 import BankIcon from "./bank-icon.svg?react";
 import BoxCarton from "./box-carton.svg?react";
+import PendulumIcon from "./pendulum-icon.svg?react";
+import AssetIcon from "./asset-icon.svg?react";
 
 export {
   ApprovedClaimIcon,
@@ -108,4 +110,6 @@ export {
   CreditCard,
   BankIcon,
   BoxCarton,
+  PendulumIcon,
+  AssetIcon,
 };

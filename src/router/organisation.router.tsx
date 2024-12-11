@@ -1,11 +1,17 @@
 import BuildingList from "@/components/containers/buildings/BuildingList";
 import AssetsLayout from "@/layouts/AssetsLayout";
 import Layout from "@/layouts/Layout";
+import UnitsLayout from "@/layouts/UnitsLayout";
 import {
   OrganizationDevices,
   OrganisationDashboard,
-  OrganisationDepartment,
+  OrganisationNewStaff,
+  OrganisationNewUnit,
   OrganisationProfile,
+  OrganisationRequests,
+  OrganisationStaff,
+  OrganisationStaffRequestDetails,
+  OrganisationUnit,
   OrganisationWallet,
   OrganizationTransport,
 } from "@/pages/protected/organisation";
@@ -20,8 +26,32 @@ export const organisationRoutes = [
         element: <OrganisationDashboard />,
       },
       {
-        path: "departments",
-        element: <OrganisationDepartment />,
+        path: "units",
+        element: <UnitsLayout />,
+        children: [
+          {
+            path: "",
+            element: <OrganisationUnit />,
+          },
+          {
+            path: "new",
+            element: <OrganisationNewUnit />,
+          },
+        ],
+      },
+      {
+        path: "staff",
+        element: <UnitsLayout />,
+        children: [
+          {
+            path: "",
+            element: <OrganisationStaff />,
+          },
+          {
+            path: "new",
+            element: <OrganisationNewStaff />,
+          },
+        ],
       },
       {
         path: "devices",
@@ -64,6 +94,19 @@ export const organisationRoutes = [
       {
         path: "profile",
         element: <OrganisationProfile />,
+      },
+      {
+        path: "requests",
+        children: [
+          {
+            path: "",
+            element: <OrganisationRequests />,
+          },
+          {
+            path: ":requestId",
+            element: <OrganisationStaffRequestDetails />,
+          },
+        ],
       },
     ],
   },
