@@ -6,13 +6,15 @@ import { PlusIcon } from "@/assets/icons";
 import DeviceCard from "../../devices/DeviceCard";
 import { IoIosArrowForward } from "react-icons/io";
 import { useState, useRef } from "react";
-import GroupDevicesModal from "./GroupDevices";
+import GroupDevicesModal from "./GroupDevicesModal";
 import AssignStaffModal from "./AssignStaff";
 import { MdMoreVert } from "react-icons/md";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
+import LinkToUnitModal from "./LinkToUnitModal";
 
 const AddedDevices = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showUnitModal, setShowUnitModal] = useState(false);
   const [id, setId] = useState<string | null>(null);
   const [cancelId, setCancelId] = useState<string | null>(null);
   const [showStaffModal, setShowStaffModal] = useState(false);
@@ -83,7 +85,10 @@ const AddedDevices = () => {
       <div className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 ">
         <span>Link to Building</span>
       </div>
-      <div className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 ">
+      <div
+        onClick={() => setShowUnitModal(true)}
+        className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
+      >
         <span>Assign to Unit</span>
       </div>
 
@@ -141,7 +146,7 @@ const AddedDevices = () => {
             <h2 className="font-inter font-medium  lg:text-2xl text-[#667085]">
               Household Devices
             </h2>
-            <span>
+            <span className="bg-[#F7FBFE] shadow-lg p-2">
               <IoIosArrowForward />
             </span>
           </div>
@@ -165,6 +170,7 @@ const AddedDevices = () => {
           ))}
         </div>
       </div>
+      {showUnitModal && <LinkToUnitModal setShowModal={setShowUnitModal} />}
       {showModal && <GroupDevicesModal setShowModal={setShowModal} />}
       {showStaffModal && (
         <AssignStaffModal setShowStaffModal={setShowStaffModal} />

@@ -3,6 +3,8 @@ import { DeviceTabs } from "@/interfaces/device.interface";
 import { useState } from "react";
 import { IComponentMap } from "@/types/general";
 import { OrganizationAddedDevices } from "@/components/containers/organisation/devices";
+import DispatchDevices from "@/components/containers/devices/DispatchedDevices";
+import DispatchHistory from "@/components/containers/devices/DispatchHistory";
 
 const Devices = () => {
   const tabs: DeviceTabs[] = [
@@ -19,8 +21,8 @@ const Devices = () => {
 
   const activeComponent: IComponentMap = {
     [DeviceTabs.AddedDevices]: <OrganizationAddedDevices />,
-    [DeviceTabs.DispatchedDevices]: <>coming soon</>,
-    [DeviceTabs.DispatchHistory]: <>coming soon</>,
+    [DeviceTabs.DispatchedDevices]: <DispatchDevices status="processed" />,
+    [DeviceTabs.DispatchHistory]: <DispatchHistory />,
   };
 
   return (

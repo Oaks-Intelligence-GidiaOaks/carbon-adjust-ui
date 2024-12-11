@@ -8,7 +8,7 @@ interface AssetsLayoutProps {
   type?: string;
 }
 
-const AssetsLayout: FC<AssetsLayoutProps> = ({ type = "home-occupant" }) => {
+const AssetsLayout: FC<AssetsLayoutProps> = () => {
   const tabs: AssetTabs[] = [
     AssetTabs.Devices,
     AssetTabs.Buildings,
@@ -17,16 +17,14 @@ const AssetsLayout: FC<AssetsLayoutProps> = ({ type = "home-occupant" }) => {
   ];
 
   const { pathname } = useLocation();
-
+  const type = pathname.includes("/organisation") ? "organisation" : "dashboard";
   const navigate = useNavigate();
   const contentRef = useRef<null | HTMLDivElement>(null);
 
   UseScrollToTop(contentRef);
 
   const handleTabSwitch = (tab: string) => {
-    type === "home-occupant"
-      ? navigate(`/dashboard/${tab.toLocaleLowerCase()}`)
-      : navigate(`/organization/${tab.toLocaleLowerCase()}`);
+   navigate(`/${type}/${tab.toLocaleLowerCase()}`)
   };
 
   const getActiveTab = (pathString: string) => {

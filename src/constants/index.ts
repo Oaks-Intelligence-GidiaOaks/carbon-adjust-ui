@@ -638,27 +638,27 @@ export const organisationSideBarItems = [
   {
     icon: DashboardIcon,
     title: "Dashboard",
-    href: "/organization",
+    href: "/organisation",
   },
   {
     icon: DashboardIcon,
     title: "Department",
-    href: "/organization/departments",
+    href: "/organisation/departments",
   },
   {
     icon: DashboardIcon,
     title: "Assets",
-    href: "/organization/devices",
+    href: "/organisation/devices",
   },
   {
     icon: DashboardIcon,
     title: "Wallet",
-    href: "/organization/wallet",
+    href: "/organisation/wallet",
   },
   {
     icon: DashboardIcon,
     title: "Profile",
-    href: "/organization/profile",
+    href: "/organisation/profile",
   },
   {
     icon: LogoutIcon,

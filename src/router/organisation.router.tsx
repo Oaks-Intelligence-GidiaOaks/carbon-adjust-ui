@@ -1,10 +1,13 @@
+import BuildingList from "@/components/containers/buildings/BuildingList";
+import AssetsLayout from "@/layouts/AssetsLayout";
 import Layout from "@/layouts/Layout";
 import {
-  OrganisationAssets,
+  OrganizationDevices,
   OrganisationDashboard,
   OrganisationDepartment,
   OrganisationProfile,
   OrganisationWallet,
+  OrganizationTransport,
 } from "@/pages/protected/organisation";
 
 export const organisationRoutes = [
@@ -21,8 +24,38 @@ export const organisationRoutes = [
         element: <OrganisationDepartment />,
       },
       {
-        path: "assets",
-        element: <OrganisationAssets />,
+        path: "devices",
+        element: <AssetsLayout type="organization"/>,
+        children: [
+          {
+            path: "",
+            element: <OrganizationDevices />,
+          },
+        ],
+      },
+      {
+        path: "buildings",
+        element: <AssetsLayout type="organization"/>,
+        children: [
+          {
+            path: "",
+            element: <BuildingList />,
+          },
+        ],
+      },
+      {
+        path: "transport",
+        element: <AssetsLayout />,
+        children: [
+          {
+            path: "",
+            element: <OrganizationTransport />,
+          },
+          // {
+          //   path: "add",
+          //   element: <UserNewTransport />,
+          // },
+        ],
       },
       {
         path: "wallet",

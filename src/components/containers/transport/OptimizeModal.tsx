@@ -25,6 +25,7 @@ import { formatTimeToISO, validateOptimizeInputs } from "@/lib/utils";
 import { RotatingLines } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { setTransportTab } from "@/features/assetSlice";
+import { useLocation } from "react-router-dom";
 
 const Modes = [
   { name: "Car", Icon: taxi },
@@ -53,7 +54,8 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
   const [start, setStart] = useState("");
   const [destination, setDestination] = useState("");
   const [positions, setPositions] = useState([]);
-
+  const { pathname } = useLocation();
+  const isOrganization = pathname.includes("/organisation") 
   const initialState: TravelDetails = {
     startLocation: {
       address: "",
@@ -271,6 +273,23 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
       </Modal>
     );
   }
+
+  if (isOrganization) {
+    return (
+      <Modal>
+        <div className=" w-[90%] sm:w-[60%] bg-white sm:h-[70%] h-[30%] flex justify-center flex-col items-center text-cyan-600">
+        <h1 className="text-4xl font-medium uppercase mt-10 font-poppins">
+           IMO OFONIME DAVID
+          </h1>
+          <h2 className="text-2xl font-medium uppercase mt-10 font-poppins">
+            You fucking Genuis . . .
+          </h2>
+        </div>
+      </Modal>
+    );
+  }
+
+  
 
   return (
     <>
