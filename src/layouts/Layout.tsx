@@ -11,6 +11,7 @@ import { setUser } from "@/features/userSlice";
 // @ts-ignore
 import ProtectedRoute from "@/guards/ProtectedRoute";
 import UseScrollToTop from "@/hooks/useScrollToTop";
+import { UserRole } from "@/interfaces/user.interface";
 import { AuthUserProfile } from "@/types/general";
 import { cn, uniqueObjectsByIdType } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -45,6 +46,10 @@ const Layout = (props: Props) => {
       }
       return navigate("/merchant");
     }
+
+    if (role === UserRole.CORPORATE_USER_ADMIN) {
+      return navigate("/organisation");
+    }
   };
 
   useEffect(() => {
@@ -52,14 +57,17 @@ const Layout = (props: Props) => {
     if (isSuccess && user) {
       dispatch(setUser(userData.data.data));
       // console.log(userData.data.data.data);
+
       if (userData.data.data.roles[0] === "ADMIN") {
         if (pathname.includes("admin")) return;
         return navigate("/admin");
       }
+
       if (userData.data.data.roles[0] === "HOME_OCCUPANT") {
         if (pathname.includes("dashboard")) return;
         return navigate("/dashboard");
       }
+
       // NON_FINANCIAL MERCHANT PATH
       if (
         userData.data.data.roles[0] === "MERCHANT" &&
@@ -69,6 +77,7 @@ const Layout = (props: Props) => {
 
         handleRedirect(userData.data.data, userData.data.data.roles[0]);
       }
+
       //   // FINANCIAL MERCHANT PATH
       if (
         userData.data.data.roles[0] === "MERCHANT" &&
@@ -136,7 +145,7 @@ const Layout = (props: Props) => {
         return navigate("/merchant");
       }
 
-      //   // FINANCIAL MERCHANT PATH
+      // FINANCIAL MERCHANT PATH
       if (
         userData?.data.data.roles[0] === "MERCHANT" &&
         userData?.data.data.merchantType === "FINANCIAL_MERCHANT"
@@ -164,49 +173,49 @@ const Layout = (props: Props) => {
   UseScrollToTop(contentRef);
 
   return (
-    // <ProtectedRoute role={user?.roles[0]}>
-    //   <InactivityWrapper onLogout={() => handleLogout()}>
-    <div className="flex max-h-screen max-w-screen overflow-hidden overflow-y-scroll no-scrollbar">
-      {props.sidebarType === "home-occupant" ? (
-        <SideMenu
-          accountType={props.sidebarType}
-          mobileMenuIsOpen={mobileMenuIsOpen}
-          setMobileMenuIsOpen={setMobileMenuIsOpen}
-        />
-      ) : (
-        <Sidebar
-          accountType={props.sidebarType}
-          mobileMenuIsOpen={mobileMenuIsOpen}
-          setMobileMenuIsOpen={setMobileMenuIsOpen}
-        />
-      )}
-
-      <div className="flex-1 items-center">
-        <TopBar
-          mobileMenuIsOpen={mobileMenuIsOpen}
-          setMobileMenuIsOpen={setMobileMenuIsOpen}
-        />
-        <div
-          ref={contentRef}
-          className={cn(
-            "font-poppins w-full max-w-[1440px] pb-16 mx-auto h-full overflow-y-scroll",
-            pathname.includes("dashboard/applications") && "px-0",
-            pathname === "/dashboard/devices" && "px-0",
-            pathname === "/dashboard/profile" && "px-0"
+    <ProtectedRoute role={user?.roles[0]}>
+      <InactivityWrapper onLogout={() => handleLogout()}>
+        <div className="flex max-h-screen max-w-screen overflow-hidden overflow-y-scroll no-scrollbar">
+          {props.sidebarType === "home-occupant" ? (
+            <SideMenu
+              accountType={props.sidebarType}
+              mobileMenuIsOpen={mobileMenuIsOpen}
+              setMobileMenuIsOpen={setMobileMenuIsOpen}
+            />
+          ) : (
+            <Sidebar
+              accountType={props.sidebarType}
+              mobileMenuIsOpen={mobileMenuIsOpen}
+              setMobileMenuIsOpen={setMobileMenuIsOpen}
+            />
           )}
-        >
-          <div className="relative ">
-            <div className="relative z-10">
-              <Outlet />
-              <ChatBot />
+
+          <div className="flex-1 items-center">
+            <TopBar
+              mobileMenuIsOpen={mobileMenuIsOpen}
+              setMobileMenuIsOpen={setMobileMenuIsOpen}
+            />
+            <div
+              ref={contentRef}
+              className={cn(
+                "font-poppins w-full max-w-[1440px] pb-16 mx-auto h-full overflow-y-scroll",
+                pathname.includes("dashboard/applications") && "px-0",
+                pathname === "/dashboard/devices" && "px-0",
+                pathname === "/dashboard/profile" && "px-0"
+              )}
+            >
+              <div className="relative ">
+                <div className="relative z-10">
+                  <Outlet />
+                  <ChatBot />
+                </div>
+                <Footer />
+              </div>
             </div>
-            <Footer />
           </div>
         </div>
-      </div>
-    </div>
-    //   </InactivityWrapper>
-    // </ProtectedRoute>
+      </InactivityWrapper>
+    </ProtectedRoute>
   );
 };
 
