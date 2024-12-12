@@ -49,5 +49,56 @@ export const FormSchemas = () => {
     ForgotPasswordSchema: yup.object().shape({
       email: yup.string().email().required("Please enter a valid email"),
     }),
+    CreateUnitSchema: yup.object().shape({
+      name: yup.string().required("Please enter a name"),
+      unitFunction: yup.string().required("Please enter the unit function"),
+    }),
+    CreateOrganisationStaff: yup.object().shape({
+      email: yup
+        .string()
+        .email("Please enter a valid email")
+        .required("Email is required"),
+
+      name: yup
+        .string()
+        .trim()
+        .min(2, "Name must be at least 2 characters")
+        .required("Name is required"),
+
+      jobTitle: yup.string().trim().required("Job title is required"),
+
+      auThorizationLevel: yup
+        .object()
+        .shape({
+          label: yup.string(),
+          value: yup.string().required("please select an authorization level"),
+        })
+        .nullable()
+        .required("Authorization level is required"),
+
+      unit: yup
+        .object()
+        .shape({
+          value: yup.string().required("please select a unit"),
+          label: yup.string(),
+        })
+        .nullable()
+        .required("Unit selection is required"),
+
+      file: yup
+        .mixed()
+        .required("File is required")
+        .test("fileSize", "File is too large", (value: any) => {
+          // Check file size (e.g., max 5MB)
+          return value && value[0]?.size <= 5 * 1024 * 1024;
+        })
+        .test("fileType", "Unsupported file type", (value: any) => {
+          // Optional: Check file type
+          const supportedTypes = ["image/jpeg", "image/png", "application/pdf"];
+          return value && supportedTypes.includes(value[0]?.type);
+        }),
+
+      subUnit: yup.string().trim(),
+    }),
   };
 };

@@ -2,21 +2,15 @@ import StaffCard from "@/components/ui/StaffCard";
 import { FC, useState } from "react";
 import { FaEllipsisV } from "react-icons/fa";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
-import staffMembers from "@/dummy/staff-members.json";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-
-interface DepartmentWithStaffCardProps {
-  departmentName: string;
-  staffCount: number;
-  assetsCount: number;
-  climateScore: number;
-}
+import { DepartmentWithStaffCardProps } from "@/interfaces/organisation.interface";
 
 const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
-  departmentName,
-  staffCount,
-  assetsCount,
+  name,
+  totalAssets,
   climateScore,
+  staff,
+  totalStaff,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -30,13 +24,10 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
           {/* Header */}
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Department name</p>
-              <h3 className="text-lg font-semibold text-gray-800">
-                {departmentName}
-              </h3>
+              <p className="text-sm text-gray-500">Unit name</p>
+              <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
             </div>
 
-            {/* Options Menu */}
             <button className="text-gray-500 hover:text-gray-700">
               <FaEllipsisV />
             </button>
@@ -44,15 +35,14 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
 
           <hr className="my-2" />
 
-          {/* Details */}
           <div className="grid grid-cols-3 gap-4 mt-4 text-sm text-gray-700">
             <div>
               <p className="font-medium">No of staff</p>
-              <p>{staffCount}</p>
+              <p>{totalStaff}</p>
             </div>
             <div>
               <p className="font-medium">No. of Assets</p>
-              <p>{assetsCount}</p>
+              <p>{totalAssets}</p>
             </div>
             <div>
               <p className="font-medium">Climate transition score</p>
@@ -87,7 +77,7 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
             </div>
 
             <div className="grid place-items-center gap-3 grid-cols-3">
-              {Array.from(staffMembers, (stf, i) => (
+              {Array.from(staff, (stf, i) => (
                 <StaffCard
                   key={i}
                   {...stf}

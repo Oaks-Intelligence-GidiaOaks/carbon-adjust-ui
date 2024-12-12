@@ -1,13 +1,24 @@
 import DepartmentWithStaffCard from "@/components/containers/organisation/DepartmentWithStaffCard";
+import Loading from "@/components/reusables/Loading";
 import Paginate from "@/components/reusables/Paginate";
 import { Button } from "@/components/ui";
 import Search from "@/components/ui/Search";
+import { DepartmentWithStaffCardProps } from "@/interfaces/organisation.interface";
+import { AllAdminUnits } from "@/services/organisation";
 import { PaginateProps } from "@/types/general";
+import { useQuery } from "@tanstack/react-query";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Units = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["get-admin-units"],
+    queryFn: () => AllAdminUnits(),
+  });
+
+  const units: Array<DepartmentWithStaffCardProps> = data?.data?.units || [];
+
   // @ts-ignore
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
@@ -22,6 +33,14 @@ const Units = () => {
   const handlePageChange = () => {
     // do nothing for now
   };
+
+  if (isLoading) {
+    return (
+      <div className="h-32 pt-10">
+        <Loading message="" />
+      </div>
+    );
+  }
 
   return (
     <div className="">
@@ -47,15 +66,13 @@ const Units = () => {
 
       {/* container for cards */}
       <div className="space-y-6">
-        {Array.from({ length: 5 }, (_, i) => (
-          <DepartmentWithStaffCard
-            key={i}
-            departmentName="Marketing Department"
-            staffCount={10}
-            assetsCount={4}
-            climateScore={4}
-          />
-        ))}
+        {units.length ? (
+          Array.from(units, (it, i) => (
+            <DepartmentWithStaffCard key={i} {...it} climateScore={4} />
+          ))
+        ) : (
+          <div className="text-center p-8 ">No units Added</div>
+        )}
       </div>
 
       {/* Pagination */}

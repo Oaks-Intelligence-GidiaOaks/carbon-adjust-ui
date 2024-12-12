@@ -7,8 +7,20 @@ import { Link } from "react-router-dom";
 import staffMembers from "@/dummy/staff-members.json";
 import { useState } from "react";
 import StaffListWithDepartment from "@/components/containers/organisation/StaffListWithDepartment";
+import Loading from "@/components/reusables/Loading";
+import { AdminStaffDetails, AllStaffByUnit } from "@/services/organisation";
+import { useQuery } from "@tanstack/react-query";
 
 const OrganisationStaff = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["get-admin-staff"],
+    queryFn: () => AllStaffByUnit(),
+  });
+
+  const staffList: Array<any> = data?.data?.departments || [];
+
+  // console.log(staffList, "staf list");
+
   // @ts-ignore
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
@@ -24,11 +36,19 @@ const OrganisationStaff = () => {
     // do nothing for now
   };
 
+  if (isLoading) {
+    return (
+      <div className="h-32 pt-10">
+        <Loading message="" />
+      </div>
+    );
+  }
+
   return (
     <div className="">
       <div className="my-10">
         <h2 className="font-[600] font-dm-sans text-3xl text-[#495057]">
-          Units
+          Staff
         </h2>
       </div>
 
@@ -48,8 +68,9 @@ const OrganisationStaff = () => {
 
       {/* container for cards */}
       <div className="space-y-10">
-        {Array.from({ length: 5 }, (_, i) => (
+        {Array.from(staffList, (stf, i) => (
           <StaffListWithDepartment
+            {...stf}
             unitName="Design Department"
             staffList={staffMembers}
             key={i}

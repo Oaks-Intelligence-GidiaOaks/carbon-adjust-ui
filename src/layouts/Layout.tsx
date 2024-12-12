@@ -38,6 +38,13 @@ const Layout = (props: Props) => {
   });
 
   const handleRedirect = (user: AuthUserProfile, role: string) => {
+    if (
+      user.roles.includes(UserRole.CORPORATE_USER_ADMIN) ||
+      role === UserRole.CORPORATE_USER_ADMIN
+    ) {
+      return navigate("/organisation");
+    }
+
     if (role === "HOME_OCCUPANT") return navigate("/dashboard");
     if (role === "ADMIN") return navigate("/admin");
     if (role === "MERCHANT") {
@@ -45,10 +52,6 @@ const Layout = (props: Props) => {
         return navigate("/account-setup");
       }
       return navigate("/merchant");
-    }
-
-    if (role === UserRole.CORPORATE_USER_ADMIN) {
-      return navigate("/organisation");
     }
   };
 
