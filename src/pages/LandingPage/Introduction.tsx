@@ -34,13 +34,15 @@ const Introduction = () => {
         >
           <div className="relative h-[250px] lg:w-[70%] lg:h-[500px] bg-cover mx-auto bg-no-repeat">
             <video
-              className="absolute inset-0 w-full h-full object-contain z-[10]"
+              className="absolute inset-0 w-full h-full object-contain z-[1]"
               // src="../../assets/hero-bg.mp4"
-               src="../../assets/dashboard.mp4"
+              src="../../assets/dashboard.mp4"
               autoPlay
               loop
               muted
               playsInline
+              controlsList="nodownload nofullscreen noremoteplayback"
+              onContextMenu={(e) => e.preventDefault()}
             ></video>
           </div>
         </motion.div>
