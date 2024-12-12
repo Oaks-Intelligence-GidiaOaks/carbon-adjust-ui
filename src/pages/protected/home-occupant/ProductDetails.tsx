@@ -15,9 +15,6 @@ import { IQuestion } from "@/interfaces/product.interface";
 import { PlayCircleIcon } from "@heroicons/react/20/solid";
 import ProductFormV2 from "@/components/containers/checkout/ProductFormV2";
 
-// interface Props extends IProduct {
-//   wrapText?: boolean;
-// }
 
 interface Tab {
   label: string;
@@ -30,6 +27,7 @@ interface ColorOption {
 }
 
 interface ProductProps {
+  _id: string,
   name: string;
   price: number;
   reviews: number;
@@ -43,6 +41,7 @@ interface ProductProps {
 }
 
 const ProductDetails: React.FC<ProductProps & { isMerchant?: boolean }> = ({
+  _id,
   name,
   price,
   reviews,
@@ -52,7 +51,7 @@ const ProductDetails: React.FC<ProductProps & { isMerchant?: boolean }> = ({
   images,
   videos,
   questions,
-  owner
+  owner,
 }) => {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>(
@@ -157,7 +156,16 @@ const ProductDetails: React.FC<ProductProps & { isMerchant?: boolean }> = ({
                 <ChevronLeft className="size-4" />
                 Back
               </button>
-              <ProductFormV2 questions={ questions }/>
+              <ProductFormV2
+                questions={questions}
+                productData={{
+                  _id,
+                  price,
+                  selectedColor,
+                  selectedQuantity,
+                }}
+                onCloseForm={() => setShowForm(false)}
+              />
             </div>
           ) : (
             <>
@@ -239,13 +247,13 @@ const ProductDetails: React.FC<ProductProps & { isMerchant?: boolean }> = ({
                   >
                     <BsCart3 /> Add to Cart
                   </button>
-                  
-                    <button
-                      onClick={() => setShowForm(true)}
-                      className="w-full py-2 text-center text-white blue-gradient rounded-full"
-                    >
-                      Buy Now
-                    </button>
+
+                  <button
+                    onClick={() => setShowForm(true)}
+                    className="w-full py-2 text-center text-white blue-gradient rounded-full"
+                  >
+                    Buy Now
+                  </button>
                 </div>
               </div>
             </>
@@ -302,8 +310,8 @@ const ImageGallery: React.FC<{ media: string[]; isVideo: boolean }> = ({
     setSelectedIndex((prev) => (prev - 1 + media.length) % media.length);
   };
 
-   // Handle empty media
-   if (media.length === 0) {
+  // Handle empty media
+  if (media.length === 0) {
     return (
       <div className="flex justify-center items-center h-64 bg-gray-100 rounded-lg">
         <p className="text-gray-500">No media for this product</p>

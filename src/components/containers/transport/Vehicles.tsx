@@ -20,6 +20,7 @@ import TransportBarChart from "./TransportBarChart";
 
 const Vehicles = () => {
   const [showModal, setShowModal] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [ids, setIds] = useState<string[]>([]);
   const chartAreaRef = useRef<HTMLDivElement>(null);
@@ -72,6 +73,18 @@ const Vehicles = () => {
     }
   }, [ids]);
 
+  const transportData = transports?.data?.transportations;
+
+  const toggleMasterChecked = (checked: boolean) => {
+    setIsChecked(checked);
+    if (checked) {
+      const allIds = transportData?.map((item:any) => item._id) || [];
+      setIds(allIds);
+    } else {
+      setIds([]);
+    }
+  };
+
   return (
     <div>
       <div className="flex justify-between flex-wrap mt-[15px] gap-5">
@@ -113,6 +126,17 @@ const Vehicles = () => {
           </Link>
         </div>
       </div>
+      <div className="flex justify-end items-end my-3 mr-2">
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={(e) => toggleMasterChecked(e.target.checked)}
+            className="mr-2 cursor-pointer"
+          />
+          <span className="text-sm font-medium">Select All</span>
+        </div>
+      </div>
       <div className="mt-[20px] space-y-[38px]">
         {/* Render loading state if isLoading is true */}
         {isLoading ? (
@@ -136,10 +160,10 @@ const Vehicles = () => {
               <div className="h-32 grid place-items-center max-w-[98%]">
                 {searchQuery ? (
                   <NoDevices
-                  empty={true}
-                  link="/dashboard/transport/add"
-                  text="Transport"
-                />
+                    empty={true}
+                    link="/dashboard/transport/add"
+                    text="Transport"
+                  />
                 ) : (
                   <NoDevices link="/dashboard/transport/add" text="Transport" />
                 )}

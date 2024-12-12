@@ -1,71 +1,96 @@
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
 import { IoCloseCircleOutline } from "react-icons/io5";
-import image2 from "@/assets/main-image.svg";
 import { Link } from "react-router-dom";
+import { deleteCartItem, getCartItems } from "@/services/homeOwner";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 type CartItem = {
   id: number;
+  productId: string;
   name: string;
   price: number;
   originalPrice?: number;
   quantity: number;
   subtotal: number;
   imageUrl: string;
+ 
+};
+
+type APIItem = {
+  _id: number;
+  productId: {
+    _id: string;
+    title: string;
+    price: number;
+    attachments: string[];
+  };
+  quantity: number;
+};
+
+type APICart = {
+  items: APIItem[];
 };
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: 1,
-      name: "Energy Device",
-      price: 70,
-      originalPrice: 99,
-      quantity: 1,
-      subtotal: 70,
-      imageUrl: `${image2}`,
-    },
-    {
-      id: 2,
-      name: "Energy Device",
-      price: 250,
-      quantity: 3,
-      subtotal: 250,
-      imageUrl: `${image2}`,
-    },
-    {
-      id: 3,
-      name: "Energy Device",
-      price: 250,
-      quantity: 3,
-      subtotal: 250,
-      imageUrl: `${image2}`,
-    },
-  ]);
+  const queryClient = useQueryClient();
 
-  const handleQuantityChange = (id: number, delta: number) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              quantity: Math.max(1, item.quantity + delta),
-              subtotal: item.price * Math.max(1, item.quantity + delta),
-            }
-          : item
-      )
-    );
-  };
+  // Fetch data using useQuery
+  const {
+    data: response,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["cart-items"],
+    queryFn: getCartItems,
+  });
 
-  const handleRemoveItem = (id: number) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  // Map fetched data into the expected format
+  const cartItems: CartItem[] =
+    response?.data?.cartItems?.flatMap((cart: APICart) =>
+      cart.items.map((item: APIItem): CartItem => ({
+        id: item._id,
+        productId: item.productId._id,
+        name: item.productId.title,
+        price: item.productId.price,
+        quantity: item.quantity,
+        subtotal: item.productId.price * item.quantity,
+        imageUrl: item.productId.attachments[0], 
+ 
+      }))
+    ) || [];
+
+  // Mutation to delete cart item
+  const deleteCartItemMutation = useMutation({
+    mutationFn: (productId: string) => deleteCartItem(productId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart-items"] });
+      toast.success("Item deleted successfully!", { duration: 5000 });
+    },
+    onError: (error: unknown) => {
+      toast.error("Failed to delete item. Please try again.", { duration: 5000 });
+      console.error("Error deleting cart item:", error);
+    },
+  });
+
+
+  const handleRemoveItem = (productId: string) => {
+    deleteCartItemMutation.mutate(String(productId));
   };
 
   const productCost = cartItems.reduce((acc, item) => acc + item.subtotal, 0);
-  const shippingCost = cartItems.length > 0 ? 100 : 0;
-  const vat = cartItems.length > 0 ? 7.5 : 0;
+  const shippingCost = cartItems.length > 0 ? 0 : 0;
+  const vat = cartItems.length > 0 ? 0 : 0;
   const discount = 0;
   const total = productCost + shippingCost + vat - discount;
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error fetching cart items.</p>;
+  }
 
   return (
     <div className="flex flex-col md:flex-row gap-8 p-8">
@@ -90,8 +115,9 @@ const Cart = () => {
                   <tr key={item.id}>
                     <td className="p-4 border-b flex items-center gap-4">
                       <button
-                        onClick={() => handleRemoveItem(item.id)}
-                        className="text-red-500 hover:text-red-700 "
+                        onClick={() => handleRemoveItem(item.productId)}
+                        className="text-red-500 hover:text-red-700 disabled:opacity-50"
+                        disabled={deleteCartItemMutation.isPending}
                       >
                         <IoCloseCircleOutline />
                       </button>
@@ -100,27 +126,10 @@ const Cart = () => {
                         alt={item.name}
                         className="w-12 h-12 object-cover rounded-md"
                       />
-                      {/* Display formatted name */}
                       <span>{`${item.name} x ${item.quantity}`}</span>
                     </td>
                     <td className="p-4 border-b">${item.price}</td>
-                    <td className="p-4 border-b">
-                      <div className="flex items-center gap-6 p-1 border border-gray-200 rounded w-fit">
-                        <button
-                          onClick={() => handleQuantityChange(item.id, -1)}
-                          className="px-2 py-1 "
-                        >
-                          −
-                        </button>
-                        <span>{item.quantity}</span>
-                        <button
-                          onClick={() => handleQuantityChange(item.id, 1)}
-                          className="px-2 py-1 "
-                        >
-                          +
-                        </button>
-                      </div>
-                    </td>
+                    <td className="p-4 border-b">{item.quantity}</td>
                     <td className="p-4 border-b">${item.subtotal}</td>
                   </tr>
                 ))}
@@ -128,8 +137,7 @@ const Cart = () => {
             </table>
             <Link to={"/dashboard"}>
               <button className="px-4 py-2 border flex items-center gap-2 border-[#0B8DFF] text-transparent bg-clip-text bg-gradient-to-b from-[#2E599A] to-[#0B8DFF] rounded-lg hover:bg-blue-200">
-                <ArrowLeft className="text-[#0B8DFF]  size-4" /> Continue
-                Shopping
+                <ArrowLeft className="text-[#0B8DFF]" /> Continue Shopping
               </button>
             </Link>
           </div>
@@ -138,14 +146,12 @@ const Cart = () => {
             <p className="text-gray-500 mb-4">Your cart is empty.</p>
             <Link to={"/dashboard"} className="mt-4">
               <button className="px-4 py-2 border flex items-center gap-2 border-[#0B8DFF] text-transparent bg-clip-text bg-gradient-to-b from-[#2E599A] to-[#0B8DFF] rounded-lg hover:bg-blue-200">
-                <ArrowLeft className="text-[#0B8DFF]  size-4" /> Continue
-                Shopping
+                <ArrowLeft className="text-[#0B8DFF]" /> Continue Shopping
               </button>
             </Link>
           </div>
         )}
       </div>
-
       {/* Right Section - Summary */}
       <div className="w-full md:w-1/3 bg-white shadow-sm rounded-lg p-6">
         <h2 className="text-xl font-bold mb-4">Your Order</h2>
@@ -153,7 +159,7 @@ const Cart = () => {
           <>
             <div className="flex justify-between items-center mb-2">
               <span>Product cost</span>
-              <span>${productCost}</span>
+              <span>${productCost.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center mb-2">
               <span>Shipping cost</span>
@@ -169,12 +175,12 @@ const Cart = () => {
             </div>
             <div className="flex justify-between items-center text-lg border-t border-gray-300 pt-4">
               <span>Total</span>
-              <span>${total}</span>
+              <span>${total.toFixed(2)}</span>
             </div>
             <Link to={"/dashboard/checkout"}>
-            <button className="mt-4 w-full px-4 py-2 blue-gradient rounded-full text-white hover:bg-blue-600">
-              Proceed to Checkout
-            </button>
+              <button className="mt-4 w-full px-4 py-2 blue-gradient rounded-full text-white hover:bg-blue-600">
+                Proceed to Checkout
+              </button>
             </Link>
             {/* Coupon Code */}
             <div className="mt-4 border ">

@@ -17,6 +17,7 @@ import wallet from "@/assets/wallet.svg";
 // } from "@stripe/react-stripe-js";
 // @ts-ignore
 import { loadStripe } from "@stripe/stripe-js";
+import Payment from "@/pages/protected/home-occupant/Payment";
 // import { useMutation } from "@tanstack/react-query";
 
 // import { Oval } from "react-loader-spinner";
@@ -358,112 +359,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
             </div>
           ) : (
             <div className="mt-6 p-4 border rounded-md bg-white shadow-sm">
-              {/* <Elements
-                stripe={stripePromise}
-                // @ts-ignore
-                options={options}
-              > */}
-                <form className="space-y-6 text-sm">
-                  {/* <PaymentElement /> */}
-                  {/* Name on Card */}
-                  <div>
-                    <label htmlFor="cardName" className="block text-sm ">
-                      Name on Card
-                    </label>
-                    <input
-                      type="text"
-                      id="cardName"
-                      placeholder="Odinaka Kelvin"
-                      className="w-full border rounded-md p-2 mt-1 placeholder:text-sm"
-                    />
-                  </div>
-
-                  {/* Card Number */}
-                  <div>
-                    <label htmlFor="cardNumber" className="block text-sm ">
-                      Card Number
-                    </label>
-                    <input
-                      type="text"
-                      id="cardNumber"
-                      placeholder="1234 5678 9012 3456"
-                      className="w-full border rounded-md p-2 mt-1 placeholder:text-sm"
-                    />
-                  </div>
-
-                  {/* Expiry Date and CVV */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="expiryDate" className="block text-sm ">
-                        Expire Date
-                      </label>
-                      <input
-                        type="text"
-                        id="expiryDate"
-                        placeholder="MM/YY"
-                        className="w-full border rounded-md p-2 mt-1 placeholder:text-sm"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="cvv" className="block text-sm">
-                        CVV
-                      </label>
-                      <input
-                        type="text"
-                        id="cvv"
-                        placeholder="123"
-                        className="w-full border rounded-md p-2 mt-1 placeholder:text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Additional Information */}
-                  <div>
-                    <p className="font-medium mb-3">Additional Information</p>
-                    <label htmlFor="orderNotes" className="block text-sm ">
-                      Order Notes
-                    </label>
-                    <textarea
-                      id="orderNotes"
-                      placeholder="Notes about your order, e.g. special notes for delivery"
-                      className="w-full border rounded-md p-2 mt-1 h-24 placeholder:text-sm"
-                    ></textarea>
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                  type="submit"
-                  onClick={handleFormSubmit}
-                  className="w-full blue-gradient text-white py-3 px-4 rounded-full font-medium"
-                >
-                  Next
-                </button>
-                  {/* <div className="mx-auto w-full my-6 font-[600] font-poppins">
-                    <button
-                      className={`${
-                        !stripe || !elements || btnLoading
-                          ? "!bg-gray-400"
-                          : "blue-gradient"
-                      } border p-3 px-6 text-sm  text-white  rounded-md w-full grid place-items-center`}
-                      type="submit"
-                      disabled={!stripe || !elements || btnLoading}
-                    >
-                      {btnLoading ? (
-                        <Oval
-                          visible={true}
-                          height="20"
-                          width="20"
-                          color="#ffffff"
-                          ariaLabel="oval-loading"
-                          wrapperStyle={{}}
-                          wrapperClass=""
-                        />
-                      ) : (
-                        `Pay ${product.currency} ${order.price}`
-                      )}
-                    </button> */}
-                  {/* </div> */}
-                </form>
+              <Payment />
               {/* </Elements> */}
             </div>
           )}

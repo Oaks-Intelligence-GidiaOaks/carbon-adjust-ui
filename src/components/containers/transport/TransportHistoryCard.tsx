@@ -27,6 +27,7 @@ const TransportHistoryCard = (props: Trips) => {
   const [showMore, setShowMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+
   function downloadKML(data: any[]) {
     const kmlContent = generateKML(data);
 
@@ -38,7 +39,7 @@ const TransportHistoryCard = (props: Trips) => {
 
   const getStatusClasses = (status: string) => {
     const statusLowerCase = status?.toLowerCase();
-  
+
     switch (statusLowerCase) {
       case "completed":
         return "text-green-800 bg-green-100";
@@ -48,7 +49,6 @@ const TransportHistoryCard = (props: Trips) => {
         return "text-red-800 bg-red-100";
     }
   };
-  
 
   return (
     <>
@@ -69,7 +69,9 @@ const TransportHistoryCard = (props: Trips) => {
             <div className="flex flex-col gap-y-2">
               <h3 className="text-sm font-normal text-gray-700">Status</h3>
               <div
-                className={`${getStatusClasses(tripQueueResponse?.status || 'pending')}
+                className={`${getStatusClasses(
+                  tripQueueResponse?.status || "pending"
+                )}
                   } text-sm px-2  rounded-sm inline-flex items-center capitalize`}
               >
                 <span>
@@ -135,7 +137,6 @@ const TransportHistoryCard = (props: Trips) => {
               }
             />
           </div>
-
           <div
             className={`flex flex-col sm:flex-row gap-5 my-5  sm:items-center items-start transition-all duration-500 ease-in-out overflow-hidden ${
               showMore
@@ -186,6 +187,7 @@ const TransportHistoryCard = (props: Trips) => {
               </Button>
             </div>
           )}
+
           {showModal && (
             <Modal>
               <div className="w-[90%] sm:w-[50%] bg-white h-[90%] rounded-lg p-5 overflow-y-scroll">

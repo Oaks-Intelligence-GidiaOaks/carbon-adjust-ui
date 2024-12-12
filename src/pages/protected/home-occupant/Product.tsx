@@ -1,6 +1,6 @@
 import RelatedProductCategory from "@/components/reusables/RelatedProducts";
 import ReviewsSection from "@/components/reusables/ReviewSection";
-import ProductCard from "./ProductCard";
+import ProductCard from "./ProductDetails";
 import { useQuery } from "@tanstack/react-query";
 import { getPackageDetails } from "@/services/homeOwner";
 import { useParams } from "react-router-dom";
@@ -57,6 +57,7 @@ const Product = () => {
   return (
     <div>
        <ProductCard
+       _id={packageId}
         name={packageDetails.title}
         price={packageDetails.price}
         owner={packageDetails.category.name}

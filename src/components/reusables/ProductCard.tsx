@@ -4,6 +4,7 @@ import { IProduct } from "@/interfaces/product.interface";
 import { Link } from "react-router-dom";
 import { BsCart3 } from "react-icons/bs";
 
+
 interface Props extends IProduct {
   wrapText?: boolean;
 }
@@ -15,6 +16,8 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
   const toggleLike = () => {
     setLiked(!liked);
   };
+
+  
 
   const averageRating = props?.rating || 0;
 
@@ -130,3 +133,4 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
 };
 
 export default ProductCard;
+

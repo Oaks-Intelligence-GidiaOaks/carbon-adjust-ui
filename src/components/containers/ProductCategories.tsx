@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getHomePagePackages } from "@/services/homeOwner";
 import ProductCard from "../reusables/ProductCard";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface Category {
   _id: string;
@@ -45,8 +46,13 @@ const ProductCategories: React.FC = () => {
 
   const initialCategories = categoriesWithPackages.slice(0, 5);
 
+    // Utility function to format titles
+    const formatTitle = (title: string): string => {
+      return title.replace(/\s+/g, '-').toLowerCase();
+    };
+
   return (
-    <div className="w-full max-w-6xl mx-auto py-10 container">
+    <div className="w-full py-10 container">
       <h2 className="text-center text-2xl font-semibold mb-6">
         Shop By Categories
       </h2>
@@ -54,9 +60,10 @@ const ProductCategories: React.FC = () => {
       {/* Initial Categories */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         {initialCategories.map(({ category, packages }) => (
+          <Link to={`/dashboard/marketplace/${formatTitle(category.name)}`}>
           <div
             key={category._id}
-            className="group relative cursor-pointer p-4 bg-white  rounded-lg border border-gray-200 hover:shadow-2xl transition-all transform duration-300 group-hover:scale-105"
+            className="group relative cursor-pointer p-4 bg-white h-[250px]  rounded-lg border border-gray-200 hover:shadow-2xl transition-all transform duration-300 group-hover:scale-105"
           >
             <img
               src={packages[0]?.attachments[0] || "/placeholder-image.png"}
@@ -67,6 +74,7 @@ const ProductCategories: React.FC = () => {
               {category.name}
             </h3>
           </div>
+          </Link>
         ))}
       </div>
 
@@ -97,7 +105,7 @@ const ProductCategories: React.FC = () => {
                   <h3 className="text-xl font-semibold">{category.name}</h3>
                   <div className="text-right">
                     <a
-                      href="#"
+                      href={`/dashboard/marketplace/${formatTitle(category.name)}`}
                       className="text-[#2DA5F3] flex gap-2 items-center hover:underline text-sm font-semibold"
                     >
                       Browse All Products <ArrowRight className="size-4" />
@@ -151,3 +159,7 @@ const ProductCategories: React.FC = () => {
 };
 
 export default ProductCategories;
+
+
+            
+                          

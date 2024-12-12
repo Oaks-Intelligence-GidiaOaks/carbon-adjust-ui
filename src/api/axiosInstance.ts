@@ -1,3 +1,4 @@
+// @ts-ignore
 import store, { persistor } from "@/app/store";
 import axios from "axios";
 

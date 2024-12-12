@@ -27,19 +27,54 @@ import Phoneinput from "@/components/ui/PhoneInput";
 // import { MdArrowBack } from "react-icons/md";
 import { IQuestion } from "@/interfaces/product.interface";
 import { BsCart3 } from "react-icons/bs";
-import { Link } from "react-router-dom";
 import router from "@/router/router";
+import { useMutation } from "@tanstack/react-query";
+import { createNewOrder } from "@/services/homeOwner";
+import toast from "react-hot-toast";
+
 
 interface ProductFormV2Props {
   questions: IQuestion[];
+  productData: {
+    _id: string;
+    price: number;
+    selectedColor: string;
+    selectedQuantity: number;
+  };
 }
 
-const ProductFormV2 = ({questions}: ProductFormV2Props) => {
+
+type IAddress = {
+  country: string;
+  cityOrProvince: string;
+  firstLineAddress: string;
+  zipcode: string;
+};
+
+type IOrder = {
+  package?: string;
+  customerAddress: IAddress;
+  price?: number | string;
+  color?: string;
+  customerEmail: string;
+  customerPhone: string;
+  quantity?: number | string;
+  requiredExtraProd?: boolean;
+  responses: IResponse[];
+  _id?: string;
+  proceed: string;
+};
+
+
+
+
+
+
+const ProductFormV2 = ({ questions, productData, onCloseForm }: ProductFormV2Props & { onCloseForm: () => void }) => {
   const dispatch = useDispatch();
 
-  const {order, user }: RootState = useSelector(
-    (state: RootState) => state
-  );
+  const order = useSelector((state: RootState) => state.order);
+  const user = useSelector((state: RootState) => state.user);
 
   let countryData = Country.getAllCountries();
   const [statesList, setStatesList] = useState<
@@ -60,6 +95,68 @@ const ProductFormV2 = ({questions}: ProductFormV2Props) => {
   }, [order.customerAddress.country.value, dispatch]);
 
   const { responses, _id, customerAddress, ...rest } = order;
+
+  const handleSubmit = () => {
+    AddToCart.mutate({
+      package: productData._id,
+      price: productData.price,
+      color: productData.selectedColor,
+      quantity: productData.selectedQuantity,
+      customerEmail: user.user!.email,
+      customerAddress: {
+        country: order.customerAddress.country.label,
+        cityOrProvince: order.customerAddress.cityOrProvince.label,
+        firstLineAddress: order.customerAddress.firstLineAddress,
+        zipcode: order.customerAddress.zipcode,
+      },
+      customerPhone: order.customerPhone,
+      responses: order.responses,
+      proceed: 'CART'
+    });
+  };
+
+  const handleProceed = () => {
+    router.navigate('/dashboard/cart');
+  };
+
+  const AddToCart = useMutation({
+    mutationKey: ["create-order"],
+    mutationFn: (orderData: IOrder) => {
+      console.log("Data being sent to the API:", orderData);
+      if (!orderData.customerEmail ) {
+        throw new Error("Invalid order data: Missing required fields.");
+      }
+      return createNewOrder(orderData);
+    },
+    onSuccess: () => {
+      toast.success("Added to cart!");
+      onCloseForm(); 
+    },
+    onError: (error: any) => {
+      // Check for specific error scenarios
+      const status = error?.response?.status;
+      const errorMessage =
+        error?.response?.data?.message ||
+        (status === 400
+          ? "Invalid input. Please check your details."
+          : status === 500
+          ? "Server error. Please try again later."
+          : "Failed to add to cart.");
+  
+      // Log detailed error for debugging
+      console.error("Add to Cart Error:", {
+        status,
+        data: error?.response?.data,
+        message: error?.message,
+      });
+  
+      // Display user-friendly error message
+      toast.error(errorMessage);
+    },
+  });
+  
+  
+  
 
   const isFormValues =
     Object.values({ ...rest }).filter((it: any) => it.toString().length < 1)
@@ -100,7 +197,7 @@ const ProductFormV2 = ({questions}: ProductFormV2Props) => {
         ? []
         : stringToArray(responses[responseIndex].response);
 
-    // console.log(getmultiChoiceResponse, "multi -choice response");
+ 
 
     const [response, setResponse] = useState<string>(getResponse);
     const [selectResponse, setSelectResponse] =
@@ -353,14 +450,7 @@ const ProductFormV2 = ({questions}: ProductFormV2Props) => {
     );
   });
 
-  const handleProceed = () => {
-    // if (product.packageDomain === PackageDomain.SUB_PACKAGE) {
-    //   props.setStage(6);
-    // } else {
-    //   props.setStage(3);
-    // }
-    router.navigate('/dashboard/cart');
-  };
+  
 
   return (
     <div className="border border-gray-300 p-6 rounded-md max-w-lg mx-auto">
@@ -419,56 +509,7 @@ const ProductFormV2 = ({questions}: ProductFormV2Props) => {
             value={order.customerAddress.firstLineAddress}
           />
 
-          {/* <Input
-            key={4}
-            label="Phone number"
-            className=""
-            labelClassName="pb-[10px]"
-            wrapperClassName=""
-            name=""
-            error=""
-            inputClassName="border p-3 bg-[#E4E7E8]"
-            placeholder="+234"
-            type="number"
-            value={order.customerPhone}
-            onChange={(e) => dispatch(updatePhone(e.target.value))}
-          /> */}
-
-          {/* quantity */}
-          {/* {product.packageType === "Product" && (
-            <div>
-              <label
-                htmlFor=""
-                className=" block text-sm group-valid:text-[#171717] group-has-[:valid]:text-[#171717] pb-2"
-              >
-                Add Quantity
-                <span className="text-red-500 pl-1">*</span>
-              </label>
-
-              <div
-                className={`
-                  "gro flex h-[48px] min-w-full items-center overflow-hidden  rounded-md border-none border-input px-3 focus-within:border-[#22C55E] border p-3 bg-[#E4E7E8]`}
-              >
-                <input
-                  type="number"
-                  placeholder="Add quantity 0 to 9"
-                  value={order.quantity}
-                  onChange={(e) =>
-                    dispatch(
-                      updateQuantity(
-                        e.target.value === "" ? "" : Number(e.target.value)
-                      )
-                    )
-                  }
-                  className={`
-                    "placeholder:text-grey-swatch-600 flex h-[48px] w-full flex-1 bg-transparent py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
-                  min="0"
-                />
-              </div>
-            </div>
-          )} */}
-
-          {/* new fields */}
+          
 
           {/* country dropdown  */}
           <CountryRegionDropdown
@@ -519,13 +560,11 @@ const ProductFormV2 = ({questions}: ProductFormV2Props) => {
           {RenderQuestions}
 
           {/* proceed */}
-          <div className="flex gap-2 items-center">
-          <Link to={""} className="w-full">
-          <button disabled={isDisabled} className={`${
+          <div className="flex flex-col lg:flex-row gap-2 items-center">
+          <button onClick={handleSubmit} disabled={isDisabled} className={`${
               isDisabled ? "border-gray-300 text-gray-600 cursor-not-allowed" : "bg-transparent text-[#0B8DFF] border-[#0B8DFF]"} w-full py-2 flex items-center justify-center gap-1 text-center border  rounded-full`}>
           <BsCart3 /> Add to Cart
           </button>
-          </Link>
           <button
             className={` ${
               isDisabled ? "bg-gray-300 cursor-not-allowed" : "blue-gradient"
