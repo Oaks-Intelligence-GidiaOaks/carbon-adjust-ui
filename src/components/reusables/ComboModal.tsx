@@ -59,7 +59,7 @@ const ComboPaymentModal: React.FC = () => {
           ].map((method) => (
             <div
               key={method.key}
-              className="border rounded-md p-4 space-y-2 bg-gray-50"
+              className=" p-4 space-y-2 "
             >
               <div className="items-center justify-between">
                 <div className="flex items-center gap-2 w-full">
@@ -80,8 +80,8 @@ const ComboPaymentModal: React.FC = () => {
                   />
                 </div>
                 {method.label.includes("Wallet") && (
-                  <p className="text-sm text-end mt-3 text-gray-500">
-                    Balance: £
+                  <p className="text-xs text-start mt-3 text-[#333333]">
+                    {method.label} Balance: £
                     {"balance" in
                     paymentDetails[method.key as keyof PaymentDetails]
                       ? (

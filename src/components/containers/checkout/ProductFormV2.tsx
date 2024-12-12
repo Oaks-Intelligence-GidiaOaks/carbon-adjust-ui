@@ -32,7 +32,6 @@ import { useMutation } from "@tanstack/react-query";
 import { createNewOrder } from "@/services/homeOwner";
 import toast from "react-hot-toast";
 
-
 interface ProductFormV2Props {
   questions: IQuestion[];
   productData: {
@@ -42,7 +41,6 @@ interface ProductFormV2Props {
     selectedQuantity: number;
   };
 }
-
 
 type IAddress = {
   country: string;
@@ -65,13 +63,14 @@ type IOrder = {
   proceed: string;
 };
 
-
-
-
-
-
-const ProductFormV2 = ({ questions, productData, onCloseForm }: ProductFormV2Props & { onCloseForm: () => void }) => {
+const ProductFormV2 = ({
+  questions,
+  productData,
+  onCloseForm,
+}: ProductFormV2Props & { onCloseForm: () => void }) => {
   const dispatch = useDispatch();
+  const [isProceedLoading, setIsProceedLoading] = useState(false);
+  const [isAddToCartLoading, setIsAddToCartLoading] = useState(false);
 
   const order = useSelector((state: RootState) => state.order);
   const user = useSelector((state: RootState) => state.user);
@@ -97,40 +96,68 @@ const ProductFormV2 = ({ questions, productData, onCloseForm }: ProductFormV2Pro
   const { responses, _id, customerAddress, ...rest } = order;
 
   const handleSubmit = () => {
-    AddToCart.mutate({
-      package: productData._id,
-      price: productData.price,
-      color: productData.selectedColor,
-      quantity: productData.selectedQuantity,
-      customerEmail: user.user!.email,
-      customerAddress: {
-        country: order.customerAddress.country.label,
-        cityOrProvince: order.customerAddress.cityOrProvince.label,
-        firstLineAddress: order.customerAddress.firstLineAddress,
-        zipcode: order.customerAddress.zipcode,
+    setIsAddToCartLoading(true); // Set loading state
+    AddToCart.mutate(
+      {
+        package: productData._id,
+        price: productData.price,
+        color: productData.selectedColor,
+        quantity: productData.selectedQuantity,
+        customerEmail: user.user!.email,
+        customerAddress: {
+          country: order.customerAddress.country.label,
+          cityOrProvince: order.customerAddress.cityOrProvince.label,
+          firstLineAddress: order.customerAddress.firstLineAddress,
+          zipcode: order.customerAddress.zipcode,
+        },
+        customerPhone: order.customerPhone,
+        responses: order.responses,
+        proceed: "CART",
       },
-      customerPhone: order.customerPhone,
-      responses: order.responses,
-      proceed: 'CART'
-    });
+      {
+        onSettled: () => setIsAddToCartLoading(false),
+      }
+    );
   };
 
   const handleProceed = () => {
-    router.navigate('/dashboard/cart');
+    setIsProceedLoading(true); // Set loading state
+    AddToCart.mutate(
+      {
+        package: productData._id,
+        price: productData.price,
+        color: productData.selectedColor,
+        quantity: productData.selectedQuantity,
+        customerEmail: user.user!.email,
+        customerAddress: {
+          country: order.customerAddress.country.label,
+          cityOrProvince: order.customerAddress.cityOrProvince.label,
+          firstLineAddress: order.customerAddress.firstLineAddress,
+          zipcode: order.customerAddress.zipcode,
+        },
+        customerPhone: order.customerPhone,
+        responses: order.responses,
+        proceed: "PAYMENT",
+      },
+      {
+        onSuccess: () => router.navigate("/dashboard/cart"), // Navigate on success
+        onSettled: () => setIsProceedLoading(false), // Reset loading state
+      }
+    );
   };
 
   const AddToCart = useMutation({
     mutationKey: ["create-order"],
     mutationFn: (orderData: IOrder) => {
       console.log("Data being sent to the API:", orderData);
-      if (!orderData.customerEmail ) {
+      if (!orderData.customerEmail) {
         throw new Error("Invalid order data: Missing required fields.");
       }
       return createNewOrder(orderData);
     },
     onSuccess: () => {
       toast.success("Added to cart!");
-      onCloseForm(); 
+      onCloseForm();
     },
     onError: (error: any) => {
       // Check for specific error scenarios
@@ -142,21 +169,18 @@ const ProductFormV2 = ({ questions, productData, onCloseForm }: ProductFormV2Pro
           : status === 500
           ? "Server error. Please try again later."
           : "Failed to add to cart.");
-  
+
       // Log detailed error for debugging
       console.error("Add to Cart Error:", {
         status,
         data: error?.response?.data,
         message: error?.message,
       });
-  
+
       // Display user-friendly error message
       toast.error(errorMessage);
     },
   });
-  
-  
-  
 
   const isFormValues =
     Object.values({ ...rest }).filter((it: any) => it.toString().length < 1)
@@ -197,8 +221,6 @@ const ProductFormV2 = ({ questions, productData, onCloseForm }: ProductFormV2Pro
         ? []
         : stringToArray(responses[responseIndex].response);
 
- 
-
     const [response, setResponse] = useState<string>(getResponse);
     const [selectResponse, setSelectResponse] =
       useState<SelectItem>(getSelectResponse);
@@ -208,8 +230,6 @@ const ProductFormV2 = ({ questions, productData, onCloseForm }: ProductFormV2Pro
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const updateOrAddObject = (arr: IResponse[], newObj: IResponse) => {
-
-
       if (!arr.length) {
         let responseData = [newObj];
         return responseData;
@@ -450,8 +470,6 @@ const ProductFormV2 = ({ questions, productData, onCloseForm }: ProductFormV2Pro
     );
   });
 
-  
-
   return (
     <div className="border border-gray-300 p-6 rounded-md max-w-lg mx-auto">
       <h2 className="text-lg font-semibold mb-2">Questions</h2>
@@ -509,8 +527,6 @@ const ProductFormV2 = ({ questions, productData, onCloseForm }: ProductFormV2Pro
             value={order.customerAddress.firstLineAddress}
           />
 
-          
-
           {/* country dropdown  */}
           <CountryRegionDropdown
             name="countryOfResidence"
@@ -561,19 +577,28 @@ const ProductFormV2 = ({ questions, productData, onCloseForm }: ProductFormV2Pro
 
           {/* proceed */}
           <div className="flex flex-col lg:flex-row gap-2 items-center">
-          <button onClick={handleSubmit} disabled={isDisabled} className={`${
-              isDisabled ? "border-gray-300 text-gray-600 cursor-not-allowed" : "bg-transparent text-[#0B8DFF] border-[#0B8DFF]"} w-full py-2 flex items-center justify-center gap-1 text-center border  rounded-full`}>
-          <BsCart3 /> Add to Cart
-          </button>
-          <button
-            className={` ${
-              isDisabled ? "bg-gray-300 cursor-not-allowed" : "blue-gradient"
-            } rounded-full  font-poppins w-full  hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]`}
-            disabled={isDisabled}
-            onClick={handleProceed}
-          >
-            <span>Proceed to Checkout</span>
-          </button>
+            <button
+              onClick={handleSubmit}
+              disabled={isAddToCartLoading || isDisabled}
+              className={`${
+                isDisabled
+                  ? "border-gray-300 text-gray-600 cursor-not-allowed"
+                  : "bg-transparent text-[#0B8DFF] border-[#0B8DFF]"
+              } w-full py-2 flex items-center justify-center gap-1 text-center border  rounded-full`}
+            >
+              <BsCart3 />
+              {isAddToCartLoading ? "Adding to Cart..." : "Add to Cart"}
+            </button>
+
+            <button
+              onClick={handleProceed}
+              disabled={isProceedLoading || isDisabled}
+              className={` ${
+                isDisabled ? "bg-gray-300 cursor-not-allowed" : "blue-gradient"
+              } rounded-full  font-poppins w-full  hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]`}
+            >
+              {isProceedLoading ? "Processing..." : "Proceed to checkout"}
+            </button>
           </div>
         </div>
       </div>

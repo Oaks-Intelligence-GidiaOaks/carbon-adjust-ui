@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { deleteCartItem, getCartItems } from "@/services/homeOwner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import Skeleton from "@mui/material/Skeleton";
+import Box from "@mui/material/Box";
 
 type CartItem = {
   id: number;
@@ -84,8 +86,20 @@ const Cart = () => {
   const discount = 0;
   const total = productCost + shippingCost + vat - discount;
 
+ 
+
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="w-[100%] mx-auto mt-10 flex flex-col gap-4 ">
+        {Array.from({ length: 3 }, (_, i) => (
+        <Box key={i} sx={{ width: "100%" }}>
+          <Skeleton variant="rectangular" width={"100%"} height={100} />
+          <Skeleton width={"100%"} />
+          <Skeleton width={"50%"} animation="wave" />
+        </Box>
+      ))}
+      </div>
+    );
   }
 
   if (error) {

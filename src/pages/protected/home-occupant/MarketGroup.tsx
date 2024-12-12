@@ -18,8 +18,6 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import SocketService from "@/repository/socket";
-import GrantCard from "@/components/reusables/GrantCard";
-import SubGrantCard from "@/components/reusables/SubGrantCard";
 import SearchFilterBar from "@/components/reusables/SearchFilter";
 
 type Props = {};
