@@ -66,6 +66,8 @@ const UsageSummary = ({ purchaseId }: UsageSummaryProps) => {
         grid: {
           display: false,
         },
+        barThickness: 10, // Reduced bar width
+        maxBarThickness: 15, // Maximum allowed width for the bars
       },
       y: {
         stacked: true,
@@ -79,6 +81,7 @@ const UsageSummary = ({ purchaseId }: UsageSummaryProps) => {
       },
     },
   };
+  
 
   const downloadChart = async () => {
     if (chartRef.current) {
@@ -106,7 +109,7 @@ const UsageSummary = ({ purchaseId }: UsageSummaryProps) => {
   if (error) return <div>Error loading data</div>;
 
   return (
-    <div className="h-[400px] w-[90%]" ref={chartRef}>
+    <div className="h-[600px] w-[60%]" ref={chartRef}>
       <div className="flex justify-between items-center">
         <h3 className="font-semibold">Electricity Usage</h3>
         <button
