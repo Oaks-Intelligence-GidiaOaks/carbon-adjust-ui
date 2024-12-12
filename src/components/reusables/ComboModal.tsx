@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { BsX } from "react-icons/bs";
 import card from "@/assets/card.svg"
-import klarna from "@/assets/Klarna.svg"
 import wallet from "@/assets/wallet.svg"
 
 
@@ -13,12 +11,9 @@ type PaymentDetails = {
   unrestrictedWallet: { amount: string; percentage: number; balance: number };
 };
 
-// Define the type for the props, including onClick
-type ComboPaymentModalProps = {
-  onClick: () => void;
-};
 
-const ComboPaymentModal: React.FC<ComboPaymentModalProps> = ({ onClick }) => {
+
+const ComboPaymentModal: React.FC = () => {
   const [paymentDetails, setPaymentDetails] = useState<PaymentDetails>({
     card: { amount: "", percentage: 0 },
     klarna: { amount: "", percentage: 0 },
@@ -43,18 +38,10 @@ const ComboPaymentModal: React.FC<ComboPaymentModalProps> = ({ onClick }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg w-[600px] max-w-full h-[90vh] flex flex-col">
-        {/* Modal Header */}
-        <div className="sticky top-0 bg-white p-6 border-b flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Checkout Details</h2>
-          <button className="text-gray-500 hover:text-black" onClick={onClick}>
-            <BsX size={24} />
-          </button>
-        </div>
-
+    <div className="">
+      <div className="bg-white rounded-lg w-[600px] max-w-full  flex flex-col">
         {/* Scrollable Content */}
-        <div className="overflow-y-auto flex-1 p-6 space-y-4">
+        <div className="overflow-y-auto flex-1 space-y-2">
           <p className="text-sm text-gray-600">
             To process this application, select the order in which you want your
             customers to purchase this product.
@@ -63,7 +50,6 @@ const ComboPaymentModal: React.FC<ComboPaymentModalProps> = ({ onClick }) => {
           {/* Payment Sections */}
           {[
             { key: "card", label: "Card", icon: `${card}` },
-            { key: "klarna", label: "Klarna", icon: `${klarna}`},
             { key: "restrictedWallet", label: "Restricted Wallet", icon: `${wallet}` },
             {
               key: "unrestrictedWallet",
@@ -73,7 +59,7 @@ const ComboPaymentModal: React.FC<ComboPaymentModalProps> = ({ onClick }) => {
           ].map((method) => (
             <div
               key={method.key}
-              className="border rounded-md p-4 space-y-2 bg-gray-50"
+              className=" p-4 space-y-2 "
             >
               <div className="items-center justify-between">
                 <div className="flex items-center gap-2 w-full">
@@ -94,8 +80,8 @@ const ComboPaymentModal: React.FC<ComboPaymentModalProps> = ({ onClick }) => {
                   />
                 </div>
                 {method.label.includes("Wallet") && (
-                  <p className="text-sm text-end mt-3 text-gray-500">
-                    Balance: £
+                  <p className="text-xs text-start mt-3 text-[#333333]">
+                    {method.label} Balance: £
                     {"balance" in
                     paymentDetails[method.key as keyof PaymentDetails]
                       ? (
@@ -167,7 +153,7 @@ const ComboPaymentModal: React.FC<ComboPaymentModalProps> = ({ onClick }) => {
         </div>
 
         {/* Sticky Footer */}
-        <div className="sticky bottom-0 bg-white p-6 ">
+        <div className=" bg-white p-6 ">
           <button
             className="w-full py-3 rounded-full blue-gradient text-white font-medium hover:bg-blue-600"
             onClick={() => alert("Proceeding with payment")}

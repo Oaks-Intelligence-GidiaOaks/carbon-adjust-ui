@@ -19,6 +19,7 @@ export interface IProduct {
   _id: string;
   title: string;
   attachments: string[];
+  color:string[];
   media?: string[];
   hasDownloadedableFile?: boolean;
   owner?: {
@@ -34,7 +35,7 @@ export interface IProduct {
   status: string;
   packageType: string;
   price: number | string;
-  discount: number;
+  discount?: number;
   hasQuestion: boolean;
   hasSchedule: boolean;
   allowPartPayment: boolean;
@@ -51,6 +52,8 @@ export interface IProduct {
   hasGrantDoc?: boolean;
   rating?: number;
   packageDomain?: string;
+  isHot?: boolean;
+  isSoldOut?: boolean;
 }
 
 export interface ICategory {

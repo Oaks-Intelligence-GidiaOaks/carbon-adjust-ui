@@ -113,7 +113,7 @@ const ModelCard: React.FC<NewsCardProps> = ({ title, contents }) => {
 
   return (
     <motion.div
-      className="w-[100%] lg:max-w-[1000px] max:max-w-full bg-white rounded-2xl p-5 py-10 flex justify-center items-center"
+      className="w-[100%] lg:max-w-[1000px] max:max-w-full bg-white rounded-2xl p-5 py-10 flex justify-center items-center z-10"
       initial={{ opacity: 0, y: -50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.5 }}

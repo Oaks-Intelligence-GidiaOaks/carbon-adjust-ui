@@ -1,13 +1,7 @@
 import {
   ApplicationsIcon,
-  // CarbonCreditIcon,
-  // ContactIcon,
   DashboardIcon,
   OrdersIcon,
-  // HomeIcon,
-  // DevicesIcon,
-  // DocumentCentreIcon,
-  // InboxIcon,
   JPGIcon,
   LogoutIcon,
   PDFIcon,
@@ -18,11 +12,12 @@ import {
   DeviceIcon,
   WalletIcon,
   ClaimIcon,
-  // ProjectIcon,
+  PendulumIcon,
+  AssetIcon,
 } from "@/assets/icons";
 import { DropdownOption, Finance, Payment } from "@/types/general";
 import { ColumnDef } from "@tanstack/react-table";
-// import { elements } from "chart.js";
+import { UserIcon } from "lucide-react";
 
 export const financeIcon = "/assets/graphics/finance-icon.svg";
 export const insuranceIcon = "/assets/graphics/insurance-icon.svg";
@@ -641,22 +636,22 @@ export const organisationSideBarItems = [
     href: "/organisation",
   },
   {
-    icon: DashboardIcon,
-    title: "Department",
-    href: "/organisation/departments",
+    icon: PendulumIcon,
+    title: "Units",
+    href: "/organisation/units",
   },
   {
-    icon: DashboardIcon,
+    icon: AssetIcon,
     title: "Assets",
     href: "/organisation/assets",
   },
   {
-    icon: DashboardIcon,
+    icon: WalletIcon,
     title: "Wallet",
     href: "/organisation/wallet",
   },
   {
-    icon: DashboardIcon,
+    icon: UserIcon,
     title: "Profile",
     href: "/organisation/profile",
   },
