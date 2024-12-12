@@ -48,6 +48,13 @@ const columns: ColumnDef<Isales>[] = [
     ),
   },
   {
+    accessorKey: "package.ID",
+    header: () => <div className="whitespace-nowrap">Product ID</div>,
+    cell: ({ row }) => (
+      <div className="capitalize text-sm">{row.original.package?._id || "N/A"}</div>
+    ),
+  },
+  {
     accessorKey: "package.title",
     header: () => <div className="whitespace-nowrap">Product</div>,
     cell: ({ row }) => (
