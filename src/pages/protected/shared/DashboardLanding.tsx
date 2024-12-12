@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
-import CarbonAdjustLogo from "../../../assets/icons/CarbonAdjustLogo.svg";
+import CarbonAdjustLogo from "../../../assets/icons/CarbonAdjustLogo.png";
 // import SettingIcon from "../../../assets/icons/setting.svg";
 // import BellIcon from "../../../assets/icons/bell.svg";
 import UserIcon from "../../../assets/icons/User.svg";
