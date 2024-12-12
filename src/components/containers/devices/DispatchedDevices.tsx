@@ -68,10 +68,18 @@ const DispatchDevices = (props: { status: string }) => {
           )
         )}
       </div>
-
-      <div className="mt-8 pr-12 w-fit mx-auto">
-        <Paginate {...pagination} onPageChange={handlePageChange} />
-      </div>
+      {data?.data?.dispatchDevices.length > 0 && (
+        <div className="mt-8 pr-12 w-fit mx-auto">
+          <Paginate {...pagination} onPageChange={handlePageChange} />
+        </div>
+      )}
+      {data?.data?.dispatchDevices.length === 0 && (
+        <div className="flex justify-center items-center w-full h-fit lg:h-[500px]">
+          <div className="capitalize font-medium text-lg">
+            no dispatched devices data found
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -15,10 +15,7 @@ import CustomMapInput from "@/components/ui/customMapInput";
 import SelectInput from "@/components/ui/SelectInput";
 import { useDebounce } from "@/hooks/useDebounce";
 import { getSuggestions, getTransports, Optimize } from "@/services/homeOwner";
-import {
-  TravelDetails,
-  VehicleDetailProps,
-} from "@/interfaces/transport.interface";
+import { TravelDetails } from "@/interfaces/transport.interface";
 import {
   OptimizeBy,
   TransportDetails,
