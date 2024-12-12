@@ -12,6 +12,7 @@ import { RootState } from "@/app/store";
 import { cn } from "@/utils";
 import { UserRole } from "@/interfaces/user.interface";
 import { IoSettingsSharp } from "react-icons/io5";
+import { BsCart3 } from "react-icons/bs";
 
 type Props = {
   mobileMenuIsOpen: boolean;
@@ -96,8 +97,8 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
 
   return (
     <div className=" px-3 sm:px-4 py-3 w-full flex justify-center font-poppins">
-      <div className="flex justify-between items-center w-full max-w-[1440px]">
-        <div className="flex items-center w-full  xl:w-5/6  mx-auto">
+      <div className="flex justify-between items-center w-full container">
+        <div className="flex items-center w-full">
           {/* mobile sidebar menu icon */}
           <div className="pr-2">
             <SideBarBtn
@@ -171,7 +172,13 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
               )} */}
 
               {/* <img src={BellIcon} alt="" className="h-4 w-4" /> */}
-
+              {!isMerchant && !isAdmin && !isAdminStaff && (
+                <Link to={`/dashboard/cart`}>
+                  <div className="h-[34px] cursor-pointer w-[34px] grid place-items-center ">
+                    <BsCart3 />
+                  </div>
+                </Link>
+              )}
               {!isMerchant && !isAdmin && !isAdminStaff && (
                 <Link to={`/dashboard/profile`}>
                   <div className="h-[34px] cursor-pointer w-[34px] border rounded-full grid place-items-center ">

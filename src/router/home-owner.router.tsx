@@ -2,6 +2,7 @@ import Layout from "@/layouts/Layout";
 import Market from "@/pages/protected/home-occupant/Market";
 import {
   UserAppointment,
+  UserCart,
   UserCheckout,
   UserDevices,
   UserMarketGroup,
@@ -51,7 +52,11 @@ export const homeOwnerRoutes = [
         element: <UserOrderList />,
       },
       {
-        path: "product/:category",
+        path: "cart",
+        element: <UserCart />,
+      },
+      {
+        path: "product/:packageId",
         element: <UserProduct />,
       },
       {
@@ -114,6 +119,7 @@ export const homeOwnerRoutes = [
           },
         ],
       },
+      
       {
         path: "profile",
         element: <UserProfile />,
