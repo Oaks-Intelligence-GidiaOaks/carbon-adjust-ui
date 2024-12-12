@@ -1,25 +1,29 @@
 import TabToggler from "@/components/containers/TabToggler";
 import { IComponentMap } from "@/types/general";
-import { OrganizationTransportTabs } from "@/interfaces/transport.interface";
-import { FleetTransport, IndividualTransport, StaffTransport } from "@/components/containers/organisation/transport";
-import { useState } from "react";
+import { TransportTabs } from "@/interfaces/transport.interface";
+import Vehicles from "@/components/containers/transport/Vehicles";
+import TransportHistory from "@/components/containers/transport/TransportHistory";
+import { setTransportTab } from "@/features/assetSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const Transport = () => {
-  const tabs: OrganizationTransportTabs[] = [
-    OrganizationTransportTabs.Individual,
-    OrganizationTransportTabs.Staff,
-    OrganizationTransportTabs.Fleet,
+  const dispatch = useDispatch();
+  const tabs: TransportTabs[] = [
+    TransportTabs.Transport,
+    TransportTabs.TravelHistory,
   ];
-  const [activeTab, setActiveTab] = useState<OrganizationTransportTabs>(tabs[0]);
+  const activeTab = useSelector(
+    (state: RootState) => state.assets.transport.activeTab
+  );
 
   const handleTabSwitch = (tab: any) => {
-    setActiveTab(tab);
+    dispatch(setTransportTab(tab));
   };
 
   const activeComponent: IComponentMap = {
-    [OrganizationTransportTabs.Individual]: <IndividualTransport />,
-    [OrganizationTransportTabs.Staff]: <StaffTransport />,
-    [OrganizationTransportTabs.Fleet]: <FleetTransport />,
+    [TransportTabs.Transport]: <Vehicles />,
+    [TransportTabs.TravelHistory]: <TransportHistory />,
   };
 
   return (
@@ -34,7 +38,6 @@ const Transport = () => {
           />
         </div>
       </div>
-
       <div className="mt-[15px]">{activeComponent[activeTab]}</div>
     </div>
   );

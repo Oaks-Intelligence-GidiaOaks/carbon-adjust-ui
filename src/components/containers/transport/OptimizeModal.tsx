@@ -15,7 +15,10 @@ import CustomMapInput from "@/components/ui/customMapInput";
 import SelectInput from "@/components/ui/SelectInput";
 import { useDebounce } from "@/hooks/useDebounce";
 import { getSuggestions, getTransports, Optimize } from "@/services/homeOwner";
-import { TravelDetails } from "@/interfaces/transport.interface";
+import {
+  TravelDetails,
+  VehicleDetailProps,
+} from "@/interfaces/transport.interface";
 import {
   OptimizeBy,
   TransportDetails,
@@ -26,6 +29,9 @@ import { RotatingLines } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { setTransportTab } from "@/features/assetSlice";
 import { useLocation } from "react-router-dom";
+import { OpTabs } from "@/interfaces/device.interface";
+import TabToggler from "../TabToggler";
+import VehicleDetail from "./TransportDetail";
 
 const Modes = [
   { name: "Car", Icon: taxi },
@@ -54,8 +60,11 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
   const [start, setStart] = useState("");
   const [destination, setDestination] = useState("");
   const [positions, setPositions] = useState([]);
+  const tabs: OpTabs[] = [OpTabs.Individual, OpTabs.Staff, OpTabs.Fleet];
+  const [activeTab, setActiveTab] = useState<OpTabs>(tabs[0]);
+
   const { pathname } = useLocation();
-  const isOrganization = pathname.includes("/organisation") 
+  const isOrganization = pathname.includes("/organisation");
   const initialState: TravelDetails = {
     startLocation: {
       address: "",
@@ -251,6 +260,10 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
     setFormData(initialState);
   };
 
+  const handleTabSwitch = (tab: string) => {
+    setActiveTab(tab);
+  };
+
   // @ts-ignore
   if (OptimizeTransport.isPending) {
     return (
@@ -274,23 +287,6 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
     );
   }
 
-  if (isOrganization) {
-    return (
-      <Modal>
-        <div className=" w-[90%] sm:w-[60%] bg-white sm:h-[70%] h-[30%] flex justify-center flex-col items-center text-cyan-600">
-        <h1 className="text-4xl font-medium uppercase mt-10 font-poppins">
-           IMO OFONIME DAVID
-          </h1>
-          <h2 className="text-2xl font-medium uppercase mt-10 font-poppins">
-            You fucking Genuis . . .
-          </h2>
-        </div>
-      </Modal>
-    );
-  }
-
-  
-
   return (
     <>
       <Modal>
@@ -307,6 +303,15 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
             <h2 className="text-2xl font-medium text-[#495057] capitalize mb-5 font-poppins">
               optimize trip
             </h2>
+            {isOrganization && (
+              <div className="w-full">
+                <TabToggler
+                  activeTab={activeTab}
+                  onClick={handleTabSwitch}
+                  tabs={tabs}
+                />
+              </div>
+            )}
             <form className="mt-5" action="" onSubmit={handleSubmit}>
               <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 ">
                 <CustomMapInput
@@ -380,6 +385,51 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                 </div>
               </div>
 
+              {activeTab === "Staff" && (
+                <>
+                  <div className="flex  bg-[#Fff] border rounded-lg p-5">
+                    <div className="grid grid-cols-3 gap-4 w-full">
+                      <VehicleDetail title="Staff" des={"N/A"} />
+                      <VehicleDetail title="Start" des={"N/A"} />
+                      <VehicleDetail title="Destination" des={"N/A"} />
+                    </div>
+                  </div>
+                  <Button
+                    //onClick={() => setShowModal(true)}
+                    variant={"outline"}
+                    className="rounded-[20px] border-cyan-700 h-[20px] p-3 !text-cyan-700 hover:text-cyan-700 flex justify-center items-center gap-1 mt-3 ml-auto text-[12px]"
+                  >
+                    add new batch
+                  </Button>
+
+                  <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 mt-3 sm:mt-10">
+                    <div className="space-y-2 w-full">
+                      <h2 className="pl-2 text-sm">Batch</h2>
+
+                      <SelectInput
+                        options={TravelWindow}
+                        value={formData.durationOfTravelWindow}
+                        onChange={(e) =>
+                          handleSelectInputChange(e, "durationOfTravelWindow")
+                        }
+                      />
+                    </div>
+
+                    <div className="space-y-2 w-full">
+                      <h2 className="pl-2 text-sm">Staff</h2>
+
+                      <SelectInput
+                        options={TransportDetails}
+                        value={formData.transportDetails}
+                        onChange={(e) =>
+                          handleSelectInputChange(e, "transportDetails")
+                        }
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
               <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 mt-3 sm:mt-10">
                 <div className="space-y-2 w-full">
                   <h2 className="pl-2 text-sm">Optimize By</h2>
@@ -445,7 +495,6 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                 </div>
               </div>
               <div className="flex sm:flex-row flex-col justify-between w-full lg:w-1/2 sm:items-center items-start  gap-5 mt-3 sm:mt-10">
-              
                 {formData.transportDetails.value === "Other" ? (
                   <div className="space-y-2 w-full">
                     <h2 className="pl-2 text-sm">Plate Number</h2>

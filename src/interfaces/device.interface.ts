@@ -8,6 +8,12 @@ export enum AssetTabs {
   Purchases = "Purchases",
 }
 
+export enum OpTabs {
+  Individual = "Individual",
+  Staff = "Staff",
+  Fleet = "Fleet",
+}
+
 export enum DeviceTabs {
   AddedDevices = "Added Devices",
   DispatchedDevices = "Dispatched Devices",

@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { FaLocationDot, FaLocationCrosshairs } from "react-icons/fa6";
 import { Oval } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDebounce } from "@/hooks/useDebounce";
 
 const NewTransport = () => {
@@ -43,6 +43,9 @@ const NewTransport = () => {
   const debouncedAddress = useDebounce(formData.address, 500);
   const debouncedCity = useDebounce(formData.city, 500);
 
+  const { pathname } = useLocation()
+  const type = pathname.includes("/organisation") ? "organisation" : "dashboard";
+
   const CreateTransport = useMutation({
     mutationKey: ["create-transport"],
     mutationFn: (transportData: FormData) => addTransport(transportData),
@@ -50,7 +53,7 @@ const NewTransport = () => {
       toast.success(sx.message);
       resetForm();
 
-      navigate(`/dashboard/transport`);
+      navigate(`/${type}/transport`);
     },
     onError: (ex: any) => {
       toast.error(ex.response.data.message);
@@ -175,7 +178,7 @@ const NewTransport = () => {
           <Button
             variant={"ghost"}
             className="px-2"
-            onClick={() => navigate("/dashboard/transport")}
+            onClick={() => navigate(`/${type}/transport`)}
           >
             <MdKeyboardArrowLeft />
           </Button>

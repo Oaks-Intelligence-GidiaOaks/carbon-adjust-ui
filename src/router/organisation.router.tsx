@@ -2,6 +2,7 @@ import BuildingList from "@/components/containers/buildings/BuildingList";
 import AssetsLayout from "@/layouts/AssetsLayout";
 import Layout from "@/layouts/Layout";
 import UnitsLayout from "@/layouts/UnitsLayout";
+import { UserNewTransport } from "@/pages/protected/home-occupant";
 import {
   OrganizationDevices,
   OrganisationDashboard,
@@ -61,6 +62,10 @@ export const organisationRoutes = [
             path: "",
             element: <OrganizationDevices />,
           },
+          {
+            path: "add",
+            element: <OrganizationDevices />,
+          },
         ],
       },
       {
@@ -81,10 +86,10 @@ export const organisationRoutes = [
             path: "",
             element: <OrganizationTransport />,
           },
-          // {
-          //   path: "add",
-          //   element: <UserNewTransport />,
-          // },
+          {
+            path: "add",
+            element: <UserNewTransport />,
+          },
         ],
       },
       {
