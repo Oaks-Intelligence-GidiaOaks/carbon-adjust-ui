@@ -12,19 +12,18 @@ import { Button, DropBox, Input } from "@/components/ui";
 import Loading from "@/components/reusables/Loading";
 import { IoArrowBack } from "react-icons/io5";
 import { DocumentCheckIcon } from "@heroicons/react/24/outline";
-import Select, { MultiValue } from "react-select";
+//import Select, { MultiValue } from "react-select";
 import { getPackageCategories, updatePackageQuery } from "@/services/merchant";
 import { useEffect, useState } from "react";
 import {
-  customStyles,
   PackageState,
   Question,
   QuestionType,
 } from "./NewPackage";
 import TextArea from "@/components/ui/TextArea";
 import SelectInput from "@/components/ui/SelectInput";
-import CountryRegionDropDown from "@/components/ui/CountryRegionDropDown";
-import { Country, State } from "country-state-city";
+//import CountryRegionDropDown from "@/components/ui/CountryRegionDropDown";
+//import { Country, State } from "country-state-city";
 import { questionTypes } from "@/constants";
 import { cn } from "@/lib/utils";
 import { BiTrash, BiX } from "react-icons/bi";
@@ -110,14 +109,11 @@ const UpdatePackage = (_: Props) => {
       value: (packageDetails.data?.data.package as Package)?.packageType,
     },
     description: (packageDetails.data?.data.package as Package)?.description,
-    country: {
-      label: "",
-      value: "",
-    },
+
     price: (packageDetails.data?.data.package as Package)?.price ?? "",
     discount: (packageDetails.data?.data.package as Package)?.discount ?? "",
 
-    regions: [] as MultiValue<any>,
+    //regions: [] as MultiValue<any>,
     allowPartPayment:
       (packageDetails.data?.data.package as Package)?.allowPartPayment ?? false,
     percentPayment:
@@ -144,6 +140,11 @@ const UpdatePackage = (_: Props) => {
       value:
         (packageDetails.data?.data.package as Package)?.aiPackageType ?? "",
     },
+    carbonFootPrint: "",  
+    sku: "",              
+    colors: [],           
+    quantity: "",         
+    reOrderPoint: "", 
   });
 
   const updatePackageMutation = useMutation({
@@ -198,10 +199,6 @@ const UpdatePackage = (_: Props) => {
     if (packageState.isAiEnergyPackage) {
       submissionObject.aiPackageType = packageState.aiPackageType.value;
     }
-    if (packageState?.country) {
-      submissionObject.country = packageState?.country.label;
-      // formData.append("country", packageState?.country.label);
-    }
     if (packageState?.description) {
       submissionObject.description = packageState?.description;
       // formData.append("description", packageState?.description);
@@ -222,15 +219,6 @@ const UpdatePackage = (_: Props) => {
       // formData.append(
       //   "discount",
       //   convertFormattedStringToNumber(packageState?.discount).toString()
-      // );
-    }
-    if (packageState?.regions) {
-      submissionObject.regions = packageState?.regions.map(
-        (region) => region.label
-      );
-      // formData.append(
-      //   "regions",
-      //   JSON.stringify(packageState?.regions.map((region) => region.label))
       // );
     }
     // allowPartPayment: false,
@@ -843,7 +831,7 @@ const UpdatePackage = (_: Props) => {
                 </div>
               )}
 
-              <CountryRegionDropDown
+              {/* <CountryRegionDropDown
                 name="country"
                 labelClassName={labelStyle}
                 options={Country.getAllCountries().map((country) => ({
@@ -863,9 +851,9 @@ const UpdatePackage = (_: Props) => {
                     country: value,
                   }));
                 }}
-              />
+              /> */}
 
-              <h2 className="text-black-main font-[400] ">City</h2>
+              {/* <h2 className="text-black-main font-[400] ">City</h2>
               <Select
                 isMulti={true as any}
                 name="city"
@@ -897,7 +885,7 @@ const UpdatePackage = (_: Props) => {
                     regions: value || [], // Ensure it's always an array, even if value is null
                   }));
                 }}
-              />
+              /> */}
 
               {/* optional checkbox */}
               <div className="flex-center gap-[11px]">

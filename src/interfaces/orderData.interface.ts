@@ -20,6 +20,7 @@ export interface IOrder {
   package?: string;
   customerAddress: IAddress;
   price?: number | string;
+  color?: string
   customerEmail?: string;
   customerPhone: string;
   quantity?: number | string;
