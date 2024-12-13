@@ -219,13 +219,13 @@ const DeviceCard = (props: Props) => {
       {props.setShowStaffModal && (
         <>
           <div
-            onClick={() => props.setShowStaffModal(true)}
+            onClick={() => props.setShowStaffModal?.(true)}
             className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
           >
             <span>Assign to Staff</span>
           </div>
           <div
-            onClick={() => props.setShowUnitModal(true)}
+            onClick={() => props.setShowUnitModal?.(true)}
             className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
           >
             <span>Assign to Unit</span>
