@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { EyeIcon, HeartIcon } from "lucide-react";
 import { IProduct } from "@/interfaces/product.interface";
 import { Link } from "react-router-dom";
-import { BsCart3 } from "react-icons/bs";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { addFavorite, removeFavorite } from "@/services/homeOwner";
@@ -118,9 +117,9 @@ const ProductCard = ({ isMerchant = false, isFavourite = false, ...props }: Prop
             </button>
 
             {/* Add to Cart Icon */}
-            <button className="bg-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition">
+            {/* <button className="bg-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition">
               <BsCart3 className="w-5 h-5 hover:text-[#0B8DFF] cursor-pointer" />
-            </button>
+            </button> */}
 
             {/* View Details Icon */}
             <Link
