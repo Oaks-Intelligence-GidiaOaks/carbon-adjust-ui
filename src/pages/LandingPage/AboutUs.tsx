@@ -36,7 +36,7 @@ const AboutUs = () => {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1, type: "spring" }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 ">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10 ">
             {/* <div className="flex flex-col lg:flex-row gap-5"> */}
             <AboutCard
               src={"/assets/icons/ThumbsUp.svg"}
@@ -79,7 +79,7 @@ const AboutCard: React.FC<AboutCardProps> = ({
   description,
 }) => {
   return (
-    <div className="flex flex-col min-h-[350px]">
+    <div className="flex flex-col min-h-[250px]">
       <div className="group">
         <div className="flex bg-gray-100  hover:bg-custom-radial p-4 gap-5 items-center">
           <div className="w-[60px] h-[60px] flex items-center justify-center rounded-[50%] border-2 border-[#1944B7] bg-white">
@@ -94,7 +94,7 @@ const AboutCard: React.FC<AboutCardProps> = ({
         <div className="bg-gray-300 group-hover:bg-gradient-text h-[5px] w-full" />
       </div>
 
-      <div className="flex flex-col border lg:min-h-[300px] max:min-h-[380px] p-4">
+      <div className="flex flex-col border lg:h-[300px] max:h-[380px] p-4">
         <p className="text-[#404745] my-2 px-4 text-sm max:text-lg">{description}</p>
         {/* Description text */}
         <div className="flex ml-4 mt-auto">
