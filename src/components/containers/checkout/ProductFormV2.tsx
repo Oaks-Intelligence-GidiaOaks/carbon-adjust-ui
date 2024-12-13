@@ -31,7 +31,6 @@ import router from "@/router/router";
 import { useMutation } from "@tanstack/react-query";
 import { createNewOrder } from "@/services/homeOwner";
 import toast from "react-hot-toast";
-import { LoadingGif } from "@/assets";
 import { LoaderCircle } from "lucide-react";
 
 interface ProductFormV2Props {

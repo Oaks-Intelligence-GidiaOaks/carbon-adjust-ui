@@ -16,9 +16,9 @@ interface SearchFilterBarProps {
 }
 
 const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
-  activeFilters,
-  totalResults,
-  onRemoveFilter,
+  // activeFilters,
+  // totalResults,
+  // onRemoveFilter,
   sortOptions,
   defaultSortOption,
   onSortChange,
