@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // import { FaBars } from "react-icons/fa";
-import CarbonAdjustLogo from "../../assets/icons/CarbonAdjustLogo.svg";
+import CarbonAdjustLogo from "../../assets/icons/CarbonAdjustLogo.png";
 // import BgCover from "../../assets/images/BgCover.png";
 import Hero from "./Hero";
 // import Carousel from "../../components/reuseable/CarouselComponent";
@@ -83,7 +83,7 @@ const LandingPage = () => {
         <header className="lg:container px-4 lg:px-0  z-10 bg-white">
           <nav className="lg:container py-3 flex justify-between items-center  ">
             <div className=" flex flex-start" id="home">
-              <img src={CarbonAdjustLogo} alt="" className="xl:w-[200px]" />
+              <img src={CarbonAdjustLogo} alt="" className="xl:w-[250px] w-[150px]" />
             </div>
 
             <ul className=" hidden sm:flex justify-center flex-1 items-center gap-6 font-poppins font-medium">

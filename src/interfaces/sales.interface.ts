@@ -97,6 +97,7 @@ export interface InventoryAction {
   createdAt: string;
   updatedAt: string;
   comment: string;
+  by:string;
 }
 
 // {

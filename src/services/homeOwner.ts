@@ -26,7 +26,6 @@ export const getBestSellerPackages = async () => {
       limit: 8, 
     },
   });
-
   return data;
 };
 

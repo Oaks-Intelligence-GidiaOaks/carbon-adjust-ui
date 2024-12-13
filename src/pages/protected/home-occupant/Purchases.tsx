@@ -11,7 +11,8 @@ import { PlusCircleIcon, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { MdFilterList } from "react-icons/md";
 import UsageSummary from "@/components/containers/purchases/BarChartPurchases";
-import TrendingProjections from "@/components/containers/purchases/LineChartPurchases";
+import DoughnutUsageSummary from "@/components/containers/purchases/PieChartPurchases";
+
 
 
 
@@ -105,9 +106,9 @@ const PurchaseList = () => {
   
   return (
     <div className="py-6">
-      <div className="px-8 md:px-10">
+      <div>
       {/* Search, Filter, and Upload Section */}
-      <div className="flex flex-col   sm:flex-row sm:items-center sm:justify-between my-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between my-6">
         <div className="flex items-center space-x-4">
           {/* Toggle Date Picker */}
           <div className="relative">
@@ -181,8 +182,11 @@ const PurchaseList = () => {
        <div ref={chartAreaRef} className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm">
         <UsageSummary purchaseId={selectedPurchase} />
       </div>
+      {/* <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm ">
+        <PieUsageSummary purchaseId={selectedPurchase}/> 
+      </div> */}
       <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm ">
-        <TrendingProjections purchaseId={selectedPurchase}/> 
+        <DoughnutUsageSummary purchaseId={selectedPurchase}/> 
       </div>
 
       {/* Modal */}

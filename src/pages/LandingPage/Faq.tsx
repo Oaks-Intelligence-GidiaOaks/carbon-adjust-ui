@@ -66,7 +66,7 @@ interface FaqCardProps {
 
 const FaqCard: React.FC<FaqCardProps> = ({ title, description }) => {
   return (
-    <div className="bg-white rounded-lg p-8 flex gap-3 justify-center  max:max-w-[700px] shadow-2xl">
+    <div className="bg-white rounded-lg p-8 flex gap-3 justify-center  max:max-w-[700px] shadow-2xl z-10">
       <div className="w-[50px] h-[50px] p-3 flex items-center justify-center rounded-[50%] border-[5px] border-[#1944B7] bg-white">
         <FaQuestion color="#1944B7" size={20} /> {/* Fixed icon size */}
       </div>

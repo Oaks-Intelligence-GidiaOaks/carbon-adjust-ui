@@ -26,9 +26,9 @@ import { IoFilterSharp } from "react-icons/io5";
 import { FiUploadCloud } from "react-icons/fi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { cn, formatDateTime, serializeGridData } from "@/lib/utils";
-import AddInventoryModal from "@/components/containers/merchant/AddInventoryModal";
 import EditInventoryModal from "@/components/containers/merchant/EditInventorymodal";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const getStatusStyle = (status: string): string => {
   switch (status.toLowerCase()) {
@@ -44,7 +44,7 @@ const getStatusStyle = (status: string): string => {
 };
 
 export function AllInventoryGrid({ className }: { className?: string }) {
-  const [showModal, setShowModal] = useState(false);
+  //const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [openDialogId, setOpenDialogId] = useState<string | null>(null);
   const [currentRow, setCurrentRow] = useState<any | null>(null);
@@ -82,7 +82,7 @@ export function AllInventoryGrid({ className }: { className?: string }) {
       );
     },
     onSuccess: (sx: any) => {
-      refetch()
+      refetch();
       toast.success(sx.message);
     },
   });
@@ -125,6 +125,13 @@ export function AllInventoryGrid({ className }: { className?: string }) {
       ),
     },
     {
+      accessorKey: "package.ID",
+      header: () => <div className="whitespace-nowrap">Product ID</div>,
+      cell: ({ row }) => (
+        <div className="capitalize text-sm">{row.original._id || "N/A"}</div>
+      ),
+    },
+    {
       accessorKey: "package.title",
       header: () => <div className="whitespace-nowrap">Product</div>,
       cell: ({ row }) => (
@@ -151,8 +158,8 @@ export function AllInventoryGrid({ className }: { className?: string }) {
       accessorKey: "package.color",
       header: () => <div className="w-20">Color</div>,
       cell: ({ row }) => {
-        const colors = row.original.colors || []; 
-        const displayedColors = colors.slice(0, 2).join(","); 
+        const colors = row.original.colors || [];
+        const displayedColors = colors.slice(0, 2).join(",");
         const hasMore = colors.length > 2;
 
         return (
@@ -205,11 +212,10 @@ export function AllInventoryGrid({ className }: { className?: string }) {
       cell: ({ row }) => {
         const handleActionClick = (action: "update" | "delete") => {
           if (action === "update") {
-            setShowEditModal(true); 
-            setCurrentRow(row.original); 
+            setShowEditModal(true);
+            setCurrentRow(row.original);
           } else {
-           
-            DeleteInventory.mutate(row.original._id); 
+            DeleteInventory.mutate(row.original._id);
           }
         };
 
@@ -331,25 +337,24 @@ export function AllInventoryGrid({ className }: { className?: string }) {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <Button
-            onClick={() => setShowModal(true)}
-            className="rounded-[20px] flex-center gap-1 "
-          >
-            <span>Add Inventory</span>
-            <PlusIcon />
-          </Button>
+          <Link to="/merchant/packages/new">
+            <Button className="rounded-[20px] flex-center gap-1 ">
+              <span>Add Inventory</span>
+              <PlusIcon />
+            </Button>
+          </Link>
           <Button variant={"outline"} className="flex-center gap-2 ">
             <FiUploadCloud />
             <span>Export as CSV</span>
           </Button>
         </div>
       </div>
-      {showModal && (
+      {/* {showModal && (
         <AddInventoryModal
           setShowModal={setShowModal}
           refetchInventory={refetch}
         />
-      )}
+      )} */}
       {showEditModal && (
         <EditInventoryModal setShowModal={setShowEditModal} data={currentRow} />
       )}

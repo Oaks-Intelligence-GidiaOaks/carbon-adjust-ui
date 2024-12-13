@@ -66,7 +66,7 @@ interface NewsCardProps {
 
 const NewsCard: React.FC<NewsCardProps> = ({ title, description, date }) => {
   return (
-    <div className="bg-white rounded-2xl flex flex-col gap-3 justify-center max-w-[500px] shadow-2xl">
+    <div className="bg-white rounded-2xl flex flex-col gap-3 justify-center max-w-[500px] shadow-2xl z-10">
       <div className="flex items-center gap-5 h-[250px] bg-gray-600 rounded-t-2xl"></div>
       <div className="flex flex-col py-1 px-7">
         <p className="gradient-text font-Mulish text-base mt-2">{date}</p>
