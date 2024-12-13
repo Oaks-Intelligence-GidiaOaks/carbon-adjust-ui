@@ -138,7 +138,7 @@ const CheckoutForm = () => {
   };
 
   return (
-    <div className="border px-3 py-6  md:p-6 md:px-6 bg-white shadow-lg rounded-xl bg-gradient-to-b from-[#abbaab34] to-[#ffffff]">
+    <div className="">
       <div className="flex-center justify-between mb-8">
         <div className="flex-center gap-x-2">
           <MdOutlinePayment size={20} color="#1CB5E0" />
@@ -179,7 +179,7 @@ const CheckoutForm = () => {
                 wrapperClass=""
               />
             ) : (
-              `Pay ${product.currency} ${order.price}`
+              `Pay`
             )}
           </button>
         </div>
@@ -203,7 +203,7 @@ const options = {
 };
 
 const Payment = () => (
-  <div className="px-4 md:w-[65%] mt-6 mx-auto">
+  <div className="px-4  mt-6 mx-auto">
     <Elements
       stripe={stripePromise}
       // @ts-ignore

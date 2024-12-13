@@ -5,10 +5,13 @@ import SideMenu from "@/components/containers/SideMenu";
 import Sidebar from "@/components/containers/Sidebar";
 import TopBar from "@/components/containers/TopBar";
 import ChatBot from "@/components/dialogs/ChatBot";
+// @ts-ignore
 import InactivityWrapper from "@/components/hoc/InactivityWrapper";
 import { setUser } from "@/features/userSlice";
+// @ts-ignore
 import ProtectedRoute from "@/guards/ProtectedRoute";
 import UseScrollToTop from "@/hooks/useScrollToTop";
+import { UserRole } from "@/interfaces/user.interface";
 import { AuthUserProfile } from "@/types/general";
 import { cn, uniqueObjectsByIdType } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -35,6 +38,13 @@ const Layout = (props: Props) => {
   });
 
   const handleRedirect = (user: AuthUserProfile, role: string) => {
+    if (
+      user.roles.includes(UserRole.CORPORATE_USER_ADMIN) ||
+      role === UserRole.CORPORATE_USER_ADMIN
+    ) {
+      return navigate("/organisation");
+    }
+
     if (role === "HOME_OCCUPANT") return navigate("/dashboard");
     if (role === "ADMIN") return navigate("/admin");
     if (role === "MERCHANT") {
@@ -50,14 +60,17 @@ const Layout = (props: Props) => {
     if (isSuccess && user) {
       dispatch(setUser(userData.data.data));
       // console.log(userData.data.data.data);
+
       if (userData.data.data.roles[0] === "ADMIN") {
         if (pathname.includes("admin")) return;
         return navigate("/admin");
       }
+
       if (userData.data.data.roles[0] === "HOME_OCCUPANT") {
         if (pathname.includes("dashboard")) return;
         return navigate("/dashboard");
       }
+
       // NON_FINANCIAL MERCHANT PATH
       if (
         userData.data.data.roles[0] === "MERCHANT" &&
@@ -67,6 +80,7 @@ const Layout = (props: Props) => {
 
         handleRedirect(userData.data.data, userData.data.data.roles[0]);
       }
+
       //   // FINANCIAL MERCHANT PATH
       if (
         userData.data.data.roles[0] === "MERCHANT" &&
@@ -134,7 +148,7 @@ const Layout = (props: Props) => {
         return navigate("/merchant");
       }
 
-      //   // FINANCIAL MERCHANT PATH
+      // FINANCIAL MERCHANT PATH
       if (
         userData?.data.data.roles[0] === "MERCHANT" &&
         userData?.data.data.merchantType === "FINANCIAL_MERCHANT"
@@ -150,6 +164,7 @@ const Layout = (props: Props) => {
     }
   }, [isSuccess]);
 
+  // @ts-ignore
   const handleLogout = () => {
     // pause();
     persistor.flush().then(() => {

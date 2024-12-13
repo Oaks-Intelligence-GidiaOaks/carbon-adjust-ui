@@ -11,8 +11,8 @@ import { PlusCircleIcon, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { MdFilterList } from "react-icons/md";
 import UsageSummary from "@/components/containers/purchases/BarChartPurchases";
-import PieUsageSummary from "@/components/containers/purchases/PieChartPurchases";
-import DoughnutUsageSummary from "@/components/containers/purchases/DoughnutChart";
+import DoughnutUsageSummary from "@/components/containers/purchases/PieChartPurchases";
+
 
 
 
@@ -182,9 +182,9 @@ const PurchaseList = () => {
        <div ref={chartAreaRef} className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm">
         <UsageSummary purchaseId={selectedPurchase} />
       </div>
-      <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm ">
+      {/* <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm ">
         <PieUsageSummary purchaseId={selectedPurchase}/> 
-      </div>
+      </div> */}
       <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm ">
         <DoughnutUsageSummary purchaseId={selectedPurchase}/> 
       </div>

@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import BarChart from "@/components/charts/BarChart";
 import Loading from "@/components/reusables/Loading";
 import { useRef } from "react";
 import html2canvas from "html2canvas";
 import { GoDownload } from "react-icons/go";
 import { getPurchasesChart } from "@/services/homeOwner";
+import BarChart from "@/components/charts/BarCharts2";
 
 interface UsageSummaryProps {
   purchaseId: string[];
@@ -73,7 +73,7 @@ const UsageSummary = ({ purchaseId }: UsageSummaryProps) => {
         stacked: true,
         title: {
           display: true,
-          text: "Emissions (kg CO2)",
+          text: "Emissions (tCO2e)",
         },
         grid: {
           display: false,
@@ -109,7 +109,7 @@ const UsageSummary = ({ purchaseId }: UsageSummaryProps) => {
   if (error) return <div>Error loading data</div>;
 
   return (
-    <div className="h-[600px] w-[60%]" ref={chartRef}>
+    <div className="" ref={chartRef}>
       <div className="flex justify-between items-center">
         <h3 className="font-semibold">Electricity Usage</h3>
         <button

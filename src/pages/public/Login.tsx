@@ -1,4 +1,3 @@
-// import { LogoAndBrandVertical, RegisterGraphic } from "@/assets/icons";
 import { Input } from "../../components/ui";
 import { Button } from "@/components/ui/Button";
 import { useEffect, useState } from "react";
@@ -18,17 +17,7 @@ import { setKommunitaToken, setToken } from "@/features/userSlice";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { AuthUserProfile } from "@/types/general";
 import { RootState } from "@/app/store";
-// import SocketService from "@/repository/socket";
-
-// import {
-//   ILoginEventPayload,
-//   MonitoringEvent,
-//   SubLevelEvent,
-// } from "@/interfaces/events.interface";
 import { UserRole } from "@/interfaces/user.interface";
-// import { uniqueObjectsByIdType } from "@/utils";
-// import { RootState } from "@/app/store";
-// import { uniqueObjectsByIdType } from "@/utils";
 
 const Login = () => {
   const [searchParams] = useSearchParams();
@@ -100,9 +89,14 @@ const Login = () => {
     },
   });
 
-  // const userData = useSelector((state: RootState) => state.user.user);
-
   const handleRedirect = (user: AuthUserProfile, role: string) => {
+    if (
+      user.roles.includes(UserRole.CORPORATE_USER_ADMIN) ||
+      role === UserRole.CORPORATE_USER_ADMIN
+    ) {
+      return navigate("/organisation");
+    }
+
     if (role === "HOME_OCCUPANT") return navigate("/dashboard");
     if (role === "ADMIN") return navigate("/admin");
     if (role === "STAFF") {
@@ -113,6 +107,7 @@ const Login = () => {
         return navigate("/staff");
       }
     }
+
     if (role === "MERCHANT") {
       if (user.status === "pending") {
         return navigate("/account-setup");
@@ -149,6 +144,7 @@ const Login = () => {
       }, 0);
       // navigate("/login");
     }
+
     if (inactivityState === "true") {
       setTimeout(() => {
         toast.error(
@@ -164,10 +160,10 @@ const Login = () => {
   // Redirect user when they visit the login page if user is still logged in
 
   useEffect(() => {
-    console.log(userData?.roles);
+    // console.log(userData?.roles);
     const userRole = userData?.roles[0];
     if (userRole) {
-      console.log(userRole);
+      // console.log(userRole);
 
       if (userRole === "ADMIN") {
         return navigate("/admin");
@@ -313,11 +309,19 @@ const Login = () => {
                         >
                           As a Home Occupant
                         </DropdownMenu.Item>
+
                         <DropdownMenu.Item
                           onClick={() => navigate("/merchant/register")}
                           className="group py-1 cursor-pointer text-[13px] text-ca-blue leading-none rounded-[3px] flex items-center h-8 px-[5px] relative pl-[25px] select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-grey-swatch-300 data-[highlighted]:text-ca-blue"
                         >
                           As a Merchant
+                        </DropdownMenu.Item>
+
+                        <DropdownMenu.Item
+                          onClick={() => navigate("/organisation/register")}
+                          className="group py-1 cursor-pointer text-[13px] text-ca-blue leading-none rounded-[3px] flex items-center h-8 px-[5px] relative pl-[25px] select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-grey-swatch-300 data-[highlighted]:text-ca-blue"
+                        >
+                          As an organisation
                         </DropdownMenu.Item>
 
                         <DropdownMenu.Arrow className="fill-white" />

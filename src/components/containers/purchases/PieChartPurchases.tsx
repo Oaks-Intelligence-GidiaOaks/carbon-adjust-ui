@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import PieChart from "@/components/charts/PieChart";
 import Loading from "@/components/reusables/Loading";
 import { getPurchasesChart } from "@/services/homeOwner";
+import DoughnutChart from "@/components/charts/Doughnut2";
 
 interface UsageSummaryProps {
   purchaseId: string[];
 }
 
-const PieUsageSummary = ({ purchaseId }: UsageSummaryProps) => {
+const DoughnutUsageSummary = ({ purchaseId }: UsageSummaryProps) => {
   const { data: response, isLoading, error } = useQuery({
     queryKey: ["purchase-chart", purchaseId],
     queryFn: () => getPurchasesChart(purchaseId),
@@ -23,11 +23,11 @@ const PieUsageSummary = ({ purchaseId }: UsageSummaryProps) => {
 
   if (error) return <div>Error loading data</div>;
 
-  // Extract data for pie charts
+  // Extract data for doughnut charts
   const totalCummulativeScope = response?.data?.total_cummulative_scope || {};
   const totalEmissionCategory = response?.data?.total_emission_category || {};
 
-  // Data for Pie Chart 1: Total Cumulative Scope
+  // Data for Doughnut Chart 1: Total Cumulative Scope
   const totalCummulativeScopeData = {
     labels: ["Scope 1", "Scope 2", "Scope 3"],
     datasets: [
@@ -43,7 +43,7 @@ const PieUsageSummary = ({ purchaseId }: UsageSummaryProps) => {
     ],
   };
 
-  // Data for Pie Chart 2: Total Emission Category
+  // Data for Doughnut Chart 2: Total Emission Category
   const emissionCategoryLabels = Object.keys(totalEmissionCategory);
   const emissionCategoryValues = Object.values(totalEmissionCategory);
   const totalEmissionCategoryData = {
@@ -77,18 +77,18 @@ const PieUsageSummary = ({ purchaseId }: UsageSummaryProps) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {/* Pie Chart 1 */}
+      {/* Doughnut Chart 1 */}
       <div className="flex flex-col items-center">
         <h3 className="font-semibold mb-4">Total Cumulative Scope</h3>
-        <PieChart
+        <DoughnutChart
           data={isTotalCummulativeScopeEmpty ? emptyChartData : totalCummulativeScopeData}
         />
       </div>
 
-      {/* Pie Chart 2 */}
+      {/* Doughnut Chart 2 */}
       <div className="flex flex-col items-center">
         <h3 className="font-semibold mb-4">Total Emission Categories</h3>
-        <PieChart
+        <DoughnutChart
           data={isTotalEmissionCategoryEmpty ? emptyChartData : totalEmissionCategoryData}
         />
       </div>
@@ -96,6 +96,5 @@ const PieUsageSummary = ({ purchaseId }: UsageSummaryProps) => {
   );
 };
 
+export default DoughnutUsageSummary;
 
-
-export default PieUsageSummary;

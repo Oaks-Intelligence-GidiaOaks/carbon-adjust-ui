@@ -98,7 +98,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
   ratingValue,
 }) => {
   return (
-    <div className="bg-white rounded-2xl p-8 flex flex-col gap-3 justify-center max-w-[500px] shadow-2xl">
+    <div className="bg-white rounded-2xl p-8 flex flex-col gap-3 justify-center max-w-[500px] shadow-2xl z-10">
       <div className="flex items-center gap-5">
         <div className="w-[70px] h-[70px] p-3 flex items-center justify-center rounded-[50%] bg-gray-400 "></div>
         <div className="flex flex-col gap-2">

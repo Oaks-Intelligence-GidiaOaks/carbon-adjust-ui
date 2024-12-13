@@ -9,6 +9,7 @@ import ResetPassword from "@/pages/public/ResetPassword";
 import MerchantRegister from "@/pages/public/MerchantRegister";
 import AccountSetup from "@/pages/protected/shared/account-setup/AccountSetup";
 import LoginTest from "@/pages/public/Login_test";
+import RegisterOrganisation from "@/pages/public/RegisterOrganisation";
 
 export const publicRoutes = [
   {
@@ -55,6 +56,10 @@ export const publicRoutes = [
   {
     path: "/merchant/register",
     element: <MerchantRegister />,
+  },
+  {
+    path: "/organisation/register",
+    element: <RegisterOrganisation />,
   },
   {
     path: "/account-setup",

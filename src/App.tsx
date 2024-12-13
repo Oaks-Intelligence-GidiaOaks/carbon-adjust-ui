@@ -2,13 +2,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "react-router-dom";
 import Router from "./router/router";
 import { Toaster } from "react-hot-toast";
-import { useEffect } from "react";
+import {  useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./app/store";
 import SocketService from "@/repository/socket";
 import ChatSocketService from "./repository/chatSocket";
 import useNetworkStatus from "./hooks/useNetworkStatus";
 import NetworkBanner from "./layouts/NetworkBanner";
+
 
 function App() {
   const queryClient = new QueryClient();
@@ -27,8 +28,12 @@ function App() {
     };
   }, [user?._id]);
 
+
+
+ 
   return (
     <div>
+    
       <NetworkBanner isOnline={isOnline} />
 
       <QueryClientProvider client={queryClient}>

@@ -21,7 +21,11 @@ export const getHomePageFreebies = async () => {
 };
 
 export const getBestSellerPackages = async () => {
-  const { data } = await axiosInstance.get(`/packages/store/best-sellers`);
+  const { data } = await axiosInstance.get(`/packages/store/best-sellers`, {
+    params: {
+      limit: 8, 
+    },
+  });
   return data;
 };
 
@@ -111,6 +115,9 @@ export const getAdminPackages = async () => {
 
   return data;
 };
+
+
+
 
 // PAYMENT
 export const initiatePayment = async (iData: { orderId: string }) => {
@@ -232,6 +239,16 @@ export const getPackagesReviews = async ({
 export const addReview = async (formData: IAddReview) => {
   const { data } = await axiosInstance.post("packages/review", formData);
 
+  return data;
+};
+
+//PACKAGE DETAILS
+export const getPackageDetails = async ({
+  packageId,
+}: {
+  packageId: string;
+}) => {
+  const { data } = await axiosInstance.get(`/packages/${packageId}`);
   return data;
 };
 
@@ -414,6 +431,8 @@ export const deleteEnergyBill = async (
   return data;
 };
 
+
+
 //GET ENERGY CHART
 export const getEnergyChart = async (buildingIds: string[]) => {
   const { data } = await axiosInstance.post(`/building/chart-ids`, {
@@ -506,3 +525,25 @@ export const verifyTransferCoins = async (otp: string) => {
 
   return data;
 };
+
+
+//CART
+export const getCartItems = async () => {
+  const { data } = await axiosInstance.get(`application/orders/cart`);
+
+  return data;
+};
+
+
+// DELETE CART ITEMS
+export const deleteCartItem = async (
+  packageId: string,
+) => {
+  const { data } = await axiosInstance.delete(
+    `application/orders/cart/${packageId}`
+  );
+  return data;
+};
+
+
+
