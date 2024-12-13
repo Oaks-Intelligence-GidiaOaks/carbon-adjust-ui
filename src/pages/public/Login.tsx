@@ -90,6 +90,13 @@ const Login = () => {
   });
 
   const handleRedirect = (user: AuthUserProfile, role: string) => {
+    if (
+      user.roles.includes(UserRole.CORPORATE_USER_ADMIN) ||
+      role === UserRole.CORPORATE_USER_ADMIN
+    ) {
+      return navigate("/organisation");
+    }
+
     if (role === "HOME_OCCUPANT") return navigate("/dashboard");
     if (role === "ADMIN") return navigate("/admin");
     if (role === "STAFF") {
@@ -111,10 +118,6 @@ const Login = () => {
     // For the new admin staff user
     if (role === UserRole.ADMIN_STAFF) {
       return navigate("/admin-staff");
-    }
-
-    if (role === UserRole.CORPORATE_USER_ADMIN) {
-      return navigate("/organisation");
     }
   };
 
