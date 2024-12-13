@@ -3,14 +3,13 @@ import { useState } from "react";
 import { FaEllipsisV } from "react-icons/fa";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import { DepartmentWithStaffCardProps } from "@/interfaces/organisation.interface";
+import { ISubUnit } from "@/interfaces/organisation.interface";
 
-const SubUnitCard: React.FC<DepartmentWithStaffCardProps> = ({
-  _id,
-  climateScore,
+const SubUnitCard: React.FC<ISubUnit> = ({
+  climateScore = 0,
   name,
   staff,
-  totalAssets,
+  totalAssets = 0,
   totalStaff,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -67,16 +66,6 @@ const SubUnitCard: React.FC<DepartmentWithStaffCardProps> = ({
 
         {isExpanded && (
           <div className="space-y-4">
-            <div className="flex-center justify-between">
-              <h2 className="font-[600] text-[#4C5563] ">Staff Members</h2>
-
-              <button className="flex-center gap-2 rounded-[16px] p-2 px-3 border-[1.2px] border-[#139EEC] text-[#139EEC]">
-                <AiOutlinePlusCircle />
-
-                <span className="text-xs font-[500] ">Add staff</span>
-              </button>
-            </div>
-
             {/* staff Cards */}
             <div className="space-y-4">
               <div className="flex-center justify-between">

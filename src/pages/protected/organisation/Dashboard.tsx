@@ -21,7 +21,7 @@ interface IDashboardStats {
 }
 
 const Dashboard = () => {
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["get-admin-units"],
     queryFn: () => AllAdminUnits(),
   });

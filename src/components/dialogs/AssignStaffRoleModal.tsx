@@ -21,8 +21,8 @@ interface IAssignStaffRole {
 }
 
 const AssignStaffRoleModal: React.FC<IAssignStaffRole> = ({
-  staffId,
-  unit,
+  // staffId,
+  // unit,
   setShowModal,
   showModal,
 }) => {

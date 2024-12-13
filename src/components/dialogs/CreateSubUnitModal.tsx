@@ -27,7 +27,6 @@ const CreateSubUnitModal: React.FC<Props> = ({
   const { AddSubUnit } = useMutations();
 
   const {
-    reset,
     handleSubmit,
     register,
     formState: { errors },

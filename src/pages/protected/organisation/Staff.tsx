@@ -8,7 +8,7 @@ import staffMembers from "@/dummy/staff-members.json";
 import { useState } from "react";
 import StaffListWithDepartment from "@/components/containers/organisation/StaffListWithDepartment";
 import Loading from "@/components/reusables/Loading";
-import { AdminStaffDetails, AllStaffByUnit } from "@/services/organisation";
+import { AllStaffByUnit } from "@/services/organisation";
 import { useQuery } from "@tanstack/react-query";
 
 const OrganisationStaff = () => {

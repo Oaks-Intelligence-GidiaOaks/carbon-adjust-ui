@@ -19,6 +19,7 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
   totalAssets,
   climateScore,
   staff,
+  subUnits,
   totalStaff,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -91,9 +92,8 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
       </div>
 
       <div className="grid  gap-y-3">
-        {Array.from(staff, (stf, i) => (
-          // @ts-ignore
-          <SubUnitCard key={i} {...stf} className="w-full" />
+        {Array.from(subUnits, (sUnit, i) => (
+          <SubUnitCard key={i} {...sUnit} />
         ))}
       </div>
     </div>

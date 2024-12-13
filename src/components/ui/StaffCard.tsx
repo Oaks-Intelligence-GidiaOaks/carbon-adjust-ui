@@ -31,6 +31,7 @@ const StaffCard: FC<StaffCardProps> = ({
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState<boolean>(false);
 
+  // @ts-ignore
   const handleAssignRole = () => {
     onAssignRole({
       staffId: (staffId || _id) as string,
