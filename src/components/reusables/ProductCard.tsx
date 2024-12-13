@@ -3,7 +3,9 @@ import { EyeIcon, HeartIcon } from "lucide-react";
 import { IProduct } from "@/interfaces/product.interface";
 import { Link } from "react-router-dom";
 import { BsCart3 } from "react-icons/bs";
-
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { addFavorite, removeFavorite } from "@/services/homeOwner";
 
 interface Props extends IProduct {
   wrapText?: boolean;
@@ -13,17 +15,49 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
   const [hovered, setHovered] = useState(false);
   const [liked, setLiked] = useState(false); // State to track "love" selection
 
-  const toggleLike = () => {
-    setLiked(!liked);
-  };
+  const packageId = props?._id || "";
 
-  
+  // Mutation for adding to favorites
+  const { mutate: AddFavorite, isPending: isAddingFavorite } = useMutation({
+    mutationFn: (id: string) => addFavorite(id),
+    onSuccess: () => {
+      setLiked(true); // Set liked to true on success
+      toast.success("Added to favorites");
+    },
+    onError: (error: any) => {
+      console.error(error);
+      toast.error("Failed to add to favorites. Please try again.");
+    },
+  });
+
+  // Mutation for removing from favorites
+  const { mutate: RemoveFavorite, isPending: isRemovingFavorite } = useMutation({
+    mutationFn: (id: string) => removeFavorite(id),
+    onSuccess: () => {
+      setLiked(false); // Set liked to false on success
+      toast.success("Removed from favorites");
+    },
+    onError: (error: any) => {
+      console.error(error);
+      toast.error("Failed to remove from favorites. Please try again.");
+    },
+  });
+
+  const handleToggleLike = () => {
+    if (liked) {
+      // If already liked, remove from favorites
+      RemoveFavorite(packageId);
+    } else {
+      // If not liked, add to favorites
+      AddFavorite(packageId);
+    }
+  };
 
   const averageRating = props?.rating || 0;
 
   return (
     <div
-      className="relative bg-white border border-gray-200 font-inter  p-4 transition-all"
+      className="relative bg-white border border-gray-200 font-inter p-4 transition-all"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -52,7 +86,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
       <div className="relative">
         <img
           src={props?.attachments?.[0]}
-          alt=""
+          alt="Product"
           className="w-full h-44 object-cover rounded-lg mt-5"
         />
 
@@ -61,7 +95,8 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
           <div className="absolute inset-0 bg-gray-400 bg-opacity-70 flex justify-center items-center gap-3 rounded-lg z-10">
             {/* Love Icon */}
             <button
-              onClick={toggleLike}
+              onClick={handleToggleLike}
+              disabled={isAddingFavorite || isRemovingFavorite}
               className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer ${
                 liked
                   ? "bg-gradient-to-r from-[#2E599A] to-[#0B8DFF]"
@@ -120,9 +155,9 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
         <h4 className="text-[#191C1F] text-sm">{props?.title}</h4>
 
         <div className="flex items-center mt-2 space-x-2">
-          {typeof props.discount === "number" && props.discount > 0 &&  (
-              <span className="text-gray-500 line-through text-sm">{` ${props?.currency} ${props.discount}`}</span>
-            )}
+          {typeof props.discount === "number" && props.discount > 0 && (
+            <span className="text-gray-500 line-through text-sm">{` ${props?.currency} ${props.discount}`}</span>
+          )}
           <span className="text-[#2DA5F3] font-semibold text-sm">{`${
             props?.currency
           } ${props.price ?? 0}`}</span>
@@ -133,4 +168,3 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
 };
 
 export default ProductCard;
-

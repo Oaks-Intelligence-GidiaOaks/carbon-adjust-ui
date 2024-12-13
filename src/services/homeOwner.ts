@@ -431,7 +431,7 @@ export const deleteEnergyBill = async (
   );
   return data;
 };
-
+  
 
 
 //GET ENERGY CHART
@@ -545,6 +545,21 @@ export const deleteCartItem = async (
   );
   return data;
 };
+
+//ADD FAVORITE
+export const addFavorite = async (packageId: string) => {
+  const { data } = await axiosInstance.post(`/packages/favourites`, {
+    package: packageId, 
+  });
+  return data;
+};
+
+//REMOVE FAVORITE
+export const removeFavorite = async (packageId: string) => {
+  const { data } = await axiosInstance.delete(`packages/favourites/${packageId}`);
+  return data;
+};
+
 
 
 

@@ -12,6 +12,7 @@ export { default as UserPurchases } from "./Purchases";
 export { default as UserProduct } from "./Product";
 export { default as UserCheckout } from "./Checkout";
 export { default as UserCart } from "./Cart";
+export { default as UserFavorites } from "./Favorites";
 
 
 
