@@ -2,9 +2,8 @@ import BuildingList from "@/components/containers/buildings/BuildingList";
 import AssetsLayout from "@/layouts/AssetsLayout";
 import Layout from "@/layouts/Layout";
 import UnitsLayout from "@/layouts/UnitsLayout";
-import { UserDevices, UserNewDevice, UserNewTransport, UserPurchases } from "@/pages/protected/home-occupant";
+import { UserDevices, UserNewDevice, UserNewTransport, UserPurchases, UserTransport } from "@/pages/protected/home-occupant";
 import {
-  OrganizationDevices,
   OrganisationDashboard,
   OrganisationNewStaff,
   OrganisationNewUnit,
@@ -14,7 +13,6 @@ import {
   OrganisationStaffRequestDetails,
   OrganisationUnit,
   OrganisationWallet,
-  OrganizationTransport,
 } from "@/pages/protected/organisation";
 
 export const organisationRoutes = [
@@ -88,7 +86,7 @@ export const organisationRoutes = [
         children: [
           {
             path: "",
-            element: <OrganizationTransport />,
+            element: <UserTransport />,
           },
           {
             path: "add",

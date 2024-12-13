@@ -12,6 +12,7 @@ import Paginate from "@/components/reusables/Paginate";
 import NoDevices from "../devices/NoDevices";
 import { useDebounce } from "@/hooks/useDebounce";
 import TransportHistoryCardSkeleton from "./CardSkeleton";
+import { useLocation } from "react-router-dom";
 
 const TransportHistory = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,6 +27,10 @@ const TransportHistory = () => {
   });
 
   const debouncedSearch = useDebounce(searchQuery, 500);
+  const { pathname } = useLocation();
+  const type = pathname.includes("/organisation")
+    ? "organisation"
+    : "dashboard";
 
   const {
     data: transportsHistory,
@@ -110,7 +115,7 @@ const TransportHistory = () => {
               <div className="h-32 grid place-items-center max-w-[98%]">
                 <NoDevices
                   empty={true}
-                  link="/dashboard/transport/add"
+                  link={`/${type}/transport/add`}
                   text="Transport"
                 />
               </div>

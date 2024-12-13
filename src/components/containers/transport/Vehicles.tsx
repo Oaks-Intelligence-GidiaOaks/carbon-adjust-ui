@@ -34,8 +34,10 @@ const Vehicles = () => {
     totalPages: 1,
   });
 
-  const { pathname } = useLocation()
-  const type = pathname.includes("/organisation") ? "organisation" : "dashboard";
+  const { pathname } = useLocation();
+  const type = pathname.includes("/organisation")
+    ? "organisation"
+    : "dashboard";
 
   const debouncedSearch = useDebounce(searchQuery, 500);
 
@@ -81,7 +83,7 @@ const Vehicles = () => {
   const toggleMasterChecked = (checked: boolean) => {
     setIsChecked(checked);
     if (checked) {
-      const allIds = transportData?.map((item:any) => item._id) || [];
+      const allIds = transportData?.map((item: any) => item._id) || [];
       setIds(allIds);
     } else {
       setIds([]);
@@ -111,7 +113,7 @@ const Vehicles = () => {
           </div>
         </div>
         <div className="flex items-center">
-          {/* {Vehicles && (
+          {Vehicles && (
             <Button
               onClick={() => setShowModal(true)}
               variant={"outline"}
@@ -119,17 +121,7 @@ const Vehicles = () => {
             >
               Optimize trip
             </Button>
-          )} */}
-            <Button
-              onClick={() => setShowModal(true)}
-              variant={"outline"}
-              className="rounded-[20px] border-cyan-700 flex-center gap-1 "
-            >
-              Optimize trip
-            </Button>
-         
-
-
+          )}
           <Link className="ml-5" to={`/${type}/transport/add`}>
             <Button className="rounded-[20px] flex-center gap-1 ">
               <span>Add Transport</span>
@@ -173,11 +165,11 @@ const Vehicles = () => {
                 {searchQuery ? (
                   <NoDevices
                     empty={true}
-                    link="/dashboard/transport/add"
+                    link={`/${type}/transport/add`}
                     text="Transport"
                   />
                 ) : (
-                  <NoDevices link="/dashboard/transport/add" text="Transport" />
+                  <NoDevices link={`/${type}/transport/add`} text="Transport" />
                 )}
               </div>
             )}

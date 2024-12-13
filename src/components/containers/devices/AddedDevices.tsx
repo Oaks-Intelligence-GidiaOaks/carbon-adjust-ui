@@ -36,7 +36,7 @@ const AddedDevices = () => {
   const [showUnitModal, setShowUnitModal] = useState(false);
   const [cardActions, setCardActions] = useState<boolean>(false);
   const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
- 
+
   const actionsRef = useRef<null | HTMLDivElement>(null);
   const { device } = useSelector((state: RootState) => state.assets);
   const dispatch = useDispatch();
@@ -124,7 +124,10 @@ const AddedDevices = () => {
       ref={actionsRef}
       className="absolute bg-white top-8 right-2 max-w-[150px] shadow-lg border space-y-2 rounded-[10px] px-2 py-3 z-10"
     >
-      <div onClick={handleOpenLinkDeviceModal}className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 ">
+      <div
+        onClick={handleOpenLinkDeviceModal}
+        className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
+      >
         <span>Link to Building</span>
       </div>
       <div
@@ -205,21 +208,35 @@ const AddedDevices = () => {
         </div>
       </div>
       {type === "organisation" && (
-        <div className="flex relative items-center justify-between p-3 max:w-[95%] mt-10">
-          <div className="flex items-center gap-3">
-            <h2 className="font-inter font-medium  lg:text-2xl text-[#667085]">
-              Household Devices
-            </h2>
-            <span className="bg-[#F7FBFE] shadow-lg p-2">
-              <IoIosArrowForward />
-            </span>
+        <div className="p-3 max:w-[95%] my-10">
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-3">
+              <h2 className="font-inter font-medium  lg:text-2xl text-[#667085]">
+                Household Devices
+              </h2>
+              <span className="bg-[#F7FBFE] shadow-lg p-2">
+                <IoIosArrowForward />
+              </span>
+            </div>
+            <div>
+              <MdMoreVert
+                onClick={() => setCardActions(!cardActions)}
+                className="cursor-pointer"
+              />
+              {cardActions && <CardActions />}
+            </div>
           </div>
-          <div>
-            <MdMoreVert
-              onClick={() => setCardActions(!cardActions)}
-              className="cursor-pointer"
-            />
-            {cardActions && <CardActions />}
+          <div className="mt-[15px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5">
+            {Array.from(userDevices.data.devices as Device[], (it, i) => (
+              <DeviceCard
+                setShowUnitModal={setShowUnitModal}
+                setShowStaffModal={setShowStaffModal}
+                setCancelId={setCancelId}
+                setId={setId}
+                {...it}
+                key={i}
+              />
+            ))}
           </div>
         </div>
       )}

@@ -300,7 +300,7 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
             <h2 className="text-2xl font-medium text-[#495057] capitalize mb-5 font-poppins">
               optimize trip
             </h2>
-            {isOrganization && (
+            {/* {isOrganization && (
               <div className="w-full">
                 <TabToggler
                   activeTab={activeTab}
@@ -308,7 +308,7 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                   tabs={tabs}
                 />
               </div>
-            )}
+            )} */}
             <form className="mt-5" action="" onSubmit={handleSubmit}>
               <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 ">
                 <CustomMapInput
@@ -382,7 +382,7 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                 </div>
               </div>
 
-              {activeTab === "Staff" && (
+              {/* {activeTab === "Staff" && (
                 <>
                   <div className="flex  bg-[#Fff] border rounded-lg p-5">
                     <div className="grid grid-cols-3 gap-4 w-full">
@@ -425,7 +425,7 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
                     </div>
                   </div>
                 </>
-              )}
+              )} */}
 
               <div className="flex sm:flex-row flex-col justify-between w-full sm:items-center items-start  gap-5 mt-3 sm:mt-10">
                 <div className="space-y-2 w-full">
