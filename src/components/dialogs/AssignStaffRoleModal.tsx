@@ -1,34 +1,68 @@
-import React, { Dispatch, SetStateAction, useRef } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import Modal from "./Modal";
 import { Button } from "../ui";
 import SelectInput from "../ui/SelectInput";
 import { StaffRole } from "@/interfaces/user.interface";
-import { IUnit } from "@/interfaces/organisation.interface";
+// import { IUnit } from "@/interfaces/organisation.interface";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
+import useMutations from "@/hooks/useMutations";
+import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const staffRoles = [
-  { label: "GENERAL ADMIN", value: StaffRole.GENERAL_ADMIN },
   { label: "UNIT ADMIN", value: StaffRole.UNIT_ADMIN },
-  { label: "SUB UNIT ADMIN", value: StaffRole.SUB_UNIT_ADMIN },
+  // { label: "SUB UNIT ADMIN", value: StaffRole.SUB_UNIT_ADMIN },
   ,
 ];
 
 interface IAssignStaffRole {
   staffId: string;
-  unit: IUnit;
+  unitId?: string;
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 
 const AssignStaffRoleModal: React.FC<IAssignStaffRole> = ({
-  // staffId,
-  // unit,
+  staffId,
+  unitId,
   setShowModal,
   showModal,
 }) => {
+  console.log(unitId, "unit id");
+  const queryClient = useQueryClient();
+
+  const { MakeunitAdmin } = useMutations();
   const ref = useRef<HTMLDivElement | null>(null);
 
+  // @ts-ignore
+  const [roleType, setRoleType] = useState<StaffRole | null>(
+    StaffRole.UNIT_ADMIN
+  );
+
   useOutsideCloser(ref, showModal, setShowModal);
+
+  const handleAssignRole = (e: any) => {
+    e.preventDefault();
+
+    if (roleType === StaffRole.UNIT_ADMIN) {
+      MakeunitAdmin.mutateAsync(
+        { staffId, unitId },
+        {
+          onSuccess: (sx: any) => {
+            toast.success(sx.message || `Staff Role Updated succesfully`);
+            queryClient.invalidateQueries({ queryKey: ["get-admin-units"] });
+            queryClient.invalidateQueries({ queryKey: ["get-admin-staff"] });
+            setShowModal(false);
+          },
+          onError: (ex: any) => {
+            toast.error(
+              ex.response.data.message || "error updating staff role"
+            );
+          },
+        }
+      );
+    }
+  };
 
   return (
     <Modal>
@@ -41,22 +75,23 @@ const AssignStaffRoleModal: React.FC<IAssignStaffRole> = ({
             Assign Role
           </h2>
 
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleAssignRole}>
             {/* Assign Role */}
             <SelectInput
               label="Assign Role"
               //   @ts-ignore
               options={staffRoles}
+              onChange={() => {}}
               className=""
             />
 
             {/* Sub-Unit */}
-            <SelectInput
+            {/* <SelectInput
               label="Sub-Unit"
               //   @ts-ignore
               options={staffRoles}
               className=""
-            />
+            /> */}
 
             {/* Submit Button */}
             <Button className="w-full">

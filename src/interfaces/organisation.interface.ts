@@ -20,7 +20,7 @@ export interface ICreateStaff {
   auThorizationLevel: "FULL_ACCESS" | "RESTRICTED_ACCESS";
   unit: PropsValue<SelectItem>;
   file: File | null;
-  subUnit: string;
+  subUnit: PropsValue<SelectItem>;
 }
 
 export interface ICreateSubUnit {
@@ -44,6 +44,8 @@ export interface IUnitStaff {
     name: string;
     _id: string;
   };
+  unitId?: string;
+  unit?: Pick<IUnit, "_id" | "name">;
 }
 
 export interface ISubUnit {
