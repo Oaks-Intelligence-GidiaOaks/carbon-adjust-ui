@@ -193,16 +193,7 @@ const Login = () => {
                 <LogoAndBrandVertical className="max-h-[100px]" />
               </div> */}
 
-              <div className="flex flex-col items-center gap-y-2 font-bold">
-                <p className="max-w-[95%] text-center font-bold">
-                  “Our platform, funded by the UK government (DESNZ), connects
-                  homeowners with renewable energy service providers.".
-                </p>
-
-                <p>Are you a homeowner or a service provider?</p>
-
-                <p>Register now !</p>
-              </div>
+       
 
               <div className="relative  w-full">
                 <img

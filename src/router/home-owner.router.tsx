@@ -5,6 +5,7 @@ import {
   UserCart,
   UserCheckout,
   UserDevices,
+  UserFavorites,
   UserMarketGroup,
   UserMarketPlace,
   UserNewDevice,
@@ -54,6 +55,10 @@ export const homeOwnerRoutes = [
       {
         path: "cart",
         element: <UserCart />,
+      },
+      {
+        path: "favourites",
+        element: <UserFavorites />,
       },
       {
         path: "product/:packageId",
