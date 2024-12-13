@@ -1,4 +1,5 @@
-export { default as OrganisationAssets } from "./Assets";
+export { default as OrganizationDevices } from "./Devices";
+export { default as OrganizationTransport } from "./Transport";
 export { default as OrganisationDashboard } from "./Dashboard";
 export { default as OrganisationUnit } from "./Unit";
 export { default as OrganisationNewUnit } from "./NewUnit";

@@ -643,7 +643,7 @@ export const organisationSideBarItems = [
   {
     icon: AssetIcon,
     title: "Assets",
-    href: "/organisation/assets",
+    href: "/organisation/devices",
   },
   {
     icon: WalletIcon,

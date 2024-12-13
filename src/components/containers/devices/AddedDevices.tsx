@@ -1,7 +1,7 @@
 import { BiSearch } from "react-icons/bi";
 import DeviceCard from "./DeviceCard";
 import NoDevices from "@/components/containers/devices/NoDevices";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui";
 import { PlusIcon } from "@/assets/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -14,22 +14,40 @@ import toast from "react-hot-toast";
 import { clearDevice } from "@/features/assetSlice";
 import Paginate from "@/components/reusables/Paginate";
 import { PaginateProps } from "@/types/general";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DeleteDeviceModal from "@/components/dialogs/DeleteDeviceModal";
 import useMutations from "@/hooks/useMutations";
 import DeviceSkeletonLoader from "@/components/reusables/device/DeviceSkeletonLoader";
 import CancelDeviceScheduleModal from "@/components/dialogs/CancelDeviceScheduleModal";
+import { GroupDevicesModal } from "../organisation/devices";
+import LinkToUnitModal from "../organisation/devices/LinkToUnitModal";
+import AssignStaffModal from "../organisation/devices/AssignStaff";
+//import { MdMoreVert } from "react-icons/md";
+import { useOutsideCloser } from "@/hooks/useOutsideCloser";
+// import { IoIosArrowForward } from "react-icons/io";
+// import { LinkDeviceModal } from "./LinkDevices";
 
 const AddedDevices = () => {
+  const { pathname } = useLocation();
   const [id, setId] = useState<string | null>(null);
   const [cancelId, setCancelId] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showStaffModal, setShowStaffModal] = useState(false);
+  const [showUnitModal, setShowUnitModal] = useState("");
+  const [cardActions, setCardActions] = useState<boolean>(false);
+  //const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
 
+  const actionsRef = useRef<null | HTMLDivElement>(null);
   const { device } = useSelector((state: RootState) => state.assets);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
   const { DeleteDevice, CancelDeviceSchedule } = useMutations();
+  useOutsideCloser(actionsRef, cardActions, setCardActions);
 
+  const type = pathname.includes("/organisation")
+    ? "organisation"
+    : "dashboard";
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
   >({
@@ -44,6 +62,16 @@ const AddedDevices = () => {
     queryKey: ["user-devices", pagination.currentPage],
     queryFn: () => getUserDevices(pagination.limit, pagination.currentPage),
   });
+
+  // const { data: groupDevices } = useQuery({
+  //   queryKey: ["group-devices", pagination.currentPage],
+  //   queryFn: () => getGroupDevices(pagination.limit, pagination.currentPage),
+  // });
+
+  useEffect(() => {
+   console.log(userDevices.data.devices) 
+  }, [userDevices]);
+  
 
   useEffect(() => {
     if (userDevices?.data)
@@ -62,6 +90,13 @@ const AddedDevices = () => {
       currentPage: pgNo,
     }));
   };
+  // const handleOpenLinkDeviceModal = () => {
+  //   setIsLinkDeviceModalOpen(true);
+  // };
+
+  // const handleCloseLinkDeviceModal = () => {
+  //   setIsLinkDeviceModalOpen(false);
+  // };
 
   const DispatchDevice = useMutation({
     mutationKey: ["dispatch-device"],
@@ -82,6 +117,8 @@ const AddedDevices = () => {
     },
   });
 
+
+
   if (isLoading) {
     return <DeviceSkeletonLoader />;
   }
@@ -89,10 +126,37 @@ const AddedDevices = () => {
   if (userDevices?.data?.devices.length === 0) {
     return (
       <div className="h-32 grid place-items-center max-w-[98%]">
-        <NoDevices link="/dashboard/devices/add" />
+        <NoDevices link={`/${type}/devices/add`} />
       </div>
     );
   }
+
+  // const CardActions = () => (
+  //   <div
+  //     ref={actionsRef}
+  //     className="absolute bg-white top-8 right-2 max-w-[150px] shadow-lg border space-y-2 rounded-[10px] px-2 py-3 z-10"
+  //   >
+  //     <div
+  //       onClick={handleOpenLinkDeviceModal}
+  //       className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
+  //     >
+  //       <span>Link to Building</span>
+  //     </div>
+  //     {/* <div
+  //       onClick={() => setShowUnitModal("")}
+  //       className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
+  //     >
+  //       <span>Assign to Unit</span>
+  //     </div> */}
+
+  //     {/* <button
+  //       /// onClick={() => props.setId(props._id as string)}
+  //       className={` text-[#E71D36] cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 `}
+  //     >
+  //       <span>Delete Group</span>
+  //     </button> */}
+  //   </div>
+  // );
 
   const handleDeleteDevice = async () => {
     await DeleteDevice.mutateAsync(id as string, {
@@ -126,7 +190,7 @@ const AddedDevices = () => {
 
   return (
     <div>
-      <div className="flex-center mt-[15px]">
+      <div className="flex justify-between mt-[15px]">
         <div className="relative border border-border rounded-lg h-10 p-0 bg-white md:w-[350px] w-[300px]">
           <BiSearch className="absolute top-2 left-2.5 opacity-40" size={24} />
           <input
@@ -136,18 +200,72 @@ const AddedDevices = () => {
             onChange={() => {}}
           />
         </div>
+        <div className="flex items-center gap-4">
+          {type === "organisation" && (
+            <Button
+              onClick={() => setShowModal(true)}
+              variant={"outline"}
+              className="rounded-[20px] border-blue-600 hover:text-blue-600 flex-center gap-1 text-blue-600"
+            >
+              Group Devices
+            </Button>
+          )}
 
-        <Link className="ml-auto" to="/dashboard/devices/add">
-          <Button className="rounded-[20px] flex-center gap-1 ">
-            <span className="md:block hidden">Add device</span>
-            <PlusIcon />
-          </Button>
-        </Link>
+          <Link to={`/${type}/devices/add`}>
+            <Button className="rounded-[20px] flex-center gap-1 ">
+              <span className="md:block hidden">Add device</span>
+              <PlusIcon />
+            </Button>
+          </Link>
+        </div>
       </div>
-
+      {/* {type === "organisation" && (
+        <div className="p-3  max:w-[95%] my-10">
+          {groupDevices.data?.assets?.map((unit: any) => (
+            <>
+          <div className="flex relative items-center justify-between w-full">
+            <div className="flex items-center gap-3">
+              <h2 className="font-inter font-medium capitalize lg:text-2xl text-[#667085]">
+                {`${unit.unit.name}'s Devices`}
+              </h2>
+              <span className="bg-[#F7FBFE] shadow-lg p-2">
+                <IoIosArrowForward />
+              </span>
+            </div>
+            <div>
+              <MdMoreVert
+                onClick={() => setCardActions(!cardActions)}
+                className="cursor-pointer"
+              />
+              {cardActions && <CardActions />}
+            </div>
+          </div>
+          <div className="mt-[15px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5">
+            {Array.from(userDevices.data.devices as Device[], (it, i) => (
+              <DeviceCard
+              setShowUnitModal={setShowUnitModal}
+              setShowStaffModal={setShowStaffModal}
+              setCancelId={setCancelId}
+              setId={setId}
+              {...it}
+              key={i}
+              />
+            ))}
+          </div>
+            </>
+            ))}
+        </div>
+      )} */}
       <div className="mt-[15px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5">
         {Array.from(userDevices.data.devices as Device[], (it, i) => (
-          <DeviceCard setCancelId={setCancelId} setId={setId} {...it} key={i} />
+          <DeviceCard
+            setShowUnitModal={setShowUnitModal}
+            setShowStaffModal={setShowStaffModal}
+            setCancelId={setCancelId}
+            setId={setId}
+            {...it}
+            key={i}
+          />
         ))}
       </div>
 
@@ -192,6 +310,17 @@ const AddedDevices = () => {
           isPending={CancelDeviceSchedule.isPending}
         />
       )}
+      {showUnitModal && <LinkToUnitModal setShowModal={setShowUnitModal} id={showUnitModal} />}
+      {showModal && <GroupDevicesModal setShowModal={setShowModal} devices={userDevices} />}
+      {showStaffModal && (
+        <AssignStaffModal setShowStaffModal={setShowStaffModal} />
+      )}
+      {/* {isLinkDeviceModalOpen && (
+        <LinkDeviceModal
+          onClose={handleCloseLinkDeviceModal}
+          deviceId={"4536g"}
+        />
+      )} */}
     </div>
   );
 };

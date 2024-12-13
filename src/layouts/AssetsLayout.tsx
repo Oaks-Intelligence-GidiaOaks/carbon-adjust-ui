@@ -4,7 +4,11 @@ import { AssetTabs } from "@/interfaces/device.interface";
 import { FC, useRef } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
-const AssetsLayout: FC = (_) => {
+interface AssetsLayoutProps {
+  type?: string;
+}
+
+const AssetsLayout: FC<AssetsLayoutProps> = () => {
   const tabs: AssetTabs[] = [
     AssetTabs.Devices,
     AssetTabs.Buildings,
@@ -13,14 +17,14 @@ const AssetsLayout: FC = (_) => {
   ];
 
   const { pathname } = useLocation();
-
+  const type = pathname.includes("/organisation") ? "organisation" : "dashboard";
   const navigate = useNavigate();
   const contentRef = useRef<null | HTMLDivElement>(null);
 
   UseScrollToTop(contentRef);
 
   const handleTabSwitch = (tab: string) => {
-    navigate(`/dashboard/${tab.toLocaleLowerCase()}`);
+   navigate(`/${type}/${tab.toLocaleLowerCase()}`)
   };
 
   const getActiveTab = (pathString: string) => {

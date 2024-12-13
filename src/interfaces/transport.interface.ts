@@ -7,6 +7,12 @@ export enum TransportTabs {
   TravelHistory = "Travel History",
 }
 
+export enum OrganizationTransportTabs {
+  Individual = "Individual",
+  Staff = "Staff",
+  Fleet = "Fleet",
+}
+
 export interface Transport {
   _id: string;
   transportPhoto: string;

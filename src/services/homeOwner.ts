@@ -175,12 +175,31 @@ export const dispatchDevice = async (input: IDispatchData) => {
   return data;
 };
 
+export const groupDevices = async (payload:any) => {
+
+  const { data } = await axiosInstance.post("/assets/group-devices", payload);
+
+  return data;
+};
+
 export const getUserDevices = async (limit: number = 5, page: number = 1) => {
   const queryParams = new URLSearchParams();
   queryParams.append("limit", limit.toString());
   queryParams.append("page", page.toString());
 
   const url = `/devices/user-devices?${queryParams.toString()}`;
+
+  const { data } = await axiosInstance.get(url);
+
+  return data;
+};
+
+export const getGroupDevices = async (limit: number = 5, page: number = 1) => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("limit", limit.toString());
+  queryParams.append("page", page.toString());
+
+  const url = `/assets?${queryParams.toString()}`;
 
   const { data } = await axiosInstance.get(url);
 

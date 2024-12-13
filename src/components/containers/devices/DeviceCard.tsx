@@ -27,6 +27,8 @@ import { ThreeDots } from "react-loader-spinner";
 interface Props extends Device {
   setId: Dispatch<SetStateAction<string | null>>;
   setCancelId: Dispatch<SetStateAction<string | null>>;
+  setShowStaffModal?: Dispatch<SetStateAction<boolean>>;
+  setShowUnitModal?: Dispatch<SetStateAction<any>>;
 }
 
 const DeviceCard = (props: Props) => {
@@ -214,11 +216,17 @@ const DeviceCard = (props: Props) => {
       ref={actionsRef}
       className="absolute bg-white top-8 right-2 max-w-[150px] shadow-lg border space-y-2 rounded-[10px] px-2 py-3"
     >
-      {/* <Link to={`/dashboard/devices/${props._id}/edit`}>
-        <div className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 ">
-          <span>Edit Device</span>
-        </div>
-      </Link> */}
+      {props.setShowStaffModal && (
+        <>
+          
+          <div
+            onClick={() => props.setShowUnitModal?.(props._id )}
+            className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
+          >
+            <span>Assign to Unit</span>
+          </div>
+        </>
+      )}
 
       <button
         disabled={DeleteDevice.isPending}
@@ -256,7 +264,10 @@ const DeviceCard = (props: Props) => {
             wrapperClass=""
           />
         ) : (
-          <MdMoreVert onClick={() => setCardActions(!cardActions)} />
+          <MdMoreVert
+            onClick={() => setCardActions(!cardActions)}
+            className="cursor-pointer"
+          />
         )}
 
         {id && <CardPopup />}

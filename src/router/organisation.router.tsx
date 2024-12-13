@@ -1,7 +1,9 @@
+import BuildingList from "@/components/containers/buildings/BuildingList";
+import AssetsLayout from "@/layouts/AssetsLayout";
 import Layout from "@/layouts/Layout";
 import UnitsLayout from "@/layouts/UnitsLayout";
+import { UserDevices, UserNewDevice, UserNewTransport, UserPurchases, UserTransport } from "@/pages/protected/home-occupant";
 import {
-  OrganisationAssets,
   OrganisationDashboard,
   OrganisationNewStaff,
   OrganisationNewUnit,
@@ -51,8 +53,56 @@ export const organisationRoutes = [
         ],
       },
       {
-        path: "assets",
-        element: <OrganisationAssets />,
+        path: "devices",
+        element: <AssetsLayout type="organization"/>,
+        children: [
+          {
+            path: "",
+            element: <UserDevices />,
+          },
+          {
+            path: "add",
+            element: <UserNewDevice />,
+          },
+          {
+            path: ":deviceId/edit",
+            element: <UserNewDevice />,
+          },
+        ],
+      },
+      {
+        path: "buildings",
+        element: <AssetsLayout type="organization"/>,
+        children: [
+          {
+            path: "",
+            element: <BuildingList />,
+          },
+        ],
+      },
+      {
+        path: "transport",
+        element: <AssetsLayout />,
+        children: [
+          {
+            path: "",
+            element: <UserTransport />,
+          },
+          {
+            path: "add",
+            element: <UserNewTransport />,
+          },
+        ],
+      },
+      {
+        path: "purchases",
+        element: <AssetsLayout />,
+        children: [
+          {
+            path: "",
+            element: <UserPurchases />,
+          },
+        ],
       },
       {
         path: "wallet",

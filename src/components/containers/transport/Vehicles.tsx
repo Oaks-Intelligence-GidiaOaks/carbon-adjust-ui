@@ -1,6 +1,6 @@
 import { BiSearch } from "react-icons/bi";
 import { IoFilterSharp } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui";
 import { PlusIcon } from "@/assets/icons";
 import TransportCard from "./TransportCard";
@@ -33,6 +33,11 @@ const Vehicles = () => {
     hasPrevPage: false,
     totalPages: 1,
   });
+
+  const { pathname } = useLocation();
+  const type = pathname.includes("/organisation")
+    ? "organisation"
+    : "dashboard";
 
   const debouncedSearch = useDebounce(searchQuery, 500);
 
@@ -78,7 +83,7 @@ const Vehicles = () => {
   const toggleMasterChecked = (checked: boolean) => {
     setIsChecked(checked);
     if (checked) {
-      const allIds = transportData?.map((item:any) => item._id) || [];
+      const allIds = transportData?.map((item: any) => item._id) || [];
       setIds(allIds);
     } else {
       setIds([]);
@@ -117,8 +122,7 @@ const Vehicles = () => {
               Optimize trip
             </Button>
           )}
-
-          <Link className="ml-5" to="/dashboard/transport/add">
+          <Link className="ml-5" to={`/${type}/transport/add`}>
             <Button className="rounded-[20px] flex-center gap-1 ">
               <span>Add Transport</span>
               <PlusIcon />
@@ -161,11 +165,11 @@ const Vehicles = () => {
                 {searchQuery ? (
                   <NoDevices
                     empty={true}
-                    link="/dashboard/transport/add"
+                    link={`/${type}/transport/add`}
                     text="Transport"
                   />
                 ) : (
-                  <NoDevices link="/dashboard/transport/add" text="Transport" />
+                  <NoDevices link={`/${type}/transport/add`} text="Transport" />
                 )}
               </div>
             )}

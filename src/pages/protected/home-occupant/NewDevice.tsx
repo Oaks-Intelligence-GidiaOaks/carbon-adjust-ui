@@ -17,11 +17,15 @@ import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { Oval } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const NewDevice = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { pathname } = useLocation();
+  const type = pathname.includes("/organisation")
+    ? "organisation"
+    : "dashboard";
 
   let initialState: IDevice = {
     name: "",
@@ -47,7 +51,7 @@ const NewDevice = () => {
       toast.success(sx.message);
       resetForm();
 
-      navigate(`/dashboard/devices`);
+      navigate(`/${type}/devices`);
     },
     onError: (ex: any) => {
       toast.error(ex.response.data.message);
@@ -163,7 +167,7 @@ const NewDevice = () => {
           <Button
             variant={"ghost"}
             className="px-2"
-            onClick={() => navigate("/dashboard/devices")}
+            onClick={() => navigate(`/${type}/devices`)}
           >
             <MdKeyboardArrowLeft />
             <h2 className="pl-4 text-base font-[600]">Devices</h2>
