@@ -560,6 +560,14 @@ export const removeFavorite = async (packageId: string) => {
   return data;
 };
 
+//GET FAVORITES
+export const getFavourites = async () => {
+  const { data } = await axiosInstance.get(`packages/favourites`);
+  return data;
+};
+
+
+
 
 
 

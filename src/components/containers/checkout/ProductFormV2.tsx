@@ -31,6 +31,8 @@ import router from "@/router/router";
 import { useMutation } from "@tanstack/react-query";
 import { createNewOrder } from "@/services/homeOwner";
 import toast from "react-hot-toast";
+import { LoadingGif } from "@/assets";
+import { LoaderCircle } from "lucide-react";
 
 interface ProductFormV2Props {
   questions: IQuestion[];
@@ -140,7 +142,7 @@ const ProductFormV2 = ({
         proceed: "PAYMENT",
       },
       {
-        onSuccess: () => router.navigate("/dashboard/cart"), // Navigate on success
+        onSuccess: () => router.navigate("/dashboard/checkout"), // Navigate on success
         onSettled: () => setIsProceedLoading(false), // Reset loading state
       }
     );
@@ -149,7 +151,6 @@ const ProductFormV2 = ({
   const AddToCart = useMutation({
     mutationKey: ["create-order"],
     mutationFn: (orderData: IOrder) => {
-      console.log("Data being sent to the API:", orderData);
       if (!orderData.customerEmail) {
         throw new Error("Invalid order data: Missing required fields.");
       }
@@ -581,20 +582,26 @@ const ProductFormV2 = ({
               onClick={handleSubmit}
               disabled={isAddToCartLoading || isDisabled}
               className={`${
-                isDisabled
+                isDisabled 
                   ? "border-gray-300 text-gray-600 cursor-not-allowed"
                   : "bg-transparent text-[#0B8DFF] border-[#0B8DFF]"
               } w-full py-2 flex items-center justify-center gap-1 text-center border  rounded-full`}
             >
-              <BsCart3 />
-              {isAddToCartLoading ? "Adding to Cart..." : "Add to Cart"}
+              {isAddToCartLoading ? (
+                <>
+                  <LoaderCircle className="animate-spin" />Adding...
+                </>
+              ) : (
+                <>
+                  <BsCart3 className="cart-icon" /> Add to Cart
+                </>
+              )}
             </button>
-
             <button
               onClick={handleProceed}
               disabled={isProceedLoading || isDisabled}
               className={` ${
-                isDisabled ? "bg-gray-300 cursor-not-allowed" : "blue-gradient"
+                isDisabled  ? "bg-gray-300 cursor-not-allowed" : "blue-gradient"
               } rounded-full  font-poppins w-full  hover:bg-gradient-t-b text-center text-white hover:bg-gradient-to-t h-[46px]`}
             >
               {isProceedLoading ? "Processing..." : "Proceed to checkout"}

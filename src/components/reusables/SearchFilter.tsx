@@ -32,7 +32,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
   };
 
   return (
-    <div className="w-full bg-white container  justify-between">
+    <div className="w-full bg-white container  justify-between mb-10">
 
     <div className="flex items-center justify-between">
       {/* Search Input */}
@@ -63,9 +63,9 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
       </div>
 
       {/* Filters and Sorting */}
-      <div className="flex items-center space-x-4 justify-between w-full my-10 bg-[#F2F4F5] p-4">
+      {/* <div className="flex items-center space-x-4 justify-between w-full my-10 bg-[#F2F4F5] p-4"> */}
         {/* Active Filters */}
-        <div className="flex space-x-2 items-center gap-1 "><p className="text-sm text-[#5F6C72]">Active Filters:</p> 
+        {/* <div className="flex space-x-2 items-center gap-1 "><p className="text-sm text-[#5F6C72]">Active Filters:</p> 
           {activeFilters.map((filter) => (
             <span
               key={filter.id}
@@ -80,12 +80,12 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
               </button>
             </span>
           ))}
-        </div>
+        </div> */}
         {/* Results Found */}
-      <div className="text-[#191C1F] text-sm">
+      {/* <div className="text-[#191C1F] text-sm">
         <span>{totalResults.toLocaleString()} <span className="text-sm text-[#5F6C72]">Results found</span></span>
       </div>
-      </div>
+      </div> */}
 
    
     </div>

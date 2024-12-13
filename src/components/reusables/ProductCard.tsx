@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { EyeIcon, HeartIcon } from "lucide-react";
 import { IProduct } from "@/interfaces/product.interface";
 import { Link } from "react-router-dom";
@@ -11,15 +11,21 @@ interface Props extends IProduct {
   wrapText?: boolean;
 }
 
-const ProductCard = ({ isMerchant = false, ...props }: Props) => {
+const ProductCard = ({ isMerchant = false, isFavourite = false, ...props }: Props) => {
   const [hovered, setHovered] = useState(false);
-  const [liked, setLiked] = useState(false); // State to track "love" selection
+  const [liked, setLiked] = useState(isFavourite); // Initialize with isFavorite prop
 
   const packageId = props?._id || "";
+
+  // Sync liked state with isFavorite prop changes
+  useEffect(() => {
+    setLiked(isFavourite);
+  }, [isFavourite]);
 
   // Mutation for adding to favorites
   const { mutate: AddFavorite, isPending: isAddingFavorite } = useMutation({
     mutationFn: (id: string) => addFavorite(id),
+    mutationKey: ["favourites"],
     onSuccess: () => {
       setLiked(true); // Set liked to true on success
       toast.success("Added to favorites");
@@ -33,6 +39,7 @@ const ProductCard = ({ isMerchant = false, ...props }: Props) => {
   // Mutation for removing from favorites
   const { mutate: RemoveFavorite, isPending: isRemovingFavorite } = useMutation({
     mutationFn: (id: string) => removeFavorite(id),
+    mutationKey: ["favourites"],
     onSuccess: () => {
       setLiked(false); // Set liked to false on success
       toast.success("Removed from favorites");
