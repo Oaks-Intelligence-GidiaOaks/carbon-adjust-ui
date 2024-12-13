@@ -68,9 +68,9 @@ const AddedDevices = () => {
   //   queryFn: () => getGroupDevices(pagination.limit, pagination.currentPage),
   // });
 
-  useEffect(() => {
-   console.log(userDevices.data.devices) 
-  }, [userDevices]);
+  // useEffect(() => {
+  //  console.log(userDevices.data.devices) 
+  // }, [userDevices]);
   
 
   useEffect(() => {
