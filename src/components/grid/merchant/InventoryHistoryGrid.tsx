@@ -120,7 +120,7 @@ export function InventoryHistoryGrid({ className }: { className?: string }) {
             row.original.action || "n/a"
           )}`}
         >
-          {`${row.original.packageId.quantity} unit ${row.original.action}` ||
+          {`${row.original.by} unit ${row.original.action}` ||
             "N/A"}
         </div>
       ),
