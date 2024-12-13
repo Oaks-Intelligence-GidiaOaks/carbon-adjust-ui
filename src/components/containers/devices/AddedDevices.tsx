@@ -22,10 +22,10 @@ import CancelDeviceScheduleModal from "@/components/dialogs/CancelDeviceSchedule
 import { GroupDevicesModal } from "../organisation/devices";
 import LinkToUnitModal from "../organisation/devices/LinkToUnitModal";
 import AssignStaffModal from "../organisation/devices/AssignStaff";
-import { MdMoreVert } from "react-icons/md";
+//import { MdMoreVert } from "react-icons/md";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
-import { IoIosArrowForward } from "react-icons/io";
-import { LinkDeviceModal } from "./LinkDevices";
+// import { IoIosArrowForward } from "react-icons/io";
+// import { LinkDeviceModal } from "./LinkDevices";
 
 const AddedDevices = () => {
   const { pathname } = useLocation();
@@ -33,9 +33,9 @@ const AddedDevices = () => {
   const [cancelId, setCancelId] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [showStaffModal, setShowStaffModal] = useState(false);
-  const [showUnitModal, setShowUnitModal] = useState(false);
+  const [showUnitModal, setShowUnitModal] = useState("");
   const [cardActions, setCardActions] = useState<boolean>(false);
-  const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
+  //const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
 
   const actionsRef = useRef<null | HTMLDivElement>(null);
   const { device } = useSelector((state: RootState) => state.assets);
@@ -63,6 +63,16 @@ const AddedDevices = () => {
     queryFn: () => getUserDevices(pagination.limit, pagination.currentPage),
   });
 
+  // const { data: groupDevices } = useQuery({
+  //   queryKey: ["group-devices", pagination.currentPage],
+  //   queryFn: () => getGroupDevices(pagination.limit, pagination.currentPage),
+  // });
+
+  useEffect(() => {
+   console.log(userDevices.data.devices) 
+  }, [userDevices]);
+  
+
   useEffect(() => {
     if (userDevices?.data)
       setPagination({
@@ -80,13 +90,13 @@ const AddedDevices = () => {
       currentPage: pgNo,
     }));
   };
-  const handleOpenLinkDeviceModal = () => {
-    setIsLinkDeviceModalOpen(true);
-  };
+  // const handleOpenLinkDeviceModal = () => {
+  //   setIsLinkDeviceModalOpen(true);
+  // };
 
-  const handleCloseLinkDeviceModal = () => {
-    setIsLinkDeviceModalOpen(false);
-  };
+  // const handleCloseLinkDeviceModal = () => {
+  //   setIsLinkDeviceModalOpen(false);
+  // };
 
   const DispatchDevice = useMutation({
     mutationKey: ["dispatch-device"],
@@ -107,6 +117,8 @@ const AddedDevices = () => {
     },
   });
 
+
+
   if (isLoading) {
     return <DeviceSkeletonLoader />;
   }
@@ -119,32 +131,32 @@ const AddedDevices = () => {
     );
   }
 
-  const CardActions = () => (
-    <div
-      ref={actionsRef}
-      className="absolute bg-white top-8 right-2 max-w-[150px] shadow-lg border space-y-2 rounded-[10px] px-2 py-3 z-10"
-    >
-      <div
-        onClick={handleOpenLinkDeviceModal}
-        className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
-      >
-        <span>Link to Building</span>
-      </div>
-      <div
-        onClick={() => setShowUnitModal(true)}
-        className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
-      >
-        <span>Assign to Unit</span>
-      </div>
+  // const CardActions = () => (
+  //   <div
+  //     ref={actionsRef}
+  //     className="absolute bg-white top-8 right-2 max-w-[150px] shadow-lg border space-y-2 rounded-[10px] px-2 py-3 z-10"
+  //   >
+  //     <div
+  //       onClick={handleOpenLinkDeviceModal}
+  //       className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
+  //     >
+  //       <span>Link to Building</span>
+  //     </div>
+  //     {/* <div
+  //       onClick={() => setShowUnitModal("")}
+  //       className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
+  //     >
+  //       <span>Assign to Unit</span>
+  //     </div> */}
 
-      <button
-        /// onClick={() => props.setId(props._id as string)}
-        className={` text-[#E71D36] cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 `}
-      >
-        <span>Delete Group</span>
-      </button>
-    </div>
-  );
+  //     {/* <button
+  //       /// onClick={() => props.setId(props._id as string)}
+  //       className={` text-[#E71D36] cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 `}
+  //     >
+  //       <span>Delete Group</span>
+  //     </button> */}
+  //   </div>
+  // );
 
   const handleDeleteDevice = async () => {
     await DeleteDevice.mutateAsync(id as string, {
@@ -207,12 +219,14 @@ const AddedDevices = () => {
           </Link>
         </div>
       </div>
-      {type === "organisation" && (
-        <div className="p-3 max:w-[95%] my-10">
-          <div className="flex items-center justify-between w-full">
+      {/* {type === "organisation" && (
+        <div className="p-3  max:w-[95%] my-10">
+          {groupDevices.data?.assets?.map((unit: any) => (
+            <>
+          <div className="flex relative items-center justify-between w-full">
             <div className="flex items-center gap-3">
-              <h2 className="font-inter font-medium  lg:text-2xl text-[#667085]">
-                Household Devices
+              <h2 className="font-inter font-medium capitalize lg:text-2xl text-[#667085]">
+                {`${unit.unit.name}'s Devices`}
               </h2>
               <span className="bg-[#F7FBFE] shadow-lg p-2">
                 <IoIosArrowForward />
@@ -229,17 +243,19 @@ const AddedDevices = () => {
           <div className="mt-[15px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5">
             {Array.from(userDevices.data.devices as Device[], (it, i) => (
               <DeviceCard
-                setShowUnitModal={setShowUnitModal}
-                setShowStaffModal={setShowStaffModal}
-                setCancelId={setCancelId}
-                setId={setId}
-                {...it}
-                key={i}
+              setShowUnitModal={setShowUnitModal}
+              setShowStaffModal={setShowStaffModal}
+              setCancelId={setCancelId}
+              setId={setId}
+              {...it}
+              key={i}
               />
             ))}
           </div>
+            </>
+            ))}
         </div>
-      )}
+      )} */}
       <div className="mt-[15px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5">
         {Array.from(userDevices.data.devices as Device[], (it, i) => (
           <DeviceCard
@@ -294,17 +310,17 @@ const AddedDevices = () => {
           isPending={CancelDeviceSchedule.isPending}
         />
       )}
-      {showUnitModal && <LinkToUnitModal setShowModal={setShowUnitModal} />}
-      {showModal && <GroupDevicesModal setShowModal={setShowModal} />}
+      {showUnitModal && <LinkToUnitModal setShowModal={setShowUnitModal} id={showUnitModal} />}
+      {showModal && <GroupDevicesModal setShowModal={setShowModal} devices={userDevices} />}
       {showStaffModal && (
         <AssignStaffModal setShowStaffModal={setShowStaffModal} />
       )}
-      {isLinkDeviceModalOpen && (
+      {/* {isLinkDeviceModalOpen && (
         <LinkDeviceModal
           onClose={handleCloseLinkDeviceModal}
           deviceId={"4536g"}
         />
-      )}
+      )} */}
     </div>
   );
 };

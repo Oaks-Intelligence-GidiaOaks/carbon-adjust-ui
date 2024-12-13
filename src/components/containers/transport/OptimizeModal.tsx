@@ -57,11 +57,11 @@ const OptimizeModal = ({ setShowModal }: OptimizeModalProps) => {
   const [start, setStart] = useState("");
   const [destination, setDestination] = useState("");
   const [positions, setPositions] = useState([]);
-  const tabs: OpTabs[] = [OpTabs.Individual, OpTabs.Staff, OpTabs.Fleet];
-  const [activeTab, setActiveTab] = useState<OpTabs>(tabs[0]);
+  //const tabs: OpTabs[] = [OpTabs.Individual, OpTabs.Staff, OpTabs.Fleet];
+  // const [activeTab, setActiveTab] = useState<OpTabs>(tabs[0]);
 
-  const { pathname } = useLocation();
-  const isOrganization = pathname.includes("/organisation");
+  // const { pathname } = useLocation();
+  // const isOrganization = pathname.includes("/organisation");
   const initialState: TravelDetails = {
     startLocation: {
       address: "",
