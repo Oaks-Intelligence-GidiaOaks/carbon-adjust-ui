@@ -14,10 +14,8 @@ const FileUpload: React.FC<FileUploadProps> = ({
   title,
   onFileUpload,
   acceptedFileTypes,
-  multiple = false, 
+  multiple = false,
 }) => {
-  
-
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
@@ -29,7 +27,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files!);
     if (files.length) {
-      onFileUpload(multiple ? files : files[0]); 
+      onFileUpload(multiple ? files : files[0]);
     }
   };
 
@@ -57,9 +55,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
                 name="file-upload"
                 type="file"
                 className="sr-only"
-                accept={acceptedFileTypes} 
+                accept={acceptedFileTypes}
                 onChange={handleBrowse}
-                multiple={multiple} 
+                multiple={multiple}
               />
             </label>
           </div>
