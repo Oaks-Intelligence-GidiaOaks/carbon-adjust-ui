@@ -100,5 +100,13 @@ export const FormSchemas = () => {
 
       subUnit: yup.string().trim(),
     }),
+    CreateSubUnit: yup.object().shape({
+      name: yup.string().trim().required("Please enter the sub unit name"),
+      description: yup
+        .string()
+        .trim()
+        .required("Please enter the sub unit function"),
+      parentUnitId: yup.string().trim().required("Please provide the unit id"),
+    }),
   };
 };

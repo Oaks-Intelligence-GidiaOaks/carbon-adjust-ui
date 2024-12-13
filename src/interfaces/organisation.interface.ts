@@ -46,6 +46,15 @@ export interface IUnitStaff {
   };
 }
 
+export interface ISubUnit {
+  description: string;
+  name: string;
+  staff: [];
+  subUnitAdmin: null | string;
+  subUnitId: string;
+  totalStaff: number;
+}
+
 export interface DepartmentWithStaffCardProps {
   _id: string;
   name: string;
@@ -53,4 +62,5 @@ export interface DepartmentWithStaffCardProps {
   climateScore: number;
   staff: IUnitStaff[];
   totalStaff: number;
+  subUnits?: ISubUnit[];
 }

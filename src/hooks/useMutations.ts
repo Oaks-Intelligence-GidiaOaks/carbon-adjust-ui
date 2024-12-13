@@ -1,4 +1,7 @@
-import { IAssignUnitAdmin } from "@/interfaces/organisation.interface";
+import {
+  IAssignUnitAdmin,
+  ICreateSubUnit,
+} from "@/interfaces/organisation.interface";
 import { WalletCoinSettingsInput } from "@/interfaces/wallet.interface";
 import { setCoinSettings } from "@/services/adminService";
 import {
@@ -10,7 +13,7 @@ import {
   verifyTransferCoins,
   verifyTransferRcmb,
 } from "@/services/homeOwner";
-import { AssignUnitAdmin } from "@/services/organisation";
+import { AssignUnitAdmin, CreateSubUnit } from "@/services/organisation";
 import { useMutation } from "@tanstack/react-query";
 // import { Dispatch, SetStateAction } from "react";
 import toast from "react-hot-toast";
@@ -79,6 +82,11 @@ const useMutations = () => {
     mutationFn: (input: IAssignUnitAdmin) => AssignUnitAdmin(input),
   });
 
+  const AddSubUnit = useMutation({
+    mutationKey: ["new-sub-unit"],
+    mutationFn: (input: ICreateSubUnit) => CreateSubUnit(input),
+  });
+
   return {
     DeleteDevice,
     CancelDeviceSchedule,
@@ -89,6 +97,7 @@ const useMutations = () => {
     VerifyCoinsOtp,
     UpdateCoinSettings,
     MakeunitAdmin,
+    AddSubUnit,
   };
 };
 

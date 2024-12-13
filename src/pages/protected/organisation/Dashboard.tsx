@@ -28,6 +28,8 @@ const Dashboard = () => {
 
   const stats: IDashboardStats = data?.data || null;
 
+  console.log(stats, "statas");
+
   const infoCards = [
     {
       title: "Units",
@@ -116,7 +118,7 @@ const Dashboard = () => {
       </div>
 
       <div className="space-y-5">
-        {Array.from(stats?.units || [], (it) => (
+        {Array.from(stats?.units.slice(0, 3) || [], (it) => (
           <DepartmentWithStaffCard {...it} key={it._id} climateScore={4} />
         ))}
       </div>
