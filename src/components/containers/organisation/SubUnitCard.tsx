@@ -15,7 +15,7 @@ const SubUnitCard: React.FC<ISubUnit> = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="p-4 bg-white shadow rounded-md border">
+    <div className="p-4 bg-white shadow rounded-md border border-blue-50">
       {/* top section */}
       <div className="flex gap-2 flex-center">
         <input type="checkbox" name="" id="" className="w-4 h-4 mr-2" />
@@ -85,7 +85,6 @@ const SubUnitCard: React.FC<ISubUnit> = ({
                   <StaffCard
                     key={i}
                     {...stf}
-                    onAssignRole={() => {}}
                     onRemoveStaff={() => {}}
                     className="w-full"
                   />

@@ -1,5 +1,5 @@
 import {
-  IAssignUnitAdmin,
+  // IAssignUnitAdmin,
   IUnitStaff,
 } from "@/interfaces/organisation.interface";
 import { formDateWithTime } from "@/lib/utils";
@@ -9,13 +9,11 @@ import { FaEllipsisV } from "react-icons/fa";
 import AssignStaffRoleModal from "../dialogs/AssignStaffRoleModal";
 
 interface StaffCardProps extends IUnitStaff {
-  onAssignRole: (input: IAssignUnitAdmin) => void;
   onRemoveStaff: () => void;
   className?: string;
 }
 
 const StaffCard: FC<StaffCardProps> = ({
-  onAssignRole,
   onRemoveStaff,
   className,
   createdAt,
@@ -26,17 +24,19 @@ const StaffCard: FC<StaffCardProps> = ({
   staffId,
   _id,
   profilePicture,
-  subUnit,
+  unit,
+  unitId,
+  // subUnit,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState<boolean>(false);
 
   // @ts-ignore
   const handleAssignRole = () => {
-    onAssignRole({
-      staffId: (staffId || _id) as string,
-      subUnitId: subUnit?._id,
-    });
+    // onAssignRole({
+    //   staffId: (staffId || _id) as string,
+    //   subUnitId: subUnit?._id,
+    // });
   };
 
   return (
@@ -62,7 +62,7 @@ const StaffCard: FC<StaffCardProps> = ({
                 className="block w-full px-4 py-2 text-left hover:bg-gray-100"
                 onClick={() => setShowModal(true)}
               >
-                Assign as admin
+                Assign role
               </button>
 
               <button
@@ -101,8 +101,8 @@ const StaffCard: FC<StaffCardProps> = ({
 
       {showModal && (
         <AssignStaffRoleModal
-          staffId=""
-          unit={{ name: "", unitFunction: "" }}
+          staffId={(_id || staffId) as string}
+          unitId={unit?._id || unitId}
           showModal={showModal}
           setShowModal={setShowModal}
         />

@@ -73,6 +73,22 @@ export const CreateStaff = async (input: FormData) => {
   return data;
 };
 
+export const RemoveStaffFromUNit = async (staffId: string) => {
+  const { data } = await axiosInstance.delete(
+    `corporate/staff/remove-from-unit/${staffId}`
+  );
+
+  return data;
+};
+
+export const DeleteStaff = async (staffId: string) => {
+  const { data } = await axiosInstance.delete(
+    `corporate/staff/delete/${staffId}`
+  );
+
+  return data;
+};
+
 export const AdminStaffDetails = async () => {
   const { data } = await axiosInstance.get(`/corporate/staff`);
 
