@@ -74,17 +74,6 @@ const Market = (_: Props) => {
     : [];
 
 
-   // Fetch package reviews using useQuery
-  //  const data2 = useQuery({
-  //   queryKey: ["package-details"],
-  //   queryFn: () => AllPackageCategories(),
-  // });
-
-
-  console.log('date', categories)
-
-
-
 
     // Extract the first 3 categories with their first package image
   const categoryCards = categories.slice(0, 3).map((category, index) => {

@@ -13,7 +13,7 @@ const BestSellers = () => {
 
   const pkgs: IProduct[] = isSuccess ? data.data.packages : [];
 
-  console.log('pkgs', pkgs)
+  
 
   const category = {
     name: "Best Sellers",
