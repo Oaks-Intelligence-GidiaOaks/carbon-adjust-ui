@@ -57,6 +57,13 @@ export interface ISubUnit {
   climateScore: number;
 }
 
+
+export interface IAsset {
+  deviceInfo: any[]; 
+  assetType: string;
+  approvalStatus: string;
+}
+
 export interface DepartmentWithStaffCardProps {
   _id: string;
   name: string;
@@ -65,4 +72,5 @@ export interface DepartmentWithStaffCardProps {
   staff: IUnitStaff[];
   totalStaff: number;
   subUnits: ISubUnit[];
+  assets: any[];
 }

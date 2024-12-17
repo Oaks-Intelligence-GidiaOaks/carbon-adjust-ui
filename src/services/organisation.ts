@@ -17,7 +17,13 @@ export const AllUnits = async () => {
   return data;
 };
 
-export const AssignUnitAdmin = async (input: IAssignUnitAdmin) => {
+export const AllUnitsRequests = async () => {
+  const { data } = await axiosInstance.get(`/receipts/pending`);
+
+  return data;
+};
+
+export const AssignUnitAdmin = async (input: any) => {
   const { data } = await axiosInstance.post(`/units/assign-admin`, input);
   return data;
 };
@@ -87,6 +93,12 @@ export const StaffDetails = async () => {
 
 export const AllStaffByUnit = async () => {
   const { data } = await axiosInstance.get(`/corporate/staff/by-unit`);
+
+  return data;
+};
+
+export const deleteStaff = async (staff: string) => {
+  const { data } = await axiosInstance.delete(`/corporate/staff/delete/${staff}`);
 
   return data;
 };

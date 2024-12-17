@@ -71,6 +71,11 @@ const Layout = (props: Props) => {
         return navigate("/dashboard");
       }
 
+      if (userData.data.data.roles[0] === "STAFF_ CORPORATE") {
+        if (pathname.includes("organisation-staff")) return;
+        return navigate("/organisation-staff");
+      }
+
       // NON_FINANCIAL MERCHANT PATH
       if (
         userData.data.data.roles[0] === "MERCHANT" &&

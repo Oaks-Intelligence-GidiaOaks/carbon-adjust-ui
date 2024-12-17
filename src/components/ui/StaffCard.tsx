@@ -9,35 +9,36 @@ import { FaEllipsisV } from "react-icons/fa";
 import AssignStaffRoleModal from "../dialogs/AssignStaffRoleModal";
 
 interface StaffCardProps extends IUnitStaff {
-  onAssignRole: (input: IAssignUnitAdmin) => void;
   onRemoveStaff: () => void;
   className?: string;
+  parentUnitId: string;
 }
 
 const StaffCard: FC<StaffCardProps> = ({
-  onAssignRole,
   onRemoveStaff,
   className,
   createdAt,
   // isSubUnitAdmin,
   jobTitle,
   name,
-  // isUnitAdmin,
+  //isUnitAdmin,
+  parentUnitId, 
   staffId,
   _id,
   profilePicture,
-  subUnit,
+  //subUnit,
+  //unit
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState<boolean>(false);
 
   // @ts-ignore
-  const handleAssignRole = () => {
-    onAssignRole({
-      staffId: (staffId || _id) as string,
-      subUnitId: subUnit?._id,
-    });
-  };
+  // const handleAssignRole = () => {
+  //   onAssignRole({
+  //     staffId: (staffId || _id) as string,
+  //     subUnitId: subUnit?._id,
+  //   });
+  // };
 
   return (
     <>
@@ -67,7 +68,7 @@ const StaffCard: FC<StaffCardProps> = ({
 
               <button
                 className="block w-full px-4 py-2 text-left text-red-500 hover:bg-red-100"
-                onClick={onRemoveStaff}
+                onClick={()=>onRemoveStaff()}
               >
                 Remove staff
               </button>
@@ -101,8 +102,8 @@ const StaffCard: FC<StaffCardProps> = ({
 
       {showModal && (
         <AssignStaffRoleModal
-          staffId=""
-          unit={{ name: "", unitFunction: "" }}
+          staffId={(staffId || _id) as string} 
+          unit={parentUnitId}
           showModal={showModal}
           setShowModal={setShowModal}
         />

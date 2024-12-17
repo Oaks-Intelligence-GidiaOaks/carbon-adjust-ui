@@ -20,43 +20,43 @@ import {
   OrganizationTransport,
 } from "@/pages/protected/organisation";
 
-export const organisationRoutes = [
+export const organisationStaffRoutes = [
   {
-    path: "/organisation",
-    element: <Layout sidebarType="organisation" />,
+    path: "/organisation-staff",
+    element: <Layout sidebarType="organisationStaff" />,
     children: [
       {
         path: "",
         element: <OrganisationDashboard />,
       },
-      {
-        path: "units",
-        element: <UnitsLayout />,
-        children: [
-          {
-            path: "",
-            element: <OrganisationUnit />,
-          },
-          {
-            path: "new",
-            element: <OrganisationNewUnit />,
-          },
-        ],
-      },
-      {
-        path: "staff",
-        element: <UnitsLayout />,
-        children: [
-          {
-            path: "",
-            element: <OrganisationStaff />,
-          },
-          {
-            path: "new",
-            element: <OrganisationNewStaff />,
-          },
-        ],
-      },
+    //   {
+    //     path: "units",
+    //     element: <UnitsLayout />,
+    //     children: [
+    //       {
+    //         path: "",
+    //         element: <OrganisationUnit />,
+    //       },
+    //       {
+    //         path: "new",
+    //         element: <OrganisationNewUnit />,
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     path: "staff",
+    //     element: <UnitsLayout />,
+    //     children: [
+    //       {
+    //         path: "",
+    //         element: <OrganisationStaff />,
+    //       },
+    //       {
+    //         path: "new",
+    //         element: <OrganisationNewStaff />,
+    //       },
+    //     ],
+    //   },
       {
         path: "devices",
         element: <AssetsLayout type="organization"/>,
@@ -75,30 +75,30 @@ export const organisationRoutes = [
           },
         ],
       },
-      {
-        path: "buildings",
-        element: <AssetsLayout type="organization"/>,
-        children: [
-          {
-            path: "",
-            element: <BuildingList />,
-          },
-        ],
-      },
-      {
-        path: "transport",
-        element: <AssetsLayout />,
-        children: [
-          {
-            path: "",
-            element: <OrganizationTransport />,
-          },
-          {
-            path: "add",
-            element: <OrganizationNewTransport />,
-          },
-        ],
-      },
+    //   {
+    //     path: "buildings",
+    //     element: <AssetsLayout type="organization"/>,
+    //     children: [
+    //       {
+    //         path: "",
+    //         element: <BuildingList />,
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     path: "transport",
+    //     element: <AssetsLayout />,
+    //     children: [
+    //       {
+    //         path: "",
+    //         element: <OrganizationTransport />,
+    //       },
+    //       {
+    //         path: "add",
+    //         element: <OrganizationNewTransport />,
+    //       },
+    //     ],
+    //   },
       {
         path: "purchases",
         element: <AssetsLayout />,

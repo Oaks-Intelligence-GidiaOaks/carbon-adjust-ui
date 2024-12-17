@@ -68,10 +68,7 @@ const AddedDevices = () => {
   //   queryFn: () => getGroupDevices(pagination.limit, pagination.currentPage),
   // });
 
-  // useEffect(() => {
-  //  console.log(userDevices.data.devices) 
-  // }, [userDevices]);
-  
+
 
   useEffect(() => {
     if (userDevices?.data)
@@ -117,13 +114,11 @@ const AddedDevices = () => {
     },
   });
 
-
-
   if (isLoading) {
     return <DeviceSkeletonLoader />;
   }
 
-  if (userDevices?.data?.devices.length === 0) {
+  if (userDevices?.data?.devices?.length === 0) {
     return (
       <div className="h-32 grid place-items-center max-w-[98%]">
         <NoDevices link={`/${type}/devices/add`} />
@@ -257,16 +252,20 @@ const AddedDevices = () => {
         </div>
       )} */}
       <div className="mt-[15px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5">
-        {Array.from(userDevices.data.devices as Device[], (it, i) => (
-          <DeviceCard
-            setShowUnitModal={setShowUnitModal}
-            setShowStaffModal={setShowStaffModal}
-            setCancelId={setCancelId}
-            setId={setId}
-            {...it}
-            key={i}
-          />
-        ))}
+        {userDevices?.data?.devices?.length > 0 ? (
+          Array.from(userDevices.data.devices as Device[], (it, i) => (
+            <DeviceCard
+              setShowUnitModal={setShowUnitModal}
+              setShowStaffModal={setShowStaffModal}
+              setCancelId={setCancelId}
+              setId={setId}
+              {...it}
+              key={i}
+            />
+          ))
+        ) : (
+          <p>No devices found.</p> // Fallback UI if there are no devices
+        )}
       </div>
 
       {/* Pagination */}
@@ -310,8 +309,12 @@ const AddedDevices = () => {
           isPending={CancelDeviceSchedule.isPending}
         />
       )}
-      {showUnitModal && <LinkToUnitModal setShowModal={setShowUnitModal} id={showUnitModal} />}
-      {showModal && <GroupDevicesModal setShowModal={setShowModal} devices={userDevices} />}
+      {showUnitModal && (
+        <LinkToUnitModal setShowModal={setShowUnitModal} id={showUnitModal} />
+      )}
+      {showModal && (
+        <GroupDevicesModal setShowModal={setShowModal} devices={userDevices} />
+      )}
       {showStaffModal && (
         <AssignStaffModal setShowStaffModal={setShowStaffModal} />
       )}

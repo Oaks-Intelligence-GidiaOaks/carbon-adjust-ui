@@ -3,28 +3,46 @@ import UseScrollToTop from "@/hooks/useScrollToTop";
 import { AssetTabs } from "@/interfaces/device.interface";
 import { FC, useRef } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 interface AssetsLayoutProps {
   type?: string;
 }
 
 const AssetsLayout: FC<AssetsLayoutProps> = () => {
-  const tabs: AssetTabs[] = [
+  const userData = useSelector((state: RootState) => state.user.user);
+
+  const allTabs: AssetTabs[] = [
     AssetTabs.Devices,
     AssetTabs.Buildings,
     AssetTabs.Transport,
     AssetTabs.Purchases,
   ];
 
+  const restrictedTabs: AssetTabs[] = [
+    AssetTabs.Devices,
+    AssetTabs.Buildings,
+    AssetTabs.Transport,
+  ];
+
+  const tabs: AssetTabs[] = userData?.roles?.includes("CORPORATE_USER_ADMIN")
+    ? allTabs
+    : allTabs.filter((tab) => !restrictedTabs.includes(tab));
+
   const { pathname } = useLocation();
-  const type = pathname.includes("/organisation") ? "organisation" : "dashboard";
+  const type = pathname.includes("/organisation-staff")
+  ? "organisation-staff"
+  : pathname.includes("/organisation")
+  ? "organisation"
+  : "dashboard";
+
   const navigate = useNavigate();
   const contentRef = useRef<null | HTMLDivElement>(null);
 
   UseScrollToTop(contentRef);
 
   const handleTabSwitch = (tab: string) => {
-   navigate(`/${type}/${tab.toLocaleLowerCase()}`)
+    navigate(`/${type}/${tab.toLocaleLowerCase()}`);
   };
 
   const getActiveTab = (pathString: string) => {
@@ -40,7 +58,6 @@ const AssetsLayout: FC<AssetsLayoutProps> = () => {
     }
   };
 
- 
   return (
     <div
       ref={contentRef}
