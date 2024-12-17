@@ -294,3 +294,10 @@ export const setCoinSettings = async (settings: WalletCoinSettingsInput) => {
 
   return data;
 };
+
+// COUNTRIES
+export const getCountries = async () => {
+  const { data } = await axiosInstance.get(`/country`);
+
+  return data;
+};

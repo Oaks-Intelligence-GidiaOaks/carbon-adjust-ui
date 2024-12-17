@@ -193,11 +193,12 @@ const CheckoutForm = () => {
 
 const options = {
   mode: "payment",
-  amount: 4000,
+  amount: 10000,
   currency: "gbp",
-  paymentMethodTypes: ["card"],
+  paymentMethodTypes: ["card", "klarna"],
   // Fully customizable with appearance API.
   appearance: {
+    theme: "stripe",
     /*...*/
   },
 };

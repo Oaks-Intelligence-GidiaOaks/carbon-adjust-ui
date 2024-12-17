@@ -1,7 +1,7 @@
 import { Input } from "../../components/ui";
 import { Button } from "@/components/ui/Button";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { RegisterFormContext } from "@/types/form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormSchemas } from "@/schemas/forms";
@@ -9,11 +9,17 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import CheckBox from "@/components/ui/CheckBox";
 import { Link, useNavigate } from "react-router-dom";
 import AccountActionHeader from "@/components/reusables/account-setup/AccountActionHeader";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/api/axiosInstance";
 import toast from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
-import { VerifyEmail } from "@/components/dialogs";
+import { VerifyEmail, VerifyPhoneNumber } from "@/components/dialogs";
+import SelectInput from "@/components/ui/SelectInput";
+import Phoneinput from "@/components/ui/PhoneInput";
+import { PropsValue } from "react-select";
+import { SelectItem } from "@/types/formSelect";
+import { getCountries } from "@/services/adminService";
+import { IComponentMap } from "@/types/general";
 
 type RegisterObject = {
   email: string;
@@ -22,6 +28,8 @@ type RegisterObject = {
   confirmPassword: string;
   acceptTerms: boolean;
   accountType: "CORPORATE_USER_ADMIN";
+  country: string | PropsValue<SelectItem>;
+  phoneNos: string;
 };
 
 const initialState: RegisterObject = {
@@ -31,7 +39,15 @@ const initialState: RegisterObject = {
   confirmPassword: "",
   acceptTerms: false,
   accountType: "CORPORATE_USER_ADMIN",
+  country: "",
+  phoneNos: "",
 };
+
+export enum modals {
+  email = "email",
+  phone = "phone",
+  noll = "noll",
+}
 
 const RegisterOrganisation = () => {
   const navigate = useNavigate();
@@ -39,7 +55,22 @@ const RegisterOrganisation = () => {
   const [formDetails, setFormDetails] = useState<RegisterObject>(initialState);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [verifyEmail, setVerifyEmail] = useState(false);
+  const [activeModal, setActiveModal] = useState<modals | null>(null);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["get-countries"],
+    queryFn: getCountries,
+  });
+
+  // console.log(data);
+
+  let countries: any[] = data?.data?.countries
+    ? data?.data?.countries.map((it: any) => ({
+        id: it._id,
+        label: it.name,
+        value: it.name,
+      }))
+    : [];
 
   const togglePasswordVisibility = () =>
     setShowPassword((prevState) => !prevState);
@@ -48,7 +79,7 @@ const RegisterOrganisation = () => {
     setShowConfirmPassword((prevState) => !prevState);
 
   const {
-    // control,
+    control,
     register,
     handleSubmit,
     // watch,
@@ -69,7 +100,7 @@ const RegisterOrganisation = () => {
         duration: 10000,
       });
 
-      setVerifyEmail(true);
+      setActiveModal(modals.email);
     },
   });
 
@@ -82,6 +113,8 @@ const RegisterOrganisation = () => {
         confirmPassword: value.confirmPassword,
         accountType: "CORPORATE_USER_ADMIN",
         acceptTerms: true,
+        country: value.country?.value as string,
+        phoneNos: value.phoneNos as string,
       });
     } catch (error: any) {
       console.log(error);
@@ -93,11 +126,25 @@ const RegisterOrganisation = () => {
     navigate("/login");
   };
 
+  const getActiveModal: IComponentMap = {
+    [modals.email]: (
+      <VerifyEmail
+        nextStep={() => setActiveModal(modals.phone)}
+        email={registerUser.data?.data.data.email}
+      />
+    ),
+    [modals.phone]: (
+      <VerifyPhoneNumber
+        phone=""
+        closeVerifyPhoneNumber={() => {}}
+        nextStep={() => navigate("/login")}
+      />
+    ),
+  };
+
   return (
     <>
-      {verifyEmail && (
-        <VerifyEmail email={registerUser.data?.data.data.email} />
-      )}
+      {activeModal && getActiveModal[activeModal]}
 
       <div>
         <div className="bg-grey-swatch-100 flex justify-center mx-auto">
@@ -123,9 +170,11 @@ const RegisterOrganisation = () => {
             </div>
             <div className="bg-glass flex-1 md:flex-[0.45] py-9 px-4 md:px-12 rounded-xl max-w-[600px]">
               <p className="text-3xl font-bold">Create an account</p>
+
               <p className="pt-2">
                 Let’s get started with your 30 days free trial
               </p>
+
               <form className="mt-7" onSubmit={handleSubmit(onSubmit)}>
                 <Input
                   type={"text"}
@@ -146,6 +195,48 @@ const RegisterOrganisation = () => {
                   error={errors.email?.message}
                   placeholder="Email"
                 />
+
+                <>
+                  <Controller
+                    name="country"
+                    control={control}
+                    render={({ field }) => (
+                      <SelectInput
+                        className="text-sm 2xl:text-base font-normal mt-4"
+                        label=""
+                        placeholder="Select Country"
+                        onChange={(val) => {
+                          field.onChange(val);
+                        }}
+                        disabled={isLoading}
+                        options={countries}
+                      />
+                    )}
+                  />
+
+                  <p className="text-red-500 text-xs">
+                    {errors.country?.value?.message}
+                  </p>
+                </>
+
+                <>
+                  <Controller
+                    name="phoneNos"
+                    control={control}
+                    render={({ field }) => (
+                      <Phoneinput
+                        onInputChange={(selectedOption) => {
+                          field.onChange(selectedOption);
+                        }}
+                        inputClassName="mt-4"
+                      />
+                    )}
+                  />
+
+                  <p className="text-red-500 text-xs">
+                    {errors.phoneNos?.message}
+                  </p>
+                </>
 
                 <Input
                   type={showPassword ? "text" : "password"}

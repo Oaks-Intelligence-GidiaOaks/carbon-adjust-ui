@@ -5,12 +5,15 @@ import { Oval } from "react-loader-spinner";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/api/axiosInstance";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
-type Props = { email: string };
+type Props = {
+  email: string;
+  nextStep: () => void;
+};
 
-const VerifyEmail = ({ email }: Props) => {
-  const navigate = useNavigate();
+const VerifyEmail = ({ email, nextStep }: Props) => {
+  // const navigate = useNavigate();
   const [otp, setOtp] = useState("");
 
   const verifyEmail = useMutation({
@@ -25,7 +28,9 @@ const VerifyEmail = ({ email }: Props) => {
         duration: 10000,
         className: "z-[100000000]",
       });
-      navigate("/login");
+
+      nextStep();
+      // navigate("/login");
     },
   });
 

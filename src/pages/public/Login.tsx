@@ -94,6 +94,10 @@ const Login = () => {
       user.roles.includes(UserRole.CORPORATE_USER_ADMIN) ||
       role === UserRole.CORPORATE_USER_ADMIN
     ) {
+      if (user.status === "pending") {
+        return navigate("/account-setup");
+      }
+      
       return navigate("/organisation");
     }
 

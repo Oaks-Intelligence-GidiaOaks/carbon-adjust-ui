@@ -39,10 +39,13 @@ const VerifyPhone = ({ phone, nextStep, closeVerifyPhoneNumber }: Props) => {
           <p className="text-2xl font-semibold text-center">
             Verify Phone Number
           </p>
+
           <p className="w-full text-center max-w-[368px] mx-auto mt-2 font-poppins">
             Enter the OTP code sent to your phone number {phone}
           </p>
+
           <p className="text-sm mt-16">Enter Verification code (OTP)</p>
+
           <OtpInput
             value={otp}
             onChange={(value) => setOtp(value)}
@@ -54,6 +57,7 @@ const VerifyPhone = ({ phone, nextStep, closeVerifyPhoneNumber }: Props) => {
               "min-w-10 text-black-main h-10 text-lg font-semibold rounded-md bg-gray-100 border-2 border-grey-950/30 focus:ring-blue-main"
             }
           />
+
           <Button
             onClick={() => verifyPhone.mutate({ phone, token: parseInt(otp) })}
             disabled={otp.length < 6 || verifyPhone.isPending}
