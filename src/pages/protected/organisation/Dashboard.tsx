@@ -28,8 +28,6 @@ const Dashboard = () => {
 
   const stats: IDashboardStats = data?.data || null;
 
-  console.log(stats, "statas");
-
   const infoCards = [
     {
       title: "Units",

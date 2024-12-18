@@ -20,7 +20,9 @@ const VerifyPhone = ({ phone, nextStep, closeVerifyPhoneNumber }: Props) => {
       axiosInstance.post(`/users/verify/phone`, userData),
     mutationKey: ["verify-phone"],
     onError: (error: any) => {
-      toast.error(error.response.data.message, { className: "z-[100000000]" });
+      toast.error(error.response.data.message, {
+        className: "z-[100000000000]",
+      });
     },
     onSuccess: (data) => {
       toast.success(`${data.data.message}`, {

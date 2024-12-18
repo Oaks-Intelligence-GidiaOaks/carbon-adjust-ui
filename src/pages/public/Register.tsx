@@ -92,7 +92,10 @@ const Register = () => {
   return (
     <>
       {verifyEmail && (
-        <VerifyEmail email={registerUser.data?.data.data.email} />
+        <VerifyEmail
+          nextStep={() => navigate("/login")}
+          email={registerUser.data?.data.data.email}
+        />
       )}
       <div>
         <div className="bg-grey-swatch-100 flex justify-center mx-auto">

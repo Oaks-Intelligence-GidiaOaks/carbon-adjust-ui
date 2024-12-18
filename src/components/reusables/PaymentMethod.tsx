@@ -51,15 +51,11 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
 }) => {
   const [showSingleForm, setShowSingleForm] = useState(false);
   const [showModal, setShowModal] = useState(false);
- 
- 
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowModal(true); // Show the modal on form submission
   };
-
- 
 
   const handleNextClick = () => {
     if (selectedPayment) {
@@ -68,8 +64,6 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
       toast.error("Please select a payment method.");
     }
   };
-
- 
 
   const [flexibleWallet, setFlexibleWallet] = useState<string>("");
   const [restrictedWallet, setRestrictedWallet] = useState<string>("");
@@ -368,7 +362,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
 
       {selectedTab === "combo" && (
         <div className="space-y-4">
-          <ComboPaymentModal  />
+          <ComboPaymentModal />
         </div>
       )}
 

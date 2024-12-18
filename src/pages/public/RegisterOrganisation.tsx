@@ -62,8 +62,6 @@ const RegisterOrganisation = () => {
     queryFn: getCountries,
   });
 
-  // console.log(data);
-
   let countries: any[] = data?.data?.countries
     ? data?.data?.countries.map((it: any) => ({
         id: it._id,
@@ -135,7 +133,7 @@ const RegisterOrganisation = () => {
     ),
     [modals.phone]: (
       <VerifyPhoneNumber
-        phone=""
+        phone={registerUser.data?.data.data.phoneNos}
         closeVerifyPhoneNumber={() => {}}
         nextStep={() => navigate("/login")}
       />
@@ -226,7 +224,7 @@ const RegisterOrganisation = () => {
                     render={({ field }) => (
                       <Phoneinput
                         onInputChange={(selectedOption) => {
-                          field.onChange(selectedOption);
+                          field.onChange(`+${selectedOption}`);
                         }}
                         inputClassName="mt-4"
                       />

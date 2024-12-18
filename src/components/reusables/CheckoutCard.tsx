@@ -36,7 +36,10 @@ export const CheckoutCard: React.FC<OrderSummaryProps> = ({
 
   return (
     <div className="p-6 mx-auto">
-      <Link to="/dashboard/cart" className="flex items-center mb-3 text-[#0F172A]">
+      <Link
+        to="/dashboard/cart"
+        className="flex items-center mb-3 text-[#0F172A]"
+      >
         <ChevronLeft />
       </Link>
       <h1 className="text-xl font-bold mb-4">Checkout</h1>
