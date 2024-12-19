@@ -1,46 +1,23 @@
 import React, { useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { FaTimes } from "react-icons/fa";
+import { FaSpinner, FaTimes } from "react-icons/fa";
 import ComboPaymentModal from "./ComboModal";
 import toast from "react-hot-toast";
 import { FaChevronLeft } from "react-icons/fa";
 import card from "@/assets/card.svg";
-import klarna from "@/assets/Klarna.svg";
 import wallet from "@/assets/wallet.svg";
-// import { RootState } from "@/app/store";
-// import { initiatePayment } from "@/services/homeOwner";
-// import {
-//   Elements,
-//   PaymentElement,
-//   // useStripe,
-//   // useElements,
-// } from "@stripe/react-stripe-js";
-// @ts-ignore
-import { loadStripe } from "@stripe/stripe-js";
+import klarna from "@/assets/Klarna.svg";
 import Payment from "@/pages/protected/home-occupant/Payment";
-// import { useMutation } from "@tanstack/react-query";
-
-// import { Oval } from "react-loader-spinner";
-// import { useSelector } from "react-redux";
-// import { useParams } from "react-router-dom";
-
-// import SocketService from "@/repository/socket";
-// import {
-//   IOrderPaymentEventPayload,
-//   IOrderPaymentFailureEventPayload,
-//   IOrderPaymentSuccessEventPayload,
-//   MonitoringEvent,
-//   SubLevelEvent,
-// } from "@/interfaces/events.interface";
-
-// Load your publishable key
-// const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
+import { getRestrictedWallet, makePayment } from "@/services/homeOwner";
+import { useParams } from "react-router-dom"; // Import useParams
+import { useQuery } from "@tanstack/react-query";
+import { WalletType } from "@/interfaces/transaction.interface";
 
 interface PaymentMethodProps {
   selectedTab: "single" | "combo";
-  selectedPayment: string;
+  selectedPayment: "card" | "klarna" | "Wallet"| "" | string;
   setSelectedTab: (tab: "single" | "combo") => void;
-  setSelectedPayment: (method: string) => void;
+  setSelectedPayment: React.Dispatch<React.SetStateAction<"klarna" | "card" | "Wallet"| "" | string>>;
 }
 
 const PaymentMethod: React.FC<PaymentMethodProps> = ({
@@ -51,15 +28,45 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
 }) => {
   const [showSingleForm, setShowSingleForm] = useState(false);
   const [showModal, setShowModal] = useState(false);
- 
- 
+  const [paymentType, setPaymentType] = useState("");
+  const [loading, setLoading] = useState(false); // New loading state
+  const { orderId } = useParams();
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  // Fetch wallet data using useQuery
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["restricted-wallet"],
+    queryFn: () => getRestrictedWallet(WalletType.CASH_WALLET),
+  });
+
+  const walletData = data?.data;
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setShowModal(true); // Show the modal on form submission
-  };
 
- 
+    if (!orderId) {
+      toast.error("Order ID is missing!");
+      return;
+    }
+
+    const balanceType =
+      paymentType === "restricted"
+        ? "restrictedMonetizedCashBenefitBalance"
+        : "unrestrictedMonetizedCashBenefitBalance";
+
+    setLoading(true);
+    try {
+      await makePayment(orderId, "Wallet", undefined, balanceType);
+      toast.success("Payment processed successfully!");
+      setShowModal(true);
+    } catch (error) {
+      const typedError = error as { response?: { data?: { message?: string } } };
+      const errorMessage =
+        typedError.response?.data?.message || "An unexpected error occurred.";
+      toast.error(`Payment failed: ${errorMessage}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleNextClick = () => {
     if (selectedPayment) {
@@ -68,116 +75,6 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
       toast.error("Please select a payment method.");
     }
   };
-
- 
-
-  const [flexibleWallet, setFlexibleWallet] = useState<string>("");
-  const [restrictedWallet, setRestrictedWallet] = useState<string>("");
-
-  const total = 700; // Example total
-  const deficit = -300; // Example deficit
-
-  // const { user } = useSelector((state: RootState) => state.user);
-  // const { orderId } = useParams();
-  // const stripe = useStripe!();
-  // const elements = useElements();
-  // // @ts-ignore
-  // const [errorMessage, setErrorMessage] = useState<any>(null);
-  // const [btnLoading, setBtnLoading] = useState<boolean>(false);
-
-  // const { product, order } = useSelector((state: RootState) => state);
-  // const { protocol, hostname, port } = window.location;
-  // const redirectUrl = `${protocol}//${hostname}${port ? `:${port}` : ""}`;
-
-  // const createPaymentIntent: any = useMutation({
-  //   mutationKey: ["create-payment-intent"],
-  //   mutationFn: (iData: { orderId: string }) => initiatePayment(iData),
-  //   onError: (_: any) => {
-  //     toast.error(`Payment could not be initiated.. Please try again`);
-  //     setBtnLoading(false);
-  //   },
-  // });
-
-  // let orderPaymentPayload: IOrderPaymentEventPayload = {
-  //   orderId: orderId as string,
-  //   userId: user?._id as string,
-  //   time: Date.now(),
-  //   eventName: SubLevelEvent.ORDER_PAYMENT_EVENT,
-  //   amount: Number(order.price),
-  // };
-
-  // let orderPaymentFailurePayload: IOrderPaymentFailureEventPayload = {
-  //   ...orderPaymentPayload,
-  //   success: false,
-  // };
-
-  // let orderPaymentSuccessPayload: IOrderPaymentSuccessEventPayload = {
-  //   ...orderPaymentPayload,
-  //   success: true,
-  // };
-
-  // const handleSubmit = async (event: any) => {
-  //   event.preventDefault();
-
-  //   if (elements == null) {
-  //     return;
-  //   }
-
-  //   setBtnLoading(true);
-
-  //   // Trigger form validation and wallet collection
-  //   const { error: submitError } = await elements.submit();
-
-  //   if (submitError) {
-  //     // Show error to your customer
-  //     // @ts-ignore
-  //     setErrorMessage(submitError.message);
-  //     setBtnLoading(false);
-  //     return;
-  //   }
-
-  //   // ORDER_PAYMENT_EVENT
-  //   SocketService.emit(MonitoringEvent.NEW_SUBLEVEL_EVENT, orderPaymentPayload);
-
-  //   const { data: intentData } = await createPaymentIntent.mutateAsync({
-  //     orderId,
-  //   });
-
-  //   const { error } = await stripe!.confirmPayment({
-  //     elements,
-  //     clientSecret: intentData.clientSecret,
-  //     confirmParams: {
-  //       return_url: `${redirectUrl}/dashboard/payment/success?schedule=${!!product.hasSchedule}`,
-  //     },
-  //   });
-
-  //   if (error) {
-  //     // This point will only be reached if there is an immediate error when
-  //     // confirming the payment. Show error to your customer (for example, payment
-  //     // details incomplete)
-
-  //     // ORDER_FAILURE_EVENT
-  //     SocketService.emit(
-  //       MonitoringEvent.NEW_SUBLEVEL_EVENT,
-  //       orderPaymentFailurePayload
-  //     );
-
-  //     setBtnLoading(false);
-  //     // setErrorMessage(error.message);
-  //   } else {
-  //     // ORDER_SUCCESS_EVENT
-  //     SocketService.emit(
-  //       MonitoringEvent.NEW_SUBLEVEL_EVENT,
-  //       orderPaymentSuccessPayload
-  //     );
-
-  //     setBtnLoading(false);
-
-  //     // Your customer will be redirected to your `return_url`. For some payment
-  //     // methods like iDEAL, your customer will be redirected to an intermediate
-  //     // site first to authorize the payment, then redirected to the `return_url`.
-  //   }
-  // };
 
   return (
     <div>
@@ -230,10 +127,10 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
             <div className="space-y-4">
               {/* Payment options */}
               {[
-                { id: "card", label: "Pay with card", icon: `${card}` },
-                { id: "klarna", label: "Pay with Klarna", icon: `${klarna}` },
+                { id: "card", label: "Pay with Card ", icon: `${card}` },
+                { id: "klarna", label: "Pay with  Klarna", icon: `${klarna}` },
                 {
-                  id: "wallet",
+                  id: "Wallet",
                   label: "Pay with Cash Wallet",
                   icon: `${wallet}`,
                 },
@@ -276,105 +173,103 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
         </div>
       ) : (
         <div>
-          {selectedPayment === "wallet" ? (
-            <div className="mt-6 p-4 border rounded-md bg-white shadow-sm">
+          {selectedPayment === "Wallet" ? (
+            <div className="mt-6 p-6 border rounded-lg bg-white shadow-md">
+              <div className="flex justify-between items-center mb-6">
+                {isLoading ? (
+                  <p>Loading wallet data...</p>
+                ) : isError ? (
+                  toast.error(
+                    "Error fetching wallet data. Please try again later."
+                  ) && <p>Error loading wallet data.</p>
+                ) : (
+                  <>
+                    <div className="text-sm">
+                      <p className="text-gray-600">
+                        Unrestricted Wallet Balance
+                      </p>
+                      <p className="text-lg font-semibold text-blue-600">
+                        £{walletData.unrestrictedMonetizedCashBenefitBalance}
+                      </p>
+                    </div>
+                    <div className="text-sm">
+                      <p className="text-gray-600">Restricted Wallet Balance</p>
+                      <p className="text-lg font-semibold text-blue-600">
+                        £{walletData.restrictedMonetizedCashBenefitBalance}
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+
               <form className="space-y-6 text-sm" onSubmit={handleFormSubmit}>
-                <div className="flex items-center mb-4">
-                  <div className="flex-shrink-0 mr-4">
-                    <div className="bg-blue-500 w-10 h-10 rounded-full flex items-center justify-center">
-                      <svg
-                        className="w-6 h-6 text-white"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm6 2a4 4 0 100 8 4 4 0 000-8z"></path>
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="flex-grow">
-                    <input
-                      type="text"
-                      value={flexibleWallet}
-                      placeholder="£5"
-                      onChange={(e) => setFlexibleWallet(e.target.value)}
-                      className="w-full border border-gray-300 rounded-md p-2 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                    <p className="text-xs text-end text-[#333333]mt-1">
-                      Flexible Wallet Balance: £
-                      <span className="font-semibold">5000</span>
-                    </p>
-                  </div>
-                </div>
-
-                {/* Restricted Wallet Input */}
-                <div className="flex items-center mb-4">
-                  <div className="flex-shrink-0 mr-4">
-                    <div className="bg-blue-500 w-10 h-10 rounded-full flex items-center justify-center">
-                      <svg
-                        className="w-6 h-6 text-white"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm6 2a4 4 0 100 8 4 4 0 000-8z"></path>
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="flex-grow">
-                    <input
-                      type="text"
-                      value={restrictedWallet}
-                      placeholder="£25"
-                      onChange={(e) => setRestrictedWallet(e.target.value)}
-                      className="w-full border border-gray-300 rounded-md p-2 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                    <p className="text-xs text-end text-[#333333] mt-1">
-                      Restricted Wallet Balance: £
-                      <span className="font-semibold">5000</span>
-                    </p>
+                <div className="mb-4">
+                  <p className="text-gray-700 font-medium mb-2">
+                    Select Payment Type
+                  </p>
+                  <div className="flex space-x-4">
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="paymentType"
+                        value="unrestricted"
+                        onChange={(e) => setPaymentType(e.target.value)}
+                        className="w-4 h-4 text-green-600 focus:ring-green-500 border-gray-300"
+                      />
+                      <span className="text-gray-700">Unrestricted</span>
+                    </label>
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="paymentType"
+                        value="restricted"
+                        onChange={(e) => setPaymentType(e.target.value)}
+                        className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                      />
+                      <span className="text-gray-700">Restricted</span>
+                    </label>
                   </div>
                 </div>
 
-                {/* Total and Deficit */}
-                <div className="mb-6">
-                  <div className="flex justify-between items-center">
-                    <p className="">Total</p>
-                    <p className="text-xl font-semibold">£{total.toFixed(2)}</p>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <p className="">Deficit</p>
-                    <p className="text-xl font-semibold text-red-500">
-                      £{deficit.toFixed(2)}
-                    </p>
-                  </div>
-                </div>
 
-                {/* Next Button */}
                 <button
                   type="submit"
-                  className="w-full blue-gradient text-white py-3 px-4 rounded-full font-medium"
+                  className={`w-full py-3 rounded-full font-medium ${
+                    loading ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "blue-gradient text-white hover:bg-blue-600"
+                  }`}
+                  disabled={loading}
                 >
-                  Next
+                  {loading ? (
+                              <div className="flex items-center justify-center space-x-2">
+                                <FaSpinner className="animate-spin" />
+                                <span>Processing...</span>
+                              </div>
+                            ) : (
+                              "Proceed"
+                            )}
                 </button>
               </form>
             </div>
+          ) : selectedPayment === "card" ? (
+            <div className="mt-6 p-4 border rounded-md bg-white shadow-sm">
+              <Payment paymentProps="card" />
+            </div>
           ) : (
             <div className="mt-6 p-4 border rounded-md bg-white shadow-sm">
-              <Payment />
-              {/* </Elements> */}
+              <Payment paymentProps="klarna" />
             </div>
           )}
         </div>
       )}
-
       {selectedTab === "combo" && (
         <div className="space-y-4">
-          <ComboPaymentModal  />
+          <ComboPaymentModal />
         </div>
       )}
 
       {showModal && (
         <div className="fixed inset-0 bg-[black] bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white relative rounded-lg p-6 w-11/12  h-[70vh] max-w-md shadow-lg">
+          <div className="bg-white relative rounded-lg p-6 w-11/12  h-fit max-w-md shadow-lg">
             <button
               className="absolute top-2 right-4 text-[#231F20] hover:text-black"
               onClick={() => setShowModal(false)}
@@ -409,7 +304,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
               </p>
 
               {/* Order Details */}
-              <div className="mt-4 border rounded-full border-blue-500 p-2 flex items-center justify-center gap-3">
+              {/* <div className="mt-4 border rounded-full border-blue-500 p-2 flex items-center justify-center gap-3">
                 <p className="text-sm text-gray-600">
                   Order ID: <span className="font-medium">123456789</span>
                 </p>
@@ -419,7 +314,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
                 >
                   ORDER DETAILS &gt;
                 </a>
-              </div>
+              </div> */}
 
               {/* Continue Button */}
               <button

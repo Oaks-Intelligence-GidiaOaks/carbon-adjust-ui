@@ -65,9 +65,10 @@ export const homeOwnerRoutes = [
         element: <UserProduct />,
       },
       {
-        path: "checkout",
+        path: "checkout/:orderId",
         element: <UserCheckout />,
       },
+      
       {
         path: "devices",
         element: <AssetsLayout />,
@@ -131,7 +132,7 @@ export const homeOwnerRoutes = [
       },
       {
         path: "payment/:orderId",
-        element: <Payment />,
+        element: <Payment paymentProps={"card"} />,
       },
       {
         path: "payment/success",

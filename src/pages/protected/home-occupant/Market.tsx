@@ -76,7 +76,7 @@ const Market = (_: Props) => {
 
 
     // Extract the first 3 categories with their first package image
-  const categoryCards = categories.slice(0, 3).map((category, index) => {
+  const categoryCards = categories.slice(0, 4).map((category, index) => {
     const firstPackage = category.packages?.[0]; // Get the first package
     const image =
       firstPackage?.attachments?.[0] || placeholder; // Use the first attachment image or fallback to placeholder

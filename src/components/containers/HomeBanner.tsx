@@ -15,7 +15,7 @@ const HomeBanner = () => {
       />
 
       {/* Leaderboard Accordion stacked on top */}
-      <div className="absolute bottom-14 left-[30%] transform -translate-x-1/2 z-20 w-[90%] max-w-[800px]">
+      <div className="absolute bottom-14 left-[35%] transform -translate-x-1/2 z-20 w-[90%] max-w-[800px]">
         <LeaderboardAccordion />
       </div>
 

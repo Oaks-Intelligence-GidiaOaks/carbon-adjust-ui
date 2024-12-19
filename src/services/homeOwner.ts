@@ -120,7 +120,7 @@ export const getAdminPackages = async () => {
 
 
 // PAYMENT
-export const initiatePayment = async (iData: { orderId: string }) => {
+export const initiatePayment = async (iData: { orderId: string[] }) => {
   const { data } = await axiosInstance.post(`payment/intent`, {
     ...iData,
   });
@@ -355,6 +355,8 @@ export const getRestrictedWallet = async (
   );
   return data;
 };
+
+
 //UPLOAD ENERGY biLLS
 export const uploadEnergyBills = async (
   buildingId: string,
@@ -584,7 +586,29 @@ export const getFavourites = async () => {
   return data;
 };
 
+//MAKE PAYMENT
+export const makePayment = async (
+  orderId: string, // Single order ID
+  paymentMethod: 'card' | 'klarna' | 'Combination' | 'Wallet', // Enum for payment methods
+  walletAmount?: number, // Optional when using Wallet payment method
+  balanceType?: "restrictedMonetizedCashBenefitBalance" | "unrestrictedMonetizedCashBenefitBalance" // Optional balance type
+) => {
+  const { data } = await axiosInstance.post(`payment/process-payment`, {
+    orderId,       // Pass single string order ID
+    paymentMethod, // Payment method
+    walletAmount,  // Included if provided
+    balanceType,   // Included if provided
+  });
+  return data;
+};
 
+
+
+//GET LEADERBOARD
+export const getLeaderBoard = async () => {
+  const { data } = await axiosInstance.get(`leaderboard`);
+  return data;
+};
 
 
 
