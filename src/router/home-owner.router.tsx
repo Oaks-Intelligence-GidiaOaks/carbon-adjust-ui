@@ -132,7 +132,7 @@ export const homeOwnerRoutes = [
       },
       {
         path: "payment/:orderId",
-        element: <Payment />,
+        element: <Payment paymentProps={"card"} />,
       },
       {
         path: "payment/success",
