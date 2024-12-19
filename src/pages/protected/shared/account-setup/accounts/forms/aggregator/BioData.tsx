@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui";
 import Datepicker from "@/components/ui/DatePicker";
-import Phoneinput from "@/components/ui/PhoneInput";
+// import Phoneinput from "@/components/ui/PhoneInput";
 import TextArea from "@/components/ui/TextArea";
 import { OrgAccountSetupForm } from "@/types/general";
 // import { Value } from "node_modules/react-date-picker/dist/esm/shared/types";
@@ -45,7 +45,7 @@ const BioData = ({ formState, setFormState }: Props) => {
             }));
           }}
         />
-        <Phoneinput
+        {/* <Phoneinput
           name="phoneNumber"
           label="Phone Number"
           labelClassName="mb-4"
@@ -57,7 +57,7 @@ const BioData = ({ formState, setFormState }: Props) => {
               ["phoneNumber"]: formattedValue,
             }))
           }
-        />
+        /> */}
         <Input
           name="contactName"
           label="Contact name (Main)"

@@ -18,6 +18,7 @@ import { cn, uniqueObjectsByIdType } from "@/utils";
 import { setUser } from "@/features/userSlice";
 import { getMe } from "@/services/homeOccupant";
 import Loading from "@/components/reusables/Loading";
+import { UserRole } from "@/interfaces/user.interface";
 
 type Props = {};
 
@@ -64,8 +65,8 @@ const MerchantAccountSetup = (_: Props) => {
   });
 
   const isFileComplete = (fData: any) => {
-    console.log(fData);
-    console.log(fData.nonFinMerchantType);
+    // console.log(fData);
+    // console.log(fData.nonFinMerchantType);
 
     if (
       fData?.roles[0] === "MERCHANT" &&
@@ -109,14 +110,14 @@ const MerchantAccountSetup = (_: Props) => {
     }
   };
 
-  console.log(freshUserData);
+  // console.log(freshUserData);
 
   useEffect(() => {
     if (freshUserData.isSuccess && freshUserData.data?.data.data) {
       const data = freshUserData.data?.data.data;
-      console.log(data.step);
-      console.log(isFileComplete(data));
-      console.log(data);
+      // console.log(data.step);
+      // console.log(isFileComplete(data));
+      // console.log(data);
 
       dispatch(setUser(data));
 
@@ -128,7 +129,7 @@ const MerchantAccountSetup = (_: Props) => {
           data.status === "pending" &&
           isFileComplete(data)
         ) {
-          console.log("Here");
+          // console.log("Here");
           return navigate("/pending-verification");
         }
         if (
@@ -136,22 +137,22 @@ const MerchantAccountSetup = (_: Props) => {
           data.status === "completed" &&
           isFileComplete(data)
         ) {
-          console.log("Here");
+          // console.log("Here");
           return navigate("/merchant");
         }
-        console.log("Here");
+        // console.log("Here");
         setCurrentStep(data.step + 1);
       } else {
         if (data.merchantType === "NON_FINANCIAL_MERCHANT") {
           if (formState.accountType !== "") {
-            console.log("Here");
-            console.log(formState.accountType);
+            // console.log("Here");
+            // console.log(formState.accountType);
             return setCurrentStep(1);
           }
-          console.log("Here");
+          // console.log("Here");
           return setCurrentStep(0);
         } else {
-          console.log("Here");
+          // console.log("Here");
           return setCurrentStep(1);
         }
       }
@@ -224,6 +225,7 @@ const MerchantAccountSetup = (_: Props) => {
         duration: 10000,
       });
       setUser(data.data.data);
+      // conditional organisational type check | Merchant | Corporate
       navigate("/dashboard");
     },
   });
@@ -306,18 +308,15 @@ const MerchantAccountSetup = (_: Props) => {
     setCertOfAuth.mutate(formData);
   };
 
-  console.log(userData?.name);
   const [formState, setFormState] = useState({
     accountType: userData?.merchantType ?? "",
     entityName: userData?.name ?? "",
     contactEmail: userData?.contactEmail ?? "",
     contactName: userData?.contactName ?? "",
     dateOfFormation: userData?.dateFormed ?? "",
-    phoneNumber: userData?.phoneNos ?? "",
+    // phoneNumber: userData?.phoneNos ?? "",
     bio: userData?.bio ?? "",
   });
-
-  console.log(formState);
 
   const [addressFormState, setAddressFormState] = useState({
     country: {
@@ -350,7 +349,7 @@ const MerchantAccountSetup = (_: Props) => {
   //   console.log(doc);
 
   const goToNext = async () => {
-    console.log(currentStep);
+    console.log(currentStep, "ccurrent step");
 
     switch (currentStep) {
       // case undefined:
@@ -467,6 +466,11 @@ const MerchantAccountSetup = (_: Props) => {
         ) {
           navigate("/merchant");
         }
+
+        if (userData?.roles[0] === UserRole.CORPORATE_USER_ADMIN) {
+          navigate("/organisation");
+        }
+
         return;
       // Same as case 3 and 4 because the data returning is not constant for organizations
       case 5:
@@ -549,12 +553,17 @@ const MerchantAccountSetup = (_: Props) => {
         ) {
           navigate("/merchant");
         }
+
+        if (userData?.roles[0] === UserRole.CORPORATE_USER_ADMIN) {
+          navigate("/organisation");
+        }
+
         break;
     }
   };
 
   useEffect(() => {
-    console.log(addressFormState);
+    // console.log(addressFormState);
   }, [addressFormState]);
 
   return (
@@ -653,8 +662,8 @@ const MerchantAccountSetup = (_: Props) => {
                     } else if (currentStep === 0 || !currentStep) {
                       return formState.accountType === "";
                     } else {
-                      console.log(currentStep);
-                      console.log(formState);
+                      // console.log(currentStep);
+                      // console.log(formState);
                       return (
                         setMerchantBioData.isPending ||
                         setMerchantAddress.isPending

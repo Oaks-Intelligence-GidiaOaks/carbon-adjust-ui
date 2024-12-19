@@ -72,7 +72,7 @@ export type OrgAccountSetupForm = {
   contactEmail: string;
   contactName: string;
   dateOfFormation: string;
-  phoneNumber: string;
+  // phoneNumber: string;
   bio: string;
 };
 export type OrgAddressSetupForm = {
