@@ -65,9 +65,10 @@ export const homeOwnerRoutes = [
         element: <UserProduct />,
       },
       {
-        path: "checkout",
+        path: "checkout/:orderId",
         element: <UserCheckout />,
       },
+      
       {
         path: "devices",
         element: <AssetsLayout />,

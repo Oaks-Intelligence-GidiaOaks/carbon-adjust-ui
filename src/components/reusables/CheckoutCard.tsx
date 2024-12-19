@@ -32,7 +32,7 @@ export const CheckoutCard: React.FC<OrderSummaryProps> = ({
   total,
 }) => {
   const [selectedTab, setSelectedTab] = useState<"single" | "combo">("single");
-  const [selectedPayment, setSelectedPayment] = useState<string>("");
+  const [selectedPayment, setSelectedPayment] = useState<"klarna" | "card" | "Wallet" | "" | string >("");  // updated initial state to null
 
   return (
     <div className="p-6 mx-auto">

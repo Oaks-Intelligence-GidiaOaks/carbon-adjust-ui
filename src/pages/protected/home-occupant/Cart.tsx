@@ -20,6 +20,7 @@ type CartItem = {
 };
 
 type APIItem = {
+  orderId: any;
   _id: number;
   productId: {
     _id: string;
@@ -54,13 +55,21 @@ const Cart = () => {
         id: item._id,
         productId: item.productId._id,
         name: item.productId.title,
-        price: item.productId.price,
+        price: item.orderId.price,
         quantity: item.quantity,
-        subtotal: item.productId.price * item.quantity,
+        subtotal: item.orderId.price * item.quantity,
         imageUrl: item.productId.attachments[0], 
  
       }))
     ) || [];
+
+
+ console.log('hi', response)
+   
+
+  const orderIds = response?.data?.cartItems
+  .map((cartItem: { items: any[]; }) => cartItem.items.map(item => item.orderId._id)) // Extract orderIds from each item's `items` array
+  .flat(); 
 
   // Mutation to delete cart item
   const deleteCartItemMutation = useMutation({
@@ -81,9 +90,18 @@ const Cart = () => {
   };
 
   const productCost = cartItems.reduce((acc, item) => acc + item.subtotal, 0);
-  const shippingCost = cartItems.length > 0 ? 0 : 0;
-  const vat = cartItems.length > 0 ? 0 : 0;
+ 
+
+  // Calculate shipping cost
+  const shippingCost = cartItems.length > 2 ? 0 : cartItems.length > 0 ? 4.12 : 0;
+  
+  // Calculate VAT (20% of product cost)
+  const vat = productCost * 0.2;
+  
+  // Discount (set to 0 for now, can be updated as needed)
   const discount = 0;
+  
+  // Calculate total
   const total = productCost + shippingCost + vat - discount;
 
  
@@ -142,9 +160,9 @@ const Cart = () => {
                       />
                       <span>{`${item.name} x ${item.quantity}`}</span>
                     </td>
-                    <td className="p-4 border-b">${item.price}</td>
+                    <td className="p-4 border-b">£{item.price}</td>
                     <td className="p-4 border-b">{item.quantity}</td>
-                    <td className="p-4 border-b">${item.subtotal}</td>
+                    <td className="p-4 border-b">£{item.subtotal}</td>
                   </tr>
                 ))}
               </tbody>
@@ -173,25 +191,25 @@ const Cart = () => {
           <>
             <div className="flex justify-between items-center mb-2">
               <span>Product cost</span>
-              <span>${productCost.toFixed(2)}</span>
+              <span>£{productCost.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center mb-2">
               <span>Shipping cost</span>
-              <span>${shippingCost}</span>
+              <span>£{shippingCost}</span>
             </div>
             <div className="flex justify-between items-center mb-2">
               <span>VAT</span>
-              <span>${vat.toFixed(2)}</span>
+              <span>£{vat.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center mb-2">
               <span>Discount</span>
-              <span>${discount}</span>
+              <span>£{discount}</span>
             </div>
             <div className="flex justify-between items-center text-lg border-t border-gray-300 pt-4">
               <span>Total</span>
-              <span>${total.toFixed(2)}</span>
+              <span>£{total.toFixed(2)}</span>
             </div>
-            <Link to={"/dashboard/checkout"}>
+            <Link to={`/dashboard/checkout/${orderIds}`}>
               <button className="mt-4 w-full px-4 py-2 blue-gradient rounded-full text-white hover:bg-blue-600">
                 Proceed to Checkout
               </button>
