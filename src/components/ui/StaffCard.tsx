@@ -1,44 +1,49 @@
+//@ts-nocheck
 import {
-  IAssignUnitAdmin,
   IUnitStaff,
 } from "@/interfaces/organisation.interface";
 import { formDateWithTime } from "@/lib/utils";
 import { cn } from "@/utils";
-import { FC, useState } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import { FaEllipsisV } from "react-icons/fa";
 import AssignStaffRoleModal from "../dialogs/AssignStaffRoleModal";
 
 interface StaffCardProps extends IUnitStaff {
-  onRemoveStaff: () => void;
+  onRemoveStaff?: () => void;
+  onAssignRole?: () => void;
   className?: string;
-  parentUnitId: string;
+  parentUnitId?: string;
 }
 
 const StaffCard: FC<StaffCardProps> = ({
   onRemoveStaff,
   className,
   createdAt,
-  // isSubUnitAdmin,
   jobTitle,
   name,
-  //isUnitAdmin,
-  parentUnitId, 
+  parentUnitId,
   staffId,
   _id,
   profilePicture,
-  //subUnit,
-  //unit
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState<boolean>(false);
 
-  // @ts-ignore
-  // const handleAssignRole = () => {
-  //   onAssignRole({
-  //     staffId: (staffId || _id) as string,
-  //     subUnitId: subUnit?._id,
-  //   });
-  // };
+  const menuRef = useRef<HTMLDivElement>(null); 
+
+  
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
 
   return (
     <>
@@ -49,7 +54,7 @@ const StaffCard: FC<StaffCardProps> = ({
         )}
       >
         {/* Dropdown Menu */}
-        <div className="relative w-fit ml-auto">
+        <div className="relative w-fit ml-auto" ref={menuRef}>
           <button
             className="text-gray-500 hover:text-gray-700"
             onClick={() => setShowMenu(!showMenu)}
@@ -68,7 +73,7 @@ const StaffCard: FC<StaffCardProps> = ({
 
               <button
                 className="block w-full px-4 py-2 text-left text-red-500 hover:bg-red-100"
-                onClick={()=>onRemoveStaff()}
+                onClick={() => onRemoveStaff()}
               >
                 Remove staff
               </button>
@@ -102,7 +107,7 @@ const StaffCard: FC<StaffCardProps> = ({
 
       {showModal && (
         <AssignStaffRoleModal
-          staffId={(staffId || _id) as string} 
+          staffId={(staffId || _id) as string}
           unit={parentUnitId}
           showModal={showModal}
           setShowModal={setShowModal}

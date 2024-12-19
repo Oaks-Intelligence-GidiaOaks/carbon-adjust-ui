@@ -7,38 +7,7 @@ const AssetCard: React.FC<IAsset> = ({
     deviceInfo,
     assetType,
     approvalStatus,
-  }) => {
- 
-    
-    // "assets": [
-    //                 {
-    //                     "_id": "675c57aa215b85be15fc1128",
-    //                     "assetType": "DEVICE",
-    //                     "approvalStatus": "APPROVED",
-    //                     "createdAt": "2024-12-13T15:50:02.597Z",
-    //                     "updatedAt": "2024-12-13T15:50:02.597Z",
-    //                     "deviceInfo": {
-    //                         "_id": "675c5788215b85be15fc1116",
-    //                         "status": "activated",
-    //                         "file": "https://storage.googleapis.com/carbon-adjust-file.appspot.com/9c56a426c8c12282abdcd206c35313d8.png",
-    //                         "name": "new device",
-    //                         "type": "Dish Washer",
-    //                         "powerRating": 100,
-    //                         "serialNos": "BING55rre",
-    //                         "fixedCarbonOffsetProgress": 0,
-    //                         "voltageLevel": 200,
-    //                         "energySource": "Electricity",
-    //                         "currentDispatchStatus": "scheduled",
-    //                         "electricityProvider": "British Gas (Centrica)",
-    //                         "creator": "67588d1af16be10ea8876b99",
-    //                         "createdAt": "2024-12-13T15:49:28.929Z",
-    //                         "updatedAt": "2024-12-13T15:49:28.929Z"
-    //                     },
-    //                     "buildingInfo": null
-    //                 }
-    //             ],
-
-
+}) => {
  
 
   return (

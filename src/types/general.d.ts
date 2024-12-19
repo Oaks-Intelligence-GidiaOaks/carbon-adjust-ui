@@ -207,6 +207,19 @@ export type IStateMap = {
   [key: string]: number;
 };
 
+interface AdminUnit {
+  _id: string;
+  name: string;
+  unitFunction: string;
+}
+
+interface UserAdminData {
+  isUnitAdmin: boolean;
+  isSubUnitAdmin: boolean;
+  adminUnits: AdminUnit[];
+  adminSubUnits: AdminUnit[];
+}
+
 export type AuthUserProfile = {
   accountType: string;
   merchantType: string;
@@ -242,6 +255,7 @@ export type AuthUserProfile = {
   passwordLastResetAt?: null | string;
   phoneNos: string;
   roles: string[];
+  adminRoles: UserAdminData;
   status: string;
   updatedAt: string;
   phoneNos: string;

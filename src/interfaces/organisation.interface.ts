@@ -56,10 +56,27 @@ export interface ISubUnit {
   totalAssets: number;
   climateScore: number;
 }
+interface DeviceInfo {
+  _id: string;
+  status: string;
+  file: string;
+  name: string;
+  type: string;
+  powerRating: number;
+  serialNos: string;
+  fixedCarbonOffsetProgress: number;
+  voltageLevel: number;
+  energySource: string;
+  currentDispatchStatus: string;
+  electricityProvider: string;
+  creator: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+}
 
 
 export interface IAsset {
-  deviceInfo: any[]; 
+  deviceInfo: DeviceInfo; 
   assetType: string;
   approvalStatus: string;
 }

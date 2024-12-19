@@ -11,7 +11,7 @@ interface AssetsLayoutProps {
 
 const AssetsLayout: FC<AssetsLayoutProps> = () => {
   const userData = useSelector((state: RootState) => state.user.user);
-
+  console.log(userData)
   const allTabs: AssetTabs[] = [
     AssetTabs.Devices,
     AssetTabs.Buildings,
@@ -25,9 +25,17 @@ const AssetsLayout: FC<AssetsLayoutProps> = () => {
     AssetTabs.Transport,
   ];
 
+  const adminRestrictedTabs: AssetTabs[] = [
+    AssetTabs.Buildings,
+    AssetTabs.Transport,
+  ];
+
   const tabs: AssetTabs[] = userData?.roles?.includes("CORPORATE_USER_ADMIN")
-    ? allTabs
-    : allTabs.filter((tab) => !restrictedTabs.includes(tab));
+  ? allTabs
+  : userData?.adminRoles?.isUnitAdmin
+  ? allTabs.filter((tab) => !adminRestrictedTabs.includes(tab))
+  : allTabs.filter((tab) => !restrictedTabs.includes(tab));
+
 
   const { pathname } = useLocation();
   const type = pathname.includes("/organisation-staff")

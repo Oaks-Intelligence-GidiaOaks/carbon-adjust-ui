@@ -1,23 +1,15 @@
-import BuildingList from "@/components/containers/buildings/BuildingList";
 import AssetsLayout from "@/layouts/AssetsLayout";
 import Layout from "@/layouts/Layout";
-import UnitsLayout from "@/layouts/UnitsLayout";
 
 import {
   OrganisationDashboard,
-  OrganisationNewStaff,
-  OrganisationNewUnit,
   OrganisationProfile,
   OrganisationRequests,
-  OrganisationStaff,
   OrganisationStaffRequestDetails,
-  OrganisationUnit,
   OrganisationWallet,
   OrganizationDevices,
   OrganizationNewDevice,
-  OrganizationNewTransport,
   OrganizationPurchases,
-  OrganizationTransport,
 } from "@/pages/protected/organisation";
 
 export const organisationStaffRoutes = [

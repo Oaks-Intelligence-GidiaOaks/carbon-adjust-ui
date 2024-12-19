@@ -8,6 +8,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { PDFIcon } from "@/assets/icons";
 import { formatDate } from "@/lib/utils";
 import { Dot } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 // Document and EmissionData types
 type Document = {
@@ -41,16 +42,22 @@ type PurchaseHistoryCardProps = {
   scope3Emission: number;
   carbornFootPrint: number;
   optimizationStatus: string;
+  createdAt: string;
+  files: Document[];
+  status: string;
 };
 
 // PurchaseHistoryCard Component
 const PurchaseHistoryCard = ({
   _id,
   dateOfUpload,
+  createdAt,
   totalEmission,
   documentsUploaded,
   attachments,
   onSelect,
+  status,
+  files,
   isSelected,
   scope1Emission,
   scope2Emission,
@@ -61,6 +68,8 @@ const PurchaseHistoryCard = ({
 }: PurchaseHistoryCardProps) => {
   const [checked, setChecked] = useState<boolean>(isSelected);
   const [detailsShown, setDetailsShown] = useState<boolean>(false);
+  const { pathname } = useLocation();
+  const type = pathname.includes("/organisation-staff");
 
   const toggleChecked = () => {
     setChecked(!checked);
@@ -78,7 +87,6 @@ const PurchaseHistoryCard = ({
     });
   };
 
-
   // Define color classes based on optimization status
   const getStatusStyles = () => {
     switch (optimizationStatus) {
@@ -92,7 +100,7 @@ const PurchaseHistoryCard = ({
         return "bg-gray-100 text-gray-600";
     }
   };
-  
+
   // Render N/A if optimizationStatus is not provided
   const displayedStatus = optimizationStatus || "N/A";
 
@@ -121,7 +129,7 @@ const PurchaseHistoryCard = ({
 
   return (
     <div className="bg-white border-[0.5px] mb-7 rounded-md shadow-sm flex flex-col md:flex-row p-4 lg:p-6 text-sm lg:text-base cursor-pointer">
-       {optimizationStatus && (
+      {optimizationStatus && (
         <input
           type="checkbox"
           checked={isSelected}
@@ -134,12 +142,14 @@ const PurchaseHistoryCard = ({
         {/* Purchase Main Details */}
         <div className="flex flex-col md:flex-row justify-between items-start">
           <div className="space-y-1">
-          <div>
-                <h4 className="font-poppins text-[#212121]">Status</h4>
-                <span className={`pr-3 rounded-2xl font-poppins w-fit text-sm flex items-center ${getStatusStyles()}`}>
-                  <Dot className="size-7" /> {displayedStatus}
-                </span>
-              </div>
+            <div>
+              <h4 className="font-poppins text-[#212121]">{`${type ? "Approval" : ""} Status`}</h4>
+              <span
+                className={`pr-3 rounded-2xl font-poppins w-fit text-sm flex items-center ${getStatusStyles()}`}
+              >
+                <Dot className="size-7" /> {type ? status : displayedStatus}
+              </span>
+            </div>
           </div>
           <div className="relative flex justify-between w-full md:w-fit md:items-center lg:space-x-2 mt-2 md:mt-0">
             <button className="text-xl text-[#5D5D5D]">
@@ -159,17 +169,19 @@ const PurchaseHistoryCard = ({
           <div className="ml-5">
             <h4 className="text-[#212121]">Date of upload</h4>
             <p className="text-[#4C5563] text-xs sm:text-sm">
-              {formatDate(dateOfUpload)}
+              {formatDate(type ? createdAt : dateOfUpload)}
             </p>
           </div>
           <div>
             <h4 className="text-[#212121]">Total Emission</h4>
-            <p className="text-[#4C5563] text-xs sm:text-sm">{totalEmission || "N/A"}</p>
+            <p className="text-[#4C5563] text-xs sm:text-sm">
+              {totalEmission || "N/A"}
+            </p>
           </div>
           <div>
             <h4 className="text-[#212121]">Documents Uploaded</h4>
             <p className="text-[#4C5563] text-xs sm:text-sm">
-              {documentsUploaded}
+              {type ? files.length : documentsUploaded}
             </p>
           </div>
         </div>
@@ -182,24 +194,45 @@ const PurchaseHistoryCard = ({
             <div className="flex flex-col gap-5 mt-4 md:mt-0">
               {/* Documents Section */}
               <div className="flex flex-col lg:flex-row gap-5">
-                <div>
-                  {attachments?.length ? (
-                    <ul className="flex flex-row gap-10 items-center">
-                      {attachments.map((doc) => (
-                        <li
-                          key={doc.id}
-                          className="bg-[#FAFAFA] border-[#D8DDE8] p-5 w-[100px] h-[100px] text-xs sm:text-sm"
-                        >
-                          <PDFIcon />
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-sm text-[#767A85]">
-                      No documents uploaded
-                    </p>
-                  )}
-                </div>
+                {type ? (
+                  <div>
+                    {files?.length ? (
+                      <ul className="flex flex-row gap-10 items-center">
+                        {files.map((doc) => (
+                          <li
+                            key={doc.id}
+                            className="bg-[#FAFAFA] border-[#D8DDE8] p-5 w-[100px] h-[100px] text-xs sm:text-sm"
+                          >
+                            <PDFIcon />
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-sm text-[#767A85]">
+                        No documents uploaded
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    {attachments?.length ? (
+                      <ul className="flex flex-row gap-10 items-center">
+                        {attachments.map((doc) => (
+                          <li
+                            key={doc.id}
+                            className="bg-[#FAFAFA] border-[#D8DDE8] p-5 w-[100px] h-[100px] text-xs sm:text-sm"
+                          >
+                            <PDFIcon />
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-sm text-[#767A85]">
+                        No documents uploaded
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 {/* Emission Data Section */}
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">

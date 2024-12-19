@@ -32,7 +32,13 @@ interface Props extends Device {
 }
 
 const DeviceCard = (props: Props) => {
+  const userData = useSelector((state: RootState) => state.user.user);
   const { device } = useSelector((state: RootState) => state.assets);
+
+  const isUnitAdmin =
+    userData?.roles.includes("STAFF_CORPORATE") &&
+    userData?.adminRoles?.isUnitAdmin;
+
   const dispatch = useDispatch();
   const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
 
@@ -218,9 +224,8 @@ const DeviceCard = (props: Props) => {
     >
       {props.setShowStaffModal && (
         <>
-          
           <div
-            onClick={() => props.setShowUnitModal?.(props._id )}
+            onClick={() => props.setShowUnitModal?.(props._id)}
             className="text-[#414141] w-full cursor-pointer bg-[#EFF4FF99] rounded-md font-[400] font-sans text-[11px] text-center py-1 px-3 "
           >
             <span>Assign to Unit</span>
@@ -264,10 +269,12 @@ const DeviceCard = (props: Props) => {
             wrapperClass=""
           />
         ) : (
-          <MdMoreVert
-            onClick={() => setCardActions(!cardActions)}
-            className="cursor-pointer"
-          />
+          !isUnitAdmin && (
+            <MdMoreVert
+              onClick={() => setCardActions(!cardActions)}
+              className="cursor-pointer"
+            />
+          )
         )}
 
         {id && <CardPopup />}
@@ -289,30 +296,29 @@ const DeviceCard = (props: Props) => {
           <ListTile name="Voltage level" listing={props.voltageLevel} key={4} />
         </div>
       </div>
+      {!isUnitAdmin && (
+        <div className="py-2 pl-5 mt-auto">
+          <button
+            onClick={handleOpenLinkDeviceModal}
+            className="text-[#139EEC] border-[#139EEC] border !rounded-[15.2px] px-4 py-1 flex-center gap-[7px] text-xs font-[400] font-sans"
+          >
+            <span>Link Device</span>
+            <BoxIcon className="h-5 w-5" />
+          </button>
+        </div>
+      )}
 
-      <div className="py-2 pl-5 mt-auto">
-        <button
-          onClick={handleOpenLinkDeviceModal}
-          className="text-[#139EEC] border-[#139EEC] border !rounded-[15.2px] px-4 py-1 flex-center gap-[7px] text-xs font-[400] font-sans"
-        >
-          <span>Link Device</span>
-          <BoxIcon className="h-5 w-5" />
-        </button>
-      </div>
-
-      <div
-        className={`flex-center justify-between p-3 px-6 min-h-[56px] bg-[#DEE7F2] rounded-b-[10px]`}
-      >
+      <div className="flex-center justify-between p-3 px-6 min-h-[56px] bg-[#DEE7F2] rounded-b-[10px]">
         {Boolean(props.currentDispatchStatus) &&
           props.currentDispatchStatus === CurrentDispatchStatus.Scheduled &&
-          Boolean(!props.currentDispatchTime) && (
+          !props.currentDispatchTime && (
             <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
               <IoAlertCircleSharp />
               <span>Scheduled</span>
             </div>
           )}
 
-        {(Boolean(!props.currentDispatchStatus) ||
+        {(!props.currentDispatchStatus ||
           props.currentDispatchStatus === CurrentDispatchStatus.Initiated) && (
           <div className="flex-center gap-1 font-[500] text-xs font-sans text-[#FF8D31]">
             <IoAlertCircleSharp />
@@ -344,7 +350,6 @@ const DeviceCard = (props: Props) => {
         {(props.currentDispatchStatus === CurrentDispatchStatus.Scheduled ||
           props.currentDispatchStatus === CurrentDispatchStatus.Activated) && (
           <Button
-            // disabled={CancelDeviceSchedule.isPending}
             onClick={() => props.setCancelId(props._id as string)}
             variant="outline"
             size="sm"
@@ -355,7 +360,6 @@ const DeviceCard = (props: Props) => {
                 visible={true}
                 height="40"
                 width="40"
-                // color="#4fa94d"
                 radius="9"
                 ariaLabel="three-dots-loading"
                 wrapperStyle={{}}
@@ -369,6 +373,7 @@ const DeviceCard = (props: Props) => {
           </Button>
         )}
       </div>
+
       {/* Link Device Modal */}
       {isLinkDeviceModalOpen && (
         <LinkDeviceModal

@@ -63,9 +63,29 @@ export const UnitStaffDetails = async (unitId: string) => {
   return data;
 };
 
-export const UnitAssetDetails = async (unitId: string) => {
+export const UnitAssetDetails = async (unitId: string ) => {
   const { data } = await axiosInstance.get(`units/${unitId}/assets`);
 
+  return data;
+};
+
+export const UploadReceiptData = async (formData: FormData) => {
+  const { data } = await axiosInstance.post(`/receipts/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data;
+};
+
+export const AllRequests = async () => {
+  const { data } = await axiosInstance.get(`receipts/my-requests`);
+
+  return data;
+};
+
+export const ApproveReceipt = async (receiptId: FormData ) => {
+  const { data } = await axiosInstance.post(`receipts/approve`, receiptId);
   return data;
 };
 

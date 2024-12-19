@@ -34,7 +34,7 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState<UnitTabs>(UnitTabs.Staff);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [currentId, setCurrentId] = useState(null);
+  const [currentId, setCurrentId] = useState<any>(null);
 
  
 
@@ -90,13 +90,13 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
         </button>
       </div>
 
-      <div className="grid place-items-center gap-3 grid-cols-3">
+      <div className="grid place-items-center gap-3 grid-cols-1 lg:grid-cols-3">
         {staff?.map((stf, i) => (
           <StaffCard
             key={i}
             {...stf}
             parentUnitId={_id}
-            onRemoveStaff={() => setCurrentId(stf._id)}
+            onRemoveStaff={() => setCurrentId(stf._id!)}
             className="w-full"
           />
         ))}

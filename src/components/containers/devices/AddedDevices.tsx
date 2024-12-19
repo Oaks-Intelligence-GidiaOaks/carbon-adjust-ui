@@ -6,7 +6,7 @@ import { Button } from "@/components/ui";
 import { PlusIcon } from "@/assets/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { dispatchDevice, getUserDevices } from "@/services/homeOwner";
-import { Device, IDispatchData } from "@/interfaces/device.interface";
+import { IDispatchData } from "@/interfaces/device.interface";
 import DeviceDialog from "@/components/dialogs/DeviceDialog";
 import { RootState } from "@/app/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +24,7 @@ import LinkToUnitModal from "../organisation/devices/LinkToUnitModal";
 import AssignStaffModal from "../organisation/devices/AssignStaff";
 //import { MdMoreVert } from "react-icons/md";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
+import { UnitAssetDetails } from "@/services/organisation";
 // import { IoIosArrowForward } from "react-icons/io";
 // import { LinkDeviceModal } from "./LinkDevices";
 
@@ -38,7 +39,12 @@ const AddedDevices = () => {
   //const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
 
   const actionsRef = useRef<null | HTMLDivElement>(null);
+  const userData = useSelector((state: RootState) => state.user.user);
   const { device } = useSelector((state: RootState) => state.assets);
+  const isUnitAdmin =
+    userData?.roles.includes("STAFF_CORPORATE") &&
+    userData?.adminRoles?.isUnitAdmin;
+  const unitId = userData?.adminRoles?.adminUnits[0]?._id;
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
@@ -61,14 +67,19 @@ const AddedDevices = () => {
   const { data: userDevices, isLoading } = useQuery({
     queryKey: ["user-devices", pagination.currentPage],
     queryFn: () => getUserDevices(pagination.limit, pagination.currentPage),
+    enabled: !userData?.roles.includes("STAFF_CORPORATE"),
+  });
+
+  const { data: unitDevices, isLoading: isLoadingAssets } = useQuery({
+    queryKey: ["unit-devices"],
+    queryFn: () => UnitAssetDetails(unitId!),
+    enabled: isUnitAdmin,
   });
 
   // const { data: groupDevices } = useQuery({
   //   queryKey: ["group-devices", pagination.currentPage],
   //   queryFn: () => getGroupDevices(pagination.limit, pagination.currentPage),
   // });
-
-
 
   useEffect(() => {
     if (userDevices?.data)
@@ -115,6 +126,10 @@ const AddedDevices = () => {
   });
 
   if (isLoading) {
+    return <DeviceSkeletonLoader />;
+  }
+
+  if (isLoadingAssets) {
     return <DeviceSkeletonLoader />;
   }
 
@@ -195,24 +210,26 @@ const AddedDevices = () => {
             onChange={() => {}}
           />
         </div>
-        <div className="flex items-center gap-4">
-          {type === "organisation" && (
-            <Button
-              onClick={() => setShowModal(true)}
-              variant={"outline"}
-              className="rounded-[20px] border-blue-600 hover:text-blue-600 flex-center gap-1 text-blue-600"
-            >
-              Group Devices
-            </Button>
-          )}
+        {!isUnitAdmin && (
+          <div className="flex items-center gap-4">
+            {type === "organisation" && (
+              <Button
+                onClick={() => setShowModal(true)}
+                variant={"outline"}
+                className="rounded-[20px] border-blue-600 hover:text-blue-600 flex-center gap-1 text-blue-600"
+              >
+                Group Devices
+              </Button>
+            )}
 
-          <Link to={`/${type}/devices/add`}>
-            <Button className="rounded-[20px] flex-center gap-1 ">
-              <span className="md:block hidden">Add device</span>
-              <PlusIcon />
-            </Button>
-          </Link>
-        </div>
+            <Link to={`/${type}/devices/add`}>
+              <Button className="rounded-[20px] flex-center gap-1 ">
+                <span className="md:block hidden">Add device</span>
+                <PlusIcon />
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
       {/* {type === "organisation" && (
         <div className="p-3  max:w-[95%] my-10">
@@ -252,8 +269,25 @@ const AddedDevices = () => {
         </div>
       )} */}
       <div className="mt-[15px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-5">
-        {userDevices?.data?.devices?.length > 0 ? (
-          Array.from(userDevices.data.devices as Device[], (it, i) => (
+        {isUnitAdmin ? (
+          unitDevices?.data?.assets?.length > 0 ? (
+            unitDevices.data.assets.map(
+              (it: { device: any }, i: number) => (
+                <DeviceCard
+                  setShowUnitModal={setShowUnitModal}
+                  setShowStaffModal={setShowStaffModal}
+                  setCancelId={setCancelId}
+                  setId={setId}
+                  {...it.device}
+                  key={i}
+                />
+              )
+            )
+          ) : (
+            <p>No unit devices found.</p>
+          )
+        ) : userDevices?.data?.devices?.length > 0 ? (
+          userDevices.data.devices.map((it: any, i: number) => (
             <DeviceCard
               setShowUnitModal={setShowUnitModal}
               setShowStaffModal={setShowStaffModal}
@@ -264,7 +298,7 @@ const AddedDevices = () => {
             />
           ))
         ) : (
-          <p>No devices found.</p> // Fallback UI if there are no devices
+          <p>No devices found.</p>
         )}
       </div>
 

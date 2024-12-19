@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
 import Modal from "./Modal";
 import { Button } from "../ui";
 import SelectInput from "../ui/SelectInput";
@@ -38,6 +38,7 @@ const AssignStaffRoleModal: React.FC<IAssignStaffRole> = ({
     mutationFn: (initialState: FormData) => AssignUnitAdmin(initialState),
     onSuccess: (sx: any) => {
       toast.success(sx.message);
+      setShowModal(false)
       // resetForm();
 
       // navigate(`/${type}/transport`);
