@@ -12,8 +12,8 @@ import { useQuery } from "@tanstack/react-query";
 import { AllAdminUnits, AllUnitsRequests } from "@/services/organisation";
 import { DepartmentWithStaffCardProps } from "@/interfaces/organisation.interface";
 import { useSelector } from "react-redux";
-// import { getRestrictedWallet } from "@/services/homeOwner";
-// import { WalletType } from "@/interfaces/transaction.interface";
+import { getRestrictedWallet } from "@/services/homeOwner";
+import { WalletType } from "@/interfaces/transaction.interface";
 
 interface IDashboardStats {
   units: Array<DepartmentWithStaffCardProps>;
@@ -45,11 +45,10 @@ const Dashboard = () => {
     enabled: isUnitAdmin || corporateAdmin,
   });
 
-  // const { data: wallet } = useQuery({
-  //   queryKey: ["get-wallet"],
-  //   queryFn: () => getRestrictedWallet(),
-  // });
-  // console.log(wallet)
+  const { data: wallet } = useQuery({
+    queryKey: ["get-wallet"],
+    queryFn: () => getRestrictedWallet(WalletType.CARBON_CREDIT),
+  });
 
   const request = Requests?.data?.receipts || null;
   const stats: IDashboardStats = data?.data || null;
@@ -114,11 +113,11 @@ const Dashboard = () => {
     <div className="space-y-10 bg-[#F9FCFD] px-[40px] py-[28px]">
       {/* card */}
       <CorporateWalletCard
-        organization="Bolt"
-        walletHolder="Danny Walters"
-        ledgerBalance="532,789 tCO2e"
-        emissionScore={560}
-        totalOffset="532,789 tCO2e"
+        organization="."
+        walletHolder={wallet?.data?.name}
+        ledgerBalance="0 kgCO2e"
+        emissionScore={0}
+        totalOffset="0 kgCO2e"
       />
 
       {/* info cards */}

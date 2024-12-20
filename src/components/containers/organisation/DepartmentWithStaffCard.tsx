@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Modal from "@/components/dialogs/Modal";
 import { Button } from "@/components/ui";
 import { Oval } from "react-loader-spinner";
-import AssetCard from "./AssetsCard";
+//import AssetCard from "./AssetsCard";
 import { useNavigate } from "react-router-dom";
 
 enum UnitTabs {
@@ -28,7 +28,7 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
   totalAssets,
   climateScore,
   staff,
-  assets,
+  //assets,
   subUnits,
   totalStaff,
 }) => {
@@ -192,9 +192,9 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
       </div>
 
       <div className="grid  gap-y-3">
-        {Array.from(assets, (asset, i) => (
+        {/* {Array.from(assets, (asset, i) => (
           <AssetCard key={i} {...asset} />
-        ))}
+        ))} */}
       </div>
     </div>
   );
