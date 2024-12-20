@@ -108,16 +108,23 @@ const MerchantAccountSetup = (_: Props) => {
       }
       return false;
     }
+
+    if (fData?.roles[0] === UserRole.CORPORATE_USER_ADMIN) {
+      if (uniqueObjectsByIdType(fData?.doc).length === 4) {
+        return true;
+      }
+
+      return false;
+    }
   };
 
   // console.log(freshUserData);
 
+  console.log(isFileComplete(freshUserData.data?.data.data));
+
   useEffect(() => {
     if (freshUserData.isSuccess && freshUserData.data?.data.data) {
       const data = freshUserData.data?.data.data;
-      // console.log(data.step);
-      // console.log(isFileComplete(data));
-      // console.log(data);
 
       dispatch(setUser(data));
 
@@ -132,6 +139,7 @@ const MerchantAccountSetup = (_: Props) => {
           // console.log("Here");
           return navigate("/pending-verification");
         }
+
         if (
           data.step >= 3 &&
           data.status === "completed" &&
@@ -159,8 +167,6 @@ const MerchantAccountSetup = (_: Props) => {
     }
   }, [freshUserData.isSuccess, freshUserData.data?.data.data]);
 
-  console.log(userData);
-
   queryClient.getQueryCache().find({ queryKey: ["user-data"] });
 
   const setMerchantBioData = useMutation({
@@ -168,7 +174,7 @@ const MerchantAccountSetup = (_: Props) => {
       // accountType: string;
       contactEmail: string;
       dateFormed: string;
-      phoneNos: string;
+      // phoneNos: string;
       contactName: string;
       name: string;
       bio: string;
@@ -365,7 +371,7 @@ const MerchantAccountSetup = (_: Props) => {
           contactName: formState.contactName,
           dateFormed: formState.dateOfFormation,
           name: formState.entityName,
-          phoneNos: formState.phoneNumber,
+          // phoneNos: formState.phoneNumber,
           bio: formState.bio,
           ...(userData?.merchantType === "NON_FINANCIAL_MERCHANT"
             ? {
@@ -424,6 +430,14 @@ const MerchantAccountSetup = (_: Props) => {
         ) {
           navigate("/pending-verification");
         }
+
+        if (
+          userData?.roles[0] === UserRole.CORPORATE_USER_ADMIN &&
+          uniqueObjectsByIdType(userData?.doc).length === 4
+        ) {
+          navigate("/pending-verification");
+        }
+
         return;
       // Same as case 3 because the data returning is not constant for organizations
       case 4:
@@ -467,8 +481,15 @@ const MerchantAccountSetup = (_: Props) => {
           navigate("/merchant");
         }
 
-        if (userData?.roles[0] === UserRole.CORPORATE_USER_ADMIN) {
-          navigate("/organisation");
+        // if (userData?.roles[0] === UserRole.CORPORATE_USER_ADMIN &&  ) {
+        //   navigate("/organisation");
+        // }
+
+        if (
+          userData?.roles[0] === UserRole.CORPORATE_USER_ADMIN &&
+          uniqueObjectsByIdType(userData?.doc).length === 4
+        ) {
+          navigate("/pending-verification");
         }
 
         return;

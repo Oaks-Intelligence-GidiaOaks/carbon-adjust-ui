@@ -12,7 +12,7 @@ import { memo, useEffect, useMemo, useState } from "react";
 type Props = {};
 
 const AccountManagement = (_: Props) => {
-  const tabs = ["ALL", "HOME_OCCUPANT", "MERCHANT", "NON_FINANCIAL_MERCHANT"];
+  const tabs = ["ALL", "HOME_OCCUPANT", "MERCHANT", "CORPORATE_USER_ADMIN"];
 
   const [activeTab, setActiveTab] = useState<string>(tabs[0]);
 
@@ -64,7 +64,7 @@ const AccountManagement = (_: Props) => {
       <AllUserRegistrations data={users} tableHeader="Home Owners" />
     ),
     MERCHANT: <AllUserRegistrations data={users} tableHeader="Merchants" />,
-    NON_FINANCIAL_MERCHANT: (
+    CORPORATE_USER_ADMIN: (
       <AllUserRegistrations
         data={users}
         tableHeader="Non Financial Merchants"

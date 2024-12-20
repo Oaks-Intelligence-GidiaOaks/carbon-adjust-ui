@@ -121,3 +121,12 @@ export const SubUnitDetails = async (subUnitId: string) => {
 
   return data;
 };
+
+// AUTH
+export const ResendPhoneOtp = async (phoneNos: string) => {
+  const { data } = await axiosInstance.post(`/users/verify/phone/resend`, {
+    phoneNos,
+  });
+
+  return data;
+};

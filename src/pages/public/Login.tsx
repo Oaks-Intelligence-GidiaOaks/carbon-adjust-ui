@@ -15,9 +15,11 @@ import { Oval } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { setKommunitaToken, setToken } from "@/features/userSlice";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { AuthUserProfile } from "@/types/general";
+import { AuthUserProfile, IComponentMap } from "@/types/general";
 import { RootState } from "@/app/store";
 import { UserRole } from "@/interfaces/user.interface";
+import { modals } from "./MerchantRegister";
+import { VerifyEmail, VerifyPhoneNumber } from "@/components/dialogs";
 
 const Login = () => {
   const [searchParams] = useSearchParams();
@@ -27,6 +29,7 @@ const Login = () => {
   const tab = searchParams.get("ie");
   const [inactivityState] = useState(tab);
   const userData = useSelector((state: RootState) => state.user.user);
+  const [activeModal, setActiveModal] = useState<modals | null>(null);
 
   const togglePasswordVisibility = () =>
     setShowPassword((prevState) => !prevState);
@@ -49,6 +52,16 @@ const Login = () => {
       );
     },
     onSuccess: (data) => {
+      if (!data.data.data.user.hasPhoneNosVerified) {
+        setActiveModal(modals.phone);
+        return;
+      }
+
+      if (!data.data.data.user.hasEmailVerified) {
+        setActiveModal(modals.email);
+        return;
+      }
+
       dispatch(setToken(data.data.data.access_token));
       dispatch(setKommunitaToken(data.data.data.kommunita_access_token));
 
@@ -97,7 +110,7 @@ const Login = () => {
       if (user.status === "pending") {
         return navigate("/account-setup");
       }
-      
+
       return navigate("/organisation");
     }
 
@@ -177,8 +190,25 @@ const Login = () => {
     }
   }, [userData?.roles[0]]);
 
+  const getActiveModal: IComponentMap = {
+    [modals.email]: (
+      <VerifyEmail
+        nextStep={() => setActiveModal(modals.phone)}
+        email={loginUser.data?.data?.data?.user?.email}
+      />
+    ),
+    [modals.phone]: (
+      <VerifyPhoneNumber
+        phone={loginUser.data?.data?.data?.user?.phoneNos}
+        closeVerifyPhoneNumber={() => {}}
+        nextStep={() => setActiveModal(null)}
+      />
+    ),
+  };
+
   return (
     <div>
+      {activeModal && getActiveModal[activeModal]}
       <div className="h-[calc(100vh-60px)]">
         <div className="bg-grey-swatch-100 flex justify-center mx-auto">
           <AccountActionHeader
@@ -196,8 +226,6 @@ const Login = () => {
                 </p>
                 <LogoAndBrandVertical className="max-h-[100px]" />
               </div> */}
-
-       
 
               <div className="relative  w-full">
                 <img
