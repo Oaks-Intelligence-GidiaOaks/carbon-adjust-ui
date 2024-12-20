@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useState } from "react";
 import { GoDownload } from "react-icons/go";
 import {

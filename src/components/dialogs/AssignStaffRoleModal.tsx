@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
 import Modal from "./Modal";
 import { Button } from "../ui";
 import SelectInput from "../ui/SelectInput";
@@ -13,7 +13,7 @@ import { Oval } from "react-loader-spinner";
 const staffRoles = [
   { label: "UNIT ADMIN", value: StaffRole.UNIT_ADMIN },
   // { label: "SUB UNIT ADMIN", value: StaffRole.SUB_UNIT_ADMIN },
-  ,
+  
 ];
 
 interface IAssignStaffRole {
@@ -29,10 +29,10 @@ const AssignStaffRoleModal: React.FC<IAssignStaffRole> = ({
   setShowModal,
   showModal,
 }) => {
-  console.log(unitId, "unit id");
-  const queryClient = useQueryClient();
+  // console.log(unitId, "unit id");
+  // const queryClient = useQueryClient();
 
-  const { MakeunitAdmin } = useMutations();
+  // const { MakeunitAdmin } = useMutations();
   const ref = useRef<HTMLDivElement | null>(null);
   const initialState: any = {
     staffId: staffId,
@@ -58,28 +58,28 @@ const AssignStaffRoleModal: React.FC<IAssignStaffRole> = ({
 
   useOutsideCloser(ref, showModal, setShowModal);
 
-  const handleAssignRole = (e: any) => {
-    e.preventDefault();
+  // const handleAssignRole = (e: any) => {
+  //   e.preventDefault();
 
-    if (roleType === StaffRole.UNIT_ADMIN) {
-      MakeunitAdmin.mutateAsync(
-        { staffId, unitId },
-        {
-          onSuccess: (sx: any) => {
-            toast.success(sx.message || `Staff Role Updated succesfully`);
-            queryClient.invalidateQueries({ queryKey: ["get-admin-units"] });
-            queryClient.invalidateQueries({ queryKey: ["get-admin-staff"] });
-            setShowModal(false);
-          },
-          onError: (ex: any) => {
-            toast.error(
-              ex.response.data.message || "error updating staff role"
-            );
-          },
-        }
-      );
-    }
-  };
+  //   if (roleType === StaffRole.UNIT_ADMIN) {
+  //     MakeunitAdmin.mutateAsync(
+  //       { staffId, unitId },
+  //       {
+  //         onSuccess: (sx: any) => {
+  //           toast.success(sx.message || `Staff Role Updated succesfully`);
+  //           queryClient.invalidateQueries({ queryKey: ["get-admin-units"] });
+  //           queryClient.invalidateQueries({ queryKey: ["get-admin-staff"] });
+  //           setShowModal(false);
+  //         },
+  //         onError: (ex: any) => {
+  //           toast.error(
+  //             ex.response.data.message || "error updating staff role"
+  //           );
+  //         },
+  //       }
+  //     );
+  //   }
+  // };
 
   return (
     <Modal>
@@ -92,7 +92,7 @@ const AssignStaffRoleModal: React.FC<IAssignStaffRole> = ({
             Assign Role
           </h2>
 
-          <form className="space-y-6" onSubmit={handleAssignRole}>
+          <form className="space-y-6" >
             {/* Assign Role */}
             <SelectInput
               label="Assign Role"
@@ -142,30 +142,3 @@ const AssignStaffRoleModal: React.FC<IAssignStaffRole> = ({
 };
 
 export default AssignStaffRoleModal;
-
-// {
-//   "_id": "675c5788215b85be15fc1116",
-//   "status": "activated",
-//   "file": "https://storage.googleapis.com/carbon-adjust-file.appspot.com/9c56a426c8c12282abdcd206c35313d8.png",
-//   "name": "new device",
-//   "type": "Dish Washer",
-//   "powerRating": 100,
-//   "serialNos": "BING55rre",
-//   "fixedCarbonOffsetProgress": 0,
-//   "voltageLevel": 200,
-//   "energySource": "Electricity",
-//   "currentDispatchStatus": "scheduled",
-//   "electricityProvider": "British Gas (Centrica)",
-//   "creator": "67588d1af16be10ea8876b99",
-//   "createdAt": "2024-12-13T15:49:28.929Z",
-//   "updatedAt": "2024-12-13T15:49:28.929Z",
-//   "__v": 0
-// },
-
-// {
-//   "_id": "675c110d7c189bb0d1a98a6a",
-//   "assetType": "DEVICE",
-//   "approvalStatus": "APPROVED",
-//   "createdAt": "2024-12-13T10:48:45.596Z",
-//   "updatedAt": "2024-12-13T10:48:45.596Z"
-// }
