@@ -193,7 +193,7 @@ const CheckoutForm = () => {
 
 const options = {
   mode: "payment",
-  amount: 10000,
+  amount: 4000,
   currency: "gbp",
   paymentMethodTypes: ["card"],
   // Fully customizable with appearance API.
