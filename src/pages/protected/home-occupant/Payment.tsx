@@ -195,10 +195,9 @@ const options = {
   mode: "payment",
   amount: 10000,
   currency: "gbp",
-  paymentMethodTypes: ["card", "klarna"],
+  paymentMethodTypes: ["card"],
   // Fully customizable with appearance API.
   appearance: {
-    theme: "stripe",
     /*...*/
   },
 };
