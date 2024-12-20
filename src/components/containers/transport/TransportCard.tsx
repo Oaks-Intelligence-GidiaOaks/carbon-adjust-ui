@@ -67,7 +67,7 @@ const TransportCard = (props: Transport) => {
           <VehicleDetail
             title="Total Projected Carbon Offset"
             des={`${totalProjectedCarbonOffset} ${
-              Number(totalProjectedCarbonOffset) === 1 ? "ton" : "tonnes"
+              Number(totalProjectedCarbonOffset) === 1 ? "kgCo2e" : "kgCo2e"
             }`}
           />
 
