@@ -13,6 +13,7 @@ import { cn } from "@/utils";
 import { UserRole } from "@/interfaces/user.interface";
 import { IoSettingsSharp } from "react-icons/io5";
 import { BsCart3 } from "react-icons/bs";
+import { HeartIcon } from "lucide-react";
 
 type Props = {
   mobileMenuIsOpen: boolean;
@@ -176,6 +177,13 @@ const TopBar = ({ mobileMenuIsOpen, setMobileMenuIsOpen }: Props) => {
                 <Link to={`/dashboard/cart`}>
                   <div className="h-[34px] cursor-pointer w-[34px] grid place-items-center ">
                     <BsCart3 />
+                  </div>
+                </Link>
+              )}
+              {!isMerchant && !isAdmin && !isAdminStaff && (
+                <Link to={`/dashboard/favourites`}>
+                  <div className="h-[34px] cursor-pointer w-[34px] grid place-items-center ">
+                  <HeartIcon  className="size-4"/>
                   </div>
                 </Link>
               )}

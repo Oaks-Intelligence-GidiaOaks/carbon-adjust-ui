@@ -14,6 +14,7 @@ import Modal from "@/components/dialogs/Modal";
 import { Button } from "@/components/ui";
 import { Oval } from "react-loader-spinner";
 import AssetCard from "./AssetsCard";
+import { useNavigate } from "react-router-dom";
 
 enum UnitTabs {
   Staff = "Staff",
@@ -58,32 +59,40 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
 
   // };
 
+  const navigate = useNavigate();
+
+  // console.log(staff[0]);
+
   const StaffList = () => (
     <div className="space-y-4">
       <div className="flex-center justify-between">
         <div className="flex gap-1">
           <h2
-            className="font-[600] text-[#4C5563] cursor-pointer "
+            className={
+            "font-[600] text-[#4C5563] cursor-pointer border rounded-md p-2 bg-blue-50"
+          }
             onClick={() => setActiveTab(UnitTabs.Staff)}
           >
             Staff Members
           </h2>
 
-          <h2
-            className="font-[600] text-[#4C5563] cursor-pointer mr-auto ml-5"
-            onClick={() => setActiveTab(UnitTabs.SubUnit)}
-          >
-            Sub Unit
-          </h2>
-          <h2
+        <h2
+          className="font-[600] text-[#4C5563] cursor-pointer mr-auto ml-5"
+          onClick={() => setActiveTab(UnitTabs.SubUnit)}
+        >
+          Sub Unit
+        </h2>
+        <h2
             className="font-[600] text-[#4C5563] cursor-pointer  mr-auto ml-5"
             onClick={() => setActiveTab(UnitTabs.Assets)}
           >
             Assets
           </h2>
         </div>
-
-        <button className="flex-center gap-2 rounded-[16px] p-2 px-3 border-[1.2px] border-[#139EEC] text-[#139EEC]">
+        <button
+          onClick={() => navigate("/organisation/staff/new")}
+          className="flex-center gap-2 rounded-[16px] p-2 px-3 border-[1.2px] border-[#139EEC] text-[#139EEC]"
+        >
           <AiOutlinePlusCircle />
 
           <span className="text-xs font-[500] ">Add staff</span>
@@ -116,10 +125,10 @@ const DepartmentWithStaffCard: FC<DepartmentWithStaffCardProps> = ({
           </h2>
 
           <h2
-            className="font-[600] text-[#4C5563] cursor-pointer mr-auto ml-5"
+            className="font-[600] text-[#4C5563] cursor-pointer mr-auto ml-5 border rounded-md p-2 bg-blue-50"
             onClick={() => setActiveTab(UnitTabs.SubUnit)}
           >
-            Sub Unit
+            Sub Units
           </h2>
           <h2
             className="font-[600] text-[#4C5563] cursor-pointer  mr-auto ml-5"

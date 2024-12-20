@@ -26,7 +26,6 @@ export const getBestSellerPackages = async () => {
       limit: 8, 
     },
   });
-
   return data;
 };
 
@@ -450,7 +449,7 @@ export const deleteEnergyBill = async (
   );
   return data;
 };
-
+  
 
 
 //GET ENERGY CHART
@@ -564,6 +563,29 @@ export const deleteCartItem = async (
   );
   return data;
 };
+
+//ADD FAVORITE
+export const addFavorite = async (packageId: string) => {
+  const { data } = await axiosInstance.post(`/packages/favourites`, {
+    package: packageId, 
+  });
+  return data;
+};
+
+//REMOVE FAVORITE
+export const removeFavorite = async (packageId: string) => {
+  const { data } = await axiosInstance.delete(`packages/favourites/${packageId}`);
+  return data;
+};
+
+//GET FAVORITES
+export const getFavourites = async () => {
+  const { data } = await axiosInstance.get(`packages/favourites`);
+  return data;
+};
+
+
+
 
 
 

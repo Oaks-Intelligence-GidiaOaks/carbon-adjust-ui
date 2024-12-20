@@ -83,8 +83,13 @@ const MarketGroup = (_: Props) => {
     setFilters(filters.filter((filter) => filter.id !== id));
   };
 
-  const handleSortChange = (selected: string) => {
-    console.log("Selected Sort Option:", selected);
+  // const handleSortChange = (selected: string) => {
+  //   // console.log("Selected Sort Option:", selected);
+  // };
+
+  
+  const handleSortChange = () => {
+    // console.log("Selected Sort Option:", selected);
   };
 
   return (
@@ -92,7 +97,7 @@ const MarketGroup = (_: Props) => {
       <div className="h-[150px] flex items-center container">
         <h2 className="font-[500] text-xl">{categoryName}</h2>
       </div>
-
+  
       <SearchFilterBar
         activeFilters={filters}
         totalResults={65867}
@@ -101,11 +106,12 @@ const MarketGroup = (_: Props) => {
         defaultSortOption="Most Popular"
         onSortChange={handleSortChange}
       />
-
-      <div className="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-stretch mr-10 gap-x-5 w-full no-scrollbar ">
-        {categoryLoading ? (
-          <CategoriesLoading />
-        ) : (
+  
+      {/* Render CategoriesLoading outside of the grid */}
+      {categoryLoading && <CategoriesLoading />}
+  
+      <div className="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-stretch mr-10 gap-x-5 w-full no-scrollbar">
+        {!categoryLoading &&
           Boolean(catProducts.length) &&
           catProducts.map((item) =>
             item.discount ? (
@@ -115,15 +121,14 @@ const MarketGroup = (_: Props) => {
             ) : (
               <ProductCard {...item} key={item._id} />
             )
-          )
-        )}
+          )}
       </div>
-
+  
       {/* <div className="mt-[48px]">
         <Promotion />
       </div> */}
     </div>
   );
-};
+}  
 
 export default MarketGroup;

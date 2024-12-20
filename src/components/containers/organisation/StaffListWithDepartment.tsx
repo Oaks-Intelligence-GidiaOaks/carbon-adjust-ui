@@ -1,13 +1,13 @@
 // @ts-nocheck
 import StaffCard from "@/components/ui/StaffCard";
-import useMutations from "@/hooks/useMutations";
+// import useMutations from "@/hooks/useMutations";
 import {
-  IAssignUnitAdmin,
+  // IAssignUnitAdmin,
   IUnitStaff,
 } from "@/interfaces/organisation.interface";
-import { useQueryClient } from "@tanstack/react-query";
+// import { useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 type StaffListWithDepartmentProps = {
   name: string;
@@ -18,20 +18,22 @@ const StaffListWithDepartment: React.FC<StaffListWithDepartmentProps> = ({
   name,
   staffMembers,
 }) => {
-  const queryClient = useQueryClient();
-  const { MakeunitAdmin } = useMutations();
+  // const queryClient = useQueryClient();
+  // const { MakeunitAdmin } = useMutations();
 
-  const handleMakeAdmin = (input: IAssignUnitAdmin) => {
-    MakeunitAdmin.mutateAsync(input, {
-      onSuccess: (sx: any) => {
-        toast.success(sx?.message || `staff role updated`);
-        queryClient.invalidateQueries({ queryKey: ["get-admin-staff"] });
-      },
-      onError: (ex: any) => {
-        toast.error(ex.response.data.message || `error updating staff role`);
-      },
-    });
-  };
+  // console.log(staffMembers, "staff memebers");
+
+  // const handleMakeAdmin = (input: IAssignUnitAdmin) => {
+  //   MakeunitAdmin.mutateAsync(input, {
+  //     onSuccess: (sx: any) => {
+  //       toast.success(sx?.message || `staff role updated`);
+  //       queryClient.invalidateQueries({ queryKey: ["get-admin-staff"] });
+  //     },
+  //     onError: (ex: any) => {
+  //       toast.error(ex.response.data.message || `error updating staff role`);
+  //     },
+  //   });
+  // };
 
   const handleRemoveStaff = () => {
     //
@@ -45,7 +47,6 @@ const StaffListWithDepartment: React.FC<StaffListWithDepartmentProps> = ({
         {Array.from(staffMembers, (stf, i) => (
           <StaffCard
             {...stf}
-            onAssignRole={handleMakeAdmin}
             onRemoveStaff={handleRemoveStaff}
             key={i}
             className="w-full"

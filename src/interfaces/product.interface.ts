@@ -54,6 +54,7 @@ export interface IProduct {
   packageDomain?: string;
   isHot?: boolean;
   isSoldOut?: boolean;
+  isFavourite?: boolean
 }
 
 export interface ICategory {

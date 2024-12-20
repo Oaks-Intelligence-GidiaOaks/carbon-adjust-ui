@@ -13,6 +13,8 @@ const BestSellers = () => {
 
   const pkgs: IProduct[] = isSuccess ? data.data.packages : [];
 
+  
+
   const category = {
     name: "Best Sellers",
     slug: "best-sellers",
@@ -38,8 +40,7 @@ const BestSellers = () => {
         </div>
 
         <div className="">
-         
-          
+      
             <ProductsCategory category={category} packages={pkgs} />
       
         </div>

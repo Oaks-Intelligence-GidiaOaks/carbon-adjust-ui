@@ -58,5 +58,4 @@ export enum AccountType {
 export enum StaffRole {
   SUB_UNIT_ADMIN = "SUB_UNIT_ADMIN",
   UNIT_ADMIN = "UNIT_ADMIN",
-  GENERAL_ADMIN = "GENERAL_ADMIN",
 }

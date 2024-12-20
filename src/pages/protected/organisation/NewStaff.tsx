@@ -26,6 +26,8 @@ const levels = [
 const NewStaff = () => {
   const navigate = useNavigate();
 
+  const [subUnitOptions, setSubUnitOptions] = useState([]);
+
   const { data: allUnits, isLoading } = useQuery({
     queryKey: ["get-all-admin-units"],
     queryFn: () => AllAdminUnits(),
@@ -50,8 +52,20 @@ const NewStaff = () => {
       value: it._id,
     })) || [];
 
+  const getSubUnits = (unitId: string) => {
+    const subunits = allUnits.data.units
+      .filter((it: any) => it._id === unitId)?.[0]
+      ?.subUnits?.map((item: any) => ({
+        label: item.name,
+        value: item.subUnitId,
+      }));
+
+    return subunits;
+  };
+
   const {
     watch,
+    setValue,
     reset,
     control,
     register,
@@ -59,21 +73,29 @@ const NewStaff = () => {
     formState: { errors },
   } = useForm<ICreateStaff>({
     resolver: yupResolver<any>(FormSchemas().CreateOrganisationStaff),
+    defaultValues: {
+      subUnit: null,
+    },
   });
 
   const [filePreview, setFilePreview] = useState<string | null>(null);
-
   watch("file");
 
   const fileInput = useRef<HTMLInputElement>(null);
 
   const onSubmit = (data: any) => {
+    const { subUnit, ...rest } = data;
+
     const rData: ICreateStaff = {
-      ...data,
+      ...rest,
       auThorizationLevel: data.auThorizationLevel.value,
       unit: data.unit.value,
       file: data.file[0],
     };
+
+    if (subUnit && subUnit.value) {
+      rData.subUnit = subUnit.value;
+    }
 
     const newStaff = new FormData();
 
@@ -188,6 +210,7 @@ const NewStaff = () => {
             label="Job title"
           />
 
+          {/* unit */}
           <>
             <Controller
               name="unit"
@@ -197,6 +220,11 @@ const NewStaff = () => {
                   options={units}
                   onChange={(selectedOption) => {
                     field.onChange(selectedOption);
+                    const subUnits = getSubUnits(
+                      selectedOption?.value as string
+                    );
+                    setSubUnitOptions(subUnits);
+                    setValue("subUnit", null);
                   }}
                   className=" rounded-xl text-sm "
                   label="Unit"
@@ -211,12 +239,30 @@ const NewStaff = () => {
             </span>
           </>
 
-          {/* <SelectInput
-            name="subUnit"
-            className=" rounded-xl px-3 text-sm bg-[#E4E7E863]"
-            inputClassName="bg-transparent px-0"
-            label="Sub Unit"
-          /> */}
+          {/* sub unit */}
+          <>
+            <Controller
+              name="subUnit"
+              control={control}
+              render={({ field }) => (
+                <SelectInput
+                  options={subUnitOptions}
+                  onChange={(selectedOption) => {
+                    field.onChange(selectedOption);
+                  }}
+                  className="rounded-xl text-sm"
+                  label="Sub Unit"
+                  placeholder="Select a sub unit"
+                  disabled={!subUnitOptions.length}
+                />
+              )}
+            />
+
+            <span className="text-red-500">
+              {/* @ts-ignore */}
+              {errors.subUnit?.value?.message || errors.subUnit?.message}
+            </span>
+          </>
 
           {/* authorization level */}
           <>

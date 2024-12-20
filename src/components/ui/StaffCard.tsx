@@ -68,7 +68,7 @@ const StaffCard: FC<StaffCardProps> = ({
                 className="block w-full px-4 py-2 text-left hover:bg-gray-100"
                 onClick={() => setShowModal(true)}
               >
-                Assign as admin
+                Assign role
               </button>
 
               <button

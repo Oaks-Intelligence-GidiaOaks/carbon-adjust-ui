@@ -8,8 +8,11 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 
 const NewUnit = () => {
+  const navigate = useNavigate();
+
   const {
     reset,
     register,
@@ -25,6 +28,7 @@ const NewUnit = () => {
     onSuccess: (sx: any) => {
       reset();
       toast.success(sx.message || "Unit created successfully");
+      navigate("/organisation/units");
     },
     onError: (ex: any) => {
       toast.error(ex.response.data.message || "error occurred.");

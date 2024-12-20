@@ -1,8 +1,9 @@
-import React, { Dispatch, SetStateAction, useRef } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import Modal from "./Modal";
 import { Button } from "../ui";
 import SelectInput from "../ui/SelectInput";
 import { StaffRole } from "@/interfaces/user.interface";
+// import { IUnit } from "@/interfaces/organisation.interface";
 import { useOutsideCloser } from "@/hooks/useOutsideCloser";
 import { useMutation } from "@tanstack/react-query";
 import { AssignUnitAdmin } from "@/services/organisation";
@@ -11,7 +12,8 @@ import { Oval } from "react-loader-spinner";
 
 const staffRoles = [
   { label: "UNIT ADMIN", value: StaffRole.UNIT_ADMIN },
-  { label: "SUB UNIT ADMIN", value: StaffRole.SUB_UNIT_ADMIN },
+  // { label: "SUB UNIT ADMIN", value: StaffRole.SUB_UNIT_ADMIN },
+  ,
 ];
 
 interface IAssignStaffRole {
@@ -27,6 +29,10 @@ const AssignStaffRoleModal: React.FC<IAssignStaffRole> = ({
   setShowModal,
   showModal,
 }) => {
+  console.log(unitId, "unit id");
+  const queryClient = useQueryClient();
+
+  const { MakeunitAdmin } = useMutations();
   const ref = useRef<HTMLDivElement | null>(null);
   const initialState: any = {
     staffId: staffId,
@@ -52,6 +58,29 @@ const AssignStaffRoleModal: React.FC<IAssignStaffRole> = ({
 
   useOutsideCloser(ref, showModal, setShowModal);
 
+  const handleAssignRole = (e: any) => {
+    e.preventDefault();
+
+    if (roleType === StaffRole.UNIT_ADMIN) {
+      MakeunitAdmin.mutateAsync(
+        { staffId, unitId },
+        {
+          onSuccess: (sx: any) => {
+            toast.success(sx.message || `Staff Role Updated succesfully`);
+            queryClient.invalidateQueries({ queryKey: ["get-admin-units"] });
+            queryClient.invalidateQueries({ queryKey: ["get-admin-staff"] });
+            setShowModal(false);
+          },
+          onError: (ex: any) => {
+            toast.error(
+              ex.response.data.message || "error updating staff role"
+            );
+          },
+        }
+      );
+    }
+  };
+
   return (
     <Modal>
       <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 font-kumbh">
@@ -63,12 +92,13 @@ const AssignStaffRoleModal: React.FC<IAssignStaffRole> = ({
             Assign Role
           </h2>
 
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleAssignRole}>
             {/* Assign Role */}
             <SelectInput
               label="Assign Role"
               //   @ts-ignore
               options={staffRoles}
+              onChange={() => {}}
               className=""
             />
 

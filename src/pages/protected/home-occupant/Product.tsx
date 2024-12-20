@@ -12,9 +12,8 @@ const Product = () => {
   
 
 
-  const { packageId } = useParams(); // Get packageId from URL
-  console.log("Package ID:", packageId);
-  
+  const { packageId } = useParams(); 
+ 
   if (!packageId) {
     // Handle the case where packageId is undefined
     return <p>Error: Package ID is missing.</p>;

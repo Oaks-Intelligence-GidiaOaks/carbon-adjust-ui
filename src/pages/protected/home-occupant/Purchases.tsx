@@ -12,7 +12,8 @@ import { PlusCircleIcon, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { MdFilterList } from "react-icons/md";
 import UsageSummary from "@/components/containers/purchases/BarChartPurchases";
-import TrendingProjections from "@/components/containers/purchases/LineChartPurchases";
+import DoughnutUsageSummary from "@/components/containers/purchases/PieChartPurchases";
+
 import { useSelector } from "react-redux";
 import { AllRequests } from "@/services/organisation";
 
@@ -118,21 +119,21 @@ const PurchaseList = () => {
 
   return (
     <div className="py-6">
-      <div className="px-8 md:px-10">
-        {/* Search, Filter, and Upload Section */}
-        <div className="flex flex-col   sm:flex-row sm:items-center sm:justify-between my-6">
-          <div className="flex items-center space-x-4">
-            {/* Toggle Date Picker */}
-            <div className="relative">
-              <button
-                className="bg-white text-[#575757] border p-2 rounded-lg flex items-center space-x-2"
-                onClick={() => setIsDatePickerVisible((prev) => !prev)}
-              >
-                <MdFilterList className="w-4 h-4" />
-                <span className=" hidden md:block text-sm font-medium text-[#575757]">
-                  Filter by date
-                </span>
-              </button>
+      <div>
+      {/* Search, Filter, and Upload Section */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between my-6">
+        <div className="flex items-center space-x-4">
+          {/* Toggle Date Picker */}
+          <div className="relative">
+            <button
+              className="bg-white text-[#575757] border p-2 rounded-lg flex items-center space-x-2"
+              onClick={() => setIsDatePickerVisible((prev) => !prev)}
+            >
+              <MdFilterList className="w-4 h-4" />
+              <span className=" hidden md:block text-sm font-medium text-[#575757]">
+                Filter by date
+              </span>
+            </button>
 
               {/* Date Picker */}
               {isDatePickerVisible && (
@@ -219,16 +220,16 @@ const PurchaseList = () => {
           </div>
         )}
 
-        {/* Charts */}
-        <div
-          ref={chartAreaRef}
-          className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm"
-        >
-          <UsageSummary purchaseId={selectedPurchase} />
-        </div>
-        <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm ">
-          <TrendingProjections purchaseId={selectedPurchase} />
-        </div>
+       {/* Charts */}
+       <div ref={chartAreaRef} className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm">
+        <UsageSummary purchaseId={selectedPurchase} />
+      </div>
+      {/* <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm ">
+        <PieUsageSummary purchaseId={selectedPurchase}/> 
+      </div> */}
+      <div className="mt-10 bg-white py-14 px-3 md:px-6 md:py-20 shadow-sm ">
+        <DoughnutUsageSummary purchaseId={selectedPurchase}/> 
+      </div>
 
         {/* Modal */}
         {isModalOpen && (

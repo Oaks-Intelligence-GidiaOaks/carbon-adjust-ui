@@ -98,7 +98,13 @@ export const FormSchemas = () => {
           return value && supportedTypes.includes(value[0]?.type);
         }),
 
-      subUnit: yup.string().trim(),
+      subUnit: yup
+        .object()
+        .shape({
+          value: yup.string().required("please select a unit"),
+          label: yup.string(),
+        })
+        .nullable(),
     }),
     CreateSubUnit: yup.object().shape({
       name: yup.string().trim().required("Please enter the sub unit name"),
