@@ -555,6 +555,7 @@ export const addFavorite = async (packageId: string) => {
   return data;
 };
 
+
 //REMOVE FAVORITE
 export const removeFavorite = async (packageId: string) => {
   const { data } = await axiosInstance.delete(`packages/favourites/${packageId}`);
@@ -569,19 +570,25 @@ export const getFavourites = async () => {
 
 //MAKE PAYMENT
 export const makePayment = async (
-  orderId: string, // Single order ID
+  orderIds: string[], // Array of order IDs
   paymentMethod: 'card' | 'klarna' | 'Combination' | 'Wallet', // Enum for payment methods
   walletAmount?: number, // Optional when using Wallet payment method
   balanceType?: "restrictedMonetizedCashBenefitBalance" | "unrestrictedMonetizedCashBenefitBalance" // Optional balance type
 ) => {
-  const { data } = await axiosInstance.post(`payment/process-payment`, {
-    orderId,       // Pass single string order ID
-    paymentMethod, // Payment method
-    walletAmount,  // Included if provided
-    balanceType,   // Included if provided
-  });
-  return data;
+  try {
+    const { data } = await axiosInstance.post(`payment/process-payment`, {
+      orderIds,       // Array of order IDs
+      paymentMethod, 
+      walletAmount,  
+      balanceType,   
+    });
+    return data;
+  } catch (error) {
+    console.error("Error processing payment:", error);
+    throw error; // You can customize this part for specific error handling
+  }
 };
+
 
 
 
@@ -590,6 +597,28 @@ export const getLeaderBoard = async () => {
   const { data } = await axiosInstance.get(`leaderboard`);
   return data;
 };
+
+
+export const calculatePaymentTotals = async (payload: { 
+  orderId?: string; 
+  orderIds?: string[]; 
+  paymentMethod: string; 
+}) => {
+  const { data } = await axiosInstance.post(`/payment/calculate-totals`, payload);
+  return data;
+};
+
+
+//APPLY COUPON
+export const applyCoupon = async ({ cartId, couponCode }: { cartId: string; couponCode: string }) => {
+  const { data } = await axiosInstance.post(`coupons/apply`, {
+    cartId,
+    couponCode,
+  });
+  return data;
+};
+
+
 
 
 

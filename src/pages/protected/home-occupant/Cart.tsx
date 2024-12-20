@@ -1,11 +1,16 @@
 import { ArrowLeft } from "lucide-react";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { deleteCartItem, getCartItems } from "@/services/homeOwner";
+import {
+  applyCoupon,
+  deleteCartItem,
+  getCartItems,
+} from "@/services/homeOwner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/material/Box";
+import { useState } from "react";
 
 type CartItem = {
   id: number;
@@ -16,7 +21,6 @@ type CartItem = {
   quantity: number;
   subtotal: number;
   imageUrl: string;
- 
 };
 
 type APIItem = {
@@ -37,6 +41,7 @@ type APICart = {
 
 const Cart = () => {
   const queryClient = useQueryClient();
+  const [couponCode, setCouponCode] = useState("");
 
   // Fetch data using useQuery
   const {
@@ -51,25 +56,26 @@ const Cart = () => {
   // Map fetched data into the expected format
   const cartItems: CartItem[] =
     response?.data?.cartItems?.flatMap((cart: APICart) =>
-      cart.items.map((item: APIItem): CartItem => ({
-        id: item._id,
-        productId: item.productId._id,
-        name: item.productId.title,
-        price: item.orderId.price,
-        quantity: item.quantity,
-        subtotal: item.orderId.price * item.quantity,
-        imageUrl: item.productId.attachments[0], 
- 
-      }))
+      cart.items.map(
+        (item: APIItem): CartItem => ({
+          id: item._id,
+          productId: item.productId._id,
+          name: item.productId.title,
+          price: item.orderId.price,
+          quantity: item.quantity,
+          subtotal: item.orderId.price * item.quantity,
+          imageUrl: item.productId.attachments[0],
+        })
+      )
     ) || [];
 
-
- console.log('hi', response)
-   
+  const cartId = response?.data?.cartItems?.[0]?._id;
 
   const orderIds = response?.data?.cartItems
-  .map((cartItem: { items: any[]; }) => cartItem.items.map(item => item.orderId._id)) // Extract orderIds from each item's `items` array
-  .flat(); 
+    .map((cartItem: { items: any[] }) =>
+      cartItem.items.map((item) => item.orderId._id)
+    ) // Extract orderIds from each item's `items` array
+    .flat();
 
   // Mutation to delete cart item
   const deleteCartItemMutation = useMutation({
@@ -79,43 +85,66 @@ const Cart = () => {
       toast.success("Item deleted successfully!", { duration: 5000 });
     },
     onError: (error: unknown) => {
-      toast.error("Failed to delete item. Please try again.", { duration: 5000 });
+      toast.error("Failed to delete item. Please try again.", {
+        duration: 5000,
+      });
       console.error("Error deleting cart item:", error);
     },
   });
-
 
   const handleRemoveItem = (productId: string) => {
     deleteCartItemMutation.mutate(String(productId));
   };
 
   const productCost = cartItems.reduce((acc, item) => acc + item.subtotal, 0);
- 
 
   // Calculate shipping cost
-  const shippingCost = cartItems.length > 2 ? 0 : cartItems.length > 0 ? 4.12 : 0;
-  
+  const shippingCost =
+    cartItems.length > 2 ? 0 : cartItems.length > 0 ? 4.17 : 0;
+
   // Calculate VAT (20% of product cost)
-  const vat = productCost * 0.2;
-  
+  const vat = (productCost + shippingCost) * 0.2;
+
   // Discount (set to 0 for now, can be updated as needed)
   const discount = 0;
-  
+
   // Calculate total
   const total = productCost + shippingCost + vat - discount;
 
- 
+  // Mutation to apply coupon
+  const applyCouponMutation = useMutation({
+    mutationFn: () => applyCoupon({ cartId, couponCode }),
+    onSuccess: () => {
+      toast.success("Coupon applied successfully!", { duration: 5000 });
+      queryClient.invalidateQueries({ queryKey: ["cart-items"] });
+    },
+    onError: (error: any) => {
+      const errorMessage =
+        error?.response?.data?.message ||
+        "Failed to apply coupon. Please try again.";
+      toast.error(errorMessage, { duration: 5000 });
+      console.error("Error applying coupon:", error);
+    },
+  });
+
+  const handleApplyCoupon = () => {
+    if (!couponCode.trim()) {
+      toast.error("Please enter a valid coupon code.");
+      return;
+    }
+    applyCouponMutation.mutate();
+  };
 
   if (isLoading) {
     return (
-      <div className="w-[100%] mx-auto mt-10 flex flex-col gap-4 ">
+      <div className="w-[100%] mx-auto mt-10 p-10 flex flex-col gap-4 ">
         {Array.from({ length: 3 }, (_, i) => (
-        <Box key={i} sx={{ width: "100%" }}>
-          <Skeleton variant="rectangular" width={"100%"} height={100} />
-          <Skeleton width={"100%"} />
-          <Skeleton width={"50%"} animation="wave" />
-        </Box>
-      ))}
+          <Box key={i} sx={{ width: "100%" }}>
+            <Skeleton variant="rectangular" width={"100%"} height={100} />
+            <Skeleton width={"100%"} />
+            <Skeleton width={"50%"} animation="wave" />
+          </Box>
+        ))}
       </div>
     );
   }
@@ -198,13 +227,14 @@ const Cart = () => {
               <span>£{shippingCost}</span>
             </div>
             <div className="flex justify-between items-center mb-2">
-              <span>VAT</span>
-              <span>£{vat.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between items-center mb-2">
               <span>Discount</span>
               <span>£{discount}</span>
             </div>
+            <div className="flex justify-between items-center mb-2">
+              <span>VAT</span>
+              <span>£{vat.toFixed(2)}</span>
+            </div>
+
             <div className="flex justify-between items-center text-lg border-t border-gray-300 pt-4">
               <span>Total</span>
               <span>£{total.toFixed(2)}</span>
@@ -227,10 +257,22 @@ const Cart = () => {
                   id="coupon"
                   type="text"
                   placeholder="Enter Coupon code"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <button className="mt-2 w-full px-4 py-2 border border-[#0B8DFF] text-transparent bg-clip-text bg-gradient-to-b from-[#2E599A] to-[#0B8DFF] rounded-lg hover:bg-blue-200">
-                  Apply Coupon
+                <button
+                  onClick={handleApplyCoupon}
+                  disabled={applyCouponMutation.isPending}
+                  className={`mt-2 w-full px-4 py-2 border border-[#0B8DFF] text-transparent bg-clip-text bg-gradient-to-b from-[#2E599A] to-[#0B8DFF] rounded-lg hover:bg-blue-200 ${
+                    applyCouponMutation.isPending
+                      ? "bg-gray-300 text-gray-500 hover:bg-gray-300"
+                      : ""
+                  }`}
+                >
+                  {applyCouponMutation.isPending
+                    ? "Applying..."
+                    : "Apply Coupon"}
                 </button>
               </div>
             </div>

@@ -40,6 +40,7 @@ interface ProductFormV2Props {
     price: number;
     selectedColor: string;
     selectedQuantity: number;
+    packageType: string;
   };
 }
 
@@ -596,6 +597,7 @@ const ProductFormV2 = ({
 
           {/* proceed */}
           <div className="flex flex-col lg:flex-row gap-2 items-center">
+          {productData.packageType !== "Service" && (
             <button
               onClick={handleSubmit}
               disabled={isAddToCartLoading || isDisabled}
@@ -615,6 +617,7 @@ const ProductFormV2 = ({
                 </>
               )}
             </button>
+              )}
             <button
               onClick={handleProceed}
               disabled={isProceedLoading || isDisabled}

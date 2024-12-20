@@ -21,7 +21,7 @@ const PaymentSuccessful = (props: {
       // naviagte to booking calendar page for an order
       navigate(`/dashboard/order-booking/${order._id}`);
     } else {
-      navigate(`/dashboard/orders`);
+      navigate(`/dashboard`);
     }
 
     dispatch(clearOrder());

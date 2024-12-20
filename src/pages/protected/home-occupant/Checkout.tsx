@@ -1,94 +1,44 @@
+import { OrderSummary } from "@/components/reusables/OrderSumary";
+import PaymentMethod from "@/components/reusables/PaymentMethod";
+import { ChevronLeft } from "lucide-react";
+import { useState } from "react";
+import { BsInfoCircle } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
-import { CheckoutCard } from "@/components/reusables/CheckoutCard";
-import { useQuery } from "@tanstack/react-query";
-import { getCartItems } from "@/services/homeOwner";
-
-type CartItem = {
-  id: number;
-  productId: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  quantity: number;
-  subtotal: number;
-  imageUrl: string;
- 
-};
-
-type APIItem = {
-  _id: number;
-  productId: {
-    _id: string;
-    title: string;
-    price: number;
-    attachments: string[];
-  };
-  quantity: number;
-};
-
-type APICart = {
-  items: APIItem[];
-};
-
-
-
-const Checkout = () => {
-
-  // Fetch data using useQuery
-  const {
-    data: response,
-  } = useQuery({
-    queryKey: ["cart-items"],
-    queryFn: getCartItems,
-  });
-
-  // Map fetched data into the expected format
-  const cartItems: CartItem[] =
-    response?.data?.cartItems?.flatMap((cart: APICart) =>
-      cart.items.map((item: APIItem): CartItem => ({
-        id: item._id,
-        productId: item.productId._id,
-        name: item.productId.title,
-        price: item.productId.price,
-        quantity: item.quantity,
-        subtotal: item.productId.price * item.quantity,
-        imageUrl: item.productId.attachments[0],
-      }))
-    ) || [];
-
-  const productCost = cartItems.reduce((acc, item) => acc + item.subtotal, 0);
-
-  // Calculate shipping cost
-  const shippingCost = cartItems.length > 2 ? 0 : cartItems.length > 0 ? 4.12 : 0;
-
-  // Calculate VAT (20% of product cost)
-  const vat = productCost * 0.2;
-
-  // Discount (set to 0 for now, can be updated as needed)
-  const discount = 0;
-
-  // Calculate total
-  const total = productCost + shippingCost + vat - discount;
-
-  // Generate orderSummary object
-  const orderSummary = {
-    items: cartItems.map((item) => ({
-      product: item.name,
-      quantity: item.quantity,
-      price: item.price,
-      image: item.imageUrl,
-    })),
-    productCost: productCost,
-    shippingCost: shippingCost,
-    vat: vat,
-    discount: discount,
-    total: total,
-  };
-
+ const Checkout = () => {
+  const [selectedTab, setSelectedTab] = useState<"single" | "combo">("single");
+  const [selectedPayment, setSelectedPayment] = useState<"klarna" | "card" | "Wallet" | "" | string >("card");  // updated initial state to null
 
   return (
-    <div><CheckoutCard transactionFees={0} {...orderSummary} /></div>
-  )
-}
+    <div className="p-6 mx-auto">
+      <Link to="/dashboard/cart" className="flex items-center mb-3 text-[#0F172A]">
+        <ChevronLeft />
+      </Link>
+      <h1 className="text-xl font-bold mb-4">Checkout</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="p-6 border-dashed border-2 rounded-md shadow-sm">
+          <h2 className="text-lg font-semibold mb-4">Billing Method</h2>
+          <div className="bg-[#EBF5FF99] flex gap-2 items-center border-l-4 p-3 my-4 border-[#2E599A]">
+            <div>
+              <BsInfoCircle className="size-4 text-[#0B8DFF]" />
+            </div>
+            <p className="text-sm text-[#5C5C5C]">
+              You can either use one payment method or the combo method which
+              combines two or more payment systems to checkout your purchase.
+            </p>
+          </div>
+          <PaymentMethod
+            selectedTab={selectedTab}
+            selectedPayment={selectedPayment}
+            setSelectedTab={setSelectedTab}
+            setSelectedPayment={setSelectedPayment}
+          />
+        </div>
+        <OrderSummary selectedPayment={selectedPayment} />
+      </div>
+    </div>
+  );
+};
 
-export default Checkout
+export default Checkout;
+

@@ -39,6 +39,8 @@ type CheckoutFormProps = {
 const CheckoutForm: React.FC<CheckoutFormProps> = ({ method }) => {
   const { user } = useSelector((state: RootState) => state.user);
   const { orderId } = useParams<{ orderId: string }>();
+  const orderIds = orderId ? orderId.split(',') : []; // Convert the orderId string into an array
+
   const stripe = useStripe!();
   const elements = useElements();
   // @ts-ignore
@@ -81,90 +83,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ method }) => {
     success: true,
   };
 
-//   const handleSubmit = async (event: any) => {
-//   event.preventDefault();
 
-//   if (elements == null) {
-//     return;
-//   }
-
-//   setBtnLoading(true);
-
-//   // Validate orderId
-//   if (!orderId) {
-//     toast.error("Order ID is missing or invalid.");
-//     setBtnLoading(false);
-//     return;
-//   }
-
-//   // Convert orderId to an array
-//   const orderIds = [orderId]; // Convert single string to array
-//   console.log('order', orderIds)
-//   try {
-//     // Trigger form validation and wallet collection
-//     const { error: submitError } = await elements.submit();
-
-//     if (submitError) {
-//       // Show error to your customer
-//       setErrorMessage(submitError.message);
-//       setBtnLoading(false);
-//       return;
-//     }
-
-//     // Emit payment event
-//     SocketService.emit(MonitoringEvent.NEW_SUBLEVEL_EVENT, orderPaymentPayload);
-
-//     // Initiate payment with the array
-//     const { data: intentData } = await createPaymentIntent.mutateAsync({
-//       orderId: orderIds,
-//     });
-    
-
-//     // Confirm payment with Stripe
-//     const { error } = await stripe!.confirmPayment({
-//       elements,
-//       clientSecret: intentData.clientSecret,
-//       confirmParams: {
-//         return_url: `${redirectUrl}/dashboard/payment/success?schedule=${!!product.hasSchedule}`,
-//       },
-//     });
-
-//     if (error) {
-//       // Emit failure event
-//       SocketService.emit(
-//         MonitoringEvent.NEW_SUBLEVEL_EVENT,
-//         orderPaymentFailurePayload
-//       );
-
-//       setBtnLoading(false);
-//       setErrorMessage(error.message);
-//     } else {
-//       try {
-//         // Call makePayment after successful confirmation
-//         const paymentResponse = await makePayment(orderIds, "WALLET");
-//         if (paymentResponse.success) {
-//           // Emit success event
-//           SocketService.emit(
-//             MonitoringEvent.NEW_SUBLEVEL_EVENT,
-//             orderPaymentSuccessPayload
-//           );
-//           toast.success("Payment completed successfully!");
-//         } else {
-//           toast.error("Payment was successful, but order processing failed.");
-//         }
-//       } catch (paymentError) {
-//         toast.error(
-//           "Payment was confirmed, but order processing encountered an error."
-//         );
-//       }
-
-//       setBtnLoading(false);
-//     }
-//   } catch (error) {
-//     toast.error("An error occurred while processing your payment.");
-//     setBtnLoading(false);
-//   }
-// };
 
 const handleSubmit = async (event: any) => {
   event.preventDefault();
@@ -196,13 +115,11 @@ const handleSubmit = async (event: any) => {
     // Retrieve payment method type dynamically
     const paymentType = method;
 
-    console.log("Selected payment type:", paymentType);
-
     // Emit payment event
     SocketService.emit(MonitoringEvent.NEW_SUBLEVEL_EVENT, orderPaymentPayload);
 
     // Call the API with the dynamically selected payment type
-    const paymentResponse = await makePayment(orderId, paymentType);
+    const paymentResponse = await makePayment(orderIds, paymentType);
 
     if (!paymentResponse || !paymentResponse.data?.clientSecret) {
       toast.error("Payment initiation failed. No clientSecret returned.");

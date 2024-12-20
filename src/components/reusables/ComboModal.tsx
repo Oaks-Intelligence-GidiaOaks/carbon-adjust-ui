@@ -1,31 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import card from "@/assets/card.svg";
 import wallet from "@/assets/wallet.svg";
-import { getRestrictedWallet, makePayment } from "@/services/homeOwner";
+import { calculatePaymentTotals, getRestrictedWallet, makePayment } from "@/services/homeOwner";
 import { useQuery } from "@tanstack/react-query";
 import { WalletType } from "@/interfaces/transaction.interface";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
+import router from "@/router/router";
 
 type PaymentDetails = {
   card: { amount: string; percentage: number };
-  restrictedWallet: { amount: string; percentage: number;};
+  restrictedWallet: { amount: string; percentage: number };
   unrestrictedWallet: { amount: string; percentage: number };
 };
 
 const ComboPaymentModal: React.FC = () => {
-  const { orderId } = useParams();
-  
- 
+  const { orderId } = useParams<{ orderId: string }>();
+  const orderIds = orderId ? orderId.split(",") : [];
 
-  const totalAmount = 200; // Constant total amount
+  const { data: response } = useQuery({
+    queryKey: ["payment-totals", "Combination"],
+  queryFn: () =>
+      calculatePaymentTotals({
+        orderIds: orderIds,
+        paymentMethod: "Combination",
+      }),
+  });
+
+  const totalCalculations = response?.data?.totalCalculations || {};
+  const totalAmount = totalCalculations?.total || 0;
 
   const [paymentDetails, setPaymentDetails] = useState<PaymentDetails>({
-    card: { amount: totalAmount.toString(), percentage: 100 }, // Set card amount to totalAmount
+    card: { amount: "0", percentage: 100 },
     restrictedWallet: { amount: "0", percentage: 0 },
     unrestrictedWallet: { amount: "0", percentage: 0 },
   });
+
+  useEffect(() => {
+    if (totalAmount) {
+      setPaymentDetails({
+        card: { amount: totalAmount.toString(), percentage: 100 },
+        restrictedWallet: { amount: "0", percentage: 0 },
+        unrestrictedWallet: { amount: "0", percentage: 0 },
+      });
+    }
+  }, [totalAmount]);
+
 
   const [loading, setLoading] = useState(false); // New loading state
 
@@ -118,9 +139,10 @@ const ComboPaymentModal: React.FC = () => {
         const walletAmount =
           paymentType === "restricted" ? restrictedAmount : unrestrictedAmount;
     
-        await makePayment(orderId, paymentMethod, walletAmount, balanceType);
+        await makePayment(orderIds, paymentMethod, walletAmount, balanceType);
     
         toast.success("Payment processed successfully!");
+        router.navigate("/dashboard")
       } catch (error) {
         const typedError = error as { response?: { data?: { message?: string } } };
     
@@ -194,7 +216,7 @@ const ComboPaymentModal: React.FC = () => {
                   type="text"
                   className="w-full border rounded-md px-4 py-2 mt-2 bg-white"
                   value={paymentDetails.restrictedWallet.amount}
-                  disabled
+                
                 />
               </div>
               <p className="text-xs text-start mt-3 text-[#333333]">

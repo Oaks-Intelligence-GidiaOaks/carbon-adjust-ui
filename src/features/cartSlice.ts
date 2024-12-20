@@ -1,20 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const cartSlice = createSlice({
-  name: "cart",
-  initialState: {
-    orderIds: [], // Array to store order IDs
-  },
+interface CheckoutState {
+  orderIds: string[];
+}
+
+const initialState: CheckoutState = {
+  orderIds: [],
+};
+
+const checkoutSlice = createSlice({
+  name: 'checkout',
+  initialState,
   reducers: {
-    setOrderIds: (state, action) => {
-      state.orderIds = action.payload; // Update order IDs
-    },
-    clearOrderIds: (state) => {
-      state.orderIds = []; // Clear the order IDs when necessary
+    setOrderIds(state, action: PayloadAction<string[]>) {
+      state.orderIds = action.payload;
     },
   },
 });
 
-export const { setOrderIds, clearOrderIds } = cartSlice.actions;
-
-export default cartSlice.reducer;
+export const { setOrderIds } = checkoutSlice.actions;
+export default checkoutSlice.reducer;

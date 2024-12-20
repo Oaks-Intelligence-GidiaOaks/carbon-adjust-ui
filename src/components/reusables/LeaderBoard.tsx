@@ -24,27 +24,41 @@ const LeaderboardAccordion: React.FC = () => {
 
   const LeaderBoardData = response?.data || [];
 
-  const leaderboard = LeaderBoardData.map((entry: any, index: any) => ({
-    rank: index + 1,
-    name: entry.name,
-    cftScore: (entry.cf ?? 0).toFixed(2),
-    crtScore: (entry.ts ?? 0).toFixed(2),
-    cobScore: (entry.purchase ?? 0).toFixed(2),
-    transport: (entry.transport ?? 0).toFixed(2),
-    score: (entry.score ?? 0).toFixed(2),
-  }));
+  // Map API response to leaderboard entries
+  const leaderboard = LeaderBoardData.map((entry: any, index: number) => {
+    const getDirectionAndChange = (diff: number) => ({
+      direction: diff > 0 ? "up" : diff < 0 ? "down" : "neutral",
+      change: Math.abs(diff * 100).toFixed(2), // Convert to percentage and ensure it's positive
+    });
 
+    const carbonFootprint = getDirectionAndChange(
+      entry.carbon_footprint_ratio_diff
+    );
+    const transitionScore = getDirectionAndChange(
+      entry.transition_score_ratio_diff
+    );
+    const purchase = getDirectionAndChange(entry.purchase_ratio_diff);
+    const device = getDirectionAndChange(entry.device_ratio_diff);
+    const transport = getDirectionAndChange(entry.transport_ratio_diff);
 
-  //   // const leaderboard = LeaderBoardData.map((entry: any, index: any) => ({
-//   //   rank: index + 1,
-//   //   name: entry.name,
-//   //   cftScore: entry.cf,
-//   //   crtScore: entry.ts,
-//   //   cobScore: entry.purchase,
-//   //   change: 0, // Placeholder as change logic isn't provided
-//   //   direction: "up", // Placeholder, add logic based on requirements
-//   // }));
-
+    return {
+      rank: index + 1,
+      name: entry.name || "Unknown",
+      cftScore: entry.carbon_footprint_ratio.toFixed(2),
+      crtScore: entry.transition_score_ratio.toFixed(2),
+      cobScore: entry.purchase_ratio.toFixed(2),
+      device: entry.device_ratio.toFixed(2),
+      transport: entry.transport_ratio.toFixed(2),
+      score: entry.aggregate_score.toFixed(2),
+      changes: {
+        carbonFootprint,
+        transitionScore,
+        purchase,
+        device,
+        transport,
+      },
+    };
+  });
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
@@ -63,7 +77,9 @@ const LeaderboardAccordion: React.FC = () => {
           </span>
           <h2 className="text-lg font-bold">Leaderboard</h2>
         </div>
-        <span className="text-lg">{isOpen ? <IoClose /> : <ChevronDown />}</span>
+        <span className="text-lg">
+          {isOpen ? <IoClose /> : <ChevronDown />}
+        </span>
       </div>
 
       {/* Accordion Body */}
@@ -114,38 +130,145 @@ const LeaderboardAccordion: React.FC = () => {
                       Purchases
                     </th>
                     <th className="border border-gray-200 px-4 py-2 text-[#737373]">
-                      Aggregate score
+                      Aggregate Score
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {leaderboard.map((entry: any, index: any) => (
+                  {leaderboard.map((entry: any, index: number) => (
                     <tr key={index} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-2 text-center">
+                      <td className="border border-gray-300 px-4 py-2 text-center">
                         {entry.rank}
-                        {/* <span className={`text-sm ${entry.direction === "up" ? "text-green-500" : "text-red-500"}`}>
-                        {entry.direction === "up" ? "↑" : "↓"} {entry.change}%
-                        </span> */}
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-gray-300 px-4 py-2">
                         {entry.name}
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
-                        {entry.cftScore}
+                      <td className="border border-gray-300 px-4 py-2">
+                        <div className="flex items-center space-x-1">
+                          <span>{entry.cftScore}</span>
+                          <span
+                            className={`text-sm ${
+                              entry.changes.carbonFootprint.direction === "up"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {entry.changes.carbonFootprint.direction === "up"
+                              ? "↑"
+                              : "↓"}
+                          </span>
+                          <span
+                            className={`text-sm ${
+                              entry.changes.carbonFootprint.direction === "up"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {entry.changes.carbonFootprint.change}%
+                          </span>
+                        </div>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
-                        {entry.crtScore}
+                      <td className="border border-gray-300 px-4 py-2">
+                        <div className="flex items-center space-x-1">
+                          <span>{entry.crtScore}</span>
+                          <span
+                            className={`text-sm ${
+                              entry.changes.transitionScore.direction === "up"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {entry.changes.transitionScore.direction === "up"
+                              ? "↑"
+                              : "↓"}
+                          </span>
+                          <span
+                            className={`text-sm ${
+                              entry.changes.carbonFootprint.direction === "up"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {entry.changes.transitionScore.change}%
+                          </span>
+                        </div>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
-                        {entry.device || 0}
+                      <td className="border border-gray-300 px-4 py-2">
+                        <div className="flex items-center space-x-1">
+                          <span>{entry.device}</span>
+                          <span
+                            className={`text-sm ${
+                              entry.changes.device.direction === "up"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {entry.changes.device.direction === "up"
+                              ? "↑"
+                              : "↓"}
+                          </span>
+                          <span
+                            className={`text-sm ${
+                              entry.changes.carbonFootprint.direction === "up"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {entry.changes.device.change}%
+                          </span>
+                        </div>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
-                        {entry.transport}
+                      <td className="border border-gray-300 px-4 py-2">
+                        <div className="flex items-center space-x-1">
+                          <span>{entry.transport}</span>
+                          <span
+                            className={`text-sm ${
+                              entry.changes.transport.direction === "up"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {entry.changes.transport.direction === "up"
+                              ? "↑"
+                              : "↓"}
+                          </span>
+                          <span
+                            className={`text-sm ${
+                              entry.changes.carbonFootprint.direction === "up"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {entry.changes.transport.change}%
+                          </span>
+                        </div>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
-                        {entry.cobScore}
+                      <td className="border border-gray-300 px-4 py-2">
+                        <div className="flex items-center space-x-1">
+                          <span>{entry.cobScore}</span>
+                          <span
+                            className={`text-sm ${
+                              entry.changes.purchase.direction === "up"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {entry.changes.purchase.direction === "up"
+                              ? "↑"
+                              : "↓"}
+                          </span>
+                          <span
+                            className={`text-sm ${
+                              entry.changes.carbonFootprint.direction === "up"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {entry.changes.purchase.change}%
+                          </span>
+                        </div>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-gray-300 px-4 py-2">
                         {entry.score}
                       </td>
                     </tr>

@@ -12,12 +12,15 @@ import { getRestrictedWallet, makePayment } from "@/services/homeOwner";
 import { useParams } from "react-router-dom"; // Import useParams
 import { useQuery } from "@tanstack/react-query";
 import { WalletType } from "@/interfaces/transaction.interface";
+import router from "@/router/router";
 
 interface PaymentMethodProps {
   selectedTab: "single" | "combo";
-  selectedPayment: "card" | "klarna" | "Wallet"| "" | string;
+  selectedPayment: "card" | "klarna" | "Wallet" | "" | string;
   setSelectedTab: (tab: "single" | "combo") => void;
-  setSelectedPayment: React.Dispatch<React.SetStateAction<"klarna" | "card" | "Wallet"| "" | string>>;
+  setSelectedPayment: React.Dispatch<
+    React.SetStateAction<"klarna" | "card" | "Wallet" | "" | string>
+  >;
 }
 
 const PaymentMethod: React.FC<PaymentMethodProps> = ({
@@ -30,7 +33,8 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [paymentType, setPaymentType] = useState("");
   const [loading, setLoading] = useState(false); // New loading state
-  const { orderId } = useParams();
+  const { orderId } = useParams<{ orderId: string }>();
+  const orderIds = orderId ? orderId.split(",") : [];
 
   // Fetch wallet data using useQuery
   const { data, isLoading, isError } = useQuery({
@@ -43,7 +47,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!orderId) {
+    if (!orderIds) {
       toast.error("Order ID is missing!");
       return;
     }
@@ -55,11 +59,13 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
 
     setLoading(true);
     try {
-      await makePayment(orderId, "Wallet", undefined, balanceType);
+      await makePayment(orderIds, "Wallet", undefined, balanceType);
       toast.success("Payment processed successfully!");
       setShowModal(true);
     } catch (error) {
-      const typedError = error as { response?: { data?: { message?: string } } };
+      const typedError = error as {
+        response?: { data?: { message?: string } };
+      };
       const errorMessage =
         typedError.response?.data?.message || "An unexpected error occurred.";
       toast.error(`Payment failed: ${errorMessage}`);
@@ -231,22 +237,23 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
                   </div>
                 </div>
 
-
                 <button
                   type="submit"
                   className={`w-full py-3 rounded-full font-medium ${
-                    loading ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "blue-gradient text-white hover:bg-blue-600"
+                    loading
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "blue-gradient text-white hover:bg-blue-600"
                   }`}
                   disabled={loading}
                 >
                   {loading ? (
-                              <div className="flex items-center justify-center space-x-2">
-                                <FaSpinner className="animate-spin" />
-                                <span>Processing...</span>
-                              </div>
-                            ) : (
-                              "Proceed"
-                            )}
+                    <div className="flex items-center justify-center space-x-2">
+                      <FaSpinner className="animate-spin" />
+                      <span>Processing...</span>
+                    </div>
+                  ) : (
+                    "Proceed"
+                  )}
                 </button>
               </form>
             </div>
@@ -319,7 +326,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({
               {/* Continue Button */}
               <button
                 className="mt-6 w-full blue-gradient text-white py-2 px-4 rounded-full font-medium"
-                onClick={() => setShowModal(false)}
+                onClick={() => router.navigate("/dashboard")}
               >
                 Continue
               </button>
