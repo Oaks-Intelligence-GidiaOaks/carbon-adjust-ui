@@ -1,3 +1,4 @@
+// @ts-nocheck
 import StaffCard from "@/components/ui/StaffCard";
 // import useMutations from "@/hooks/useMutations";
 import {

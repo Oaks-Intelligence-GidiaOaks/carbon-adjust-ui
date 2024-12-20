@@ -45,6 +45,13 @@ const Layout = (props: Props) => {
       return navigate("/organisation");
     }
 
+    if (
+      user.roles.includes("STAFF_CORPORATE") ||
+      role === "STAFF_CORPORATE"
+    ) {
+      return navigate("/organisation-staff");
+    }
+
     if (role === "HOME_OCCUPANT") return navigate("/dashboard");
     if (role === "ADMIN") return navigate("/admin");
     if (role === "MERCHANT") {
@@ -70,6 +77,11 @@ const Layout = (props: Props) => {
         if (pathname.includes("dashboard")) return;
         return navigate("/dashboard");
       }
+
+      // if (userData.data.data.roles[0] === "STAFF_CORPORATE") {
+      //   if (pathname.includes("organisation-staff")) return;
+      //   return navigate("/organisation-staff");
+      // }
 
       // NON_FINANCIAL MERCHANT PATH
       if (

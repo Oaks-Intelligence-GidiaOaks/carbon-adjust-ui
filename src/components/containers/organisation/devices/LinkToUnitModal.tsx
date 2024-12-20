@@ -3,7 +3,7 @@ import { Button } from "@/components/ui";
 // import SelectInput from "@/components/ui/SelectInput";
 import { VehicleDetailProps } from "@/interfaces/transport.interface";
 import { groupDevices } from "@/services/homeOwner";
-import { AllUnits } from "@/services/organisation";
+import {  AllUnitsAndDetails } from "@/services/organisation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -16,9 +16,9 @@ type LinkToUnitModalProps = {
 
 const LinkToUnitModal = ({ setShowModal, id }: LinkToUnitModalProps) => {
   const [unitCheck, setUnitCheck] = useState("")
-  const { data: units } = useQuery({
-    queryKey: ["get units"],
-    queryFn: AllUnits,
+ const { data:units } = useQuery({
+    queryKey: ["get-admin-units"],
+    queryFn: () => AllUnitsAndDetails(),
   });
 
   
@@ -62,7 +62,7 @@ const LinkToUnitModal = ({ setShowModal, id }: LinkToUnitModalProps) => {
         </div>
 
         <div className="flex flex-col gap-5">
-          {units?.data?.unit.map((unit: any) => (
+          {units?.data?.units.map((unit: any) => (
             <div
               key={unit._id}
               className="flex  bg-[#Fff] border rounded-lg py-2 px-5"
@@ -88,11 +88,11 @@ const LinkToUnitModal = ({ setShowModal, id }: LinkToUnitModalProps) => {
                 <div className="grid grid-cols-2 gap-4 my-3">
                   <UnitDetail
                     title="No of Staff"
-                    des={unit.staff?.length || "N/A"}
+                    des={unit.totalStaff || 0}
                   />
                   <UnitDetail
-                    title="No of Devices"
-                    des={unit.device?.length || "N/A"}
+                    title="No of Assets"
+                    des={unit.totalAssets|| 0}
                   />
                   {/* <UnitDetail title="Climate transition score" des={"N/A"} />
                 <UnitDetail title="Voltage level" des={"N/A"} /> */}

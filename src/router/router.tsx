@@ -6,6 +6,7 @@ import { merchantRoutes } from "./merchant.router";
 import { organisationRoutes } from "./organisation.router";
 import { adminRoutes } from "./admin.router";
 import { staffRoutes } from "./staff.router";
+import { organisationStaffRoutes } from "./organisationStaff.router";
 
 const Router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const Router = createBrowserRouter([
       ...staffRoutes,
       ...adminRoutes,
       ...organisationRoutes,
+      ...organisationStaffRoutes
     ],
   },
 ]);

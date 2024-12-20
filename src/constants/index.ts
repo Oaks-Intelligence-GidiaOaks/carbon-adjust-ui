@@ -90,7 +90,7 @@ export const retrofittingServices = [
 export const staffSideBarItems = [
   {
     icon: DashboardIcon,
-    title: "Dashboard",
+    title: "Dashboard", 
     href: "/staff",
   },
   {
@@ -645,15 +645,44 @@ export const organisationSideBarItems = [
     title: "Assets",
     href: "/organisation/devices",
   },
-  {
-    icon: WalletIcon,
-    title: "Wallet",
-    href: "/organisation/wallet",
-  },
+  // {
+  //   icon: WalletIcon,
+  //   title: "Wallet",
+  //   href: "/organisation/wallet",
+  // },
   {
     icon: UserIcon,
     title: "Profile",
     href: "/organisation/profile",
+  },
+  {
+    icon: LogoutIcon,
+    title: "Logout",
+    href: "/..",
+  },
+];
+
+export const organisationStaffSideBarItems = [
+  {
+    icon: DashboardIcon,
+    title: "Dashboard",
+    href: "/organisation-staff",
+  },
+  // {
+  //   icon: PendulumIcon,
+  //   title: "Units",
+  //   href: "/organisation/staff/units",
+  // },
+  {
+    icon: AssetIcon,
+    title: "Assets",
+    href: "/organisation-staff/purchases",
+  },
+
+  {
+    icon: UserIcon,
+    title: "Profile",
+    href: "/organisation-staff/profile",
   },
   {
     icon: LogoutIcon,

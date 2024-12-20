@@ -1,11 +1,20 @@
+//@ts-nocheck
 import BackButton from "@/components/reusables/BackButton";
 import Paginate from "@/components/reusables/Paginate";
 import Search from "@/components/ui/Search";
 import StaffRequestCard from "@/components/ui/StaffRequestCard";
+import { AllUnitsRequests } from "@/services/organisation";
 import { PaginateProps } from "@/types/general";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 const Requests = () => {
+  const { data:Requests } = useQuery({
+    queryKey: ["get-all-requests"],
+    queryFn: () => AllUnitsRequests(),
+  });
+  const request = Requests?.data?.receipts || null;
+  //const units: Array<DepartmentWithStaffCardProps> = data?.data?.units || [];
   // @ts-ignore
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
@@ -33,22 +42,23 @@ const Requests = () => {
         <Search />
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
-        {Array.from({ length: 16 }, () => (
-          <StaffRequestCard
-            name="Todd H. Harrison"
-            role="Project Manager"
-            department="Marketing Department"
-            requestDetails="Has made a request to register buildings and add assets."
-            status="Pending"
-            profileImage="https://via.placeholder.com/150"
-            onApprove={() => alert("Request Approved!")}
-            onDecline={() => alert("Request Declined!")}
-            onViewDetails={() => alert("Viewing Details...")}
-            className="w-full max-w-full"
-          />
-        ))}
-      </div>
+      <div className="grid grid-cols-3 gap-4 gap-y-5">
+              {request?.map((req, i) => (
+                <StaffRequestCard
+                  key={i}
+                  id={req.id}
+                  name={req?.staff?.name}
+                  role={req?.staff?.jobTitle}
+                  department={req?.unit?.name}
+                  requestDetails=""
+                  status={req?.status}
+                  profileImage="https://via.placeholder.com/150"
+                  onApprove={() => alert("Request Approved!")}
+                  onDecline={() => alert("Request Declined!")}
+                  onViewDetails={() => alert("Viewing Details...")}
+                />
+              ))}
+            </div>
 
       {/* Pagination */}
       <div className="mt-8 pr-12 w-fit mx-auto">

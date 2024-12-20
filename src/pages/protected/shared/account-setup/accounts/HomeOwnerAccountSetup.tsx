@@ -41,10 +41,11 @@ const HomeOwnerAccountSetup = (_: Props) => {
     queryFn: getMe,
   });
 
+
+
   useEffect(() => {
     if (freshUserData.isSuccess) {
       const data = freshUserData.data.data.data;
-
       dispatch(setUser(data));
 
       if (data.step) {

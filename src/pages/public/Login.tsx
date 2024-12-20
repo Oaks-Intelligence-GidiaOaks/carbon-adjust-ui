@@ -96,6 +96,14 @@ const Login = () => {
     ) {
       return navigate("/organisation");
     }
+    
+    if (
+      user.roles.includes("STAFF_CORPORATE") ||
+      role === "STAFF_CORPORATE"
+    ) {
+      return navigate("/organisation-staff");
+    }
+ 
 
     if (role === "HOME_OCCUPANT") return navigate("/dashboard");
     if (role === "ADMIN") return navigate("/admin");

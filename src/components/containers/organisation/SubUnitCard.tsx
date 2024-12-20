@@ -85,7 +85,7 @@ const SubUnitCard: React.FC<ISubUnit> = ({
                   <StaffCard
                     key={i}
                     {...stf}
-                    onRemoveStaff={() => {}}
+                    //onRemoveStaff={() => {}}
                     className="w-full"
                   />
                 ))}

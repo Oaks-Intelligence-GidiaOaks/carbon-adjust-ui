@@ -4,21 +4,20 @@ import Paginate from "@/components/reusables/Paginate";
 import { Button } from "@/components/ui";
 import Search from "@/components/ui/Search";
 import { DepartmentWithStaffCardProps } from "@/interfaces/organisation.interface";
-import { AllAdminUnits } from "@/services/organisation";
+import {  AllUnitsAndDetails } from "@/services/organisation";
 import { PaginateProps } from "@/types/general";
 import { useQuery } from "@tanstack/react-query";
 import { PlusCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Units = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["get-admin-units"],
-    queryFn: () => AllAdminUnits(),
+    queryFn: () => AllUnitsAndDetails(),
   });
 
   const units: Array<DepartmentWithStaffCardProps> = data?.data?.units || [];
-
   // @ts-ignore
   const [pagination, setPagination] = useState<
     Omit<PaginateProps, "onPageChange">
@@ -30,8 +29,22 @@ const Units = () => {
     totalPages: 1,
   });
 
-  const handlePageChange = () => {
-    // do nothing for now
+ useEffect(() => {
+    if (data?.data?.pagination)
+      setPagination({
+        currentPage: data?.data?.pagination.page,
+        hasNextPage: data?.data?.pagination.hasNextPage,
+        hasPrevPage: data?.data?.pagination.hasPrevPage,
+        limit: data?.data?.pagination.limit,
+        totalPages: data?.data?.pagination.totalPages,
+      });
+  }, [data?.data?.pagination]);
+
+  const handlePageChange = (pgNo: number) => {
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: pgNo,
+    }));
   };
 
   if (isLoading) {

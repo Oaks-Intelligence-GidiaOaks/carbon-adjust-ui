@@ -1,38 +1,14 @@
-import { FaAngleUp } from "react-icons/fa";
-import { Button } from "@/components/ui";
-import { useState } from "react";
-import { Transport } from "@/interfaces/transport.interface";
-import VehicleDetail from "./TransportDetail";
+import { IAsset } from "@/interfaces/organisation.interface";
+import VehicleDetail from "../transport/TransportDetail";
 
-const TransportCard = (props: Transport) => {
-  const {
-    _id,
-    transportPhoto,
-    yearOfPurchase,
-    vehicleManufacturer,
-    carModel,
-    fuelType,
-    address,
-    city,
-    emissionFactor,
-    licensePlateNumber,
-    totalEmission,
-    totalProjectedCarbonOffset,
-    setIds,
-    ids,
-  } = props;
 
-  const [showMore, setShowMore] = useState(false);
 
-  const toggleChecked = (id: string) => {
-    if (ids.includes(id)) {
-      setIds(ids.filter((existingId) => existingId !== id));
-    } else {
-      setIds([...ids, id]);
-    }
-  };
-
-  const checked = ids.includes(_id);
+const AssetCard: React.FC<IAsset> = ({
+    deviceInfo,
+    assetType,
+    approvalStatus,
+}) => {
+ 
 
   return (
     <>
@@ -41,40 +17,39 @@ const TransportCard = (props: Transport) => {
           <div className="flex gap-x-4">
             <div className="flex flex-col gap-y-2">
               <h3 className="text-sm font-normal text-gray-700">
-                Plate Number
+                Asset Type
               </h3>
               <h4 className="text-sm font-semibold text-gray-600">
-                {licensePlateNumber}
+                {assetType}
+              </h4>
+            </div>
+                  </div>
+                  <div className="flex flex-col gap-y-2">
+              <h3 className="text-sm font-normal text-gray-700">
+              Approval Status
+              </h3>
+              <h4 className="text-sm font-semibold text-gray-600">
+                {approvalStatus}
               </h4>
             </div>
           </div>
-          {(totalProjectedCarbonOffset || totalEmission) && (
+          {/* {(totalProjectedCarbonOffset || totalEmission) && (
             <input
               type="checkbox"
               checked={checked}
               onChange={() => toggleChecked(_id)}
               className="mr-4 cursor-pointer"
             />
-          )}
-        </div>
+          )} */}
+        
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 py-5">
-          <VehicleDetail title="ID" des={_id} />
-          <VehicleDetail title="Vehicle " des={vehicleManufacturer} />
-          <VehicleDetail title="Year of purchase" des={yearOfPurchase} />
-          <VehicleDetail title="Car Model" des={carModel} />
-          <VehicleDetail title="fuel type" des={fuelType} />
-          <VehicleDetail
-            title="Total Projected Carbon Offset"
-            des={`${totalProjectedCarbonOffset} ${
-              Number(totalProjectedCarbonOffset) === 1 ? "kgCo2e" : "kgCo2e"
-            }`}
-          />
-
-          <VehicleDetail title="Total Actual Carbon Offset" des={"N/A"} />
-          <VehicleDetail title="Total Actual emission" des={totalEmission} />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4 py-5">
+          <VehicleDetail title="ID" des={deviceInfo._id} />
+          <VehicleDetail title="Name " des={deviceInfo.name} />
+          <VehicleDetail title="Type" des={deviceInfo.type} />
+        
         </div>
-        <div
+        {/* <div
           className={`flex flex-col sm:flex-row gap-5  items-start transition-all duration-500 ease-in-out overflow-hidden ${
             showMore
               ? "max-h-[1000px] opacity-100 visible py-5"
@@ -115,10 +90,11 @@ const TransportCard = (props: Transport) => {
               </>
             )}
           </Button>
-        </div>
-      </div>
+        </div> */}
+        </div >
+        
     </>
   );
 };
 
-export default TransportCard;
+export default AssetCard;

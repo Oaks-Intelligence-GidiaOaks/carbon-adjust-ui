@@ -17,7 +17,13 @@ export const AllUnits = async () => {
   return data;
 };
 
-export const AssignUnitAdmin = async (input: IAssignUnitAdmin) => {
+export const AllUnitsRequests = async () => {
+  const { data } = await axiosInstance.get(`/receipts/pending`);
+
+  return data;
+};
+
+export const AssignUnitAdmin = async (input: any) => {
   const { data } = await axiosInstance.post(`/units/assign-admin`, input);
   return data;
 };
@@ -57,9 +63,29 @@ export const UnitStaffDetails = async (unitId: string) => {
   return data;
 };
 
-export const UnitAssetDetails = async (unitId: string) => {
+export const UnitAssetDetails = async (unitId: string ) => {
   const { data } = await axiosInstance.get(`units/${unitId}/assets`);
 
+  return data;
+};
+
+export const UploadReceiptData = async (formData: FormData) => {
+  const { data } = await axiosInstance.post(`/receipts/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data;
+};
+
+export const AllRequests = async () => {
+  const { data } = await axiosInstance.get(`receipts/my-requests`);
+
+  return data;
+};
+
+export const ApproveReceipt = async (receiptId: FormData ) => {
+  const { data } = await axiosInstance.post(`receipts/approve`, receiptId);
   return data;
 };
 
@@ -103,6 +129,12 @@ export const StaffDetails = async () => {
 
 export const AllStaffByUnit = async () => {
   const { data } = await axiosInstance.get(`/corporate/staff/by-unit`);
+
+  return data;
+};
+
+export const deleteStaff = async (staff: string) => {
+  const { data } = await axiosInstance.delete(`/corporate/staff/delete/${staff}`);
 
   return data;
 };
