@@ -38,6 +38,7 @@ interface ProductProps {
   videos: string[];
   questions: IQuestion[];
   owner: string;
+  packageType: string;
 }
 
 const ProductDetails: React.FC<ProductProps & { isMerchant?: boolean }> = ({
@@ -52,6 +53,7 @@ const ProductDetails: React.FC<ProductProps & { isMerchant?: boolean }> = ({
   videos,
   questions,
   owner,
+  packageType
 }) => {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>(
@@ -67,6 +69,9 @@ const ProductDetails: React.FC<ProductProps & { isMerchant?: boolean }> = ({
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5 ? 1 : 0;
     const emptyStars = 5 - fullStars - halfStar;
+
+
+
     return (
       <div className="flex items-center gap-1">
         {Array(fullStars)
@@ -163,6 +168,7 @@ const ProductDetails: React.FC<ProductProps & { isMerchant?: boolean }> = ({
                   price,
                   selectedColor,
                   selectedQuantity,
+                  packageType
                 }}
                 onCloseForm={() => setShowForm(false)}
               />
@@ -240,14 +246,16 @@ const ProductDetails: React.FC<ProductProps & { isMerchant?: boolean }> = ({
 
               {/* Action Buttons */}
               <div className="space-y-2">
+           
                 <div className="flex gap-5">
+                {packageType !== "Service" && (
                   <button
                     onClick={() => setShowForm(true)}
                     className="w-full py-2 flex items-center justify-center gap-1 text-center border text-[#0B8DFF]  border-[#0B8DFF] rounded-full"
                   >
                     <BsCart3 /> Add to Cart
                   </button>
-
+                )}
                   <button
                     onClick={() => setShowForm(true)}
                     className="w-full py-2 text-center text-white blue-gradient rounded-full"

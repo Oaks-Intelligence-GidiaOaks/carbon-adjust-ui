@@ -1,164 +1,316 @@
-import React, { useState } from "react";
-import card from "@/assets/card.svg"
-import wallet from "@/assets/wallet.svg"
+import React, { useEffect, useState } from "react";
+import card from "@/assets/card.svg";
+import wallet from "@/assets/wallet.svg";
+import { calculatePaymentTotals, getRestrictedWallet, makePayment } from "@/services/homeOwner";
+import { useQuery } from "@tanstack/react-query";
+import { WalletType } from "@/interfaces/transaction.interface";
+import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { FaSpinner } from "react-icons/fa";
+import router from "@/router/router";
 
-
-// Define types for the payment details
 type PaymentDetails = {
   card: { amount: string; percentage: number };
-  klarna: { amount: string; percentage: number };
-  restrictedWallet: { amount: string; percentage: number; balance: number };
-  unrestrictedWallet: { amount: string; percentage: number; balance: number };
+  restrictedWallet: { amount: string; percentage: number };
+  unrestrictedWallet: { amount: string; percentage: number };
 };
 
-
-
 const ComboPaymentModal: React.FC = () => {
-  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails>({
-    card: { amount: "", percentage: 0 },
-    klarna: { amount: "", percentage: 0 },
-    restrictedWallet: { amount: "", percentage: 0, balance: 5000 },
-    unrestrictedWallet: { amount: "", percentage: 0, balance: 5000 },
+  const { orderId } = useParams<{ orderId: string }>();
+  const orderIds = orderId ? orderId.split(",") : [];
+
+  const { data: response } = useQuery({
+    queryKey: ["payment-totals", "Combination"],
+  queryFn: () =>
+      calculatePaymentTotals({
+        orderIds: orderIds,
+        paymentMethod: "Combination",
+      }),
   });
 
-  // Update the function to accept specific keys
-  const handleSliderChange = (key: keyof PaymentDetails, value: number) => {
-    setPaymentDetails((prev) => ({
-      ...prev,
-      [key]: { ...prev[key], percentage: value },
-    }));
+  const totalCalculations = response?.data?.totalCalculations || {};
+  const totalAmount = totalCalculations?.total || 0;
+
+  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails>({
+    card: { amount: "0", percentage: 100 },
+    restrictedWallet: { amount: "0", percentage: 0 },
+    unrestrictedWallet: { amount: "0", percentage: 0 },
+  });
+
+  useEffect(() => {
+    if (totalAmount) {
+      setPaymentDetails({
+        card: { amount: totalAmount.toString(), percentage: 100 },
+        restrictedWallet: { amount: "0", percentage: 0 },
+        unrestrictedWallet: { amount: "0", percentage: 0 },
+      });
+    }
+  }, [totalAmount]);
+
+
+  const [loading, setLoading] = useState(false); // New loading state
+
+  const handleSliderChange = (walletType: keyof PaymentDetails, value: number) => {
+    let newDetails = { ...paymentDetails };
+
+    if (walletType === "card") {
+      const remainingPercentage = 100 - value;
+
+      // Allocate remaining percentage to the wallets proportionally
+      newDetails = {
+        ...newDetails,
+        card: {
+          ...newDetails.card,
+          percentage: value,
+          amount: ((totalAmount * value) / 100).toFixed(2),
+        },
+        restrictedWallet: {
+          ...newDetails.restrictedWallet,
+          percentage: remainingPercentage,
+          amount: ((totalAmount * remainingPercentage) / 100).toFixed(2),
+        },
+        unrestrictedWallet: {
+          ...newDetails.unrestrictedWallet,
+          percentage: 0,
+          amount: "0",
+        },
+      };
+    } else {
+      const remainingPercentage = 100 - value;
+
+      // Adjust the other wallet and card percentages accordingly
+      newDetails = {
+        ...newDetails,
+        [walletType]: {
+          ...newDetails[walletType],
+          percentage: value,
+          amount: ((totalAmount * value) / 100).toFixed(2),
+        },
+        [walletType === "restrictedWallet" ? "unrestrictedWallet" : "restrictedWallet"]: {
+          ...newDetails[
+            walletType === "restrictedWallet" ? "unrestrictedWallet" : "restrictedWallet"
+          ],
+          percentage: 0,
+          amount: "0",
+        },
+        card: {
+          ...newDetails.card,
+          percentage: remainingPercentage,
+          amount: ((totalAmount * remainingPercentage) / 100).toFixed(2),
+        },
+      };
+    }
+
+    setPaymentDetails(newDetails);
   };
 
-  // Update the function to accept specific keys
-  const handleInputChange = (key: keyof PaymentDetails, value: string) => {
-    setPaymentDetails((prev) => ({
-      ...prev,
-      [key]: { ...prev[key], amount: value },
-    }));
-  };
+    // Fetch wallet data using useQuery
+    const { data } = useQuery({
+      queryKey: ["restricted-wallet"],
+      queryFn: () => getRestrictedWallet(WalletType.CASH_WALLET),
+    });
+  
+    const walletData = data?.data;
 
+
+
+    const handlePayment = async () => {
+      try {
+        setLoading(true); // Set loading to true when the process starts
+    
+        if (!orderId) {
+          toast.error("Invalid order ID. Please refresh and try again.");
+          return;
+        }
+    
+        const restrictedAmount = parseFloat(paymentDetails.restrictedWallet.amount);
+        const unrestrictedAmount = parseFloat(paymentDetails.unrestrictedWallet.amount);
+    
+        const paymentType =
+          restrictedAmount > unrestrictedAmount ? "restricted" : "unrestricted";
+    
+        const balanceType =
+          paymentType === "restricted"
+            ? "restrictedMonetizedCashBenefitBalance"
+            : "unrestrictedMonetizedCashBenefitBalance";
+    
+        const paymentMethod = "Combination";
+    
+        const walletAmount =
+          paymentType === "restricted" ? restrictedAmount : unrestrictedAmount;
+    
+        await makePayment(orderIds, paymentMethod, walletAmount, balanceType);
+    
+        toast.success("Payment processed successfully!");
+        router.navigate("/dashboard")
+      } catch (error) {
+        const typedError = error as { response?: { data?: { message?: string } } };
+    
+        const errorMessage =
+          typedError.response?.data?.message || "An unexpected error occurred.";
+        toast.error(`Payment failed: ${errorMessage}`);
+      } finally {
+        setLoading(false); // Reset loading state in any case
+      }
+    };
+    
+    
   return (
     <div className="">
-      <div className="bg-white rounded-lg w-[600px] max-w-full  flex flex-col">
-        {/* Scrollable Content */}
+      <div className="bg-white rounded-lg w-[600px] max-w-full flex flex-col">
         <div className="overflow-y-auto flex-1 space-y-2">
           <p className="text-sm text-gray-600">
-            To process this application, select the order in which you want your
-            customers to purchase this product.
+            Adjust the sliders to allocate funds between your card, restricted wallet, and unrestricted wallet.
           </p>
 
-          {/* Payment Sections */}
-          {[
-            { key: "card", label: "Card", icon: `${card}` },
-            { key: "restrictedWallet", label: "Restricted Wallet", icon: `${wallet}` },
-            {
-              key: "unrestrictedWallet",
-              label: "Unrestricted Wallet",
-              icon: `${wallet}`,
-            },
-          ].map((method) => (
-            <div
-              key={method.key}
-              className=" p-4 space-y-2 "
-            >
-              <div className="items-center justify-between">
-                <div className="flex items-center gap-2 w-full">
-                  <img src={method.icon} className=" text-white flex items-center justify-center "/>
-                  <input
-                    type="text"
-                    className="w-full border rounded-md px-4 py-2 mt-2"
-                    placeholder="Enter amount"
-                    value={
-                      paymentDetails[method.key as keyof PaymentDetails].amount
-                    }
-                    onChange={(e) =>
-                      handleInputChange(
-                        method.key as keyof PaymentDetails,
-                        e.target.value
-                      )
-                    }
-                  />
-                </div>
-                {method.label.includes("Wallet") && (
-                  <p className="text-xs text-start mt-3 text-[#333333]">
-                    {method.label} Balance: £
-                    {"balance" in
-                    paymentDetails[method.key as keyof PaymentDetails]
-                      ? (
-                          paymentDetails[
-                            method.key as keyof PaymentDetails
-                          ] as {
-                            balance: number;
-                          }
-                        ).balance
-                      : 0}
-                  </p>
-                )}
-              </div>
-
-              <div className="flex items-center mt-2">
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  step={10}
-                  value={
-                    paymentDetails[method.key as keyof PaymentDetails]
-                      .percentage
-                  }
-                  onChange={(e) =>
-                    handleSliderChange(
-                      method.key as keyof PaymentDetails,
-                      Number(e.target.value)
-                    )
-                  }
-                  className="w-full"
+          {/* Card Section */}
+          <div className="p-4 space-y-2">
+            <div className="items-center justify-between">
+              <div className="flex items-center gap-2 w-full">
+                <img
+                  src={card}
+                  alt="Card"
+                  className="text-white flex items-center justify-center  size-10"
                 />
-                <span className="ml-2 text-sm">
-                  {
-                    paymentDetails[method.key as keyof PaymentDetails]
-                      .percentage
-                  }
-                  %
-                </span>
-              </div>
-              <div className="flex justify-between mr-5 text-xs text-gray-500">
-                <span>Min</span>
-                <span>20%</span>
-                <span>40%</span>
-                <span>60%</span>
-                <span>80%</span>
-                <span>Max</span>
+                <input
+                  type="text"
+                  className="w-full border rounded-md px-4 py-2 mt-2"
+                  value={paymentDetails.card.amount}
+                  disabled
+                />
               </div>
             </div>
-          ))}
-
-          <div>
-            <p className="text-right text-sm ml-20 text-[#6B6A6A]">
-              <span className="text-[#0B8DFF]">*</span> Adjust slider to set
-              percentage of coins you wish to transfer to your cash wallet
-              balance.
-            </p>
+            <div className="flex items-center mt-2">
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={10}
+                value={paymentDetails.card.percentage}
+                onChange={(e) => handleSliderChange("card", Number(e.target.value))}
+                className="w-full"
+              />
+              <span className="ml-2 text-sm">{paymentDetails.card.percentage}%</span>
+            </div>
+            <div className="flex justify-between mr-5 text-xs text-gray-500">
+              <span>Min</span>
+              <span>20%</span>
+              <span>40%</span>
+              <span>60%</span>
+              <span>80%</span>
+              <span>Max</span>
+            </div>
+          </div>
+      
+         <div className="bg-[#F3F8FC]">
+          {/* Restricted Wallet Section */}
+          <div className="p-4 space-y-2">
+            <div className="items-center justify-between">
+              <div className="flex items-center gap-2 w-full">
+                <img
+                  src={wallet}
+                  alt="Wallet"
+                  className="text-white flex items-center justify-center  size-10"
+                />
+                <input
+                  type="text"
+                  className="w-full border rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                  value={paymentDetails.restrictedWallet.amount}
+                
+                />
+              </div>
+              <p className="text-xs text-start mt-3 text-[#333333]">
+                Restricted Wallet Balance: £{walletData?.restrictedMonetizedCashBenefitBalance}
+              </p>
+            </div>
+            <div className="flex items-center mt-2">
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={10}
+                value={paymentDetails.restrictedWallet.percentage}
+                onChange={(e) =>
+                  handleSliderChange("restrictedWallet", Number(e.target.value))
+                }
+                className="w-full"
+              />
+              <span className="ml-2 text-sm">{paymentDetails.restrictedWallet.percentage}%</span>
+            </div>
+            <div className="flex justify-between mr-5 text-xs text-gray-500">
+              <span>Min</span>
+              <span>20%</span>
+              <span>40%</span>
+              <span>60%</span>
+              <span>80%</span>
+              <span>Max</span>
+            </div>
           </div>
 
-          {/* Total and Deficit */}
-          <div className="flex justify-between border-t p-2 text-lg font-semibold mt-4">
-            <p>Total</p>
-            <p>£700.00</p>
-          </div>
-          <div className="flex justify-between text-lg font-semibold text-red-500">
-            <p>Deficit</p>
-            <p>- £700.00</p>
+          {/* Unrestricted Wallet Section */}
+          <div className="p-4 space-y-2">
+            <div className="items-center justify-between">
+              <div className="flex items-center gap-2 w-full">
+                <img
+                  src={wallet}
+                  alt="Wallet"
+                  className="text-white flex items-center justify-center size-10"
+                />
+                <input
+                  type="text"
+                  className="w-full border rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={paymentDetails.unrestrictedWallet.amount}
+                
+                />
+              </div>
+              <p className="text-xs text-start mt-3 text-[#333333]">
+                Unrestricted Wallet Balance: £ {walletData?.unrestrictedMonetizedCashBenefitBalance}
+              </p>
+            </div>
+            <div className="flex items-center mt-2">
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={10}
+                value={paymentDetails.unrestrictedWallet.percentage}
+                onChange={(e) =>
+                  handleSliderChange("unrestrictedWallet", Number(e.target.value))
+                }
+                className="w-full"
+              />
+              <span className="ml-2 text-sm">{paymentDetails.unrestrictedWallet.percentage}%</span>
+            </div>
+            <div className="flex justify-between mr-5 text-xs text-gray-500">
+              <span>Min</span>
+              <span>20%</span>
+              <span>40%</span>
+              <span>60%</span>
+              <span>80%</span>
+              <span>Max</span>
+            </div>
           </div>
         </div>
 
-        {/* Sticky Footer */}
-        <div className=" bg-white p-6 ">
+        </div>
+
+        <div className="bg-white p-6">
+
           <button
-            className="w-full py-3 rounded-full blue-gradient text-white font-medium hover:bg-blue-600"
-            onClick={() => alert("Proceeding with payment")}
+            className={`w-full py-3 rounded-full font-medium ${
+              loading ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "blue-gradient text-white hover:bg-blue-600"
+            }`}
+            onClick={handlePayment}
+            disabled={loading} // Disable button when loading
           >
-            Proceed
+            {loading ? (
+              <div className="flex items-center justify-center space-x-2">
+                <FaSpinner className="animate-spin" />
+                <span>Processing...</span>
+              </div>
+            ) : (
+              "Proceed"
+            )}
           </button>
         </div>
       </div>

@@ -38,7 +38,7 @@ const formatTitle = (title: string): string => {
           <div
             key={card.id}
             className={`bg-[#F5F5F5] p-3 rounded-lg shadow-md flex flex-col ${
-              index === 2 ? "col-span-2" : ""
+              index === 2 ? "" : ""
             }`}
           >
             <h2 className="font-medium text-sm">{card.title}</h2>
@@ -46,7 +46,7 @@ const formatTitle = (title: string): string => {
               src={card.image}
               alt={card.title}
               className={`rounded-md mt-4 ${
-                index === 2 ? "ml-auto w-[300px] h-[110px] " : " w-[100px] h-[80px] mx-auto "
+                index === 2 ? "w-[100px] h-[80px] mx-auto " : " w-[100px] h-[80px] mx-auto "
               }`}
             />
             

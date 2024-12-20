@@ -56,7 +56,7 @@ const Product = () => {
   return (
     <div>
        <ProductCard
-       _id={packageId}
+        _id={packageId}
         name={packageDetails.title}
         price={packageDetails.price}
         owner={packageDetails.category.name}
@@ -68,7 +68,7 @@ const Product = () => {
         videos={packageDetails.media}
         questions={packageDetails.questions}
         isMerchant={false} 
-      />
+        packageType={packageDetails.packageType}      />
       <RelatedProductCategory />
       <ReviewsSection hasPurchased={false} reviews={review?.packageReviews} />
     </div>

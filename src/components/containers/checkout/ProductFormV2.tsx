@@ -40,6 +40,7 @@ interface ProductFormV2Props {
     price: number;
     selectedColor: string;
     selectedQuantity: number;
+    packageType: string;
   };
 }
 
@@ -123,6 +124,7 @@ const ProductFormV2 = ({
 
   const handleProceed = () => {
     setIsProceedLoading(true); // Set loading state
+    
     AddToCart.mutate(
       {
         package: productData._id,
@@ -141,46 +143,64 @@ const ProductFormV2 = ({
         proceed: "PAYMENT",
       },
       {
-        onSuccess: () => router.navigate("/dashboard/checkout"), // Navigate on success
+        onSuccess: (response) => {
+          console.log("Order response:", response); // Log the response to confirm structure
+          const orderId = response?.data?._id; // Extract `_id` from response
+          if (orderId) {
+            router.navigate(`/dashboard/checkout/${orderId}`); // Navigate to the checkout page
+          } else {
+            console.error("Order ID not found in the response."); // Handle missing `_id`
+          }
+        },
         onSettled: () => setIsProceedLoading(false), // Reset loading state
       }
     );
   };
+  
+  
 
-  const AddToCart = useMutation({
-    mutationKey: ["create-order"],
-    mutationFn: (orderData: IOrder) => {
-      if (!orderData.customerEmail) {
-        throw new Error("Invalid order data: Missing required fields.");
-      }
-      return createNewOrder(orderData);
-    },
-    onSuccess: () => {
-      toast.success("Added to cart!");
-      onCloseForm();
-    },
-    onError: (error: any) => {
-      // Check for specific error scenarios
-      const status = error?.response?.status;
-      const errorMessage =
-        error?.response?.data?.message ||
-        (status === 400
-          ? "Invalid input. Please check your details."
-          : status === 500
-          ? "Server error. Please try again later."
-          : "Failed to add to cart.");
+ const AddToCart = useMutation({
+  mutationKey: ["create-order"],
+  mutationFn: (orderData: IOrder) => {
+    if (!orderData.customerEmail) {
+      throw new Error("Invalid order data: Missing required fields.");
+    }
+    return createNewOrder(orderData);
+  },
+  onSuccess: (_data, variables) => {
+    if (variables.proceed === "CART") {
+      // Toast only for Add to Cart action
+      toast.success("Added to cart successfully!");
+    }
+    if (variables.proceed === "PAYMENT") {
+      // No toast for payment, handle any required behavior
+      toast.success("Proceeding to payment...");
+    }
+    onCloseForm();
+  },
+  onError: (error: any) => {
+    // Check for specific error scenarios
+    const status = error?.response?.status;
+    const errorMessage =
+      error?.response?.data?.message ||
+      (status === 400
+        ? "Invalid input. Please check your details."
+        : status === 500
+        ? "Server error. Please try again later."
+        : "Failed to add to cart.");
 
-      // Log detailed error for debugging
-      console.error("Add to Cart Error:", {
-        status,
-        data: error?.response?.data,
-        message: error?.message,
-      });
+    // Log detailed error for debugging
+    console.error("Add to Cart Error:", {
+      status,
+      data: error?.response?.data,
+      message: error?.message,
+    });
 
-      // Display user-friendly error message
-      toast.error(errorMessage);
-    },
-  });
+    // Display user-friendly error message
+    toast.error(errorMessage);
+  },
+});
+
 
   const isFormValues =
     Object.values({ ...rest }).filter((it: any) => it.toString().length < 1)
@@ -577,6 +597,7 @@ const ProductFormV2 = ({
 
           {/* proceed */}
           <div className="flex flex-col lg:flex-row gap-2 items-center">
+          {productData.packageType !== "Service" && (
             <button
               onClick={handleSubmit}
               disabled={isAddToCartLoading || isDisabled}
@@ -596,6 +617,7 @@ const ProductFormV2 = ({
                 </>
               )}
             </button>
+              )}
             <button
               onClick={handleProceed}
               disabled={isProceedLoading || isDisabled}
