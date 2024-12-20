@@ -214,7 +214,7 @@ const ComboPaymentModal: React.FC = () => {
                 />
                 <input
                   type="text"
-                  className="w-full border rounded-md px-4 py-2 mt-2 bg-white"
+                  className="w-full border rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
                   value={paymentDetails.restrictedWallet.amount}
                 
                 />
@@ -258,9 +258,9 @@ const ComboPaymentModal: React.FC = () => {
                 />
                 <input
                   type="text"
-                  className="w-full border rounded-md px-4 py-2 mt-2 bg-white"
+                  className="w-full border rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   value={paymentDetails.unrestrictedWallet.amount}
-                  disabled
+                
                 />
               </div>
               <p className="text-xs text-start mt-3 text-[#333333]">
