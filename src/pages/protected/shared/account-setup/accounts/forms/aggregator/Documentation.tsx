@@ -167,7 +167,7 @@ const Documentation = ({ formState, setFormState }: Props) => {
     setCertOfAuth.mutate(formData);
   };
 
-  console.log(doc);
+  // console.log(doc);
 
   return userData?.merchantType === "NON_FINANCIAL_MERCHANT" ? (
     <div className="">

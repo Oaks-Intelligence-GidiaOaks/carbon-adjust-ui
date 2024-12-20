@@ -8,6 +8,7 @@ import { persistor, RootState } from "@/app/store";
 import AccountActionHeader from "@/components/reusables/account-setup/AccountActionHeader";
 import { Button } from "@/components/ui";
 import { setUser } from "@/features/userSlice";
+import { UserRole } from "@/interfaces/user.interface";
 import { cn } from "@/utils";
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 import { useIsFetching, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -55,6 +56,13 @@ const PendingVerification = (_: Props) => {
         verifyApp.data.data.data.status === "completed"
       ) {
         return navigate("/merchant");
+      }
+
+      if (
+        verifyApp.data.data.data.roles[0] === UserRole.CORPORATE_USER_ADMIN &&
+        verifyApp.data.data.data.status === "completed"
+      ) {
+        return navigate("/organisation");
       }
       // return navigate("/dashboard");
     }

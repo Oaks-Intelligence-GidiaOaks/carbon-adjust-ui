@@ -25,15 +25,14 @@ export const FormSchemas = () => {
           value: yup.string(),
         })
         .required("Please select account type"),
-      // aggregatorType: yup.string().when("accountType.value", {
-      //   is: "AGGREGATOR", // Condition: Type is 'AGGREGATOR'
-      //   then: yup
-      //     .object()
-      //     .required(
-      //       "Aggregator field is required when Account type is Aggregator"
-      //     ),
-      //   // You can add other validations for this field
-      // }),
+      phoneNos: yup.string().trim().required("Please enter your phone number"),
+      country: yup
+        .object()
+        .shape({
+          label: yup.string().trim(),
+          value: yup.string().trim().required("country value is required"),
+        })
+        .required("Please select a country"),
     }),
     LoginSchema: yup.object().shape({
       email: yup.string().email().required("Please enter a valid email"),

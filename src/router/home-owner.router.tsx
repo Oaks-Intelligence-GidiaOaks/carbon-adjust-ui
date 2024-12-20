@@ -124,7 +124,7 @@ export const homeOwnerRoutes = [
           },
         ],
       },
-      
+
       {
         path: "profile",
         element: <UserProfile />,
