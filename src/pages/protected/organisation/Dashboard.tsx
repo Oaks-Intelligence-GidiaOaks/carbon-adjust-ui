@@ -12,6 +12,8 @@ import { useQuery } from "@tanstack/react-query";
 import { AllAdminUnits, AllUnitsRequests } from "@/services/organisation";
 import { DepartmentWithStaffCardProps } from "@/interfaces/organisation.interface";
 import { useSelector } from "react-redux";
+// import { getRestrictedWallet } from "@/services/homeOwner";
+// import { WalletType } from "@/interfaces/transaction.interface";
 
 interface IDashboardStats {
   units: Array<DepartmentWithStaffCardProps>;
@@ -40,7 +42,14 @@ const Dashboard = () => {
   const { data: Requests } = useQuery({
     queryKey: ["get-all-requests"],
     queryFn: () => AllUnitsRequests(),
+    enabled: isUnitAdmin || corporateAdmin,
   });
+
+  // const { data: wallet } = useQuery({
+  //   queryKey: ["get-wallet"],
+  //   queryFn: () => getRestrictedWallet(),
+  // });
+  // console.log(wallet)
 
   const request = Requests?.data?.receipts || null;
   const stats: IDashboardStats = data?.data || null;
@@ -143,6 +152,7 @@ const Dashboard = () => {
           </div>
         </>
       )}
+      { (isUnitAdmin ||corporateAdmin) &&
 
       <div className="space-y-4">
         <div className="flex-center justify-between">
@@ -165,8 +175,8 @@ const Dashboard = () => {
                 requestDetails=""
                 status={req?.status}
                 profileImage="https://via.placeholder.com/150"
-              />
-            ))}
+                />
+              ))}
           </div>
         ) : (
           <div className="text-center text-gray-500 mt-4">
@@ -174,6 +184,7 @@ const Dashboard = () => {
           </div>
         )}
       </div>
+      }
 
       <div className="space-y-5">
         {Array.from(stats?.units.slice(0, 3) || [], (it) => (
